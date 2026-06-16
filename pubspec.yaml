@@ -1,0 +1,43 @@
+name: ffmpeg_mobile
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  ffmpeg_kit_flutter_new: ^4.2.1
+  image_picker: ^1.1.2
+  gal: ^2.3.2
+  flutter_svg: ^2.3.0
+  flutter_launcher_icons: ^0.14.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  image_path_ios: "assets/logo/logo.png"
+  remove_alpha_ios: true
+  ios: true
+  image_path: "assets/logo/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_foreground: "assets/logo/logo.png"
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  fonts:
+    - family: Pangolin
+      fonts:
+        - asset: assets/fonts/Pangolin-Regular.ttf
