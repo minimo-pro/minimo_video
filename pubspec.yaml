@@ -1,5 +1,5 @@
-name: ffmpeg_mobile
-description: "A new Flutter project."
+name: minimo_video
+description: "minimo (video) - video compression app."
 publish_to: 'none'
 version: 0.1.0
 

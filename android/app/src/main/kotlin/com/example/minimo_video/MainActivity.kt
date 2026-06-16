@@ -1,4 +1,4 @@
-package com.example.ffmpeg_mobile
+package com.example.minimo_video
 
 import io.flutter.embedding.android.FlutterActivity
 

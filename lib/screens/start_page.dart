@@ -53,7 +53,7 @@ class _StartPageState extends State<StartPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'compesso',
+                      'minimo (video)',
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

@@ -1,3 +1,3 @@
-# ffmpeg_mobile
+# minimo (video)
 
-A new Flutter project.
+// TODO

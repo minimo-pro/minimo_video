@@ -14,7 +14,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Video Compressor',
+      title: 'minimo (video)',
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       home: const StartPage(),

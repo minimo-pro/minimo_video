@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ffmpeg_mobile/services/utils.dart';
+import 'package:minimo_video/services/utils.dart';
 
 class SizeRow extends StatelessWidget {
   final String label;

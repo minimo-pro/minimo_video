@@ -102,7 +102,7 @@ class _CompressScreenState extends State<CompressScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Video Compressor'),
+        title: const Text('minimo (video)'),
         centerTitle: true,
       ),
       body: Center(
