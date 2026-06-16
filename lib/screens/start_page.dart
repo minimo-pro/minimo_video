@@ -1,9 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../router/app_router.gr.dart';
 import '../services/file_service.dart';
-import 'compress_screen.dart';
+import '../theme/app_colors.dart';
+import '../widgets/bottom_frame.dart';
 
+@RoutePage()
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
 
@@ -21,12 +25,7 @@ class _StartPageState extends State<StartPage> {
     try {
       final video = await _fileService.pickVideo();
       if (video != null && mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => CompressScreen(initialVideo: video),
-          ),
-        );
+        context.pushRoute(CompressRoute(initialVideo: video));
       }
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -36,6 +35,7 @@ class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colors = theme.extension<AppColors>()!;
 
     return Scaffold(
       body: Stack(
@@ -47,78 +47,65 @@ class _StartPageState extends State<StartPage> {
             ),
           ),
           SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 24, 12, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                      'minimo (video)',
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  IconButton(
-                    icon: SvgPicture.asset(
-                      'assets/icons/settings.svg',
-                      width: 28,
-                      height: 28,
-                      colorFilter: const ColorFilter.mode(
-                        Colors.black,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (_loading)
-            const Center(child: CircularProgressIndicator())
-          else
-            Center(
-              child: GestureDetector(
-                onTap: _pickAndGo,
-                child: Container(
-                  width: 300,
-                  height: 300,
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFD9D9D9).withValues(alpha: 0.7),
-                    borderRadius: BorderRadius.circular(24),
-                    border: Border.all(
-                      color: const Color(0xFFA8A8A8),
-                      width: 2,
-                    ),
-                  ),
-                  child: Stack(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 24, 12, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Center(
-                        child: Icon(
-                          Icons.add_rounded,
-                          size: 56,
-                          color: Colors.black54,
+                      Text(
+                        'minimo (video)',
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
-                      Positioned(
-                        bottom: 16,
-                        left: 0,
-                        right: 0,
-                        child: Text(
-                          'select file or drag\nand drop a media file',
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: Colors.black.withValues(alpha: 0.6),
-                          ),
-                        ),
-                      ),
+                      const SizedBox.shrink(),
                     ],
                   ),
                 ),
-              ),
+                Expanded(
+                  child: _loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : Center(
+                          child: GestureDetector(
+                            onTap: _pickAndGo,
+                            child: Container(
+                              width: 300,
+                              height: 300,
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                color: colors.frameBackground.withValues(alpha: 0.7),
+                                borderRadius: BorderRadius.circular(24),
+                                border: Border.all(
+                                  color: colors.frameBorder,
+                                  width: 2,
+                                ),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Center(
+                                    child: SvgPicture.asset(
+                                      'assets/icons/plus.svg',
+                                      width: 56,
+                                      height: 56,
+                                      colorFilter: const ColorFilter.mode(
+                                        Colors.black54,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                ),
+                const BottomFrame(),
+              ],
             ),
+          ),
         ],
       ),
     );

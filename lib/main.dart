@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/start_page.dart';
+import 'router/app_router.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -13,11 +13,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    final router = AppRouter();
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'minimo (video)',
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      home: const StartPage(),
+      routerConfig: router.config(),
     );
   }
 }

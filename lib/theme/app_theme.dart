@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'app_colors.dart';
+
 class AppTheme {
   static const _seedColor = Color(0xFF6C63FF);
 
@@ -10,6 +12,7 @@ class AppTheme {
     ),
     fontFamily: 'Pangolin',
     useMaterial3: true,
+    extensions: [AppColors.light],
   );
 
   static ThemeData get dark => ThemeData(
@@ -19,5 +22,6 @@ class AppTheme {
     ),
     fontFamily: 'Pangolin',
     useMaterial3: true,
+    extensions: [AppColors.dark],
   );
 }

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../models/compression_settings.dart';
@@ -7,6 +8,7 @@ import '../services/utils.dart';
 import '../widgets/crf_slider.dart';
 import '../widgets/size_row.dart';
 
+@RoutePage()
 class CompressScreen extends StatefulWidget {
   final PickedVideo? initialVideo;
 
