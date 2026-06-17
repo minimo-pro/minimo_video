@@ -23,9 +23,9 @@ class _StartPageState extends State<StartPage> {
     setState(() => _loading = true);
 
     try {
-      final video = await _fileService.pickVideo();
-      if (video != null && mounted) {
-        context.pushRoute(CompressRoute(initialVideo: video));
+      final videos = await _fileService.pickVideos();
+      if (videos.isNotEmpty && mounted) {
+        context.pushRoute(CompressRoute(initialVideos: videos));
       }
     } finally {
       if (mounted) setState(() => _loading = false);
@@ -76,7 +76,9 @@ class _StartPageState extends State<StartPage> {
                               height: 300,
                               padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
-                                color: colors.frameBackground.withValues(alpha: 0.7),
+                                color: colors.frameBackground.withValues(
+                                  alpha: 0.7,
+                                ),
                                 borderRadius: BorderRadius.circular(24),
                                 border: Border.all(
                                   color: colors.frameBorder,

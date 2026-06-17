@@ -10,7 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   ffmpeg_kit_flutter_new: ^4.2.1
-  image_picker: ^1.1.2
+  file_picker: ^10.3.10
+  flutter_bloc: ^9.1.1
   gal: ^2.3.2
   flutter_svg: ^2.3.0
   flutter_launcher_icons: ^0.14.4

@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:gal/gal.dart';
-import 'package:image_picker/image_picker.dart';
 
 class PickedVideo {
   final String path;
@@ -12,14 +12,21 @@ class PickedVideo {
 }
 
 class FileService {
-  final _picker = ImagePicker();
+  Future<List<PickedVideo>> pickVideos() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.video,
+      allowMultiple: true,
+      withData: false,
+    );
+    if (result == null) return [];
 
-  Future<PickedVideo?> pickVideo() async {
-    final xfile = await _picker.pickVideo(source: ImageSource.gallery);
-    if (xfile == null) return null;
-
-    final size = await xfile.length();
-    return PickedVideo(path: xfile.path, name: xfile.name, size: size);
+    return result.files
+        .where((file) => file.path != null)
+        .map(
+          (file) =>
+              PickedVideo(path: file.path!, name: file.name, size: file.size),
+        )
+        .toList();
   }
 
   Future<void> saveToGallery(String filePath) async {
@@ -28,6 +35,6 @@ class FileService {
 
   static String get tempOutputPath {
     final dir = Directory.systemTemp;
-    return '${dir.path}/compressed_${DateTime.now().millisecondsSinceEpoch}.mp4';
+    return '${dir.path}/compressed_${DateTime.now().microsecondsSinceEpoch}.mp4';
   }
 }

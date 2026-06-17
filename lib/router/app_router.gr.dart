@@ -10,6 +10,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i5;
+import 'package:collection/collection.dart' as _i8;
 import 'package:flutter/material.dart' as _i6;
 import 'package:minimo_video/screens/compress_screen.dart' as _i1;
 import 'package:minimo_video/screens/info_screen.dart' as _i2;
@@ -22,11 +23,11 @@ import 'package:minimo_video/services/file_service.dart' as _i7;
 class CompressRoute extends _i5.PageRouteInfo<CompressRouteArgs> {
   CompressRoute({
     _i6.Key? key,
-    _i7.PickedVideo? initialVideo,
+    List<_i7.PickedVideo> initialVideos = const [],
     List<_i5.PageRouteInfo>? children,
   }) : super(
          CompressRoute.name,
-         args: CompressRouteArgs(key: key, initialVideo: initialVideo),
+         args: CompressRouteArgs(key: key, initialVideos: initialVideos),
          initialChildren: children,
        );
 
@@ -38,32 +39,41 @@ class CompressRoute extends _i5.PageRouteInfo<CompressRouteArgs> {
       final args = data.argsAs<CompressRouteArgs>(
         orElse: () => const CompressRouteArgs(),
       );
-      return _i1.CompressScreen(key: args.key, initialVideo: args.initialVideo);
+      return _i1.CompressScreen(
+        key: args.key,
+        initialVideos: args.initialVideos,
+      );
     },
   );
 }
 
 class CompressRouteArgs {
-  const CompressRouteArgs({this.key, this.initialVideo});
+  const CompressRouteArgs({this.key, this.initialVideos = const []});
 
   final _i6.Key? key;
 
-  final _i7.PickedVideo? initialVideo;
+  final List<_i7.PickedVideo> initialVideos;
 
   @override
   String toString() {
-    return 'CompressRouteArgs{key: $key, initialVideo: $initialVideo}';
+    return 'CompressRouteArgs{key: $key, initialVideos: $initialVideos}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! CompressRouteArgs) return false;
-    return key == other.key && initialVideo == other.initialVideo;
+    return key == other.key &&
+        const _i8.ListEquality<_i7.PickedVideo>().equals(
+          initialVideos,
+          other.initialVideos,
+        );
   }
 
   @override
-  int get hashCode => key.hashCode ^ initialVideo.hashCode;
+  int get hashCode =>
+      key.hashCode ^
+      const _i8.ListEquality<_i7.PickedVideo>().hash(initialVideos);
 }
 
 /// generated route for
