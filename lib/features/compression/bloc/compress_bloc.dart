@@ -1,20 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../services/compression_service.dart';
-import '../services/file_service.dart';
+import '../data/video_compressor_adapter.dart';
+import '../data/video_file_adapter.dart';
+import '../domain/picked_video.dart';
 import 'compress_event.dart';
 import 'compress_state.dart';
 
 class CompressBloc extends Bloc<CompressEvent, CompressState> {
-  final FileService _fileService;
-  final CompressionService _compressionService;
+  final VideoFileAdapter _videoFileAdapter;
+  final VideoCompressorAdapter _videoCompressorAdapter;
 
   CompressBloc({
     List<PickedVideo> initialVideos = const [],
-    FileService? fileService,
-    CompressionService? compressionService,
-  }) : _fileService = fileService ?? FileService(),
-       _compressionService = compressionService ?? CompressionService(),
+    VideoFileAdapter? videoFileAdapter,
+    VideoCompressorAdapter? videoCompressorAdapter,
+  }) : _videoFileAdapter = videoFileAdapter ?? VideoFileAdapter(),
+       _videoCompressorAdapter =
+           videoCompressorAdapter ?? VideoCompressorAdapter(),
        super(CompressState.initial(initialVideos)) {
     on<CompressCrfChanged>(_onCrfChanged);
     on<CompressPresetChanged>(_onPresetChanged);
@@ -69,9 +71,10 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       emit(state.copyWith(processingIndex: i));
 
       final video = videos[i];
-      final outputPath = FileService.tempOutputPath;
-      final command = state.settings.buildCommand(video.path, outputPath);
-      final result = await _compressionService.execute(command, outputPath);
+      final result = await _videoCompressorAdapter.compress(
+        video.path,
+        state.settings,
+      );
 
       emit(
         state.copyWith(
@@ -95,7 +98,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
 
     try {
       for (final outputPath in outputPaths) {
-        await _fileService.saveToGallery(outputPath);
+        await _videoFileAdapter.saveToGallery(outputPath);
       }
       emit(
         state.copyWith(

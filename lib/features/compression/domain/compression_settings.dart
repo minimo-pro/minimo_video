@@ -55,24 +55,6 @@ class CompressionSettings {
     if (crf < 31) return 'Medium';
     return 'Small';
   }
-
-  String buildCommand(String inputPath, String outputPath) {
-    final filters = <String>[];
-    if (resolution != null) {
-      filters.add('scale=$resolution:force_original_aspect_ratio=decrease');
-    }
-
-    var cmd = '-i "$inputPath"';
-    cmd += ' -c:v libx264';
-    cmd += ' -preset $preset';
-    cmd += ' -crf ${crf.toInt()}';
-    if (filters.isNotEmpty) {
-      cmd += ' -vf "${filters.join(',')}"';
-    }
-    cmd += ' -c:a aac -b:a 128k';
-    cmd += ' "$outputPath"';
-    return cmd;
-  }
 }
 
 const _unset = Object();

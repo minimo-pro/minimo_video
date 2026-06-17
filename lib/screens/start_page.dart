@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../features/compression/data/video_file_adapter.dart';
 import '../router/app_router.gr.dart';
-import '../services/file_service.dart';
 import '../theme/app_colors.dart';
 import '../widgets/bottom_frame.dart';
 
@@ -16,14 +16,14 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  final _fileService = FileService();
+  final _videoFileAdapter = VideoFileAdapter();
   bool _loading = false;
 
   Future<void> _pickAndGo() async {
     setState(() => _loading = true);
 
     try {
-      final videos = await _fileService.pickVideos();
+      final videos = await _videoFileAdapter.pickVideos();
       if (videos.isNotEmpty && mounted) {
         context.pushRoute(CompressRoute(initialVideos: videos));
       }

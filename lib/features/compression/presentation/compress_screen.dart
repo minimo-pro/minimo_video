@@ -2,14 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../router/app_router.gr.dart';
+import '../../../services/utils.dart';
+import '../../../widgets/crf_slider.dart';
+import '../../../widgets/size_row.dart';
 import '../bloc/compress_bloc.dart';
 import '../bloc/compress_event.dart';
 import '../bloc/compress_state.dart';
-import '../router/app_router.gr.dart';
-import '../services/file_service.dart';
-import '../services/utils.dart';
-import '../widgets/crf_slider.dart';
-import '../widgets/size_row.dart';
+import '../domain/picked_video.dart';
 
 @RoutePage()
 class CompressScreen extends StatelessWidget {

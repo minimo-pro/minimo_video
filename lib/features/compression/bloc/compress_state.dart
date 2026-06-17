@@ -1,6 +1,6 @@
-import '../models/compression_settings.dart';
-import '../services/compression_service.dart';
-import '../services/file_service.dart';
+import '../domain/compression_result.dart';
+import '../domain/compression_settings.dart';
+import '../domain/picked_video.dart';
 
 enum CompressStatus { ready, processing, done }
 

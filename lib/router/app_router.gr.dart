@@ -12,11 +12,13 @@
 import 'package:auto_route/auto_route.dart' as _i5;
 import 'package:collection/collection.dart' as _i8;
 import 'package:flutter/material.dart' as _i6;
-import 'package:minimo_video/screens/compress_screen.dart' as _i1;
+import 'package:minimo_video/features/compression/domain/picked_video.dart'
+    as _i7;
+import 'package:minimo_video/features/compression/presentation/compress_screen.dart'
+    as _i1;
 import 'package:minimo_video/screens/info_screen.dart' as _i2;
 import 'package:minimo_video/screens/settings_screen.dart' as _i3;
 import 'package:minimo_video/screens/start_page.dart' as _i4;
-import 'package:minimo_video/services/file_service.dart' as _i7;
 
 /// generated route for
 /// [_i1.CompressScreen]
