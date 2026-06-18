@@ -289,6 +289,45 @@ class S {
     );
   }
 
+  /// `cancel`
+  String get cancel {
+    return Intl.message('cancel', name: 'cancel', desc: '', args: []);
+  }
+
+  /// `estimating time remaining...`
+  String get estimatingTimeRemaining {
+    return Intl.message(
+      'estimating time remaining...',
+      name: 'estimatingTimeRemaining',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count, plural, =1{about 1 second left} other{about {count} seconds left}}`
+  String secondsRemaining(int count) {
+    return Intl.plural(
+      count,
+      one: 'about 1 second left',
+      other: 'about $count seconds left',
+      name: 'secondsRemaining',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count, plural, =1{about 1 minute left} other{about {count} minutes left}}`
+  String minutesRemaining(int count) {
+    return Intl.plural(
+      count,
+      one: 'about 1 minute left',
+      other: 'about $count minutes left',
+      name: 'minutesRemaining',
+      desc: '',
+      args: [count],
+    );
+  }
+
   /// `loading videos...`
   String get loadingVideos {
     return Intl.message(

@@ -11,11 +11,13 @@ class VideoCompressorAdapter {
 
   Future<CompressionResult> compress(
     String inputPath,
-    CompressionSettings settings,
-  ) async {
+    CompressionSettings settings, {
+    void Function(double progress)? onProgress,
+  }) async {
     final result = await _compressor.compressVideo(
       inputPath,
       _buildConfig(settings),
+      onProgress: onProgress,
     );
 
     if (result == null) {
@@ -28,6 +30,10 @@ class VideoCompressorAdapter {
       outputPath: result.compressedFilePath,
       durationMs: result.timeTaken,
     );
+  }
+
+  Future<void> cancelCompression() {
+    return _compressor.cancelCompression();
   }
 
   Future<String?> createThumbnail(String inputPath) async {

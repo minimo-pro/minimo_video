@@ -34,6 +34,24 @@
   "smaller": "меньше",
   "compress": "сжать",
   "compressing": "сжатие...",
+  "cancel": "отмена",
+  "estimatingTimeRemaining": "оцениваем оставшееся время...",
+  "secondsRemaining": "{count, plural, =1{осталась примерно 1 секунда} one{осталась примерно {count} секунда} few{осталось примерно {count} секунды} many{осталось примерно {count} секунд} other{осталось примерно {count} секунды}}",
+  "@secondsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesRemaining": "{count, plural, =1{осталась примерно 1 минута} one{осталась примерно {count} минута} few{осталось примерно {count} минуты} many{осталось примерно {count} минут} other{осталось примерно {count} минуты}}",
+  "@minutesRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "loadingVideos": "загрузка видео...",
   "compressionComplete": "сжатие завершено",
   "compressOtherVideos": "сжать другие видео",

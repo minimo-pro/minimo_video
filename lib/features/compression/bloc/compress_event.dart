@@ -36,6 +36,20 @@ class CompressStarted extends CompressEvent {
   const CompressStarted();
 }
 
+class CompressProgressChanged extends CompressEvent {
+  final double progress;
+  final Duration elapsed;
+
+  const CompressProgressChanged({
+    required this.progress,
+    required this.elapsed,
+  });
+}
+
+class CompressCancelled extends CompressEvent {
+  const CompressCancelled();
+}
+
 class CompressResultsSaved extends CompressEvent {
   const CompressResultsSaved();
 }

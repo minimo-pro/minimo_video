@@ -9,11 +9,13 @@ import '../../../../theme/app_colors.dart';
 class SelectedVideosPreview extends StatelessWidget {
   final int selectedCount;
   final List<String?> thumbnailPaths;
+  final double scale;
 
   const SelectedVideosPreview({
     super.key,
     required this.selectedCount,
     required this.thumbnailPaths,
+    this.scale = 1,
   });
 
   @override
@@ -21,22 +23,27 @@ class SelectedVideosPreview extends StatelessWidget {
     final positions = _positionsForCount(selectedCount.clamp(1, 3));
 
     return SizedBox(
-      width: 124,
-      height: 92,
+      width: 124 * scale,
+      height: 92 * scale,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           for (var i = 0; i < positions.length; i++)
             Positioned(
-              left: positions[i].dx,
-              top: positions[i].dy,
-              child: _VideoThumb(path: _thumbnailAt(i), width: 58, height: 46),
+              left: positions[i].dx * scale,
+              top: positions[i].dy * scale,
+              child: _VideoThumb(
+                path: _thumbnailAt(i),
+                width: 58 * scale,
+                height: 46 * scale,
+                borderRadius: 9 * scale,
+              ),
             ),
           if (selectedCount > 1)
             Positioned(
-              right: -2,
-              top: 10,
-              child: _SelectedCountBadge(count: selectedCount),
+              right: -2 * scale,
+              top: 10 * scale,
+              child: _SelectedCountBadge(count: selectedCount, scale: scale),
             ),
         ],
       ),
@@ -64,17 +71,19 @@ class _VideoThumb extends StatelessWidget {
   final String? path;
   final double width;
   final double height;
+  final double borderRadius;
 
   const _VideoThumb({
     required this.path,
     required this.width,
     required this.height,
+    required this.borderRadius,
   });
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(9),
+      borderRadius: BorderRadius.circular(borderRadius),
       child: path == null
           ? Container(
               width: width,
@@ -94,14 +103,15 @@ class _VideoThumb extends StatelessWidget {
 
 class _SelectedCountBadge extends StatelessWidget {
   final int count;
+  final double scale;
 
-  const _SelectedCountBadge({required this.count});
+  const _SelectedCountBadge({required this.count, required this.scale});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 34,
-      height: 34,
+      width: 34 * scale,
+      height: 34 * scale,
       decoration: const BoxDecoration(
         color: CompressionUiColors.red,
         shape: BoxShape.circle,
@@ -109,9 +119,9 @@ class _SelectedCountBadge extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         '$count',
-        style: const TextStyle(
+        style: TextStyle(
           color: CompressionUiColors.white,
-          fontSize: 21,
+          fontSize: 21 * scale,
           height: 1,
         ),
       ),

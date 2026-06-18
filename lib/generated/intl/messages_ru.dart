@@ -25,14 +25,20 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(error) => "не удалось сохранить: ${error}";
 
   static String m2(count) =>
-      "${Intl.plural(count, one: 'сохранить 1 видео', few: 'сохранить ${count} видео', many: 'сохранить ${count} видео', other: 'сохранить ${count} видео')}";
+      "${Intl.plural(count, one: 'осталась примерно 1 минута', few: 'осталось примерно ${count} минуты', many: 'осталось примерно ${count} минут', other: 'осталось примерно ${count} минуты')}";
 
   static String m3(count) =>
+      "${Intl.plural(count, one: 'сохранить 1 видео', few: 'сохранить ${count} видео', many: 'сохранить ${count} видео', other: 'сохранить ${count} видео')}";
+
+  static String m4(count) =>
       "${Intl.plural(count, one: '1 видео сохранено в галерею', few: '${count} видео сохранено в галерею', many: '${count} видео сохранено в галерею', other: '${count} видео сохранено в галерею')}";
 
-  static String m4(current, total) => "видео ${current} из ${total}";
+  static String m5(count) =>
+      "${Intl.plural(count, one: 'осталась примерно 1 секунда', few: 'осталось примерно ${count} секунды', many: 'осталось примерно ${count} секунд', other: 'осталось примерно ${count} секунды')}";
 
-  static String m5(completed, total) => "сжато видео: ${completed} из ${total}";
+  static String m6(current, total) => "видео ${current} из ${total}";
+
+  static String m7(completed, total) => "сжато видео: ${completed} из ${total}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -44,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "битрейт будет уменьшен для экономии места",
     ),
+    "cancel": MessageLookupByLibrary.simpleMessage("отмена"),
     "compress": MessageLookupByLibrary.simpleMessage("сжать"),
     "compressOtherVideos": MessageLookupByLibrary.simpleMessage(
       "сжать другие видео",
@@ -54,6 +61,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "сжатие завершено",
     ),
     "crfValue": m0,
+    "estimatingTimeRemaining": MessageLookupByLibrary.simpleMessage(
+      "оцениваем оставшееся время...",
+    ),
     "failed": MessageLookupByLibrary.simpleMessage("ошибка"),
     "failedToSave": m1,
     "fast": MessageLookupByLibrary.simpleMessage("быстро"),
@@ -64,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "low": MessageLookupByLibrary.simpleMessage("низкое"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("среднее"),
+    "minutesRemaining": m2,
     "next": MessageLookupByLibrary.simpleMessage("далее"),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "выберите одно или несколько видео, размер которых хотите уменьшить.",
@@ -92,8 +103,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "resolutionReducedSdDescription": MessageLookupByLibrary.simpleMessage(
       "разрешение будет уменьшено до sd",
     ),
-    "saveVideos": m2,
-    "savedVideosToGallery": m3,
+    "saveVideos": m3,
+    "savedVideosToGallery": m4,
+    "secondsRemaining": m5,
     "simpleOptions": MessageLookupByLibrary.simpleMessage("простые настройки"),
     "skip": MessageLookupByLibrary.simpleMessage("пропустить"),
     "slow": MessageLookupByLibrary.simpleMessage("медленно"),
@@ -102,7 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "speed": MessageLookupByLibrary.simpleMessage("скорость"),
     "todo": MessageLookupByLibrary.simpleMessage("В разработке"),
     "ultraFast": MessageLookupByLibrary.simpleMessage("очень быстро"),
-    "videoProgress": m4,
-    "videosCompressed": m5,
+    "videoProgress": m6,
+    "videosCompressed": m7,
   };
 }

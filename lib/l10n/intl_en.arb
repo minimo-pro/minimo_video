@@ -34,6 +34,24 @@
   "smaller": "smaller",
   "compress": "compress",
   "compressing": "compressing...",
+  "cancel": "cancel",
+  "estimatingTimeRemaining": "estimating time remaining...",
+  "secondsRemaining": "{count, plural, =1{about 1 second left} other{about {count} seconds left}}",
+  "@secondsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesRemaining": "{count, plural, =1{about 1 minute left} other{about {count} minutes left}}",
+  "@minutesRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "loadingVideos": "loading videos...",
   "compressionComplete": "compression complete",
   "compressOtherVideos": "compress other videos",

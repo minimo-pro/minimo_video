@@ -5,6 +5,7 @@ import '../../../../constants/app_icons.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../widgets/rolling_counter_text.dart';
 import 'selected_videos_preview.dart';
 
 class SelectedVideosSummary extends StatelessWidget {
@@ -34,33 +35,57 @@ class SelectedVideosSummary extends StatelessWidget {
           thumbnailPaths: thumbnailPaths,
         ),
         const SizedBox(height: 4),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              Utils.formatSize(originalSize).toLowerCase(),
-              style: const TextStyle(
-                color: CompressionUiColors.dark,
-                fontSize: 28,
-                height: 1,
+        SizedBox(
+          width: double.infinity,
+          child: Row(
+            children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    Utils.formatSize(originalSize).toLowerCase(),
+                    maxLines: 1,
+                    style: const TextStyle(
+                      color: CompressionUiColors.dark,
+                      fontSize: 28,
+                      height: 1,
+                    ),
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(width: 13),
-            SvgPicture.asset(AppIcons.arrowRight, width: 29, height: 24),
-            const SizedBox(width: 13),
-            Text(
-              Utils.formatSize(estimatedSize).toLowerCase(),
-              style: const TextStyle(
-                color: CompressionUiColors.red,
-                fontSize: 28,
-                height: 1,
+              const SizedBox(width: 13),
+              SizedBox(
+                width: 29,
+                height: 24,
+                child: SvgPicture.asset(
+                  AppIcons.arrowRight,
+                  width: 29,
+                  height: 24,
+                ),
               ),
-            ),
-          ],
+              const SizedBox(width: 13),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: RollingCounterText(
+                    value: estimatedSize,
+                    formatter: (value) =>
+                        Utils.formatSize(value.toInt()).toLowerCase(),
+                    style: const TextStyle(
+                      color: CompressionUiColors.red,
+                      fontSize: 28,
+                      height: 1,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 18),
-        Text(
-          '$savingsPercent%',
+        RollingCounterText(
+          value: savingsPercent,
+          formatter: (value) => '${value.toInt()}%',
           style: const TextStyle(
             color: CompressionUiColors.red,
             fontSize: 27,

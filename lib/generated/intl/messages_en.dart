@@ -25,14 +25,20 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(error) => "failed to save: ${error}";
 
   static String m2(count) =>
-      "${Intl.plural(count, one: 'save 1 video', other: 'save ${count} videos')}";
+      "${Intl.plural(count, one: 'about 1 minute left', other: 'about ${count} minutes left')}";
 
   static String m3(count) =>
+      "${Intl.plural(count, one: 'save 1 video', other: 'save ${count} videos')}";
+
+  static String m4(count) =>
       "${Intl.plural(count, one: 'saved 1 video to gallery', other: 'saved ${count} videos to gallery')}";
 
-  static String m4(current, total) => "video ${current} of ${total}";
+  static String m5(count) =>
+      "${Intl.plural(count, one: 'about 1 second left', other: 'about ${count} seconds left')}";
 
-  static String m5(completed, total) =>
+  static String m6(current, total) => "video ${current} of ${total}";
+
+  static String m7(completed, total) =>
       "${completed} of ${total} videos compressed";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -43,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "bitrate will be reduced to save space",
     ),
+    "cancel": MessageLookupByLibrary.simpleMessage("cancel"),
     "compress": MessageLookupByLibrary.simpleMessage("compress"),
     "compressOtherVideos": MessageLookupByLibrary.simpleMessage(
       "compress other videos",
@@ -53,6 +60,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "compression complete",
     ),
     "crfValue": m0,
+    "estimatingTimeRemaining": MessageLookupByLibrary.simpleMessage(
+      "estimating time remaining...",
+    ),
     "failed": MessageLookupByLibrary.simpleMessage("failed"),
     "failedToSave": m1,
     "fast": MessageLookupByLibrary.simpleMessage("fast"),
@@ -63,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "low": MessageLookupByLibrary.simpleMessage("low"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("medium"),
+    "minutesRemaining": m2,
     "next": MessageLookupByLibrary.simpleMessage("next"),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "choose one or several videos you want to make smaller.",
@@ -91,8 +102,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "resolutionReducedSdDescription": MessageLookupByLibrary.simpleMessage(
       "resolution will be reduced to sd",
     ),
-    "saveVideos": m2,
-    "savedVideosToGallery": m3,
+    "saveVideos": m3,
+    "savedVideosToGallery": m4,
+    "secondsRemaining": m5,
     "simpleOptions": MessageLookupByLibrary.simpleMessage("simple options"),
     "skip": MessageLookupByLibrary.simpleMessage("skip"),
     "slow": MessageLookupByLibrary.simpleMessage("slow"),
@@ -101,7 +113,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "speed": MessageLookupByLibrary.simpleMessage("speed"),
     "todo": MessageLookupByLibrary.simpleMessage("TODO"),
     "ultraFast": MessageLookupByLibrary.simpleMessage("ultra fast"),
-    "videoProgress": m4,
-    "videosCompressed": m5,
+    "videoProgress": m6,
+    "videosCompressed": m7,
   };
 }

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../data/video_compressor_adapter.dart';
 import '../data/video_file_adapter.dart';
+import '../domain/compression_result.dart';
 import '../domain/compression_settings.dart';
 import '../domain/picked_video.dart';
 import 'compress_event.dart';
@@ -10,6 +11,7 @@ import 'compress_state.dart';
 class CompressBloc extends Bloc<CompressEvent, CompressState> {
   final VideoFileAdapter _videoFileAdapter;
   final VideoCompressorAdapter _videoCompressorAdapter;
+  bool _cancelRequested = false;
 
   CompressBloc({
     List<PickedVideo> initialVideos = const [],
@@ -25,6 +27,8 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     on<CompressPresetChanged>(_onPresetChanged);
     on<CompressResolutionChanged>(_onResolutionChanged);
     on<CompressStarted>(_onStarted);
+    on<CompressProgressChanged>(_onProgressChanged);
+    on<CompressCancelled>(_onCancelled);
     on<CompressResultsSaved>(_onResultsSaved);
     on<CompressMessagesCleared>(_onMessagesCleared);
     add(const CompressThumbnailsRequested());
@@ -114,12 +118,16 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
   ) async {
     if (state.videos.isEmpty) return;
 
+    _cancelRequested = false;
+    final stopwatch = Stopwatch()..start();
     final videos = List<PickedVideo>.of(state.videos);
     emit(
       state.copyWith(
         status: CompressStatus.processing,
         results: const [],
         processingIndex: 0,
+        progress: 0,
+        elapsed: Duration.zero,
         clearSaveNotification: true,
       ),
     );
@@ -128,10 +136,28 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       emit(state.copyWith(processingIndex: i));
 
       final video = videos[i];
-      final result = await _videoCompressorAdapter.compress(
-        video.path,
-        state.settings,
-      );
+      late final CompressionResult result;
+      try {
+        result = await _videoCompressorAdapter.compress(
+          video.path,
+          state.settings,
+          onProgress: (videoProgress) {
+            if (_cancelRequested) return;
+            final overallProgress = (i + videoProgress) / videos.length;
+            add(
+              CompressProgressChanged(
+                progress: overallProgress.clamp(0, 1).toDouble(),
+                elapsed: stopwatch.elapsed,
+              ),
+            );
+          },
+        );
+      } catch (_) {
+        if (_cancelRequested) return;
+        rethrow;
+      }
+
+      if (_cancelRequested) return;
 
       emit(
         state.copyWith(
@@ -143,7 +169,40 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       );
     }
 
-    emit(state.copyWith(status: CompressStatus.done));
+    stopwatch.stop();
+    emit(
+      state.copyWith(
+        status: CompressStatus.done,
+        progress: 1,
+        elapsed: stopwatch.elapsed,
+      ),
+    );
+  }
+
+  void _onProgressChanged(
+    CompressProgressChanged event,
+    Emitter<CompressState> emit,
+  ) {
+    if (state.status != CompressStatus.processing || _cancelRequested) return;
+    emit(state.copyWith(progress: event.progress, elapsed: event.elapsed));
+  }
+
+  Future<void> _onCancelled(
+    CompressCancelled event,
+    Emitter<CompressState> emit,
+  ) async {
+    if (state.status != CompressStatus.processing) return;
+    _cancelRequested = true;
+    await _videoCompressorAdapter.cancelCompression();
+    emit(
+      state.copyWith(
+        status: CompressStatus.ready,
+        results: const [],
+        processingIndex: 0,
+        progress: 0,
+        elapsed: Duration.zero,
+      ),
+    );
   }
 
   Future<void> _onResultsSaved(

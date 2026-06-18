@@ -17,6 +17,8 @@ class CompressState {
   final List<String?> thumbnailPaths;
   final List<CompressedVideo> results;
   final int processingIndex;
+  final double progress;
+  final Duration elapsed;
   final CompressionSettings settings;
   final int? savedVideoCount;
   final Object? saveError;
@@ -27,6 +29,8 @@ class CompressState {
     required this.thumbnailPaths,
     required this.results,
     required this.processingIndex,
+    required this.progress,
+    required this.elapsed,
     required this.settings,
     this.savedVideoCount,
     this.saveError,
@@ -41,6 +45,8 @@ class CompressState {
       ),
       results: const [],
       processingIndex: 0,
+      progress: 0,
+      elapsed: Duration.zero,
       settings: CompressionSettings(),
     );
   }
@@ -79,6 +85,8 @@ class CompressState {
     List<String?>? thumbnailPaths,
     List<CompressedVideo>? results,
     int? processingIndex,
+    double? progress,
+    Duration? elapsed,
     CompressionSettings? settings,
     int? savedVideoCount,
     Object? saveError,
@@ -92,6 +100,8 @@ class CompressState {
           : List.unmodifiable(thumbnailPaths),
       results: results == null ? this.results : List.unmodifiable(results),
       processingIndex: processingIndex ?? this.processingIndex,
+      progress: progress ?? this.progress,
+      elapsed: elapsed ?? this.elapsed,
       settings: settings ?? this.settings,
       savedVideoCount: clearSaveNotification
           ? savedVideoCount

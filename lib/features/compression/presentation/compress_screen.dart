@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../constants/app_icons.dart';
 import '../../../generated/l10n.dart';
 import '../../../router/app_router.gr.dart';
 import '../../../services/utils.dart';
@@ -17,6 +19,7 @@ import '../domain/picked_video.dart';
 import 'utils/compression_labels.dart';
 import 'widgets/compression_bottom_actions.dart';
 import 'widgets/compression_mode_switch.dart';
+import 'widgets/selected_videos_preview.dart';
 import 'widgets/selected_videos_summary.dart';
 import 'widgets/simple_quality_card.dart';
 
@@ -324,42 +327,145 @@ class _CompressViewState extends State<_CompressView> {
 
   List<Widget> _buildProgressUI(BuildContext context, CompressState state) {
     final strings = S.of(context);
+    final progress = state.progress.clamp(0.0, 1.0);
+    final percent = (progress * 100).round();
 
     return [
       Expanded(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              MinimoLoader(size: 72, semanticsLabel: strings.compressing),
-              const SizedBox(height: 32),
-              Text(
-                strings.compressing,
-                textAlign: TextAlign.center,
+        child: Column(
+          children: [
+            const Spacer(flex: 3),
+            SelectedVideosPreview(
+              selectedCount: state.videos.length,
+              thumbnailPaths: state.thumbnailPaths,
+              scale: 1.72,
+            ),
+            const SizedBox(height: 30),
+            _buildProgressSizeComparison(state),
+            const Spacer(flex: 2),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                '$percent%',
                 style: const TextStyle(
                   color: CompressionUiColors.dark,
-                  fontSize: 29,
+                  fontSize: 18,
                   height: 1,
                 ),
               ),
-              const SizedBox(height: 8),
-              Text(
-                strings.videoProgress(
-                  state.processingIndex + 1,
-                  state.videos.length,
+            ),
+            const SizedBox(height: 8),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(99),
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 7,
+                backgroundColor: CompressionUiColors.lightGrey,
+                color: CompressionUiColors.red,
+              ),
+            ),
+            const SizedBox(height: 13),
+            Text(
+              _remainingTimeLabel(strings, state),
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: CompressionUiColors.grey,
+                fontSize: 17,
+                height: 1,
+              ),
+            ),
+            const Spacer(flex: 4),
+            SizedBox(
+              width: double.infinity,
+              height: 47,
+              child: OutlinedButton(
+                onPressed: () =>
+                    context.read<CompressBloc>().add(const CompressCancelled()),
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: CompressionUiColors.lightGrey,
+                  foregroundColor: CompressionUiColors.dark,
+                  side: const BorderSide(color: CompressionUiColors.grey),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(13),
+                  ),
                 ),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: CompressionUiColors.grey,
-                  fontSize: 18,
+                child: Text(
+                  strings.cancel,
+                  style: const TextStyle(fontSize: 25, height: 1),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     ];
+  }
+
+  Widget _buildProgressSizeComparison(CompressState state) {
+    return SizedBox(
+      width: double.infinity,
+      child: Row(
+        children: [
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                Utils.formatSize(state.totalOriginalSize).toLowerCase(),
+                maxLines: 1,
+                style: const TextStyle(
+                  color: CompressionUiColors.dark,
+                  fontSize: 28,
+                  height: 1,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 13),
+          SizedBox(
+            width: 29,
+            height: 24,
+            child: SvgPicture.asset(AppIcons.arrowRight, width: 29, height: 24),
+          ),
+          const SizedBox(width: 13),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                Utils.formatSize(_estimatedCompressedSize(state)).toLowerCase(),
+                maxLines: 1,
+                style: const TextStyle(
+                  color: CompressionUiColors.red,
+                  fontSize: 28,
+                  height: 1,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _remainingTimeLabel(S strings, CompressState state) {
+    if (state.progress < 0.02 || state.elapsed.inSeconds < 1) {
+      return strings.estimatingTimeRemaining;
+    }
+
+    final totalMilliseconds =
+        state.elapsed.inMilliseconds / state.progress.clamp(0.01, 1);
+    final remaining = Duration(
+      milliseconds: (totalMilliseconds - state.elapsed.inMilliseconds)
+          .round()
+          .clamp(0, 86400000)
+          .toInt(),
+    );
+
+    if (remaining.inSeconds < 60) {
+      return strings.secondsRemaining(remaining.inSeconds.clamp(1, 59));
+    }
+    return strings.minutesRemaining(
+      (remaining.inSeconds / 60).ceil().clamp(1, 1440),
+    );
   }
 
   List<Widget> _buildResultUI(
