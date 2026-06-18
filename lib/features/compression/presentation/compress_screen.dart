@@ -2,16 +2,19 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../generated/l10n.dart';
 import '../../../router/app_router.gr.dart';
 import '../../../services/utils.dart';
 import '../../../theme/app_colors.dart';
 import '../../../widgets/crf_slider.dart';
+import '../../../widgets/minimo_loader.dart';
 import '../../../widgets/size_row.dart';
 import '../bloc/compress_bloc.dart';
 import '../bloc/compress_event.dart';
 import '../bloc/compress_state.dart';
 import '../domain/compression_settings.dart';
 import '../domain/picked_video.dart';
+import 'utils/compression_labels.dart';
 import 'widgets/compression_bottom_actions.dart';
 import 'widgets/compression_mode_switch.dart';
 import 'widgets/selected_videos_summary.dart';
@@ -54,7 +57,11 @@ class _StartRedirectState extends State<_StartRedirect> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    return Scaffold(
+      body: Center(
+        child: MinimoLoader(semanticsLabel: S.of(context).loadingVideos),
+      ),
+    );
   }
 }
 
@@ -82,7 +89,12 @@ class _CompressViewState extends State<_CompressView> {
 
     return BlocConsumer<CompressBloc, CompressState>(
       listener: (context, state) {
-        final message = state.saveMessage ?? state.errorMessage;
+        final strings = S.of(context);
+        final message = state.savedVideoCount != null
+            ? strings.savedVideosToGallery(state.savedVideoCount!)
+            : state.saveError != null
+            ? strings.failedToSave(state.saveError.toString())
+            : null;
         if (message == null) return;
 
         ScaffoldMessenger.of(
@@ -101,7 +113,7 @@ class _CompressViewState extends State<_CompressView> {
                   if (state.showSettings)
                     ..._buildSettingsUI(context, theme, state),
                   if (state.status == CompressStatus.processing)
-                    ..._buildProgressUI(state),
+                    ..._buildProgressUI(context, state),
                   if (state.status == CompressStatus.done)
                     ..._buildResultUI(context, theme, state),
                 ],
@@ -154,12 +166,14 @@ class _CompressViewState extends State<_CompressView> {
   }
 
   Widget _buildSimpleOptions(BuildContext context, CompressState state) {
+    final strings = S.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'quality',
-          style: TextStyle(
+        Text(
+          strings.quality,
+          style: const TextStyle(
             color: CompressionUiColors.dark,
             fontSize: 29,
             height: 1,
@@ -170,8 +184,8 @@ class _CompressViewState extends State<_CompressView> {
           selected:
               state.settings.simpleQuality == SimpleCompressionQuality.high,
           quality: SimpleCompressionQuality.high,
-          title: 'high',
-          subtitle: 'bitrate will be reduced to save space',
+          title: strings.high,
+          subtitle: strings.bitrateReducedDescription,
           onSelected: _selectSimpleQuality(context),
         ),
         const SizedBox(height: 21),
@@ -179,8 +193,8 @@ class _CompressViewState extends State<_CompressView> {
           selected:
               state.settings.simpleQuality == SimpleCompressionQuality.medium,
           quality: SimpleCompressionQuality.medium,
-          title: 'medium',
-          subtitle: 'resolution will be reduced to hd',
+          title: strings.medium,
+          subtitle: strings.resolutionReducedHdDescription,
           onSelected: _selectSimpleQuality(context),
         ),
         const SizedBox(height: 21),
@@ -188,8 +202,8 @@ class _CompressViewState extends State<_CompressView> {
           selected:
               state.settings.simpleQuality == SimpleCompressionQuality.low,
           quality: SimpleCompressionQuality.low,
-          title: 'low',
-          subtitle: 'resolution will be reduced to sd',
+          title: strings.low,
+          subtitle: strings.resolutionReducedSdDescription,
           onSelected: _selectSimpleQuality(context),
         ),
       ],
@@ -208,9 +222,11 @@ class _CompressViewState extends State<_CompressView> {
     ThemeData theme,
     CompressState state,
   ) {
+    final strings = S.of(context);
+
     return Column(
       children: [
-        _sectionHeader('Quality', theme),
+        _sectionHeader(strings.quality, theme),
         const SizedBox(height: 8),
         CrfSlider(
           value: state.settings.crf,
@@ -218,16 +234,17 @@ class _CompressViewState extends State<_CompressView> {
               context.read<CompressBloc>().add(CompressCrfChanged(value)),
         ),
         const SizedBox(height: 20),
-        _sectionHeader('Speed', theme),
+        _sectionHeader(strings.speed, theme),
         const SizedBox(height: 8),
         _buildChipRow(
           _presets,
           state.settings.preset,
+          strings,
           (value) =>
               context.read<CompressBloc>().add(CompressPresetChanged(value)),
         ),
         const SizedBox(height: 20),
-        _sectionHeader('Resolution', theme),
+        _sectionHeader(strings.resolution, theme),
         const SizedBox(height: 8),
         _buildResolutionChips(context, state),
       ],
@@ -267,6 +284,7 @@ class _CompressViewState extends State<_CompressView> {
   Widget _buildChipRow(
     List<String> items,
     String selected,
+    S strings,
     ValueChanged<String> onChanged,
   ) {
     return Row(
@@ -275,7 +293,7 @@ class _CompressViewState extends State<_CompressView> {
         return Padding(
           padding: const EdgeInsets.only(right: 8),
           child: ChoiceChip(
-            label: Text(_presetLabel(item)),
+            label: Text(CompressionLabels.preset(item, strings)),
             selected: isSelected,
             onSelected: (_) => onChanged(item),
           ),
@@ -284,29 +302,16 @@ class _CompressViewState extends State<_CompressView> {
     );
   }
 
-  String _presetLabel(String p) {
-    switch (p) {
-      case 'ultrafast':
-        return 'Ultra Fast';
-      case 'fast':
-        return 'Fast';
-      case 'medium':
-        return 'Medium';
-      case 'slow':
-        return 'Slow';
-      default:
-        return p;
-    }
-  }
-
   Widget _buildResolutionChips(BuildContext context, CompressState state) {
+    final strings = S.of(context);
+
     return Row(
       children: _resolutions.map((resolution) {
         final isSelected = state.settings.resolution == resolution;
         return Padding(
           padding: const EdgeInsets.only(right: 8),
           child: ChoiceChip(
-            label: Text(_resolutionLabel(resolution)),
+            label: Text(CompressionLabels.resolution(resolution, strings)),
             selected: isSelected,
             onSelected: (_) => context.read<CompressBloc>().add(
               CompressResolutionChanged(resolution),
@@ -317,46 +322,43 @@ class _CompressViewState extends State<_CompressView> {
     );
   }
 
-  String _resolutionLabel(String? resolution) {
-    if (resolution == null) return 'Original';
-    switch (resolution) {
-      case '1920:1080':
-        return '1080p';
-      case '1280:720':
-        return '720p';
-      case '854:480':
-        return '480p';
-      default:
-        return resolution;
-    }
-  }
+  List<Widget> _buildProgressUI(BuildContext context, CompressState state) {
+    final strings = S.of(context);
 
-  List<Widget> _buildProgressUI(CompressState state) {
     return [
-      const Spacer(),
-      const SizedBox(
-        width: 100,
-        height: 100,
-        child: CircularProgressIndicator(
-          strokeWidth: 8,
-          color: CompressionUiColors.red,
+      Expanded(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              MinimoLoader(size: 72, semanticsLabel: strings.compressing),
+              const SizedBox(height: 32),
+              Text(
+                strings.compressing,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: CompressionUiColors.dark,
+                  fontSize: 29,
+                  height: 1,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                strings.videoProgress(
+                  state.processingIndex + 1,
+                  state.videos.length,
+                ),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: CompressionUiColors.grey,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      const SizedBox(height: 32),
-      const Text(
-        'compressing...',
-        style: TextStyle(
-          color: CompressionUiColors.dark,
-          fontSize: 29,
-          height: 1,
-        ),
-      ),
-      const SizedBox(height: 8),
-      Text(
-        'video ${state.processingIndex + 1} of ${state.videos.length}',
-        style: const TextStyle(color: CompressionUiColors.grey, fontSize: 18),
-      ),
-      const Spacer(),
     ];
   }
 
@@ -365,6 +367,7 @@ class _CompressViewState extends State<_CompressView> {
     ThemeData theme,
     CompressState state,
   ) {
+    final strings = S.of(context);
     final successResults = state.successResults;
     final originalSize = state.resultsOriginalSize;
     final compressedSize = state.compressedSize;
@@ -386,8 +389,11 @@ class _CompressViewState extends State<_CompressView> {
               const SizedBox(height: 24),
               Text(
                 successResults.length == state.results.length
-                    ? 'compression complete'
-                    : '${successResults.length} of ${state.results.length} videos compressed',
+                    ? strings.compressionComplete
+                    : strings.videosCompressed(
+                        successResults.length,
+                        state.results.length,
+                      ),
                 style: const TextStyle(
                   color: CompressionUiColors.dark,
                   fontSize: 29,
@@ -407,15 +413,17 @@ class _CompressViewState extends State<_CompressView> {
               const SizedBox(height: 24),
               if (state.results.isNotEmpty) ...[
                 SizeRow(
-                  label: 'Original',
+                  label: strings.original,
                   size: originalSize,
                   color: Colors.grey,
+                  isOriginal: true,
                 ),
                 const SizedBox(height: 8),
                 SizeRow(
-                  label: 'Compressed',
+                  label: strings.compressed,
                   size: compressedSize,
                   color: Colors.red,
+                  isOriginal: false,
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -428,7 +436,7 @@ class _CompressViewState extends State<_CompressView> {
               ],
               if (state.results.length > 1) ...[
                 const SizedBox(height: 16),
-                _buildResultList(theme, state.results),
+                _buildResultList(theme, state.results, strings),
               ],
             ],
           ),
@@ -449,19 +457,23 @@ class _CompressViewState extends State<_CompressView> {
           ),
         ),
         child: Text(
-          'save ${successResults.length} video${successResults.length == 1 ? '' : 's'}',
+          strings.saveVideos(successResults.length),
           style: const TextStyle(fontSize: 25, height: 1),
         ),
       ),
       const SizedBox(height: 12),
       TextButton(
         onPressed: () => _goToStart(context),
-        child: const Text('compress other videos'),
+        child: Text(strings.compressOtherVideos),
       ),
     ];
   }
 
-  Widget _buildResultList(ThemeData theme, List<CompressedVideo> results) {
+  Widget _buildResultList(
+    ThemeData theme,
+    List<CompressedVideo> results,
+    S strings,
+  ) {
     return Column(
       children: results.map((item) {
         final compressedSize = item.result.outputSize;
@@ -490,7 +502,7 @@ class _CompressViewState extends State<_CompressView> {
               const SizedBox(width: 8),
               Text(
                 compressedSize == null
-                    ? 'Failed'
+                    ? strings.failed
                     : Utils.formatSize(compressedSize),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: CompressionUiColors.grey,

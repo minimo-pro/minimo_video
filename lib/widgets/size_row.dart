@@ -5,12 +5,14 @@ class SizeRow extends StatelessWidget {
   final String label;
   final int size;
   final MaterialColor color;
+  final bool isOriginal;
 
   const SizeRow({
     super.key,
     required this.label,
     required this.size,
     required this.color,
+    required this.isOriginal,
   });
 
   @override
@@ -25,18 +27,27 @@ class SizeRow extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            label == 'Original' ? Icons.input : Icons.output,
+            isOriginal ? Icons.input : Icons.output,
             color: color.shade400,
             size: 20,
           ),
           const SizedBox(width: 12),
-          Text(label,
-            style: TextStyle(fontSize: 16, color: color.shade600, fontWeight: FontWeight.w500),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 16,
+              color: color.shade600,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(width: 12),
           Text(
             Utils.formatSize(size),
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color.shade800),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: color.shade800,
+            ),
           ),
         ],
       ),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../constants/app_icons.dart';
 import '../../../../theme/app_colors.dart';
 
 class SelectedVideosPreview extends StatelessWidget {
@@ -79,11 +80,7 @@ class _VideoThumb extends StatelessWidget {
               width: width,
               height: height,
               color: Colors.transparent,
-              child: SvgPicture.asset(
-                'assets/icons/video.svg',
-                width: 21,
-                height: 28,
-              ),
+              child: SvgPicture.asset(AppIcons.video, width: 21, height: 28),
             )
           : Image.file(
               File(path!),

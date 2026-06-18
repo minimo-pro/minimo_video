@@ -1,59 +1,26 @@
 import 'package:flutter/material.dart';
 
-class CompressionUiColors {
-  static const dark = Color(0xFF272727);
-  static const red = Color(0xFFFC3636);
-  static const white = Color(0xFFFFFFFF);
-  static const grey = Color(0xFFA8A8A8);
-  static const lightGrey = Color(0xFFD9D9D9);
-  static const page = Color(0xFFF1F2F6);
-
-  const CompressionUiColors._();
+abstract final class LightModeColors {
+  static const background = Color(0xFFF1F2F6);
+  static const text = Color(0xFF272727);
+  static const secondaryText = Color(0xFFA8A8A8);
+  static const accent = Color(0xFFFC3636);
+  static const onAccent = Color(0xFFFFFFFF);
+  static const frameBackground = Color(0xFFD9D9D9);
+  static const frameBorder = Color(0xFFA8A8A8);
 }
 
-class AppColors extends ThemeExtension<AppColors> {
-  final Color frameBackground;
-  final Color frameBorder;
-  final Color icon;
+abstract final class DarkModeColors {
+  static const frameBackground = Color(0xFF3A3A3A);
+  static const frameBorder = Color(0xFF636363);
+  static const icon = Color(0xFFE0E0E0);
+}
 
-  const AppColors({
-    required this.frameBackground,
-    required this.frameBorder,
-    required this.icon,
-  });
-
-  static const light = AppColors(
-    frameBackground: Color(0xFFD9D9D9),
-    frameBorder: Color(0xFFA8A8A8),
-    icon: Color(0xFF272727),
-  );
-
-  static const dark = AppColors(
-    frameBackground: Color(0xFF3A3A3A),
-    frameBorder: Color(0xFF636363),
-    icon: Color(0xFFE0E0E0),
-  );
-
-  @override
-  AppColors copyWith({
-    Color? frameBackground,
-    Color? frameBorder,
-    Color? icon,
-  }) {
-    return AppColors(
-      frameBackground: frameBackground ?? this.frameBackground,
-      frameBorder: frameBorder ?? this.frameBorder,
-      icon: icon ?? this.icon,
-    );
-  }
-
-  @override
-  AppColors lerp(ThemeExtension<AppColors>? other, double t) {
-    if (other is! AppColors) return this;
-    return AppColors(
-      frameBackground: Color.lerp(frameBackground, other.frameBackground, t)!,
-      frameBorder: Color.lerp(frameBorder, other.frameBorder, t)!,
-      icon: Color.lerp(icon, other.icon, t)!,
-    );
-  }
+abstract final class CompressionUiColors {
+  static const dark = LightModeColors.text;
+  static const red = LightModeColors.accent;
+  static const white = LightModeColors.onAccent;
+  static const grey = LightModeColors.secondaryText;
+  static const lightGrey = LightModeColors.frameBackground;
+  static const page = LightModeColors.background;
 }

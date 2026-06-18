@@ -120,8 +120,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         status: CompressStatus.processing,
         results: const [],
         processingIndex: 0,
-        clearSaveMessage: true,
-        clearErrorMessage: true,
+        clearSaveNotification: true,
       ),
     );
 
@@ -160,17 +159,12 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       }
       emit(
         state.copyWith(
-          saveMessage: 'Saved ${outputPaths.length} video(s) to gallery',
-          clearErrorMessage: true,
+          savedVideoCount: outputPaths.length,
+          clearSaveNotification: true,
         ),
       );
     } catch (e) {
-      emit(
-        state.copyWith(
-          errorMessage: 'Failed to save: $e',
-          clearSaveMessage: true,
-        ),
-      );
+      emit(state.copyWith(saveError: e, clearSaveNotification: true));
     }
   }
 
@@ -178,6 +172,6 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     CompressMessagesCleared event,
     Emitter<CompressState> emit,
   ) {
-    emit(state.copyWith(clearSaveMessage: true, clearErrorMessage: true));
+    emit(state.copyWith(clearSaveNotification: true));
   }
 }

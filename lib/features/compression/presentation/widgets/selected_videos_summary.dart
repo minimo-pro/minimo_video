@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../constants/app_icons.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
 import 'selected_videos_preview.dart';
@@ -23,6 +25,8 @@ class SelectedVideosSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = S.of(context);
+
     return Column(
       children: [
         SelectedVideosPreview(
@@ -42,11 +46,7 @@ class SelectedVideosSummary extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 13),
-            SvgPicture.asset(
-              'assets/icons/arrow_rigth.svg',
-              width: 29,
-              height: 24,
-            ),
+            SvgPicture.asset(AppIcons.arrowRight, width: 29, height: 24),
             const SizedBox(width: 13),
             Text(
               Utils.formatSize(estimatedSize).toLowerCase(),
@@ -67,9 +67,9 @@ class SelectedVideosSummary extends StatelessWidget {
             height: 0.9,
           ),
         ),
-        const Text(
-          'smaller',
-          style: TextStyle(
+        Text(
+          strings.smaller,
+          style: const TextStyle(
             color: CompressionUiColors.red,
             fontSize: 19,
             height: 1.15,

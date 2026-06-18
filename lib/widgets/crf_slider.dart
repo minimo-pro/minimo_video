@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../features/compression/presentation/utils/compression_labels.dart';
+import '../generated/l10n.dart';
+
 class CrfSlider extends StatefulWidget {
   final double value;
   final ValueChanged<double> onChanged;
@@ -11,21 +14,10 @@ class CrfSlider extends StatefulWidget {
 }
 
 class _CrfSliderState extends State<CrfSlider> {
-  static const _labels = ['High', 'Good', 'Medium', 'Small'];
-  static const _values = [18.0, 23.0, 28.0, 33.0];
-
-  String get _label {
-    final idx = _values.indexOf(widget.value);
-    if (idx != -1) return _labels[idx];
-    if (widget.value < 20) return 'High';
-    if (widget.value < 25) return 'Good';
-    if (widget.value < 31) return 'Medium';
-    return 'Small';
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final strings = S.of(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -38,11 +30,17 @@ class _CrfSliderState extends State<CrfSlider> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_label,
-                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              Text(
+                CompressionLabels.quality(widget.value, strings),
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              Text('CRF ${widget.value.toInt()}',
-                style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              Text(
+                strings.crfValue(widget.value.toInt()),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
               ),
             ],
           ),
@@ -67,8 +65,18 @@ class _CrfSliderState extends State<CrfSlider> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Better', style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-              Text('Smaller', style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+              Text(
+                strings.better,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              Text(
+                strings.smaller,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
             ],
           ),
         ],

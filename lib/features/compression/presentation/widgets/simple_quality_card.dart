@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../constants/app_icons.dart';
 import '../../../../theme/app_colors.dart';
 import '../../domain/compression_settings.dart';
 
@@ -70,7 +71,7 @@ class SimpleQualityCard extends StatelessWidget {
               ),
             ),
             if (selected)
-              SvgPicture.asset('assets/icons/check.svg', width: 28, height: 23),
+              SvgPicture.asset(AppIcons.check, width: 28, height: 23),
           ],
         ),
       ),

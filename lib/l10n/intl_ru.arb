@@ -1,0 +1,85 @@
+{
+  "@@locale": "ru",
+  "appName": "minimo (видео)",
+  "todo": "В разработке",
+  "quality": "качество",
+  "speed": "скорость",
+  "resolution": "разрешение",
+  "high": "высокое",
+  "good": "хорошее",
+  "medium": "среднее",
+  "low": "низкое",
+  "small": "маленький",
+  "ultraFast": "очень быстро",
+  "fast": "быстро",
+  "slow": "медленно",
+  "original": "оригинал",
+  "compressed": "сжатое",
+  "simpleOptions": "простые настройки",
+  "advancedOptions": "расширенные настройки",
+  "bitrateReducedDescription": "битрейт будет уменьшен для экономии места",
+  "resolutionReducedHdDescription": "разрешение будет уменьшено до hd",
+  "resolutionReducedSdDescription": "разрешение будет уменьшено до sd",
+  "better": "лучше",
+  "smaller": "меньше",
+  "compress": "сжать",
+  "compressing": "сжатие...",
+  "loadingVideos": "загрузка видео...",
+  "compressionComplete": "сжатие завершено",
+  "compressOtherVideos": "сжать другие видео",
+  "failed": "ошибка",
+  "crfValue": "CRF {value}",
+  "@crfValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "videoProgress": "видео {current} из {total}",
+  "@videoProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "videosCompressed": "сжато видео: {completed} из {total}",
+  "@videosCompressed": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "saveVideos": "{count, plural, =1{сохранить 1 видео} one{сохранить {count} видео} few{сохранить {count} видео} many{сохранить {count} видео} other{сохранить {count} видео}}",
+  "@saveVideos": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "savedVideosToGallery": "{count, plural, =1{1 видео сохранено в галерею} one{{count} видео сохранено в галерею} few{{count} видео сохранено в галерею} many{{count} видео сохранено в галерею} other{{count} видео сохранено в галерею}}",
+  "@savedVideosToGallery": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "failedToSave": "не удалось сохранить: {error}",
+  "@failedToSave": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}

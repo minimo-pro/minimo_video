@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../generated/l10n.dart';
 import '../../../../theme/app_colors.dart';
 
 enum CompressionOptionsMode { simple, advanced }
@@ -16,6 +17,8 @@ class CompressionModeSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = S.of(context);
+
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -45,13 +48,13 @@ class CompressionModeSwitch extends StatelessWidget {
           Row(
             children: [
               _ModeButton(
-                label: 'simple options',
+                label: strings.simpleOptions,
                 mode: CompressionOptionsMode.simple,
                 selected: value == CompressionOptionsMode.simple,
                 onTap: onChanged,
               ),
               _ModeButton(
-                label: 'advanced options',
+                label: strings.advancedOptions,
                 mode: CompressionOptionsMode.advanced,
                 selected: value == CompressionOptionsMode.advanced,
                 onTap: onChanged,

@@ -2,10 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../constants/app_icons.dart';
 import '../features/compression/data/video_file_adapter.dart';
+import '../generated/l10n.dart';
 import '../router/app_router.gr.dart';
-import '../theme/app_colors.dart';
+import '../theme/app_theme.dart';
 import '../widgets/bottom_frame.dart';
+import '../widgets/minimo_loader.dart';
 
 @RoutePage()
 class StartPage extends StatefulWidget {
@@ -34,8 +37,8 @@ class _StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colors = theme.extension<AppColors>()!;
+    final materialTheme = Theme.of(context);
+    final theme = AppTheme.of(context);
 
     return Scaffold(
       body: Stack(
@@ -55,8 +58,8 @@ class _StartPageState extends State<StartPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'minimo (video)',
-                        style: theme.textTheme.headlineSmall?.copyWith(
+                        S.of(context).appName,
+                        style: materialTheme.textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -67,7 +70,12 @@ class _StartPageState extends State<StartPage> {
                 ),
                 Expanded(
                   child: _loading
-                      ? const Center(child: CircularProgressIndicator())
+                      ? Center(
+                          child: MinimoLoader(
+                            size: 58,
+                            semanticsLabel: S.of(context).loadingVideos,
+                          ),
+                        )
                       : Center(
                           child: GestureDetector(
                             onTap: _pickAndGo,
@@ -76,12 +84,12 @@ class _StartPageState extends State<StartPage> {
                               height: 300,
                               padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
-                                color: colors.frameBackground.withValues(
+                                color: theme.frameBackgroundColor.withValues(
                                   alpha: 0.7,
                                 ),
                                 borderRadius: BorderRadius.circular(24),
                                 border: Border.all(
-                                  color: colors.frameBorder,
+                                  color: theme.frameBorderColor,
                                   width: 2,
                                 ),
                               ),
@@ -89,11 +97,11 @@ class _StartPageState extends State<StartPage> {
                                 children: [
                                   Center(
                                     child: SvgPicture.asset(
-                                      'assets/icons/plus.svg',
+                                      AppIcons.plus,
                                       width: 56,
                                       height: 56,
-                                      colorFilter: const ColorFilter.mode(
-                                        Colors.black54,
+                                      colorFilter: ColorFilter.mode(
+                                        theme.iconColor.withValues(alpha: 0.54),
                                         BlendMode.srcIn,
                                       ),
                                     ),

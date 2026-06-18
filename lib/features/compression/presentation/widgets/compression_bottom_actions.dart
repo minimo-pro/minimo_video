@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../constants/app_icons.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../theme/app_colors.dart';
 
 class CompressionBottomActions extends StatelessWidget {
@@ -39,7 +41,7 @@ class CompressionBottomActions extends StatelessWidget {
                     splashFactory: NoSplash.splashFactory,
                   ),
               child: SvgPicture.asset(
-                'assets/icons/arrow_back.svg',
+                AppIcons.arrowBack,
                 width: 21,
                 height: 28,
               ),
@@ -64,9 +66,9 @@ class CompressionBottomActions extends StatelessWidget {
                       ),
                       splashFactory: NoSplash.splashFactory,
                     ),
-                child: const Text(
-                  'compress',
-                  style: TextStyle(fontSize: 25, height: 1),
+                child: Text(
+                  S.of(context).compress,
+                  style: const TextStyle(fontSize: 25, height: 1),
                 ),
               ),
             ),

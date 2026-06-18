@@ -18,8 +18,8 @@ class CompressState {
   final List<CompressedVideo> results;
   final int processingIndex;
   final CompressionSettings settings;
-  final String? saveMessage;
-  final String? errorMessage;
+  final int? savedVideoCount;
+  final Object? saveError;
 
   const CompressState({
     required this.status,
@@ -28,8 +28,8 @@ class CompressState {
     required this.results,
     required this.processingIndex,
     required this.settings,
-    this.saveMessage,
-    this.errorMessage,
+    this.savedVideoCount,
+    this.saveError,
   });
 
   factory CompressState.initial(List<PickedVideo> videos) {
@@ -49,11 +49,6 @@ class CompressState {
 
   int get totalOriginalSize {
     return videos.fold<int>(0, (sum, video) => sum + video.size);
-  }
-
-  String get selectionTitle {
-    if (videos.length == 1) return videos.first.name;
-    return '${videos.length} videos selected';
   }
 
   List<CompressedVideo> get successResults {
@@ -85,10 +80,9 @@ class CompressState {
     List<CompressedVideo>? results,
     int? processingIndex,
     CompressionSettings? settings,
-    String? saveMessage,
-    String? errorMessage,
-    bool clearSaveMessage = false,
-    bool clearErrorMessage = false,
+    int? savedVideoCount,
+    Object? saveError,
+    bool clearSaveNotification = false,
   }) {
     return CompressState(
       status: status ?? this.status,
@@ -99,10 +93,12 @@ class CompressState {
       results: results == null ? this.results : List.unmodifiable(results),
       processingIndex: processingIndex ?? this.processingIndex,
       settings: settings ?? this.settings,
-      saveMessage: clearSaveMessage ? null : saveMessage ?? this.saveMessage,
-      errorMessage: clearErrorMessage
-          ? null
-          : errorMessage ?? this.errorMessage,
+      savedVideoCount: clearSaveNotification
+          ? savedVideoCount
+          : savedVideoCount ?? this.savedVideoCount,
+      saveError: clearSaveNotification
+          ? saveError
+          : saveError ?? this.saveError,
     );
   }
 }

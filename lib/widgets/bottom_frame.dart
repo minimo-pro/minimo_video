@@ -2,23 +2,24 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../constants/app_icons.dart';
 import '../router/app_router.gr.dart';
-import '../theme/app_colors.dart';
+import '../theme/app_theme.dart';
 
 class BottomFrame extends StatelessWidget {
   const BottomFrame({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
+    final theme = AppTheme.of(context);
     return Center(
       child: Container(
         width: 300,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         decoration: BoxDecoration(
-          color: colors.frameBackground.withValues(alpha: 0.7),
+          color: theme.frameBackgroundColor.withValues(alpha: 0.7),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: colors.frameBorder, width: 2),
+          border: Border.all(color: theme.frameBorderColor, width: 2),
         ),
         child: SafeArea(
           top: false,
@@ -26,16 +27,16 @@ class BottomFrame extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _FrameButton(
-                icon: 'assets/icons/settings.svg',
+                icon: AppIcons.settings,
                 onTap: () => context.pushRoute(const SettingsRoute()),
               ),
               Container(
                 width: 1,
                 height: 32,
-                color: colors.frameBorder.withValues(alpha: 0.5),
+                color: theme.frameBorderColor.withValues(alpha: 0.5),
               ),
               _FrameButton(
-                icon: 'assets/icons/info.svg',
+                icon: AppIcons.info,
                 onTap: () => context.pushRoute(const InfoRoute()),
               ),
             ],
@@ -54,7 +55,7 @@ class _FrameButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
+    final theme = AppTheme.of(context);
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -69,7 +70,7 @@ class _FrameButton extends StatelessWidget {
             icon,
             width: 28,
             height: 28,
-            colorFilter: ColorFilter.mode(colors.icon, BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(theme.iconColor, BlendMode.srcIn),
           ),
         ),
       ),

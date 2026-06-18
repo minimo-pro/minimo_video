@@ -1,0 +1,85 @@
+{
+  "@@locale": "en",
+  "appName": "minimo (video)",
+  "todo": "TODO",
+  "quality": "quality",
+  "speed": "speed",
+  "resolution": "resolution",
+  "high": "high",
+  "good": "good",
+  "medium": "medium",
+  "low": "low",
+  "small": "small",
+  "ultraFast": "ultra fast",
+  "fast": "fast",
+  "slow": "slow",
+  "original": "original",
+  "compressed": "compressed",
+  "simpleOptions": "simple options",
+  "advancedOptions": "advanced options",
+  "bitrateReducedDescription": "bitrate will be reduced to save space",
+  "resolutionReducedHdDescription": "resolution will be reduced to hd",
+  "resolutionReducedSdDescription": "resolution will be reduced to sd",
+  "better": "better",
+  "smaller": "smaller",
+  "compress": "compress",
+  "compressing": "compressing...",
+  "loadingVideos": "loading videos...",
+  "compressionComplete": "compression complete",
+  "compressOtherVideos": "compress other videos",
+  "failed": "failed",
+  "crfValue": "CRF {value}",
+  "@crfValue": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "videoProgress": "video {current} of {total}",
+  "@videoProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "videosCompressed": "{completed} of {total} videos compressed",
+  "@videosCompressed": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "saveVideos": "{count, plural, =1{save 1 video} other{save {count} videos}}",
+  "@saveVideos": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "savedVideosToGallery": "{count, plural, =1{saved 1 video to gallery} other{saved {count} videos to gallery}}",
+  "@savedVideosToGallery": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "failedToSave": "failed to save: {error}",
+  "@failedToSave": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
+}
