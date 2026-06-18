@@ -7,7 +7,7 @@ import 'theme/app_theme.dart';
 
 final _appRouter = AppRouter();
 
-void main() {
+void main() { 
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MainApp());
 }

@@ -59,6 +59,91 @@ class S {
     return Intl.message('minimo (video)', name: 'appName', desc: '', args: []);
   }
 
+  /// `by khlebobul`
+  String get madeByKhlebobul {
+    return Intl.message(
+      'by khlebobul',
+      name: 'madeByKhlebobul',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `skip`
+  String get skip {
+    return Intl.message('skip', name: 'skip', desc: '', args: []);
+  }
+
+  /// `next`
+  String get next {
+    return Intl.message('next', name: 'next', desc: '', args: []);
+  }
+
+  /// `get started`
+  String get getStarted {
+    return Intl.message('get started', name: 'getStarted', desc: '', args: []);
+  }
+
+  /// `pick your videos`
+  String get onboardingPickTitle {
+    return Intl.message(
+      'pick your videos',
+      name: 'onboardingPickTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `choose one or several videos you want to make smaller.`
+  String get onboardingPickDescription {
+    return Intl.message(
+      'choose one or several videos you want to make smaller.',
+      name: 'onboardingPickDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `choose the balance`
+  String get onboardingQualityTitle {
+    return Intl.message(
+      'choose the balance',
+      name: 'onboardingQualityTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `use simple presets or fine-tune quality, speed and resolution.`
+  String get onboardingQualityDescription {
+    return Intl.message(
+      'use simple presets or fine-tune quality, speed and resolution.',
+      name: 'onboardingQualityDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `compress and save`
+  String get onboardingSaveTitle {
+    return Intl.message(
+      'compress and save',
+      name: 'onboardingSaveTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `preview the estimated size, compress, then save the result to your gallery.`
+  String get onboardingSaveDescription {
+    return Intl.message(
+      'preview the estimated size, compress, then save the result to your gallery.',
+      name: 'onboardingSaveDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `TODO`
   String get todo {
     return Intl.message('TODO', name: 'todo', desc: '', args: []);

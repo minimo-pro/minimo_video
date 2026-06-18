@@ -57,11 +57,32 @@ class MessageLookup extends MessageLookupByLibrary {
     "failed": MessageLookupByLibrary.simpleMessage("ошибка"),
     "failedToSave": m1,
     "fast": MessageLookupByLibrary.simpleMessage("быстро"),
+    "getStarted": MessageLookupByLibrary.simpleMessage("начать"),
     "good": MessageLookupByLibrary.simpleMessage("хорошее"),
     "high": MessageLookupByLibrary.simpleMessage("высокое"),
     "loadingVideos": MessageLookupByLibrary.simpleMessage("загрузка видео..."),
     "low": MessageLookupByLibrary.simpleMessage("низкое"),
+    "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("среднее"),
+    "next": MessageLookupByLibrary.simpleMessage("далее"),
+    "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
+      "выберите одно или несколько видео, размер которых хотите уменьшить.",
+    ),
+    "onboardingPickTitle": MessageLookupByLibrary.simpleMessage(
+      "выберите видео",
+    ),
+    "onboardingQualityDescription": MessageLookupByLibrary.simpleMessage(
+      "используйте готовые варианты или настройте качество, скорость и разрешение.",
+    ),
+    "onboardingQualityTitle": MessageLookupByLibrary.simpleMessage(
+      "настройте баланс",
+    ),
+    "onboardingSaveDescription": MessageLookupByLibrary.simpleMessage(
+      "оцените будущий размер, сожмите видео и сохраните результат в галерею.",
+    ),
+    "onboardingSaveTitle": MessageLookupByLibrary.simpleMessage(
+      "сожмите и сохраните",
+    ),
     "original": MessageLookupByLibrary.simpleMessage("оригинал"),
     "quality": MessageLookupByLibrary.simpleMessage("качество"),
     "resolution": MessageLookupByLibrary.simpleMessage("разрешение"),
@@ -74,6 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "saveVideos": m2,
     "savedVideosToGallery": m3,
     "simpleOptions": MessageLookupByLibrary.simpleMessage("простые настройки"),
+    "skip": MessageLookupByLibrary.simpleMessage("пропустить"),
     "slow": MessageLookupByLibrary.simpleMessage("медленно"),
     "small": MessageLookupByLibrary.simpleMessage("маленький"),
     "smaller": MessageLookupByLibrary.simpleMessage("меньше"),

@@ -56,11 +56,32 @@ class MessageLookup extends MessageLookupByLibrary {
     "failed": MessageLookupByLibrary.simpleMessage("failed"),
     "failedToSave": m1,
     "fast": MessageLookupByLibrary.simpleMessage("fast"),
+    "getStarted": MessageLookupByLibrary.simpleMessage("get started"),
     "good": MessageLookupByLibrary.simpleMessage("good"),
     "high": MessageLookupByLibrary.simpleMessage("high"),
     "loadingVideos": MessageLookupByLibrary.simpleMessage("loading videos..."),
     "low": MessageLookupByLibrary.simpleMessage("low"),
+    "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("medium"),
+    "next": MessageLookupByLibrary.simpleMessage("next"),
+    "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
+      "choose one or several videos you want to make smaller.",
+    ),
+    "onboardingPickTitle": MessageLookupByLibrary.simpleMessage(
+      "pick your videos",
+    ),
+    "onboardingQualityDescription": MessageLookupByLibrary.simpleMessage(
+      "use simple presets or fine-tune quality, speed and resolution.",
+    ),
+    "onboardingQualityTitle": MessageLookupByLibrary.simpleMessage(
+      "choose the balance",
+    ),
+    "onboardingSaveDescription": MessageLookupByLibrary.simpleMessage(
+      "preview the estimated size, compress, then save the result to your gallery.",
+    ),
+    "onboardingSaveTitle": MessageLookupByLibrary.simpleMessage(
+      "compress and save",
+    ),
     "original": MessageLookupByLibrary.simpleMessage("original"),
     "quality": MessageLookupByLibrary.simpleMessage("quality"),
     "resolution": MessageLookupByLibrary.simpleMessage("resolution"),
@@ -73,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "saveVideos": m2,
     "savedVideosToGallery": m3,
     "simpleOptions": MessageLookupByLibrary.simpleMessage("simple options"),
+    "skip": MessageLookupByLibrary.simpleMessage("skip"),
     "slow": MessageLookupByLibrary.simpleMessage("slow"),
     "small": MessageLookupByLibrary.simpleMessage("small"),
     "smaller": MessageLookupByLibrary.simpleMessage("smaller"),
