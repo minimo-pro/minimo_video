@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
 
+class CompressionUiColors {
+  static const dark = Color(0xFF272727);
+  static const red = Color(0xFFFC3636);
+  static const white = Color(0xFFFFFFFF);
+  static const grey = Color(0xFFA8A8A8);
+  static const lightGrey = Color(0xFFD9D9D9);
+  static const page = Color(0xFFF1F2F6);
+
+  const CompressionUiColors._();
+}
+
 class AppColors extends ThemeExtension<AppColors> {
   final Color frameBackground;
   final Color frameBorder;

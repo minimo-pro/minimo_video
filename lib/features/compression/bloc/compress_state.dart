@@ -14,6 +14,7 @@ class CompressedVideo {
 class CompressState {
   final CompressStatus status;
   final List<PickedVideo> videos;
+  final List<String?> thumbnailPaths;
   final List<CompressedVideo> results;
   final int processingIndex;
   final CompressionSettings settings;
@@ -23,6 +24,7 @@ class CompressState {
   const CompressState({
     required this.status,
     required this.videos,
+    required this.thumbnailPaths,
     required this.results,
     required this.processingIndex,
     required this.settings,
@@ -34,6 +36,9 @@ class CompressState {
     return CompressState(
       status: CompressStatus.ready,
       videos: List.unmodifiable(videos),
+      thumbnailPaths: List.unmodifiable(
+        List<String?>.filled(videos.length, null),
+      ),
       results: const [],
       processingIndex: 0,
       settings: CompressionSettings(),
@@ -76,6 +81,7 @@ class CompressState {
   CompressState copyWith({
     CompressStatus? status,
     List<PickedVideo>? videos,
+    List<String?>? thumbnailPaths,
     List<CompressedVideo>? results,
     int? processingIndex,
     CompressionSettings? settings,
@@ -87,6 +93,9 @@ class CompressState {
     return CompressState(
       status: status ?? this.status,
       videos: videos == null ? this.videos : List.unmodifiable(videos),
+      thumbnailPaths: thumbnailPaths == null
+          ? this.thumbnailPaths
+          : List.unmodifiable(thumbnailPaths),
       results: results == null ? this.results : List.unmodifiable(results),
       processingIndex: processingIndex ?? this.processingIndex,
       settings: settings ?? this.settings,

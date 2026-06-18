@@ -30,6 +30,15 @@ class VideoCompressorAdapter {
     );
   }
 
+  Future<String?> createThumbnail(String inputPath) async {
+    final result = await _compressor.getVideoThumbnail(
+      inputPath,
+      const VVideoThumbnailConfig.defaults(maxWidth: 220, maxHeight: 220),
+    );
+
+    return result?.thumbnailPath;
+  }
+
   VVideoCompressionConfig _buildConfig(CompressionSettings settings) {
     final (width, height) = _parseResolution(settings.resolution);
 

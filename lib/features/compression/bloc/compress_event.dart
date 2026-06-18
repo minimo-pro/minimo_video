@@ -1,5 +1,17 @@
+import '../domain/compression_settings.dart';
+
 abstract class CompressEvent {
   const CompressEvent();
+}
+
+class CompressSimpleQualityChanged extends CompressEvent {
+  final SimpleCompressionQuality quality;
+
+  const CompressSimpleQualityChanged(this.quality);
+}
+
+class CompressThumbnailsRequested extends CompressEvent {
+  const CompressThumbnailsRequested();
 }
 
 class CompressCrfChanged extends CompressEvent {

@@ -13,37 +13,34 @@ class BottomFrame extends StatelessWidget {
     final colors = Theme.of(context).extension<AppColors>()!;
     return Center(
       child: Container(
-      width: 300,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      decoration: BoxDecoration(
-        color: colors.frameBackground.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: colors.frameBorder,
-          width: 2,
+        width: 300,
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        decoration: BoxDecoration(
+          color: colors.frameBackground.withValues(alpha: 0.7),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: colors.frameBorder, width: 2),
         ),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _FrameButton(
-              icon: 'assets/icons/settings.svg',
-              onTap: () => context.pushRoute(const SettingsRoute()),
-            ),
-            Container(
-              width: 1,
-              height: 32,
-              color: colors.frameBorder.withValues(alpha: 0.5),
-            ),
-            _FrameButton(
-              icon: 'assets/icons/info.svg',
-              onTap: () => context.pushRoute(const InfoRoute()),
-            ),
-          ],
+        child: SafeArea(
+          top: false,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _FrameButton(
+                icon: 'assets/icons/settings.svg',
+                onTap: () => context.pushRoute(const SettingsRoute()),
+              ),
+              Container(
+                width: 1,
+                height: 32,
+                color: colors.frameBorder.withValues(alpha: 0.5),
+              ),
+              _FrameButton(
+                icon: 'assets/icons/info.svg',
+                onTap: () => context.pushRoute(const InfoRoute()),
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
@@ -53,10 +50,7 @@ class _FrameButton extends StatelessWidget {
   final String icon;
   final VoidCallback onTap;
 
-  const _FrameButton({
-    required this.icon,
-    required this.onTap,
-  });
+  const _FrameButton({required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +58,9 @@ class _FrameButton extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
         borderRadius: BorderRadius.circular(12),
         onTap: onTap,
         child: Padding(
@@ -72,10 +69,7 @@ class _FrameButton extends StatelessWidget {
             icon,
             width: 28,
             height: 28,
-            colorFilter: ColorFilter.mode(
-              colors.icon,
-              BlendMode.srcIn,
-            ),
+            colorFilter: ColorFilter.mode(colors.icon, BlendMode.srcIn),
           ),
         ),
       ),
