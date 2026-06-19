@@ -7,6 +7,7 @@ import '../../../../generated/l10n.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../widgets/app_action_button.dart';
+import '../../../../widgets/app_snack_bar.dart';
 import '../../bloc/compress_bloc.dart';
 import '../../bloc/compress_event.dart';
 import '../../bloc/compress_state.dart';
@@ -130,8 +131,10 @@ class CompressionResultView extends StatelessWidget {
       );
     } catch (error) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(strings.failedToShare(error.toString()))),
+      AppSnackBar.show(
+        context,
+        message: strings.failedToShare(error.toString()),
+        type: AppSnackBarType.error,
       );
     }
   }

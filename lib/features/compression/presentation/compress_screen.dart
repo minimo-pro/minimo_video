@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../generated/l10n.dart';
 import '../../../router/app_router.gr.dart';
 import '../../../theme/app_colors.dart';
+import '../../../widgets/app_snack_bar.dart';
 import '../../../widgets/minimo_loader.dart';
 import '../bloc/compress_bloc.dart';
 import '../bloc/compress_event.dart';
@@ -108,9 +109,13 @@ class _CompressView extends StatelessWidget {
         : null;
     if (message == null) return;
 
-    ScaffoldMessenger.of(
+    AppSnackBar.show(
       context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+      message: message,
+      type: state.deleteError != null || state.saveError != null
+          ? AppSnackBarType.error
+          : AppSnackBarType.success,
+    );
     context.read<CompressBloc>().add(const CompressMessagesCleared());
   }
 
