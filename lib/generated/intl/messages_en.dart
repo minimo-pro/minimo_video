@@ -24,22 +24,32 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(error) => "failed to save: ${error}";
 
-  static String m2(count) =>
-      "${Intl.plural(count, one: 'about 1 minute left', other: 'about ${count} minutes left')}";
+  static String m2(error) => "failed to share: ${error}";
 
   static String m3(count) =>
-      "${Intl.plural(count, one: 'save 1 video', other: 'save ${count} videos')}";
+      "${Intl.plural(count, one: 'about 1 minute left', other: 'about ${count} minutes left')}";
 
   static String m4(count) =>
+      "${Intl.plural(count, one: 'save 1 video', other: 'save ${count} videos')}";
+
+  static String m5(error) =>
+      "videos saved, but some originals could not be deleted: ${error}";
+
+  static String m6(saved, deleted) =>
+      "saved ${saved} video(s) and deleted ${deleted} original(s)";
+
+  static String m7(count) =>
       "${Intl.plural(count, one: 'saved 1 video to gallery', other: 'saved ${count} videos to gallery')}";
 
-  static String m5(count) =>
+  static String m8(count) =>
       "${Intl.plural(count, one: 'about 1 second left', other: 'about ${count} seconds left')}";
 
-  static String m6(current, total) => "video ${current} of ${total}";
+  static String m9(current, total) => "video ${current} of ${total}";
 
-  static String m7(completed, total) =>
+  static String m10(completed, total) =>
       "${completed} of ${total} videos compressed";
+
+  static String m11(size) => "you saved ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -59,12 +69,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "compressionComplete": MessageLookupByLibrary.simpleMessage(
       "compression complete",
     ),
+    "compressionCompleted": MessageLookupByLibrary.simpleMessage(
+      "compression completed",
+    ),
     "crfValue": m0,
+    "deleteOriginal": MessageLookupByLibrary.simpleMessage("delete original"),
     "estimatingTimeRemaining": MessageLookupByLibrary.simpleMessage(
       "estimating time remaining...",
     ),
     "failed": MessageLookupByLibrary.simpleMessage("failed"),
     "failedToSave": m1,
+    "failedToShare": m2,
     "fast": MessageLookupByLibrary.simpleMessage("fast"),
     "getStarted": MessageLookupByLibrary.simpleMessage("get started"),
     "good": MessageLookupByLibrary.simpleMessage("good"),
@@ -73,7 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "low": MessageLookupByLibrary.simpleMessage("low"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("medium"),
-    "minutesRemaining": m2,
+    "minutesRemaining": m3,
     "next": MessageLookupByLibrary.simpleMessage("next"),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "choose one or several videos you want to make smaller.",
@@ -102,9 +117,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "resolutionReducedSdDescription": MessageLookupByLibrary.simpleMessage(
       "resolution will be reduced to sd",
     ),
-    "saveVideos": m3,
-    "savedVideosToGallery": m4,
-    "secondsRemaining": m5,
+    "save": MessageLookupByLibrary.simpleMessage("save"),
+    "saveVideos": m4,
+    "savedButOriginalsNotDeleted": m5,
+    "savedVideosAndDeletedOriginals": m6,
+    "savedVideosToGallery": m7,
+    "secondsRemaining": m8,
+    "share": MessageLookupByLibrary.simpleMessage("share"),
     "simpleOptions": MessageLookupByLibrary.simpleMessage("simple options"),
     "skip": MessageLookupByLibrary.simpleMessage("skip"),
     "slow": MessageLookupByLibrary.simpleMessage("slow"),
@@ -113,7 +132,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "speed": MessageLookupByLibrary.simpleMessage("speed"),
     "todo": MessageLookupByLibrary.simpleMessage("TODO"),
     "ultraFast": MessageLookupByLibrary.simpleMessage("ultra fast"),
-    "videoProgress": m6,
-    "videosCompressed": m7,
+    "videoProgress": m9,
+    "videosCompressed": m10,
+    "youSavedSize": m11,
   };
 }

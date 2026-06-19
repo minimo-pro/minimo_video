@@ -209,21 +209,65 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     CompressResultsSaved event,
     Emitter<CompressState> emit,
   ) async {
+    if (state.isSaving) return;
     final outputPaths = state.successfulOutputPaths;
     if (outputPaths.isEmpty) return;
+
+    emit(state.copyWith(isSaving: true, clearSaveNotification: true));
 
     try {
       for (final outputPath in outputPaths) {
         await _videoFileAdapter.saveToGallery(outputPath);
       }
+
+      if (!event.deleteOriginals) {
+        emit(
+          state.copyWith(
+            savedVideoCount: outputPaths.length,
+            deletedOriginalCount: 0,
+            isSaving: false,
+            clearSaveNotification: true,
+          ),
+        );
+        return;
+      }
+
+      var deletedOriginalCount = 0;
+      try {
+        for (final item in state.successResults) {
+          final outputPath = item.result.outputPath;
+          if (outputPath == null || item.source.path == outputPath) continue;
+          final deleted = await _videoFileAdapter.deleteFile(item.source.path);
+          if (deleted) deletedOriginalCount++;
+        }
+
+        emit(
+          state.copyWith(
+            savedVideoCount: outputPaths.length,
+            deletedOriginalCount: deletedOriginalCount,
+            isSaving: false,
+            clearSaveNotification: true,
+          ),
+        );
+      } catch (error) {
+        emit(
+          state.copyWith(
+            savedVideoCount: outputPaths.length,
+            deletedOriginalCount: deletedOriginalCount,
+            deleteError: error,
+            isSaving: false,
+            clearSaveNotification: true,
+          ),
+        );
+      }
+    } catch (e) {
       emit(
         state.copyWith(
-          savedVideoCount: outputPaths.length,
+          saveError: e,
+          isSaving: false,
           clearSaveNotification: true,
         ),
       );
-    } catch (e) {
-      emit(state.copyWith(saveError: e, clearSaveNotification: true));
     }
   }
 

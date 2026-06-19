@@ -54,6 +54,45 @@
   },
   "loadingVideos": "loading videos...",
   "compressionComplete": "compression complete",
+  "compressionCompleted": "compression completed",
+  "youSavedSize": "you saved {size}",
+  "@youSavedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "share": "share",
+  "save": "save",
+  "deleteOriginal": "delete original",
+  "failedToShare": "failed to share: {error}",
+  "@failedToShare": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "savedVideosAndDeletedOriginals": "saved {saved} video(s) and deleted {deleted} original(s)",
+  "@savedVideosAndDeletedOriginals": {
+    "placeholders": {
+      "saved": {
+        "type": "int"
+      },
+      "deleted": {
+        "type": "int"
+      }
+    }
+  },
+  "savedButOriginalsNotDeleted": "videos saved, but some originals could not be deleted: {error}",
+  "@savedButOriginalsNotDeleted": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "compressOtherVideos": "compress other videos",
   "failed": "failed",
   "crfValue": "CRF {value}",

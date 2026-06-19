@@ -54,6 +54,45 @@
   },
   "loadingVideos": "загрузка видео...",
   "compressionComplete": "сжатие завершено",
+  "compressionCompleted": "сжатие завершено",
+  "youSavedSize": "экономия {size}",
+  "@youSavedSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "share": "поделиться",
+  "save": "сохранить",
+  "deleteOriginal": "удалить оригинал",
+  "failedToShare": "не удалось поделиться: {error}",
+  "@failedToShare": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "savedVideosAndDeletedOriginals": "сохранено видео: {saved}, удалено оригиналов: {deleted}",
+  "@savedVideosAndDeletedOriginals": {
+    "placeholders": {
+      "saved": {
+        "type": "int"
+      },
+      "deleted": {
+        "type": "int"
+      }
+    }
+  },
+  "savedButOriginalsNotDeleted": "видео сохранены, но некоторые оригиналы удалить не удалось: {error}",
+  "@savedButOriginalsNotDeleted": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "compressOtherVideos": "сжать другие видео",
   "failed": "ошибка",
   "crfValue": "CRF {value}",

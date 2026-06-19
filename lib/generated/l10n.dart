@@ -348,6 +348,76 @@ class S {
     );
   }
 
+  /// `compression completed`
+  String get compressionCompleted {
+    return Intl.message(
+      'compression completed',
+      name: 'compressionCompleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `you saved {size}`
+  String youSavedSize(String size) {
+    return Intl.message(
+      'you saved $size',
+      name: 'youSavedSize',
+      desc: '',
+      args: [size],
+    );
+  }
+
+  /// `share`
+  String get share {
+    return Intl.message('share', name: 'share', desc: '', args: []);
+  }
+
+  /// `save`
+  String get save {
+    return Intl.message('save', name: 'save', desc: '', args: []);
+  }
+
+  /// `delete original`
+  String get deleteOriginal {
+    return Intl.message(
+      'delete original',
+      name: 'deleteOriginal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `failed to share: {error}`
+  String failedToShare(String error) {
+    return Intl.message(
+      'failed to share: $error',
+      name: 'failedToShare',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `saved {saved} video(s) and deleted {deleted} original(s)`
+  String savedVideosAndDeletedOriginals(int saved, int deleted) {
+    return Intl.message(
+      'saved $saved video(s) and deleted $deleted original(s)',
+      name: 'savedVideosAndDeletedOriginals',
+      desc: '',
+      args: [saved, deleted],
+    );
+  }
+
+  /// `videos saved, but some originals could not be deleted: {error}`
+  String savedButOriginalsNotDeleted(String error) {
+    return Intl.message(
+      'videos saved, but some originals could not be deleted: $error',
+      name: 'savedButOriginalsNotDeleted',
+      desc: '',
+      args: [error],
+    );
+  }
+
   /// `compress other videos`
   String get compressOtherVideos {
     return Intl.message(

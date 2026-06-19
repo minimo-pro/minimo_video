@@ -20,8 +20,11 @@ class CompressState {
   final double progress;
   final Duration elapsed;
   final CompressionSettings settings;
+  final bool isSaving;
   final int? savedVideoCount;
+  final int? deletedOriginalCount;
   final Object? saveError;
+  final Object? deleteError;
 
   const CompressState({
     required this.status,
@@ -32,8 +35,11 @@ class CompressState {
     required this.progress,
     required this.elapsed,
     required this.settings,
+    required this.isSaving,
     this.savedVideoCount,
+    this.deletedOriginalCount,
     this.saveError,
+    this.deleteError,
   });
 
   factory CompressState.initial(List<PickedVideo> videos) {
@@ -48,6 +54,7 @@ class CompressState {
       progress: 0,
       elapsed: Duration.zero,
       settings: CompressionSettings(),
+      isSaving: false,
     );
   }
 
@@ -88,8 +95,11 @@ class CompressState {
     double? progress,
     Duration? elapsed,
     CompressionSettings? settings,
+    bool? isSaving,
     int? savedVideoCount,
+    int? deletedOriginalCount,
     Object? saveError,
+    Object? deleteError,
     bool clearSaveNotification = false,
   }) {
     return CompressState(
@@ -103,12 +113,19 @@ class CompressState {
       progress: progress ?? this.progress,
       elapsed: elapsed ?? this.elapsed,
       settings: settings ?? this.settings,
+      isSaving: isSaving ?? this.isSaving,
       savedVideoCount: clearSaveNotification
           ? savedVideoCount
           : savedVideoCount ?? this.savedVideoCount,
+      deletedOriginalCount: clearSaveNotification
+          ? deletedOriginalCount
+          : deletedOriginalCount ?? this.deletedOriginalCount,
       saveError: clearSaveNotification
           ? saveError
           : saveError ?? this.saveError,
+      deleteError: clearSaveNotification
+          ? deleteError
+          : deleteError ?? this.deleteError,
     );
   }
 }

@@ -51,7 +51,9 @@ class CompressCancelled extends CompressEvent {
 }
 
 class CompressResultsSaved extends CompressEvent {
-  const CompressResultsSaved();
+  final bool deleteOriginals;
+
+  const CompressResultsSaved({required this.deleteOriginals});
 }
 
 class CompressMessagesCleared extends CompressEvent {

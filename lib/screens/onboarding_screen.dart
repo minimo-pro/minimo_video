@@ -7,6 +7,7 @@ import '../generated/l10n.dart';
 import '../router/app_router.gr.dart';
 import '../services/first_launch_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_action_button.dart';
 
 @RoutePage()
 class OnboardingScreen extends StatefulWidget {
@@ -78,15 +79,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             children: [
               Align(
                 alignment: Alignment.centerRight,
-                child: TextButton(
+                child: AppActionButton(
+                  variant: AppActionButtonVariant.text,
+                  height: 44,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   onPressed: _finishing ? null : _finish,
-                  child: Text(
-                    strings.skip,
-                    style: TextStyle(
-                      color: theme.secondaryTextColor,
-                      fontSize: 17,
-                    ),
-                  ),
+                  label: strings.skip,
+                  fontSize: 17,
+                  foregroundColor: theme.secondaryTextColor,
                 ),
               ),
               Expanded(
@@ -120,22 +120,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                   ),
-                  FilledButton(
+                  AppActionButton(
+                    variant: AppActionButtonVariant.filled,
+                    width: 134,
+                    height: 50,
                     onPressed: _finishing ? null : _next,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: theme.accentColor,
-                      foregroundColor: theme.onAccentColor,
-                      minimumSize: const Size(134, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    child: Text(
-                      _currentPage == pages.length - 1
-                          ? strings.getStarted
-                          : strings.next,
-                      style: const TextStyle(fontSize: 19),
-                    ),
+                    label: _currentPage == pages.length - 1
+                        ? strings.getStarted
+                        : strings.next,
+                    fontSize: 19,
+                    backgroundColor: theme.accentColor,
+                    foregroundColor: theme.onAccentColor,
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ],
               ),

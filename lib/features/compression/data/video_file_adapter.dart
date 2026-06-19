@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:gal/gal.dart';
 
@@ -23,5 +25,12 @@ class VideoFileAdapter {
 
   Future<void> saveToGallery(String filePath) async {
     await Gal.putVideo(filePath);
+  }
+
+  Future<bool> deleteFile(String filePath) async {
+    final file = File(filePath);
+    if (!await file.exists()) return false;
+    await file.delete();
+    return true;
   }
 }

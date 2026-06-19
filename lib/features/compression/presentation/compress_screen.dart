@@ -2,15 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../constants/app_icons.dart';
 import '../../../generated/l10n.dart';
 import '../../../router/app_router.gr.dart';
 import '../../../services/utils.dart';
 import '../../../theme/app_colors.dart';
+// import '../../../widgets/animated_asset_checkbox.dart';
+import '../../../widgets/app_action_button.dart';
 import '../../../widgets/crf_slider.dart';
 import '../../../widgets/minimo_loader.dart';
-import '../../../widgets/size_row.dart';
 import '../bloc/compress_bloc.dart';
 import '../bloc/compress_event.dart';
 import '../bloc/compress_state.dart';
@@ -77,6 +79,7 @@ class _CompressView extends StatefulWidget {
 
 class _CompressViewState extends State<_CompressView> {
   CompressionOptionsMode _mode = CompressionOptionsMode.simple;
+  // bool _deleteOriginals = false;
 
   static const _presets = ['ultrafast', 'fast', 'medium', 'slow'];
   static const _resolutions = <String?>[
@@ -93,7 +96,15 @@ class _CompressViewState extends State<_CompressView> {
     return BlocConsumer<CompressBloc, CompressState>(
       listener: (context, state) {
         final strings = S.of(context);
-        final message = state.savedVideoCount != null
+        final message = state.deleteError != null
+            ? strings.savedButOriginalsNotDeleted(state.deleteError.toString())
+            : state.savedVideoCount != null &&
+                  (state.deletedOriginalCount ?? 0) > 0
+            ? strings.savedVideosAndDeletedOriginals(
+                state.savedVideoCount!,
+                state.deletedOriginalCount!,
+              )
+            : state.savedVideoCount != null
             ? strings.savedVideosToGallery(state.savedVideoCount!)
             : state.saveError != null
             ? strings.failedToSave(state.saveError.toString())
@@ -118,7 +129,7 @@ class _CompressViewState extends State<_CompressView> {
                   if (state.status == CompressStatus.processing)
                     ..._buildProgressUI(context, state),
                   if (state.status == CompressStatus.done)
-                    ..._buildResultUI(context, theme, state),
+                    ..._buildResultUI(context, state),
                 ],
               ),
             ),
@@ -375,25 +386,11 @@ class _CompressViewState extends State<_CompressView> {
               ),
             ),
             const Spacer(flex: 4),
-            SizedBox(
+            AppActionButton(
               width: double.infinity,
-              height: 47,
-              child: OutlinedButton(
-                onPressed: () =>
-                    context.read<CompressBloc>().add(const CompressCancelled()),
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: CompressionUiColors.lightGrey,
-                  foregroundColor: CompressionUiColors.dark,
-                  side: const BorderSide(color: CompressionUiColors.grey),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(13),
-                  ),
-                ),
-                child: Text(
-                  strings.cancel,
-                  style: const TextStyle(fontSize: 25, height: 1),
-                ),
-              ),
+              label: strings.cancel,
+              onPressed: () =>
+                  context.read<CompressBloc>().add(const CompressCancelled()),
             ),
           ],
         ),
@@ -468,157 +465,159 @@ class _CompressViewState extends State<_CompressView> {
     );
   }
 
-  List<Widget> _buildResultUI(
-    BuildContext context,
-    ThemeData theme,
-    CompressState state,
-  ) {
+  List<Widget> _buildResultUI(BuildContext context, CompressState state) {
     final strings = S.of(context);
     final successResults = state.successResults;
     final originalSize = state.resultsOriginalSize;
     final compressedSize = state.compressedSize;
-    final savings = originalSize > 0 && compressedSize > 0
-        ? Utils.savingsPercent(originalSize, compressedSize)
-        : '0';
+    final savedBytes = (originalSize - compressedSize).clamp(0, originalSize);
 
     return [
       Expanded(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 24),
-              const Icon(
-                Icons.check_circle,
-                size: 76,
-                color: CompressionUiColors.red,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                successResults.length == state.results.length
-                    ? strings.compressionComplete
-                    : strings.videosCompressed(
-                        successResults.length,
-                        state.results.length,
-                      ),
-                style: const TextStyle(
-                  color: CompressionUiColors.dark,
-                  fontSize: 29,
-                  height: 1,
+        child: Column(
+          children: [
+            const Spacer(flex: 2),
+            SelectedVideosPreview(
+              selectedCount: state.videos.length,
+              thumbnailPaths: state.thumbnailPaths,
+              scale: 1.72,
+            ),
+            const SizedBox(height: 34),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: CompressionUiColors.green,
+                    shape: BoxShape.circle,
+                  ),
+                  child: SizedBox.square(dimension: 12),
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                Utils.formatSize(compressedSize).toLowerCase(),
-                style: const TextStyle(
-                  color: CompressionUiColors.red,
-                  fontSize: 34,
-                  height: 1,
-                ),
-              ),
-              const SizedBox(height: 24),
-              if (state.results.isNotEmpty) ...[
-                SizeRow(
-                  label: strings.original,
-                  size: originalSize,
-                  color: Colors.grey,
-                  isOriginal: true,
-                ),
-                const SizedBox(height: 8),
-                SizeRow(
-                  label: strings.compressed,
-                  size: compressedSize,
-                  color: Colors.red,
-                  isOriginal: false,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '-$savings%',
-                  style: const TextStyle(
-                    color: CompressionUiColors.red,
-                    fontSize: 24,
+                const SizedBox(width: 9),
+                Flexible(
+                  child: Text(
+                    successResults.length == state.results.length
+                        ? strings.compressionCompleted
+                        : strings.videosCompressed(
+                            successResults.length,
+                            state.results.length,
+                          ),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: CompressionUiColors.dark,
+                      fontSize: 25,
+                      height: 1,
+                    ),
                   ),
                 ),
               ],
-              if (state.results.length > 1) ...[
-                const SizedBox(height: 16),
-                _buildResultList(theme, state.results, strings),
-              ],
-            ],
-          ),
-        ),
-      ),
-      FilledButton(
-        onPressed: successResults.isEmpty
-            ? null
-            : () => context.read<CompressBloc>().add(
-                const CompressResultsSaved(),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              strings.youSavedSize(Utils.formatSize(savedBytes).toLowerCase()),
+              style: const TextStyle(
+                color: CompressionUiColors.grey,
+                fontSize: 19,
+                height: 1,
               ),
-        style: FilledButton.styleFrom(
-          minimumSize: const Size.fromHeight(47),
-          backgroundColor: CompressionUiColors.red,
-          foregroundColor: CompressionUiColors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(13),
-          ),
+            ),
+            const SizedBox(height: 40),
+            AppActionButton(
+              width: double.infinity,
+              label: strings.share,
+              icon: AppIcons.share,
+              onPressed: successResults.isEmpty
+                  ? null
+                  : () => _shareResults(context, state),
+            ),
+            const SizedBox(height: 14),
+            AppActionButton(
+              width: double.infinity,
+              label: strings.save,
+              icon: AppIcons.save,
+              variant: AppActionButtonVariant.filled,
+              onPressed: successResults.isEmpty || state.isSaving
+                  ? null
+                  : () => context.read<CompressBloc>().add(
+                      const CompressResultsSaved(deleteOriginals: false),
+                    ),
+            ),
+            // TODO: Restore Delete Original after implementing
+            // platform-safe deletion from Photos/MediaStore with system
+            // confirmation.
+            /*
+            const SizedBox(height: 10),
+            InkWell(
+              borderRadius: BorderRadius.circular(12),
+              splashFactory: NoSplash.splashFactory,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+              onTap: () => setState(
+                () => _deleteOriginals = !_deleteOriginals,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        strings.deleteOriginal,
+                        style: const TextStyle(
+                          color: CompressionUiColors.dark,
+                          fontSize: 24,
+                          height: 1,
+                        ),
+                      ),
+                    ),
+                    IgnorePointer(
+                      child: AnimatedAssetCheckbox(
+                        value: _deleteOriginals,
+                        onChanged: (_) {},
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            */
+            const Spacer(flex: 3),
+            AppActionButton(
+              width: double.infinity,
+              label: strings.compressOtherVideos,
+              fontSize: 22,
+              onPressed: () => _goToStart(context),
+            ),
+          ],
         ),
-        child: Text(
-          strings.saveVideos(successResults.length),
-          style: const TextStyle(fontSize: 25, height: 1),
-        ),
-      ),
-      const SizedBox(height: 12),
-      TextButton(
-        onPressed: () => _goToStart(context),
-        child: Text(strings.compressOtherVideos),
       ),
     ];
   }
 
-  Widget _buildResultList(
-    ThemeData theme,
-    List<CompressedVideo> results,
-    S strings,
-  ) {
-    return Column(
-      children: results.map((item) {
-        final compressedSize = item.result.outputSize;
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Row(
-            children: [
-              Icon(
-                item.result.success
-                    ? Icons.check_circle_rounded
-                    : Icons.error_rounded,
-                size: 18,
-                color: item.result.success
-                    ? CompressionUiColors.red
-                    : theme.colorScheme.error,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  item.source.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyMedium,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                compressedSize == null
-                    ? strings.failed
-                    : Utils.formatSize(compressedSize),
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: CompressionUiColors.grey,
-                ),
-              ),
-            ],
-          ),
-        );
-      }).toList(),
-    );
+  Future<void> _shareResults(BuildContext context, CompressState state) async {
+    final strings = S.of(context);
+    final paths = state.successfulOutputPaths;
+    if (paths.isEmpty) return;
+
+    final renderBox = context.findRenderObject() as RenderBox?;
+    final origin = renderBox == null
+        ? null
+        : renderBox.localToGlobal(Offset.zero) & renderBox.size;
+
+    try {
+      await SharePlus.instance.share(
+        ShareParams(
+          files: paths.map((path) => XFile(path, mimeType: 'video/*')).toList(),
+          sharePositionOrigin: origin,
+        ),
+      );
+    } catch (error) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(strings.failedToShare(error.toString()))),
+      );
+    }
   }
 
   void _goToStart(BuildContext context) {
