@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 
 import '../../../../generated/l10n.dart';
 import '../../../../theme/app_colors.dart';
 
 enum CompressionOptionsMode { simple, advanced }
 
-class CompressionModeSwitch extends StatelessWidget {
+class CompressionModeSwitch extends StatefulWidget {
   final CompressionOptionsMode value;
   final ValueChanged<CompressionOptionsMode> onChanged;
 
@@ -14,6 +15,49 @@ class CompressionModeSwitch extends StatelessWidget {
     required this.value,
     required this.onChanged,
   });
+
+  @override
+  State<CompressionModeSwitch> createState() => _CompressionModeSwitchState();
+}
+
+class _CompressionModeSwitchState extends State<CompressionModeSwitch>
+    with SingleTickerProviderStateMixin {
+  static const _spring = SpringDescription(
+    mass: 0.55,
+    stiffness: 260,
+    damping: 19,
+  );
+
+  late final AnimationController _controller;
+
+  double get _target => widget.value == CompressionOptionsMode.simple ? 0 : 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController.unbounded(vsync: this, value: _target);
+  }
+
+  @override
+  void didUpdateWidget(covariant CompressionModeSwitch oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value == widget.value) return;
+
+    _controller.animateWith(
+      SpringSimulation(
+        _spring,
+        _controller.value,
+        _target,
+        _controller.velocity,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,42 +70,53 @@ class CompressionModeSwitch extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
       ),
       padding: const EdgeInsets.all(5),
-      child: Stack(
-        children: [
-          AnimatedAlign(
-            duration: const Duration(milliseconds: 220),
-            curve: Curves.easeOutCubic,
-            alignment: value == CompressionOptionsMode.simple
-                ? Alignment.centerLeft
-                : Alignment.centerRight,
-            child: FractionallySizedBox(
-              widthFactor: 0.5,
-              heightFactor: 1,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: CompressionUiColors.white,
-                  borderRadius: BorderRadius.circular(20),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final segmentWidth = constraints.maxWidth / 2;
+
+          return Stack(
+            children: [
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return Transform.translate(
+                    offset: Offset(segmentWidth * _controller.value, 0),
+                    child: child,
+                  );
+                },
+                child: SizedBox(
+                  width: segmentWidth,
+                  height: double.infinity,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: CompressionUiColors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: CompressionUiColors.grey.withValues(alpha: 0.45),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          Row(
-            children: [
-              _ModeButton(
-                label: strings.simpleOptions,
-                mode: CompressionOptionsMode.simple,
-                selected: value == CompressionOptionsMode.simple,
-                onTap: onChanged,
-              ),
-              _ModeButton(
-                label: strings.advancedOptions,
-                mode: CompressionOptionsMode.advanced,
-                selected: value == CompressionOptionsMode.advanced,
-                onTap: onChanged,
+              Row(
+                children: [
+                  _ModeButton(
+                    label: strings.simpleOptions,
+                    mode: CompressionOptionsMode.simple,
+                    selected: widget.value == CompressionOptionsMode.simple,
+                    onTap: widget.onChanged,
+                  ),
+                  _ModeButton(
+                    label: strings.advancedOptions,
+                    mode: CompressionOptionsMode.advanced,
+                    selected: widget.value == CompressionOptionsMode.advanced,
+                    onTap: widget.onChanged,
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -88,11 +143,11 @@ class _ModeButton extends StatelessWidget {
         onTap: () => onTap(mode),
         child: Center(
           child: AnimatedDefaultTextStyle(
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOutCubic,
+            duration: const Duration(milliseconds: 160),
+            curve: Curves.easeOut,
             style: TextStyle(
-              color: Colors.black,
-              fontSize: 14,
+              color: CompressionUiColors.dark,
+              fontSize: selected ? 14.5 : 14,
               height: 1,
               fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
             ),

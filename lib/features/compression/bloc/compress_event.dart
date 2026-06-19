@@ -32,6 +32,12 @@ class CompressResolutionChanged extends CompressEvent {
   const CompressResolutionChanged(this.resolution);
 }
 
+class CompressSettingsChanged extends CompressEvent {
+  final CompressionSettings settings;
+
+  const CompressSettingsChanged(this.settings);
+}
+
 class CompressStarted extends CompressEvent {
   const CompressStarted();
 }

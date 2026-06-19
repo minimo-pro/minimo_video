@@ -12,9 +12,14 @@ abstract final class LightModeColors {
 }
 
 abstract final class DarkModeColors {
+  static const background = Color(0xFF121212);
+  static const text = Color(0xFFE0E0E0);
+  static const secondaryText = Color(0xFFA8A8A8);
+  static const accent = LightModeColors.accent;
+  static const onAccent = LightModeColors.onAccent;
   static const frameBackground = Color(0xFF3A3A3A);
   static const frameBorder = Color(0xFF636363);
-  static const icon = Color(0xFFE0E0E0);
+  static const icon = text;
 }
 
 abstract final class CompressionUiColors {

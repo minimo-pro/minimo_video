@@ -204,6 +204,231 @@ class S {
     return Intl.message('slow', name: 'slow', desc: '', args: []);
   }
 
+  /// `very slow`
+  String get verySlow {
+    return Intl.message('very slow', name: 'verySlow', desc: '', args: []);
+  }
+
+  /// `lower CRF keeps more detail, higher CRF creates a smaller file`
+  String get qualityDescription {
+    return Intl.message(
+      'lower CRF keeps more detail, higher CRF creates a smaller file',
+      name: 'qualityDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `slower encoding usually produces a smaller file at the same quality`
+  String get speedDescription {
+    return Intl.message(
+      'slower encoding usually produces a smaller file at the same quality',
+      name: 'speedDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `reduce dimensions for the biggest size savings`
+  String get resolutionDescription {
+    return Intl.message(
+      'reduce dimensions for the biggest size savings',
+      name: 'resolutionDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `frame rate`
+  String get frameRate {
+    return Intl.message('frame rate', name: 'frameRate', desc: '', args: []);
+  }
+
+  /// `lower frame rate reduces size but can make motion less smooth`
+  String get frameRateDescription {
+    return Intl.message(
+      'lower frame rate reduces size but can make motion less smooth',
+      name: 'frameRateDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `video codec`
+  String get videoCodec {
+    return Intl.message('video codec', name: 'videoCodec', desc: '', args: []);
+  }
+
+  /// `choose compatibility or better compression`
+  String get videoCodecDescription {
+    return Intl.message(
+      'choose compatibility or better compression',
+      name: 'videoCodecDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `most compatible`
+  String get mostCompatible {
+    return Intl.message(
+      'most compatible',
+      name: 'mostCompatible',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `smaller, newer devices`
+  String get smallerNewerDevices {
+    return Intl.message(
+      'smaller, newer devices',
+      name: 'smallerNewerDevices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `audio`
+  String get audio {
+    return Intl.message('audio', name: 'audio', desc: '', args: []);
+  }
+
+  /// `stereo sounds best; mono or no audio saves more space`
+  String get audioDescription {
+    return Intl.message(
+      'stereo sounds best; mono or no audio saves more space',
+      name: 'audioDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `stereo`
+  String get stereo {
+    return Intl.message('stereo', name: 'stereo', desc: '', args: []);
+  }
+
+  /// `mono`
+  String get mono {
+    return Intl.message('mono', name: 'mono', desc: '', args: []);
+  }
+
+  /// `no audio`
+  String get noAudio {
+    return Intl.message('no audio', name: 'noAudio', desc: '', args: []);
+  }
+
+  /// `additional options`
+  String get additionalOptions {
+    return Intl.message(
+      'additional options',
+      name: 'additionalOptions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `two-pass encoding`
+  String get twoPassEncoding {
+    return Intl.message(
+      'two-pass encoding',
+      name: 'twoPassEncoding',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `better compression, but takes significantly longer`
+  String get twoPassEncodingDescription {
+    return Intl.message(
+      'better compression, but takes significantly longer',
+      name: 'twoPassEncodingDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `noise reduction`
+  String get noiseReduction {
+    return Intl.message(
+      'noise reduction',
+      name: 'noiseReduction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `smooths visual noise before encoding`
+  String get noiseReductionDescription {
+    return Intl.message(
+      'smooths visual noise before encoding',
+      name: 'noiseReductionDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `optimize for streaming`
+  String get optimizeForStreaming {
+    return Intl.message(
+      'optimize for streaming',
+      name: 'optimizeForStreaming',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `allows playback to start before the file fully downloads`
+  String get optimizeForStreamingDescription {
+    return Intl.message(
+      'allows playback to start before the file fully downloads',
+      name: 'optimizeForStreamingDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `preserve metadata`
+  String get preserveMetadata {
+    return Intl.message(
+      'preserve metadata',
+      name: 'preserveMetadata',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `keeps available creation and video information`
+  String get preserveMetadataDescription {
+    return Intl.message(
+      'keeps available creation and video information',
+      name: 'preserveMetadataDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `hardware acceleration`
+  String get hardwareAcceleration {
+    return Intl.message(
+      'hardware acceleration',
+      name: 'hardwareAcceleration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `uses the device encoder for faster processing`
+  String get hardwareAccelerationDescription {
+    return Intl.message(
+      'uses the device encoder for faster processing',
+      name: 'hardwareAccelerationDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `original`
   String get original {
     return Intl.message('original', name: 'original', desc: '', args: []);

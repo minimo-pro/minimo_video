@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:v_video_compressor/v_video_compressor.dart';
 
 import '../domain/compression_result.dart';
@@ -11,12 +15,14 @@ class VideoCompressorAdapter {
 
   Future<CompressionResult> compress(
     String inputPath,
+    String originalName,
     CompressionSettings settings, {
     void Function(double progress)? onProgress,
   }) async {
+    final outputPath = await _createOutputPath(originalName);
     final result = await _compressor.compressVideo(
       inputPath,
-      _buildConfig(settings),
+      _buildConfig(settings, outputPath),
       onProgress: onProgress,
     );
 
@@ -45,30 +51,71 @@ class VideoCompressorAdapter {
     return result?.thumbnailPath;
   }
 
-  VVideoCompressionConfig _buildConfig(CompressionSettings settings) {
+  Future<String> _createOutputPath(String originalName) async {
+    final temporaryDirectory = await getTemporaryDirectory();
+    final outputDirectory = Directory(
+      path.join(temporaryDirectory.path, 'minimo_video'),
+    );
+    await outputDirectory.create(recursive: true);
+
+    final originalBaseName = path.basenameWithoutExtension(originalName);
+    final safeBaseName = originalBaseName
+        .replaceAll(RegExp(r'[<>:"/\\|?*\x00-\x1F]'), '_')
+        .replaceAll(RegExp(r'\s+'), ' ')
+        .trim();
+    final baseName = safeBaseName.isEmpty ? 'video' : safeBaseName;
+
+    var candidate = path.join(outputDirectory.path, '${baseName}_minimo.mp4');
+    var duplicateIndex = 2;
+    while (await File(candidate).exists()) {
+      candidate = path.join(
+        outputDirectory.path,
+        '${baseName}_minimo_$duplicateIndex.mp4',
+      );
+      duplicateIndex++;
+    }
+    return candidate;
+  }
+
+  VVideoCompressionConfig _buildConfig(
+    CompressionSettings settings,
+    String outputPath,
+  ) {
     final (width, height) = _parseResolution(settings.resolution);
 
     return VVideoCompressionConfig(
       quality: _qualityForCrf(settings.crf),
+      outputPath: outputPath,
       saveToGallery: false,
-      includeAudio: true,
-      includeMetadata: true,
-      optimizeForStreaming: true,
-      copyMetadata: true,
-      useHardwareAcceleration: true,
+      includeAudio: settings.audioMode != CompressionAudioMode.remove,
+      includeMetadata: settings.preserveMetadata,
+      optimizeForStreaming: settings.optimizeForStreaming,
+      copyMetadata: settings.preserveMetadata,
+      useHardwareAcceleration: settings.hardwareAcceleration,
       useFastStart: true,
-      useTwoPassEncoding: settings.preset == 'slow',
+      useTwoPassEncoding: settings.twoPassEncoding,
       useVariableBitrate: true,
       advanced: VVideoAdvancedConfig(
         customWidth: width,
         customHeight: height,
+        frameRate: settings.frameRate,
+        videoCodec: settings.videoCodec == CompressionVideoCodec.h265
+            ? VVideoCodec.h265
+            : VVideoCodec.h264,
         audioCodec: VAudioCodec.aac,
-        audioBitrate: 128000,
+        audioBitrate: settings.audioMode == CompressionAudioMode.mono
+            ? 96000
+            : 128000,
+        audioChannels: settings.audioMode == CompressionAudioMode.mono ? 1 : 2,
+        removeAudio: settings.audioMode == CompressionAudioMode.remove,
+        monoAudio: settings.audioMode == CompressionAudioMode.mono,
         encodingSpeed: _encodingSpeedForPreset(settings.preset),
         crf: settings.crf.toInt(),
-        hardwareAcceleration: true,
-        twoPassEncoding: settings.preset == 'slow',
+        hardwareAcceleration: settings.hardwareAcceleration,
+        twoPassEncoding: settings.twoPassEncoding,
         variableBitrate: true,
+        noiseReduction: settings.noiseReduction,
+        autoCorrectOrientation: true,
         dimensionHandling: VDimensionHandling.autoAlign,
       ),
     );
@@ -89,6 +136,8 @@ class VideoCompressorAdapter {
         return VEncodingSpeed.medium;
       case 'slow':
         return VEncodingSpeed.slow;
+      case 'veryslow':
+        return VEncodingSpeed.veryslow;
       case 'fast':
       default:
         return VEncodingSpeed.fast;

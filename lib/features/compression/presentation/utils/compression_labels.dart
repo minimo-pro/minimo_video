@@ -7,6 +7,7 @@ abstract final class CompressionLabels {
       'fast' => strings.fast,
       'medium' => strings.medium,
       'slow' => strings.slow,
+      'veryslow' => strings.verySlow,
       _ => preset,
     };
   }
@@ -17,6 +18,7 @@ abstract final class CompressionLabels {
       '1920:1080' => '1080p',
       '1280:720' => '720p',
       '854:480' => '480p',
+      '640:360' => '360p',
       _ => resolution,
     };
   }

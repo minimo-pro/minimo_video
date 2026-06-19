@@ -26,6 +26,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     on<CompressCrfChanged>(_onCrfChanged);
     on<CompressPresetChanged>(_onPresetChanged);
     on<CompressResolutionChanged>(_onResolutionChanged);
+    on<CompressSettingsChanged>(_onSettingsChanged);
     on<CompressStarted>(_onStarted);
     on<CompressProgressChanged>(_onProgressChanged);
     on<CompressCancelled>(_onCancelled);
@@ -58,7 +59,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       case SimpleCompressionQuality.high:
         emit(
           state.copyWith(
-            settings: state.settings.copyWith(
+            settings: const CompressionSettings(
               crf: 22,
               preset: 'fast',
               resolution: null,
@@ -68,7 +69,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       case SimpleCompressionQuality.medium:
         emit(
           state.copyWith(
-            settings: state.settings.copyWith(
+            settings: const CompressionSettings(
               crf: 28,
               preset: 'fast',
               resolution: '1280:720',
@@ -78,7 +79,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       case SimpleCompressionQuality.low:
         emit(
           state.copyWith(
-            settings: state.settings.copyWith(
+            settings: const CompressionSettings(
               crf: 34,
               preset: 'fast',
               resolution: '854:480',
@@ -112,6 +113,13 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     );
   }
 
+  void _onSettingsChanged(
+    CompressSettingsChanged event,
+    Emitter<CompressState> emit,
+  ) {
+    emit(state.copyWith(settings: event.settings));
+  }
+
   Future<void> _onStarted(
     CompressStarted event,
     Emitter<CompressState> emit,
@@ -140,6 +148,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       try {
         result = await _videoCompressorAdapter.compress(
           video.path,
+          video.name,
           state.settings,
           onProgress: (videoProgress) {
             if (_cancelRequested) return;

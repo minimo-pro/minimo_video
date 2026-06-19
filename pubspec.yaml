@@ -24,6 +24,8 @@ dependencies:
   auto_route_generator: ^10.5.0
   build_runner: ^2.15.0
   intl_utils: ^2.8.11
+  path_provider: ^2.1.5
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

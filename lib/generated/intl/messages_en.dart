@@ -53,8 +53,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "additionalOptions": MessageLookupByLibrary.simpleMessage(
+      "additional options",
+    ),
     "advancedOptions": MessageLookupByLibrary.simpleMessage("advanced options"),
     "appName": MessageLookupByLibrary.simpleMessage("minimo (video)"),
+    "audio": MessageLookupByLibrary.simpleMessage("audio"),
+    "audioDescription": MessageLookupByLibrary.simpleMessage(
+      "stereo sounds best; mono or no audio saves more space",
+    ),
     "better": MessageLookupByLibrary.simpleMessage("better"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "bitrate will be reduced to save space",
@@ -81,15 +88,32 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToSave": m1,
     "failedToShare": m2,
     "fast": MessageLookupByLibrary.simpleMessage("fast"),
+    "frameRate": MessageLookupByLibrary.simpleMessage("frame rate"),
+    "frameRateDescription": MessageLookupByLibrary.simpleMessage(
+      "lower frame rate reduces size but can make motion less smooth",
+    ),
     "getStarted": MessageLookupByLibrary.simpleMessage("get started"),
     "good": MessageLookupByLibrary.simpleMessage("good"),
+    "hardwareAcceleration": MessageLookupByLibrary.simpleMessage(
+      "hardware acceleration",
+    ),
+    "hardwareAccelerationDescription": MessageLookupByLibrary.simpleMessage(
+      "uses the device encoder for faster processing",
+    ),
     "high": MessageLookupByLibrary.simpleMessage("high"),
     "loadingVideos": MessageLookupByLibrary.simpleMessage("loading videos..."),
     "low": MessageLookupByLibrary.simpleMessage("low"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("medium"),
     "minutesRemaining": m3,
+    "mono": MessageLookupByLibrary.simpleMessage("mono"),
+    "mostCompatible": MessageLookupByLibrary.simpleMessage("most compatible"),
     "next": MessageLookupByLibrary.simpleMessage("next"),
+    "noAudio": MessageLookupByLibrary.simpleMessage("no audio"),
+    "noiseReduction": MessageLookupByLibrary.simpleMessage("noise reduction"),
+    "noiseReductionDescription": MessageLookupByLibrary.simpleMessage(
+      "smooths visual noise before encoding",
+    ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "choose one or several videos you want to make smaller.",
     ),
@@ -108,9 +132,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingSaveTitle": MessageLookupByLibrary.simpleMessage(
       "compress and save",
     ),
+    "optimizeForStreaming": MessageLookupByLibrary.simpleMessage(
+      "optimize for streaming",
+    ),
+    "optimizeForStreamingDescription": MessageLookupByLibrary.simpleMessage(
+      "allows playback to start before the file fully downloads",
+    ),
     "original": MessageLookupByLibrary.simpleMessage("original"),
+    "preserveMetadata": MessageLookupByLibrary.simpleMessage(
+      "preserve metadata",
+    ),
+    "preserveMetadataDescription": MessageLookupByLibrary.simpleMessage(
+      "keeps available creation and video information",
+    ),
     "quality": MessageLookupByLibrary.simpleMessage("quality"),
+    "qualityDescription": MessageLookupByLibrary.simpleMessage(
+      "lower CRF keeps more detail, higher CRF creates a smaller file",
+    ),
     "resolution": MessageLookupByLibrary.simpleMessage("resolution"),
+    "resolutionDescription": MessageLookupByLibrary.simpleMessage(
+      "reduce dimensions for the biggest size savings",
+    ),
     "resolutionReducedHdDescription": MessageLookupByLibrary.simpleMessage(
       "resolution will be reduced to hd",
     ),
@@ -129,9 +171,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "slow": MessageLookupByLibrary.simpleMessage("slow"),
     "small": MessageLookupByLibrary.simpleMessage("small"),
     "smaller": MessageLookupByLibrary.simpleMessage("smaller"),
+    "smallerNewerDevices": MessageLookupByLibrary.simpleMessage(
+      "smaller, newer devices",
+    ),
     "speed": MessageLookupByLibrary.simpleMessage("speed"),
+    "speedDescription": MessageLookupByLibrary.simpleMessage(
+      "slower encoding usually produces a smaller file at the same quality",
+    ),
+    "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "todo": MessageLookupByLibrary.simpleMessage("TODO"),
+    "twoPassEncoding": MessageLookupByLibrary.simpleMessage(
+      "two-pass encoding",
+    ),
+    "twoPassEncodingDescription": MessageLookupByLibrary.simpleMessage(
+      "better compression, but takes significantly longer",
+    ),
     "ultraFast": MessageLookupByLibrary.simpleMessage("ultra fast"),
+    "verySlow": MessageLookupByLibrary.simpleMessage("very slow"),
+    "videoCodec": MessageLookupByLibrary.simpleMessage("video codec"),
+    "videoCodecDescription": MessageLookupByLibrary.simpleMessage(
+      "choose compatibility or better compression",
+    ),
     "videoProgress": m9,
     "videosCompressed": m10,
     "youSavedSize": m11,
