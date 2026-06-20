@@ -1,13 +1,18 @@
 abstract final class AppIcons {
   static const arrowBack = 'assets/icons/arrow_back.svg';
-  static const arrowRight = 'assets/icons/arrow_rigth.svg';
+  static const arrowForward = 'assets/icons/arrow_forward.svg';
   static const check = 'assets/icons/check.svg';
   static const checkboxEmpty = 'assets/icons/checkbox_empty.svg';
   static const checkboxFull = 'assets/icons/checkbox_full.svg';
+  static const close = 'assets/icons/close.svg';
   static const info = 'assets/icons/info.svg';
   static const plus = 'assets/icons/plus.svg';
-  static const save = 'assets/icons/save.svg';
+  static const download = 'assets/icons/download.svg';
   static const settings = 'assets/icons/settings.svg';
   static const share = 'assets/icons/share.svg';
   static const video = 'assets/icons/video.svg';
+  static const x = 'assets/icons/x.svg';
+  static const website = 'assets/icons/website.svg';
+  static const mail = 'assets/icons/mail.svg';
+  static const code = 'assets/icons/code.svg';
 }

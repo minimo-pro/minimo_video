@@ -134,7 +134,7 @@ class _ProgressSizeComparison extends StatelessWidget {
           SizedBox(
             width: 29,
             height: 24,
-            child: SvgPicture.asset(AppIcons.arrowRight, width: 29, height: 24),
+            child: SvgPicture.asset(AppIcons.arrowForward, width: 29, height: 24),
           ),
           const SizedBox(width: 13),
           Expanded(

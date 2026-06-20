@@ -58,7 +58,7 @@ class SelectedVideosSummary extends StatelessWidget {
                 width: 29,
                 height: 24,
                 child: SvgPicture.asset(
-                  AppIcons.arrowRight,
+                  AppIcons.arrowForward,
                   width: 29,
                   height: 24,
                 ),

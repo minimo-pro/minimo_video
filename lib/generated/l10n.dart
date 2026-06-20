@@ -149,6 +149,101 @@ class S {
     return Intl.message('TODO', name: 'todo', desc: '', args: []);
   }
 
+  /// `about`
+  String get about {
+    return Intl.message('about', name: 'about', desc: '', args: []);
+  }
+
+  /// `minimo (video) was born from a simple frustration. i love sports and often watch short match clips shared by clubs and telegram channels. even a few seconds of video can take up far more space than they should.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.`
+  String get aboutStory {
+    return Intl.message(
+      'minimo (video) was born from a simple frustration. i love sports and often watch short match clips shared by clubs and telegram channels. even a few seconds of video can take up far more space than they should.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.',
+      name: 'aboutStory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `minimo (video) is open source. explore the code, follow the project or get in touch.`
+  String get openSourceNote {
+    return Intl.message(
+      'minimo (video) is open source. explore the code, follow the project or get in touch.',
+      name: 'openSourceNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `rate the app`
+  String get rateTheApp {
+    return Intl.message('rate the app', name: 'rateTheApp', desc: '', args: []);
+  }
+
+  /// `share with friends`
+  String get shareWithFriends {
+    return Intl.message(
+      'share with friends',
+      name: 'shareWithFriends',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `project website`
+  String get projectWebsite {
+    return Intl.message(
+      'project website',
+      name: 'projectWebsite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `telegram`
+  String get telegram {
+    return Intl.message('telegram', name: 'telegram', desc: '', args: []);
+  }
+
+  /// `github repository`
+  String get githubRepository {
+    return Intl.message(
+      'github repository',
+      name: 'githubRepository',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `x (twitter)`
+  String get xTwitter {
+    return Intl.message('x (twitter)', name: 'xTwitter', desc: '', args: []);
+  }
+
+  /// `my website`
+  String get myWebsite {
+    return Intl.message('my website', name: 'myWebsite', desc: '', args: []);
+  }
+
+  /// `my other apps`
+  String get myOtherApps {
+    return Intl.message(
+      'my other apps',
+      name: 'myOtherApps',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `email copied`
+  String get emailCopied {
+    return Intl.message(
+      'email copied',
+      name: 'emailCopied',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `quality`
   String get quality {
     return Intl.message('quality', name: 'quality', desc: '', args: []);

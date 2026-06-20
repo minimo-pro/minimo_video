@@ -71,7 +71,15 @@ class SimpleQualityCard extends StatelessWidget {
               ),
             ),
             if (selected)
-              SvgPicture.asset(AppIcons.check, width: 28, height: 23),
+              SvgPicture.asset(
+                AppIcons.check,
+                colorFilter: ColorFilter.mode(
+                  CompressionUiColors.white,
+                  BlendMode.srcIn,
+                ),
+                width: 28,
+                height: 23,
+              ),
           ],
         ),
       ),

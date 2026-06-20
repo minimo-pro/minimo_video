@@ -91,7 +91,7 @@ class CompressionResultView extends StatelessWidget {
         AppActionButton(
           width: double.infinity,
           label: strings.save,
-          icon: AppIcons.save,
+          icon: AppIcons.download,
           variant: AppActionButtonVariant.filled,
           onPressed: successResults.isEmpty || state.isSaving
               ? null

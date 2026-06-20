@@ -8,7 +8,7 @@ import '../theme/app_colors.dart';
 
 class CrfSlider extends StatelessWidget {
   static const min = 18.0;
-  static const max = 33.0;
+  static const max = 34.0;
 
   final double value;
   final ValueChanged<double> onChanged;
@@ -69,6 +69,11 @@ class CrfSlider extends StatelessWidget {
             child: ExcludeSemantics(
               child: LayoutBuilder(
                 builder: (context, constraints) {
+                  final progress = ((value - min) / (max - min)).clamp(
+                    0.0,
+                    1.0,
+                  );
+
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTapDown: (details) {
@@ -87,10 +92,7 @@ class CrfSlider extends StatelessWidget {
                       width: double.infinity,
                       height: 42,
                       child: TweenAnimationBuilder<double>(
-                        tween: Tween(
-                          begin: (value - min) / (max - min),
-                          end: (value - min) / (max - min),
-                        ),
+                        tween: Tween(begin: progress, end: progress),
                         duration: const Duration(milliseconds: 220),
                         curve: Curves.easeOutCubic,
                         builder: (context, progress, child) {

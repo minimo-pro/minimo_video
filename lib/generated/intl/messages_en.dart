@@ -53,6 +53,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "about": MessageLookupByLibrary.simpleMessage("about"),
+    "aboutStory": MessageLookupByLibrary.simpleMessage(
+      "minimo (video) was born from a simple frustration. i love sports and often watch short match clips shared by clubs and telegram channels. even a few seconds of video can take up far more space than they should.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.",
+    ),
     "additionalOptions": MessageLookupByLibrary.simpleMessage(
       "additional options",
     ),
@@ -81,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "crfValue": m0,
     "deleteOriginal": MessageLookupByLibrary.simpleMessage("delete original"),
+    "emailCopied": MessageLookupByLibrary.simpleMessage("email copied"),
     "estimatingTimeRemaining": MessageLookupByLibrary.simpleMessage(
       "estimating time remaining...",
     ),
@@ -93,6 +98,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "lower frame rate reduces size but can make motion less smooth",
     ),
     "getStarted": MessageLookupByLibrary.simpleMessage("get started"),
+    "githubRepository": MessageLookupByLibrary.simpleMessage(
+      "github repository",
+    ),
     "good": MessageLookupByLibrary.simpleMessage("good"),
     "hardwareAcceleration": MessageLookupByLibrary.simpleMessage(
       "hardware acceleration",
@@ -108,6 +116,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "minutesRemaining": m3,
     "mono": MessageLookupByLibrary.simpleMessage("mono"),
     "mostCompatible": MessageLookupByLibrary.simpleMessage("most compatible"),
+    "myOtherApps": MessageLookupByLibrary.simpleMessage("my other apps"),
+    "myWebsite": MessageLookupByLibrary.simpleMessage("my website"),
     "next": MessageLookupByLibrary.simpleMessage("next"),
     "noAudio": MessageLookupByLibrary.simpleMessage("no audio"),
     "noiseReduction": MessageLookupByLibrary.simpleMessage("noise reduction"),
@@ -132,6 +142,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingSaveTitle": MessageLookupByLibrary.simpleMessage(
       "compress and save",
     ),
+    "openSourceNote": MessageLookupByLibrary.simpleMessage(
+      "minimo (video) is open source. explore the code, follow the project or get in touch.",
+    ),
     "optimizeForStreaming": MessageLookupByLibrary.simpleMessage(
       "optimize for streaming",
     ),
@@ -145,10 +158,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "preserveMetadataDescription": MessageLookupByLibrary.simpleMessage(
       "keeps available creation and video information",
     ),
+    "projectWebsite": MessageLookupByLibrary.simpleMessage("project website"),
     "quality": MessageLookupByLibrary.simpleMessage("quality"),
     "qualityDescription": MessageLookupByLibrary.simpleMessage(
       "lower CRF keeps more detail, higher CRF creates a smaller file",
     ),
+    "rateTheApp": MessageLookupByLibrary.simpleMessage("rate the app"),
     "resolution": MessageLookupByLibrary.simpleMessage("resolution"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "reduce dimensions for the biggest size savings",
@@ -166,6 +181,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "savedVideosToGallery": m7,
     "secondsRemaining": m8,
     "share": MessageLookupByLibrary.simpleMessage("share"),
+    "shareWithFriends": MessageLookupByLibrary.simpleMessage(
+      "share with friends",
+    ),
     "simpleOptions": MessageLookupByLibrary.simpleMessage("simple options"),
     "skip": MessageLookupByLibrary.simpleMessage("skip"),
     "slow": MessageLookupByLibrary.simpleMessage("slow"),
@@ -179,6 +197,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "slower encoding usually produces a smaller file at the same quality",
     ),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
+    "telegram": MessageLookupByLibrary.simpleMessage("telegram"),
     "todo": MessageLookupByLibrary.simpleMessage("TODO"),
     "twoPassEncoding": MessageLookupByLibrary.simpleMessage(
       "two-pass encoding",
@@ -194,6 +213,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "videoProgress": m9,
     "videosCompressed": m10,
+    "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
     "youSavedSize": m11,
   };
 }

@@ -53,6 +53,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "about": MessageLookupByLibrary.simpleMessage("о приложении"),
+    "aboutStory": MessageLookupByLibrary.simpleMessage(
+      "minimo (видео) появился из простой проблемы. я люблю спорт и часто смотрю короткие фрагменты матчей, которыми делятся клубы и telegram-каналы. даже несколько секунд видео иногда занимают неоправданно много места.\n\nэтот проект даёт каждому удобную и бесплатную возможность сжимать видео прямо на мобильном устройстве, экономить память и сохранять важные моменты.",
+    ),
     "additionalOptions": MessageLookupByLibrary.simpleMessage(
       "дополнительные настройки",
     ),
@@ -83,6 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "crfValue": m0,
     "deleteOriginal": MessageLookupByLibrary.simpleMessage("удалить оригинал"),
+    "emailCopied": MessageLookupByLibrary.simpleMessage("почта скопирована"),
     "estimatingTimeRemaining": MessageLookupByLibrary.simpleMessage(
       "оцениваем оставшееся время...",
     ),
@@ -95,6 +100,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "меньшая частота уменьшает размер, но движение может стать менее плавным",
     ),
     "getStarted": MessageLookupByLibrary.simpleMessage("начать"),
+    "githubRepository": MessageLookupByLibrary.simpleMessage(
+      "репозиторий github",
+    ),
     "good": MessageLookupByLibrary.simpleMessage("хорошее"),
     "hardwareAcceleration": MessageLookupByLibrary.simpleMessage(
       "аппаратное ускорение",
@@ -112,6 +120,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "mostCompatible": MessageLookupByLibrary.simpleMessage(
       "максимальная совместимость",
     ),
+    "myOtherApps": MessageLookupByLibrary.simpleMessage(
+      "другие мои приложения",
+    ),
+    "myWebsite": MessageLookupByLibrary.simpleMessage("мой сайт"),
     "next": MessageLookupByLibrary.simpleMessage("далее"),
     "noAudio": MessageLookupByLibrary.simpleMessage("без звука"),
     "noiseReduction": MessageLookupByLibrary.simpleMessage("шумоподавление"),
@@ -136,6 +148,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "onboardingSaveTitle": MessageLookupByLibrary.simpleMessage(
       "сожмите и сохраните",
     ),
+    "openSourceNote": MessageLookupByLibrary.simpleMessage(
+      "minimo (видео) — проект с открытым исходным кодом. посмотрите код, следите за проектом или свяжитесь со мной.",
+    ),
     "optimizeForStreaming": MessageLookupByLibrary.simpleMessage(
       "оптимизация для стриминга",
     ),
@@ -149,10 +164,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "preserveMetadataDescription": MessageLookupByLibrary.simpleMessage(
       "сохраняет доступные сведения о создании и видео",
     ),
+    "projectWebsite": MessageLookupByLibrary.simpleMessage("сайт проекта"),
     "quality": MessageLookupByLibrary.simpleMessage("качество"),
     "qualityDescription": MessageLookupByLibrary.simpleMessage(
       "низкий CRF сохраняет больше деталей, высокий создаёт меньший файл",
     ),
+    "rateTheApp": MessageLookupByLibrary.simpleMessage("оценить приложение"),
     "resolution": MessageLookupByLibrary.simpleMessage("разрешение"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "уменьшение разрешения сильнее всего сокращает размер",
@@ -170,6 +187,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "savedVideosToGallery": m7,
     "secondsRemaining": m8,
     "share": MessageLookupByLibrary.simpleMessage("поделиться"),
+    "shareWithFriends": MessageLookupByLibrary.simpleMessage(
+      "поделиться с друзьями",
+    ),
     "simpleOptions": MessageLookupByLibrary.simpleMessage("простые настройки"),
     "skip": MessageLookupByLibrary.simpleMessage("пропустить"),
     "slow": MessageLookupByLibrary.simpleMessage("медленно"),
@@ -183,6 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "медленное кодирование обычно создаёт меньший файл при том же качестве",
     ),
     "stereo": MessageLookupByLibrary.simpleMessage("стерео"),
+    "telegram": MessageLookupByLibrary.simpleMessage("telegram"),
     "todo": MessageLookupByLibrary.simpleMessage("В разработке"),
     "twoPassEncoding": MessageLookupByLibrary.simpleMessage(
       "двухпроходное кодирование",
@@ -198,6 +219,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "videoProgress": m9,
     "videosCompressed": m10,
+    "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
     "youSavedSize": m11,
   };
 }
