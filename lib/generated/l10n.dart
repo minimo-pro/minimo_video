@@ -678,6 +678,51 @@ class S {
     );
   }
 
+  /// `compression failed`
+  String get compressionFailed {
+    return Intl.message(
+      'compression failed',
+      name: 'compressionFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `we couldn't compress this video. try again or choose another one.`
+  String get compressionFailedDescription {
+    return Intl.message(
+      'we couldn\'t compress this video. try again or choose another one.',
+      name: 'compressionFailedDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `already optimized`
+  String get alreadyOptimized {
+    return Intl.message(
+      'already optimized',
+      name: 'alreadyOptimized',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `this video is already small. try lower quality or choose another one.`
+  String get alreadyOptimizedDescription {
+    return Intl.message(
+      'this video is already small. try lower quality or choose another one.',
+      name: 'alreadyOptimizedDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `try again`
+  String get tryAgain {
+    return Intl.message('try again', name: 'tryAgain', desc: '', args: []);
+  }
+
   /// `you saved {size}`
   String youSavedSize(String size) {
     return Intl.message(

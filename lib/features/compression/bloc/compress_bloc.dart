@@ -137,6 +137,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         progress: 0,
         elapsed: Duration.zero,
         clearSaveNotification: true,
+        clearCompressionError: true,
       ),
     );
 
@@ -161,9 +162,10 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
             );
           },
         );
-      } catch (_) {
+      } catch (error) {
         if (_cancelRequested) return;
-        rethrow;
+        result = const CompressionResult(success: false);
+        emit(state.copyWith(compressionError: error));
       }
 
       if (_cancelRequested) return;
@@ -210,6 +212,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         processingIndex: 0,
         progress: 0,
         elapsed: Duration.zero,
+        clearCompressionError: true,
       ),
     );
   }

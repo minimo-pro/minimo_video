@@ -93,6 +93,11 @@
   "loadingVideos": "loading videos...",
   "compressionComplete": "compression complete",
   "compressionCompleted": "compression completed",
+  "compressionFailed": "compression failed",
+  "compressionFailedDescription": "we couldn't compress this video. try again or choose another one.",
+  "alreadyOptimized": "already optimized",
+  "alreadyOptimizedDescription": "this video is already small. try lower quality or choose another one.",
+  "tryAgain": "try again",
   "youSavedSize": "you saved {size}",
   "@youSavedSize": {
     "placeholders": {

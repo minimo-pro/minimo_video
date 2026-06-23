@@ -15,11 +15,13 @@ import 'selected_videos_preview.dart';
 
 class CompressionResultView extends StatelessWidget {
   final CompressState state;
+  final VoidCallback onTryAgain;
   final VoidCallback onCompressOtherVideos;
 
   const CompressionResultView({
     super.key,
     required this.state,
+    required this.onTryAgain,
     required this.onCompressOtherVideos,
   });
 
@@ -27,6 +29,8 @@ class CompressionResultView extends StatelessWidget {
   Widget build(BuildContext context) {
     final strings = S.of(context);
     final successResults = state.successResults;
+    final allFailed = successResults.isEmpty;
+    final alreadyOptimized = allFailed && state.compressionError == null;
     final originalSize = state.resultsOriginalSize;
     final compressedSize = state.compressedSize;
     final savedBytes = (originalSize - compressedSize).clamp(0, originalSize);
@@ -43,17 +47,23 @@ class CompressionResultView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const DecoratedBox(
+            DecoratedBox(
               decoration: BoxDecoration(
-                color: CompressionUiColors.green,
+                color: allFailed
+                    ? CompressionUiColors.red
+                    : CompressionUiColors.green,
                 shape: BoxShape.circle,
               ),
-              child: SizedBox.square(dimension: 12),
+              child: const SizedBox.square(dimension: 12),
             ),
             const SizedBox(width: 9),
             Flexible(
               child: Text(
-                successResults.length == state.results.length
+                allFailed
+                    ? alreadyOptimized
+                          ? strings.alreadyOptimized
+                          : strings.compressionFailed
+                    : successResults.length == state.results.length
                     ? strings.compressionCompleted
                     : strings.videosCompressed(
                         successResults.length,
@@ -71,7 +81,14 @@ class CompressionResultView extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          strings.youSavedSize(Utils.formatSize(savedBytes).toLowerCase()),
+          allFailed
+              ? alreadyOptimized
+                    ? strings.alreadyOptimizedDescription
+                    : strings.compressionFailedDescription
+              : strings.youSavedSize(
+                  Utils.formatSize(savedBytes).toLowerCase(),
+                ),
+          textAlign: TextAlign.center,
           style: const TextStyle(
             color: CompressionUiColors.grey,
             fontSize: 19,
@@ -79,26 +96,33 @@ class CompressionResultView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 40),
-        AppActionButton(
-          width: double.infinity,
-          label: strings.share,
-          icon: AppIcons.share,
-          onPressed: successResults.isEmpty
-              ? null
-              : () => _shareResults(context),
-        ),
-        const SizedBox(height: 14),
-        AppActionButton(
-          width: double.infinity,
-          label: strings.save,
-          icon: AppIcons.download,
-          variant: AppActionButtonVariant.filled,
-          onPressed: successResults.isEmpty || state.isSaving
-              ? null
-              : () => context.read<CompressBloc>().add(
-                  const CompressResultsSaved(deleteOriginals: false),
-                ),
-        ),
+        if (allFailed && !alreadyOptimized)
+          AppActionButton(
+            width: double.infinity,
+            label: strings.tryAgain,
+            variant: AppActionButtonVariant.filled,
+            onPressed: onTryAgain,
+          )
+        else ...[
+          AppActionButton(
+            width: double.infinity,
+            label: strings.share,
+            icon: AppIcons.share,
+            onPressed: () => _shareResults(context),
+          ),
+          const SizedBox(height: 14),
+          AppActionButton(
+            width: double.infinity,
+            label: strings.save,
+            icon: AppIcons.download,
+            variant: AppActionButtonVariant.filled,
+            onPressed: state.isSaving
+                ? null
+                : () => context.read<CompressBloc>().add(
+                    const CompressResultsSaved(deleteOriginals: false),
+                  ),
+          ),
+        ],
         // TODO: Restore Delete Original after implementing platform-safe
         // deletion from Photos/MediaStore with system confirmation.
         const Spacer(flex: 3),

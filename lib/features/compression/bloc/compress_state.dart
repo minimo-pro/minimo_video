@@ -25,6 +25,7 @@ class CompressState {
   final int? deletedOriginalCount;
   final Object? saveError;
   final Object? deleteError;
+  final Object? compressionError;
 
   const CompressState({
     required this.status,
@@ -40,6 +41,7 @@ class CompressState {
     this.deletedOriginalCount,
     this.saveError,
     this.deleteError,
+    this.compressionError,
   });
 
   factory CompressState.initial(List<PickedVideo> videos) {
@@ -69,7 +71,14 @@ class CompressState {
   }
 
   int get resultsOriginalSize {
-    return results.fold<int>(0, (sum, item) => sum + item.source.size);
+    return successResults.fold<int>(
+      0,
+      (sum, item) =>
+          sum +
+          ((item.result.originalSize ?? 0) > 0
+              ? item.result.originalSize!
+              : item.source.size),
+    );
   }
 
   int get compressedSize {
@@ -100,7 +109,9 @@ class CompressState {
     int? deletedOriginalCount,
     Object? saveError,
     Object? deleteError,
+    Object? compressionError,
     bool clearSaveNotification = false,
+    bool clearCompressionError = false,
   }) {
     return CompressState(
       status: status ?? this.status,
@@ -126,6 +137,9 @@ class CompressState {
       deleteError: clearSaveNotification
           ? deleteError
           : deleteError ?? this.deleteError,
+      compressionError: clearCompressionError
+          ? compressionError
+          : compressionError ?? this.compressionError,
     );
   }
 }

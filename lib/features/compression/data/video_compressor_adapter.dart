@@ -30,10 +30,19 @@ class VideoCompressorAdapter {
       return const CompressionResult(success: false);
     }
 
+    final compressedFile = File(result.compressedFilePath);
+    final originalSize = result.originalSizeBytes > 0
+        ? result.originalSizeBytes
+        : await File(inputPath).length();
+    final outputSize = result.compressedSizeBytes > 0
+        ? result.compressedSizeBytes
+        : await compressedFile.length();
+
     return CompressionResult(
-      success: true,
-      outputSize: result.compressedSizeBytes,
-      outputPath: result.compressedFilePath,
+      success: outputSize < originalSize,
+      originalSize: originalSize,
+      outputSize: outputSize,
+      outputPath: outputSize < originalSize ? result.compressedFilePath : null,
       durationMs: result.timeTaken,
     );
   }

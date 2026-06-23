@@ -83,6 +83,8 @@ class _CompressView extends StatelessWidget {
                 ),
                 CompressStatus.done => CompressionResultView(
                   state: state,
+                  onTryAgain: () =>
+                      context.read<CompressBloc>().add(const CompressStarted()),
                   onCompressOtherVideos: () => _goToStart(context),
                 ),
               },

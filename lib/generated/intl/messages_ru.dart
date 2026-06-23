@@ -63,6 +63,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "advancedOptions": MessageLookupByLibrary.simpleMessage(
       "расширенные настройки",
     ),
+    "alreadyOptimized": MessageLookupByLibrary.simpleMessage(
+      "уже оптимизировано",
+    ),
+    "alreadyOptimizedDescription": MessageLookupByLibrary.simpleMessage(
+      "это видео уже маленькое. попробуйте снизить качество или выберите другое видео.",
+    ),
     "appName": MessageLookupByLibrary.simpleMessage("minimo (видео)"),
     "audio": MessageLookupByLibrary.simpleMessage("звук"),
     "audioDescription": MessageLookupByLibrary.simpleMessage(
@@ -84,6 +90,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "compressionCompleted": MessageLookupByLibrary.simpleMessage(
       "сжатие завершено",
+    ),
+    "compressionFailed": MessageLookupByLibrary.simpleMessage(
+      "не удалось сжать видео",
+    ),
+    "compressionFailedDescription": MessageLookupByLibrary.simpleMessage(
+      "попробуйте ещё раз или выберите другое видео.",
     ),
     "crfValue": m0,
     "deleteOriginal": MessageLookupByLibrary.simpleMessage("удалить оригинал"),
@@ -205,6 +217,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stereo": MessageLookupByLibrary.simpleMessage("стерео"),
     "telegram": MessageLookupByLibrary.simpleMessage("telegram"),
     "todo": MessageLookupByLibrary.simpleMessage("В разработке"),
+    "tryAgain": MessageLookupByLibrary.simpleMessage("попробовать снова"),
     "twoPassEncoding": MessageLookupByLibrary.simpleMessage(
       "двухпроходное кодирование",
     ),

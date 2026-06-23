@@ -61,6 +61,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "additional options",
     ),
     "advancedOptions": MessageLookupByLibrary.simpleMessage("advanced options"),
+    "alreadyOptimized": MessageLookupByLibrary.simpleMessage(
+      "already optimized",
+    ),
+    "alreadyOptimizedDescription": MessageLookupByLibrary.simpleMessage(
+      "this video is already small. try lower quality or choose another one.",
+    ),
     "appName": MessageLookupByLibrary.simpleMessage("minimo (video)"),
     "audio": MessageLookupByLibrary.simpleMessage("audio"),
     "audioDescription": MessageLookupByLibrary.simpleMessage(
@@ -82,6 +88,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "compressionCompleted": MessageLookupByLibrary.simpleMessage(
       "compression completed",
+    ),
+    "compressionFailed": MessageLookupByLibrary.simpleMessage(
+      "compression failed",
+    ),
+    "compressionFailedDescription": MessageLookupByLibrary.simpleMessage(
+      "we couldn\'t compress this video. try again or choose another one.",
     ),
     "crfValue": m0,
     "deleteOriginal": MessageLookupByLibrary.simpleMessage("delete original"),
@@ -199,6 +211,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "telegram": MessageLookupByLibrary.simpleMessage("telegram"),
     "todo": MessageLookupByLibrary.simpleMessage("TODO"),
+    "tryAgain": MessageLookupByLibrary.simpleMessage("try again"),
     "twoPassEncoding": MessageLookupByLibrary.simpleMessage(
       "two-pass encoding",
     ),

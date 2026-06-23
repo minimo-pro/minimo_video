@@ -93,6 +93,11 @@
   "loadingVideos": "загрузка видео...",
   "compressionComplete": "сжатие завершено",
   "compressionCompleted": "сжатие завершено",
+  "compressionFailed": "не удалось сжать видео",
+  "compressionFailedDescription": "попробуйте ещё раз или выберите другое видео.",
+  "alreadyOptimized": "уже оптимизировано",
+  "alreadyOptimizedDescription": "это видео уже маленькое. попробуйте снизить качество или выберите другое видео.",
+  "tryAgain": "попробовать снова",
   "youSavedSize": "экономия {size}",
   "@youSavedSize": {
     "placeholders": {
