@@ -39,4 +39,4 @@ No cloud upload. No subscription. Your videos stay yours.
 
 ## License
 
-// TODO
+[![LICENCE - MIT](https://img.shields.io/badge/LICENCE-MIT-414141?style=for-the-badge&logo=Licence&logoColor=F1F1F1)](https://github.com/minimo-pro/minimo_video/blob/main/LICENSE)

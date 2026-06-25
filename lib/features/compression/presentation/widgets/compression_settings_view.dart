@@ -1,13 +1,19 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../constants/app_icons.dart';
 import '../../../../generated/l10n.dart';
+import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../widgets/app_option_picker.dart';
 import '../../../../widgets/app_setting_toggle.dart';
 import '../../../../widgets/app_settings_section.dart';
 import '../../../../widgets/crf_slider.dart';
 import '../../../../widgets/faded_scroll_view.dart';
+import '../../../../widgets/rolling_counter_text.dart';
 import '../../../../widgets/spring_tab_content.dart';
 import '../../bloc/compress_bloc.dart';
 import '../../bloc/compress_event.dart';
@@ -45,46 +51,117 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
   ];
 
   CompressionOptionsMode _mode = CompressionOptionsMode.simple;
+  final _sizeRowKey = GlobalKey();
+  bool _showPinnedSummary = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _updatePinnedSummary());
+  }
+
+  @override
+  void didUpdateWidget(covariant CompressionSettingsView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _updatePinnedSummary());
+  }
+
+  bool _onScroll(ScrollNotification notification) {
+    _updatePinnedSummary();
+    return false;
+  }
+
+  void _updatePinnedSummary() {
+    final viewBox = context.findRenderObject() as RenderBox?;
+    final rowBox = _sizeRowKey.currentContext?.findRenderObject() as RenderBox?;
+    if (viewBox == null || rowBox == null || !rowBox.attached) return;
+
+    final viewTop = viewBox.localToGlobal(Offset.zero).dy;
+    final rowBottom = rowBox.localToGlobal(Offset(0, rowBox.size.height)).dy;
+    final show = rowBottom <= viewTop + 4;
+    if (show == _showPinnedSummary || !mounted) return;
+    setState(() => _showPinnedSummary = show);
+  }
 
   @override
   Widget build(BuildContext context) {
     final state = widget.state;
+    final estimatedSize = CompressionEstimate.compressedSize(
+      originalSize: state.totalOriginalSize,
+      settings: state.settings,
+    );
+    final savingsPercent = CompressionEstimate.savingsPercent(
+      originalSize: state.totalOriginalSize,
+      settings: state.settings,
+    );
 
     return Column(
       children: [
         Expanded(
-          child: FadedScrollView(
-            fadeExtent: 0.08,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Column(
-              children: [
-                SelectedVideosSummary(
-                  selectedCount: state.videos.length,
-                  thumbnailPaths: state.thumbnailPaths,
-                  originalSize: state.totalOriginalSize,
-                  estimatedSize: CompressionEstimate.compressedSize(
-                    originalSize: state.totalOriginalSize,
-                    settings: state.settings,
+          child: Stack(
+            children: [
+              NotificationListener<ScrollNotification>(
+                onNotification: _onScroll,
+                child: FadedScrollView(
+                  fadeExtent: 0.08,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    children: [
+                      SelectedVideosSummary(
+                        sizeRowKey: _sizeRowKey,
+                        selectedCount: state.videos.length,
+                        thumbnailPaths: state.thumbnailPaths,
+                        originalSize: state.totalOriginalSize,
+                        estimatedSize: estimatedSize,
+                        savingsPercent: savingsPercent,
+                      ),
+                      const SizedBox(height: 22),
+                      CompressionModeSwitch(
+                        value: _mode,
+                        onChanged: (value) =>
+                            _changeMode(context, state.settings, value),
+                      ),
+                      const SizedBox(height: 24),
+                      SpringTabContent(
+                        value: _mode,
+                        child: _mode == CompressionOptionsMode.simple
+                            ? _SimpleCompressionOptions(state: state)
+                            : _AdvancedCompressionOptions(state: state),
+                      ),
+                    ],
                   ),
-                  savingsPercent: CompressionEstimate.savingsPercent(
-                    originalSize: state.totalOriginalSize,
-                    settings: state.settings,
+                ),
+              ),
+              Positioned(
+                top: 4,
+                left: 8,
+                right: 8,
+                child: IgnorePointer(
+                  child: AnimatedOpacity(
+                    opacity: _showPinnedSummary ? 1 : 0,
+                    duration: const Duration(milliseconds: 180),
+                    curve: Curves.easeOutCubic,
+                    child: AnimatedSlide(
+                      offset: _showPinnedSummary
+                          ? Offset.zero
+                          : const Offset(0, -0.35),
+                      duration: const Duration(milliseconds: 260),
+                      curve: Curves.easeOutCubic,
+                      child: AnimatedScale(
+                        scale: _showPinnedSummary ? 1 : 0.96,
+                        duration: const Duration(milliseconds: 260),
+                        curve: Curves.easeOutCubic,
+                        child: _PinnedSizeSummary(
+                          originalSize: state.totalOriginalSize,
+                          estimatedSize: estimatedSize,
+                          savingsPercent: savingsPercent,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 22),
-                CompressionModeSwitch(
-                  value: _mode,
-                  onChanged: (value) => setState(() => _mode = value),
-                ),
-                const SizedBox(height: 24),
-                SpringTabContent(
-                  value: _mode,
-                  child: _mode == CompressionOptionsMode.simple
-                      ? _SimpleCompressionOptions(state: state)
-                      : _AdvancedCompressionOptions(state: state),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 12),
@@ -94,6 +171,125 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
               context.read<CompressBloc>().add(const CompressStarted()),
         ),
       ],
+    );
+  }
+
+  void _changeMode(
+    BuildContext context,
+    CompressionSettings settings,
+    CompressionOptionsMode value,
+  ) {
+    setState(() => _mode = value);
+    if (value != CompressionOptionsMode.advanced) return;
+    context.read<CompressBloc>().add(
+      CompressSettingsChanged(settings.copyWith(resolution: null)),
+    );
+  }
+}
+
+class _PinnedSizeSummary extends StatelessWidget {
+  final int originalSize;
+  final int estimatedSize;
+  final int savingsPercent;
+
+  const _PinnedSizeSummary({
+    required this.originalSize,
+    required this.estimatedSize,
+    required this.savingsPercent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: BackdropFilter(
+        filter: ui.ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: CompressionUiColors.white.withValues(alpha: 0.86),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: CompressionUiColors.white.withValues(alpha: 0.9),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: CompressionUiColors.dark.withValues(alpha: 0.12),
+                blurRadius: 22,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            Utils.formatSize(originalSize).toLowerCase(),
+                            maxLines: 1,
+                            style: const TextStyle(
+                              color: CompressionUiColors.dark,
+                              fontSize: 20,
+                              height: 1,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: SvgPicture.asset(
+                              AppIcons.arrowForward,
+                              width: 20,
+                              height: 17,
+                            ),
+                          ),
+                          RollingCounterText(
+                            value: estimatedSize,
+                            formatter: (value) =>
+                                Utils.formatSize(value.toInt()).toLowerCase(),
+                            style: const TextStyle(
+                              color: CompressionUiColors.red,
+                              fontSize: 20,
+                              height: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: CompressionUiColors.red.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 7,
+                    ),
+                    child: RollingCounterText(
+                      value: savingsPercent,
+                      formatter: (value) => '${value.toInt()}%',
+                      style: const TextStyle(
+                        color: CompressionUiColors.red,
+                        fontSize: 17,
+                        height: 1,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

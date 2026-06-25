@@ -14,6 +14,7 @@ class SelectedVideosSummary extends StatelessWidget {
   final int originalSize;
   final int estimatedSize;
   final int savingsPercent;
+  final Key? sizeRowKey;
 
   const SelectedVideosSummary({
     super.key,
@@ -22,6 +23,7 @@ class SelectedVideosSummary extends StatelessWidget {
     required this.originalSize,
     required this.estimatedSize,
     required this.savingsPercent,
+    this.sizeRowKey,
   });
 
   @override
@@ -36,19 +38,23 @@ class SelectedVideosSummary extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         SizedBox(
+          key: sizeRowKey,
           width: double.infinity,
           child: Row(
             children: [
               Expanded(
                 child: Align(
                   alignment: Alignment.centerRight,
-                  child: Text(
-                    Utils.formatSize(originalSize).toLowerCase(),
-                    maxLines: 1,
-                    style: const TextStyle(
-                      color: CompressionUiColors.dark,
-                      fontSize: 28,
-                      height: 1,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      Utils.formatSize(originalSize).toLowerCase(),
+                      maxLines: 1,
+                      style: const TextStyle(
+                        color: CompressionUiColors.dark,
+                        fontSize: 28,
+                        height: 1,
+                      ),
                     ),
                   ),
                 ),
@@ -67,14 +73,17 @@ class SelectedVideosSummary extends StatelessWidget {
               Expanded(
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: RollingCounterText(
-                    value: estimatedSize,
-                    formatter: (value) =>
-                        Utils.formatSize(value.toInt()).toLowerCase(),
-                    style: const TextStyle(
-                      color: CompressionUiColors.red,
-                      fontSize: 28,
-                      height: 1,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: RollingCounterText(
+                      value: estimatedSize,
+                      formatter: (value) =>
+                          Utils.formatSize(value.toInt()).toLowerCase(),
+                      style: const TextStyle(
+                        color: CompressionUiColors.red,
+                        fontSize: 28,
+                        height: 1,
+                      ),
                     ),
                   ),
                 ),

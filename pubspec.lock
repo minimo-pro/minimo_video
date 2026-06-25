@@ -621,6 +621,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  reel_text:
+    dependency: "direct main"
+    description:
+      name: reel_text
+      sha256: "135712d1c383d359a2e9a8a36d3bba3061f0f4be860871d0e085069ebdb77634"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0"
   share_plus:
     dependency: "direct main"
     description:
