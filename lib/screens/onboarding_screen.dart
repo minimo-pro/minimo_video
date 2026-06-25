@@ -54,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final theme = AppTheme.of(context);
     final pages = [
       _OnboardingPageData(
-        icon: AppIcons.plus,
+        icon: AppIcons.video,
         title: strings.onboardingPickTitle,
         description: strings.onboardingPickDescription,
       ),

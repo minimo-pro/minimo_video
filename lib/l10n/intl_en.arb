@@ -5,16 +5,16 @@
   "skip": "skip",
   "next": "next",
   "getStarted": "get started",
-  "onboardingPickTitle": "pick your videos",
-  "onboardingPickDescription": "choose one or several videos you want to make smaller.",
-  "onboardingQualityTitle": "choose the balance",
-  "onboardingQualityDescription": "use simple presets or fine-tune quality, speed and resolution.",
-  "onboardingSaveTitle": "compress and save",
-  "onboardingSaveDescription": "preview the estimated size, compress, then save the result to your gallery.",
+  "onboardingPickTitle": "pick videos",
+  "onboardingPickDescription": "choose one or several videos. minimo works with local files and keeps the originals untouched",
+  "onboardingQualityTitle": "choose what changes",
+  "onboardingQualityDescription": "reduce bitrate, resolution, frame rate or audio. simple presets do it for you, advanced controls stay available",
+  "onboardingSaveTitle": "private by default",
+  "onboardingSaveDescription": "compression happens on your device. videos are not uploaded anywhere; save the smaller copy when you like the result",
   "todo": "TODO",
   "about": "about",
   "aboutStory": "minimo (video) was born from a simple frustration. i love sports and often watch short match clips shared by clubs and telegram channels. even a few seconds of video can take up far more space than they should.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.",
-  "openSourceNote": "minimo (video) is open source. explore the code, follow the project or get in touch.",
+  "openSourceNote": "minimo (video) is open source. explore the code, follow the project or get in touch",
   "rateTheApp": "rate the app",
   "shareWithFriends": "share with friends",
   "projectWebsite": "project website",
@@ -24,6 +24,41 @@
   "myWebsite": "my website",
   "myOtherApps": "my other apps",
   "emailCopied": "email copied",
+  "settings": "settings",
+  "addPrefix": "add \"{prefix}\" prefix",
+  "@addPrefix": {
+    "placeholders": {
+      "prefix": {
+        "type": "String"
+      }
+    }
+  },
+  "addPrefixDescription": "adds \"{prefix}\" before the original file name. disabling keeps the original file name",
+  "@addPrefixDescription": {
+    "placeholders": {
+      "prefix": {
+        "type": "String"
+      }
+    }
+  },
+  "showOverheatWarning": "show overheat warning",
+  "showOverheatWarningDescription": "shows a small banner during compression when the device may slow down",
+  "preserveMetadataSettingDescription": "keeps the original media metadata in compressed videos. this can increase output size",
+  "saveVideosToAlbum": "save videos to album",
+  "saveVideosToAlbumDescription": "saves compressed videos to the {album} album instead of recently saved",
+  "@saveVideosToAlbumDescription": {
+    "placeholders": {
+      "album": {
+        "type": "String"
+      }
+    }
+  },
+  "language": "language",
+  "languageDescription": "select the language for the app",
+  "system": "system",
+  "english": "english",
+  "russian": "русский",
+  "overheatWarning": "compression can slow down if your device gets hot",
   "quality": "quality",
   "speed": "speed",
   "resolution": "resolution",

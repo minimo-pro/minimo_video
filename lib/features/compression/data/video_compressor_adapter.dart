@@ -6,6 +6,7 @@ import 'package:v_video_compressor/v_video_compressor.dart';
 
 import '../domain/compression_result.dart';
 import '../domain/compression_settings.dart';
+import '../../../services/app_settings_service.dart';
 
 class VideoCompressorAdapter {
   final VVideoCompressor _compressor;
@@ -17,12 +18,16 @@ class VideoCompressorAdapter {
     String inputPath,
     String originalName,
     CompressionSettings settings, {
+    bool addKompressoPrefix = true,
     void Function(double progress)? onProgress,
   }) async {
-    final outputPath = await _createOutputPath(originalName);
+    final outputPath = await _createOutputPath(
+      originalName,
+      addKompressoPrefix: addKompressoPrefix,
+    );
     final result = await _compressor.compressVideo(
       inputPath,
-      _buildConfig(settings, outputPath),
+      _buildConfig(settings, path.dirname(outputPath)),
       onProgress: onProgress,
     );
 
@@ -38,11 +43,16 @@ class VideoCompressorAdapter {
         ? result.compressedSizeBytes
         : await compressedFile.length();
 
+    final success = outputSize < originalSize;
+    final outputFile = success
+        ? await _moveToOutputPath(compressedFile, outputPath)
+        : null;
+
     return CompressionResult(
-      success: outputSize < originalSize,
+      success: success,
       originalSize: originalSize,
       outputSize: outputSize,
-      outputPath: outputSize < originalSize ? result.compressedFilePath : null,
+      outputPath: outputFile?.path,
       durationMs: result.timeTaken,
     );
   }
@@ -60,30 +70,45 @@ class VideoCompressorAdapter {
     return result?.thumbnailPath;
   }
 
-  Future<String> _createOutputPath(String originalName) async {
+  Future<String> _createOutputPath(
+    String originalName, {
+    required bool addKompressoPrefix,
+  }) async {
     final temporaryDirectory = await getTemporaryDirectory();
     final outputDirectory = Directory(
       path.join(temporaryDirectory.path, 'minimo_video'),
     );
     await outputDirectory.create(recursive: true);
 
-    final originalBaseName = path.basenameWithoutExtension(originalName);
+    final appPrefix = AppSettingsService.appPrefix;
+    final rawBaseName = path.basenameWithoutExtension(originalName);
+    final originalBaseName =
+        addKompressoPrefix && rawBaseName.startsWith(appPrefix)
+        ? rawBaseName.substring(appPrefix.length)
+        : rawBaseName;
     final safeBaseName = originalBaseName
         .replaceAll(RegExp(r'[<>:"/\\|?*\x00-\x1F]'), '_')
         .replaceAll(RegExp(r'\s+'), ' ')
         .trim();
     final baseName = safeBaseName.isEmpty ? 'video' : safeBaseName;
 
-    var candidate = path.join(outputDirectory.path, '${baseName}_minimo.mp4');
+    final prefix = addKompressoPrefix ? appPrefix : '';
+    var candidate = path.join(outputDirectory.path, '$prefix$baseName.mp4');
     var duplicateIndex = 2;
-    while (await File(candidate).exists()) {
+    while (await FileSystemEntity.type(candidate) !=
+        FileSystemEntityType.notFound) {
       candidate = path.join(
         outputDirectory.path,
-        '${baseName}_minimo_$duplicateIndex.mp4',
+        '$prefix${baseName}_$duplicateIndex.mp4',
       );
       duplicateIndex++;
     }
     return candidate;
+  }
+
+  Future<File> _moveToOutputPath(File file, String outputPath) async {
+    if (file.path == outputPath) return file;
+    return file.rename(outputPath);
   }
 
   VVideoCompressionConfig _buildConfig(

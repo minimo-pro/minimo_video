@@ -16,6 +16,7 @@ class _FailingCompressor extends VideoCompressorAdapter {
     String inputPath,
     String originalName,
     CompressionSettings settings, {
+    bool addKompressoPrefix = true,
     void Function(double progress)? onProgress,
   }) async {
     throw StateError('encoder failed');

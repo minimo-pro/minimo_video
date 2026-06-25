@@ -1,30 +1,27 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:gal/gal.dart';
 
 import '../domain/picked_video.dart';
 
 class VideoFileAdapter {
-  Future<List<PickedVideo>> pickVideos() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.video,
-      allowMultiple: true,
-      withData: false,
-    );
-    if (result == null) return [];
+  static const _channel = MethodChannel('minimo_video/videos');
 
-    return result.files
-        .where((file) => file.path != null)
-        .map(
-          (file) =>
-              PickedVideo(path: file.path!, name: file.name, size: file.size),
-        )
-        .toList();
+  Future<List<PickedVideo>> pickVideos() async {
+    final result = await _channel.invokeMethod<List<dynamic>>('pickVideos');
+    if (result == null) return const [];
+
+    return result.cast<Map<dynamic, dynamic>>().map((file) {
+      final path = file['path'] as String;
+      final name = file['name'] as String;
+      final size = file['size'] as int;
+      return PickedVideo(path: path, name: name, size: size);
+    }).toList();
   }
 
-  Future<void> saveToGallery(String filePath) async {
-    await Gal.putVideo(filePath);
+  Future<void> saveToGallery(String filePath, {String? album}) async {
+    await Gal.putVideo(filePath, album: album);
   }
 
   Future<bool> deleteFile(String filePath) async {

@@ -5,21 +5,25 @@ import '../data/video_file_adapter.dart';
 import '../domain/compression_result.dart';
 import '../domain/compression_settings.dart';
 import '../domain/picked_video.dart';
+import '../../../services/app_settings_service.dart';
 import 'compress_event.dart';
 import 'compress_state.dart';
 
 class CompressBloc extends Bloc<CompressEvent, CompressState> {
   final VideoFileAdapter _videoFileAdapter;
   final VideoCompressorAdapter _videoCompressorAdapter;
+  final AppSettingsService _appSettings;
   bool _cancelRequested = false;
 
   CompressBloc({
     List<PickedVideo> initialVideos = const [],
     VideoFileAdapter? videoFileAdapter,
     VideoCompressorAdapter? videoCompressorAdapter,
+    AppSettingsService? appSettings,
   }) : _videoFileAdapter = videoFileAdapter ?? VideoFileAdapter(),
        _videoCompressorAdapter =
            videoCompressorAdapter ?? VideoCompressorAdapter(),
+       _appSettings = appSettings ?? AppSettingsService.instance,
        super(CompressState.initial(initialVideos)) {
     on<CompressThumbnailsRequested>(_onThumbnailsRequested);
     on<CompressSimpleQualityChanged>(_onSimpleQualityChanged);
@@ -150,7 +154,10 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         result = await _videoCompressorAdapter.compress(
           video.path,
           video.name,
-          state.settings,
+          state.settings.copyWith(
+            preserveMetadata: _appSettings.preserveMetadata,
+          ),
+          addKompressoPrefix: _appSettings.addKompressoPrefix,
           onProgress: (videoProgress) {
             if (_cancelRequested) return;
             final overallProgress = (i + videoProgress) / videos.length;
@@ -229,7 +236,12 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
 
     try {
       for (final outputPath in outputPaths) {
-        await _videoFileAdapter.saveToGallery(outputPath);
+        await _videoFileAdapter.saveToGallery(
+          outputPath,
+          album: _appSettings.saveVideosToAlbum
+              ? AppSettingsService.albumName
+              : null,
+        );
       }
 
       if (!event.deleteOriginals) {

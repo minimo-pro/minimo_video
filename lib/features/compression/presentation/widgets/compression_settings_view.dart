@@ -303,15 +303,6 @@ class _AdvancedCompressionOptions extends StatelessWidget {
                 ),
               ),
               AppSettingToggle(
-                title: strings.preserveMetadata,
-                description: strings.preserveMetadataDescription,
-                value: settings.preserveMetadata,
-                onChanged: (value) => _changeSettings(
-                  context,
-                  settings.copyWith(preserveMetadata: value),
-                ),
-              ),
-              AppSettingToggle(
                 title: strings.hardwareAcceleration,
                 description: strings.hardwareAccelerationDescription,
                 value: settings.hardwareAcceleration,

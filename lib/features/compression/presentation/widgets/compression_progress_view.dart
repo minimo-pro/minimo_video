@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../constants/app_icons.dart';
 import '../../../../generated/l10n.dart';
+import '../../../../services/app_settings_service.dart';
+import '../../../../services/thermal_service.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../widgets/app_action_button.dart';
@@ -13,14 +17,40 @@ import '../../bloc/compress_state.dart';
 import '../utils/compression_estimate.dart';
 import 'selected_videos_preview.dart';
 
-class CompressionProgressView extends StatelessWidget {
+class CompressionProgressView extends StatefulWidget {
   final CompressState state;
 
   const CompressionProgressView({super.key, required this.state});
 
   @override
+  State<CompressionProgressView> createState() =>
+      _CompressionProgressViewState();
+}
+
+class _CompressionProgressViewState extends State<CompressionProgressView> {
+  Timer? _thermalTimer;
+  var _showThermalWarning = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkThermalState();
+    _thermalTimer = Timer.periodic(
+      const Duration(seconds: 5),
+      (_) => _checkThermalState(),
+    );
+  }
+
+  @override
+  void dispose() {
+    _thermalTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
+    final state = widget.state;
     final progress = state.progress.clamp(0.0, 1.0);
     final percent = (progress * 100).round();
 
@@ -58,7 +88,7 @@ class CompressionProgressView extends StatelessWidget {
         ),
         const SizedBox(height: 13),
         Text(
-          _remainingTimeLabel(strings),
+          _remainingTimeLabel(strings, state),
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: CompressionUiColors.grey,
@@ -66,6 +96,11 @@ class CompressionProgressView extends StatelessWidget {
             height: 1,
           ),
         ),
+        if (AppSettingsService.instance.showOverheatWarning &&
+            _showThermalWarning) ...[
+          const SizedBox(height: 14),
+          const _OverheatWarning(),
+        ],
         const Spacer(flex: 4),
         AppActionButton(
           width: double.infinity,
@@ -77,7 +112,7 @@ class CompressionProgressView extends StatelessWidget {
     );
   }
 
-  String _remainingTimeLabel(S strings) {
+  String _remainingTimeLabel(S strings, CompressState state) {
     if (state.progress < 0.02 || state.elapsed.inSeconds < 1) {
       return strings.estimatingTimeRemaining;
     }
@@ -96,6 +131,43 @@ class CompressionProgressView extends StatelessWidget {
     }
     return strings.minutesRemaining(
       (remaining.inSeconds / 60).ceil().clamp(1, 1440),
+    );
+  }
+
+  Future<void> _checkThermalState() async {
+    if (!AppSettingsService.instance.showOverheatWarning) return;
+    final state = await ThermalService.currentState();
+    if (!mounted) return;
+    final shouldWarn = ThermalService.shouldWarn(state);
+    if (shouldWarn == _showThermalWarning) return;
+    setState(() => _showThermalWarning = shouldWarn);
+  }
+}
+
+class _OverheatWarning extends StatelessWidget {
+  const _OverheatWarning();
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = S.of(context);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: CompressionUiColors.red.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        child: Text(
+          strings.overheatWarning,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: CompressionUiColors.red,
+            fontSize: 14,
+            height: 1.15,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -134,7 +206,11 @@ class _ProgressSizeComparison extends StatelessWidget {
           SizedBox(
             width: 29,
             height: 24,
-            child: SvgPicture.asset(AppIcons.arrowForward, width: 29, height: 24),
+            child: SvgPicture.asset(
+              AppIcons.arrowForward,
+              width: 29,
+              height: 24,
+            ),
           ),
           const SizedBox(width: 13),
           Expanded(

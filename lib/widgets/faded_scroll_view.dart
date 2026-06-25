@@ -40,9 +40,12 @@ class _FadedScrollViewState extends State<FadedScrollView> {
 
   void _updateFades() {
     if (!_controller.hasClients) return;
-    final position = _controller.position;
-    final fadeStart = position.pixels > position.minScrollExtent + 1;
-    final fadeEnd = position.pixels < position.maxScrollExtent - 1;
+    _updateFadesFor(_controller.position);
+  }
+
+  void _updateFadesFor(ScrollMetrics metrics) {
+    final fadeStart = metrics.pixels > metrics.minScrollExtent + 1;
+    final fadeEnd = metrics.pixels < metrics.maxScrollExtent - 1;
     if (fadeStart == _fadeStart && fadeEnd == _fadeEnd) return;
     setState(() {
       _fadeStart = fadeStart;
@@ -69,11 +72,17 @@ class _FadedScrollViewState extends State<FadedScrollView> {
         ).createShader(bounds);
       },
       blendMode: BlendMode.dstIn,
-      child: SingleChildScrollView(
-        controller: _controller,
-        padding: widget.padding,
-        physics: widget.physics,
-        child: widget.child,
+      child: NotificationListener<ScrollMetricsNotification>(
+        onNotification: (notification) {
+          _updateFadesFor(notification.metrics);
+          return false;
+        },
+        child: SingleChildScrollView(
+          controller: _controller,
+          padding: widget.padding,
+          physics: widget.physics,
+          child: widget.child,
+        ),
       ),
     );
   }

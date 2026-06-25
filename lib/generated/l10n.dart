@@ -84,60 +84,60 @@ class S {
     return Intl.message('get started', name: 'getStarted', desc: '', args: []);
   }
 
-  /// `pick your videos`
+  /// `pick videos`
   String get onboardingPickTitle {
     return Intl.message(
-      'pick your videos',
+      'pick videos',
       name: 'onboardingPickTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `choose one or several videos you want to make smaller.`
+  /// `choose one or several videos. minimo works with local files and keeps the originals untouched`
   String get onboardingPickDescription {
     return Intl.message(
-      'choose one or several videos you want to make smaller.',
+      'choose one or several videos. minimo works with local files and keeps the originals untouched',
       name: 'onboardingPickDescription',
       desc: '',
       args: [],
     );
   }
 
-  /// `choose the balance`
+  /// `choose what changes`
   String get onboardingQualityTitle {
     return Intl.message(
-      'choose the balance',
+      'choose what changes',
       name: 'onboardingQualityTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `use simple presets or fine-tune quality, speed and resolution.`
+  /// `reduce bitrate, resolution, frame rate or audio. simple presets do it for you, advanced controls stay available`
   String get onboardingQualityDescription {
     return Intl.message(
-      'use simple presets or fine-tune quality, speed and resolution.',
+      'reduce bitrate, resolution, frame rate or audio. simple presets do it for you, advanced controls stay available',
       name: 'onboardingQualityDescription',
       desc: '',
       args: [],
     );
   }
 
-  /// `compress and save`
+  /// `private by default`
   String get onboardingSaveTitle {
     return Intl.message(
-      'compress and save',
+      'private by default',
       name: 'onboardingSaveTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `preview the estimated size, compress, then save the result to your gallery.`
+  /// `compression happens on your device. videos are not uploaded anywhere; save the smaller copy when you like the result`
   String get onboardingSaveDescription {
     return Intl.message(
-      'preview the estimated size, compress, then save the result to your gallery.',
+      'compression happens on your device. videos are not uploaded anywhere; save the smaller copy when you like the result',
       name: 'onboardingSaveDescription',
       desc: '',
       args: [],
@@ -164,10 +164,10 @@ class S {
     );
   }
 
-  /// `minimo (video) is open source. explore the code, follow the project or get in touch.`
+  /// `minimo (video) is open source. explore the code, follow the project or get in touch`
   String get openSourceNote {
     return Intl.message(
-      'minimo (video) is open source. explore the code, follow the project or get in touch.',
+      'minimo (video) is open source. explore the code, follow the project or get in touch',
       name: 'openSourceNote',
       desc: '',
       args: [],
@@ -239,6 +239,121 @@ class S {
     return Intl.message(
       'email copied',
       name: 'emailCopied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `settings`
+  String get settings {
+    return Intl.message('settings', name: 'settings', desc: '', args: []);
+  }
+
+  /// `add "{prefix}" prefix`
+  String addPrefix(String prefix) {
+    return Intl.message(
+      'add "$prefix" prefix',
+      name: 'addPrefix',
+      desc: '',
+      args: [prefix],
+    );
+  }
+
+  /// `adds "{prefix}" before the original file name. disabling keeps the original file name`
+  String addPrefixDescription(String prefix) {
+    return Intl.message(
+      'adds "$prefix" before the original file name. disabling keeps the original file name',
+      name: 'addPrefixDescription',
+      desc: '',
+      args: [prefix],
+    );
+  }
+
+  /// `show overheat warning`
+  String get showOverheatWarning {
+    return Intl.message(
+      'show overheat warning',
+      name: 'showOverheatWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `shows a small banner during compression when the device may slow down`
+  String get showOverheatWarningDescription {
+    return Intl.message(
+      'shows a small banner during compression when the device may slow down',
+      name: 'showOverheatWarningDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `keeps the original media metadata in compressed videos. this can increase output size`
+  String get preserveMetadataSettingDescription {
+    return Intl.message(
+      'keeps the original media metadata in compressed videos. this can increase output size',
+      name: 'preserveMetadataSettingDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `save videos to album`
+  String get saveVideosToAlbum {
+    return Intl.message(
+      'save videos to album',
+      name: 'saveVideosToAlbum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `saves compressed videos to the {album} album instead of recently saved`
+  String saveVideosToAlbumDescription(String album) {
+    return Intl.message(
+      'saves compressed videos to the $album album instead of recently saved',
+      name: 'saveVideosToAlbumDescription',
+      desc: '',
+      args: [album],
+    );
+  }
+
+  /// `language`
+  String get language {
+    return Intl.message('language', name: 'language', desc: '', args: []);
+  }
+
+  /// `select the language for the app`
+  String get languageDescription {
+    return Intl.message(
+      'select the language for the app',
+      name: 'languageDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `system`
+  String get system {
+    return Intl.message('system', name: 'system', desc: '', args: []);
+  }
+
+  /// `english`
+  String get english {
+    return Intl.message('english', name: 'english', desc: '', args: []);
+  }
+
+  /// `русский`
+  String get russian {
+    return Intl.message('русский', name: 'russian', desc: '', args: []);
+  }
+
+  /// `compression can slow down if your device gets hot`
+  String get overheatWarning {
+    return Intl.message(
+      'compression can slow down if your device gets hot',
+      name: 'overheatWarning',
       desc: '',
       args: [],
     );

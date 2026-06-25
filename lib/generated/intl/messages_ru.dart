@@ -20,36 +20,44 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ru';
 
-  static String m0(value) => "CRF ${value}";
+  static String m0(prefix) => "добавлять префикс \"${prefix}\"";
 
-  static String m1(error) => "не удалось сохранить: ${error}";
+  static String m1(prefix) =>
+      "добавляет \"${prefix}\" перед исходным именем файла. если выключить, имя останется исходным";
 
-  static String m2(error) => "не удалось поделиться: ${error}";
+  static String m2(value) => "CRF ${value}";
 
-  static String m3(count) =>
+  static String m3(error) => "не удалось сохранить: ${error}";
+
+  static String m4(error) => "не удалось поделиться: ${error}";
+
+  static String m5(count) =>
       "${Intl.plural(count, one: 'осталась примерно 1 минута', few: 'осталось примерно ${count} минуты', many: 'осталось примерно ${count} минут', other: 'осталось примерно ${count} минуты')}";
 
-  static String m4(count) =>
+  static String m6(count) =>
       "${Intl.plural(count, one: 'сохранить 1 видео', few: 'сохранить ${count} видео', many: 'сохранить ${count} видео', other: 'сохранить ${count} видео')}";
 
-  static String m5(error) =>
+  static String m7(album) =>
+      "сохраняет сжатые видео в альбом ${album} вместо недавних сохранений";
+
+  static String m8(error) =>
       "видео сохранены, но некоторые оригиналы удалить не удалось: ${error}";
 
-  static String m6(saved, deleted) =>
+  static String m9(saved, deleted) =>
       "сохранено видео: ${saved}, удалено оригиналов: ${deleted}";
 
-  static String m7(count) =>
+  static String m10(count) =>
       "${Intl.plural(count, one: '1 видео сохранено в галерею', few: '${count} видео сохранено в галерею', many: '${count} видео сохранено в галерею', other: '${count} видео сохранено в галерею')}";
 
-  static String m8(count) =>
+  static String m11(count) =>
       "${Intl.plural(count, one: 'осталась примерно 1 секунда', few: 'осталось примерно ${count} секунды', many: 'осталось примерно ${count} секунд', other: 'осталось примерно ${count} секунды')}";
 
-  static String m9(current, total) => "видео ${current} из ${total}";
+  static String m12(current, total) => "видео ${current} из ${total}";
 
-  static String m10(completed, total) =>
+  static String m13(completed, total) =>
       "сжато видео: ${completed} из ${total}";
 
-  static String m11(size) => "экономия ${size}";
+  static String m14(size) => "экономия ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -57,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "aboutStory": MessageLookupByLibrary.simpleMessage(
       "minimo (видео) появился из простой проблемы. я люблю спорт и часто смотрю короткие фрагменты матчей, которыми делятся клубы и telegram-каналы. даже несколько секунд видео иногда занимают неоправданно много места.\n\nэтот проект даёт каждому удобную и бесплатную возможность сжимать видео прямо на мобильном устройстве, экономить память и сохранять важные моменты.",
     ),
+    "addPrefix": m0,
+    "addPrefixDescription": m1,
     "additionalOptions": MessageLookupByLibrary.simpleMessage(
       "дополнительные настройки",
     ),
@@ -97,15 +107,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "compressionFailedDescription": MessageLookupByLibrary.simpleMessage(
       "попробуйте ещё раз или выберите другое видео.",
     ),
-    "crfValue": m0,
+    "crfValue": m2,
     "deleteOriginal": MessageLookupByLibrary.simpleMessage("удалить оригинал"),
     "emailCopied": MessageLookupByLibrary.simpleMessage("почта скопирована"),
+    "english": MessageLookupByLibrary.simpleMessage("english"),
     "estimatingTimeRemaining": MessageLookupByLibrary.simpleMessage(
       "оцениваем оставшееся время...",
     ),
     "failed": MessageLookupByLibrary.simpleMessage("ошибка"),
-    "failedToSave": m1,
-    "failedToShare": m2,
+    "failedToSave": m3,
+    "failedToShare": m4,
     "fast": MessageLookupByLibrary.simpleMessage("быстро"),
     "frameRate": MessageLookupByLibrary.simpleMessage("частота кадров"),
     "frameRateDescription": MessageLookupByLibrary.simpleMessage(
@@ -123,11 +134,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "использует кодировщик устройства для быстрой обработки",
     ),
     "high": MessageLookupByLibrary.simpleMessage("высокое"),
+    "language": MessageLookupByLibrary.simpleMessage("язык"),
+    "languageDescription": MessageLookupByLibrary.simpleMessage(
+      "выберите язык приложения",
+    ),
     "loadingVideos": MessageLookupByLibrary.simpleMessage("загрузка видео..."),
     "low": MessageLookupByLibrary.simpleMessage("низкое"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("среднее"),
-    "minutesRemaining": m3,
+    "minutesRemaining": m5,
     "mono": MessageLookupByLibrary.simpleMessage("моно"),
     "mostCompatible": MessageLookupByLibrary.simpleMessage(
       "максимальная совместимость",
@@ -143,25 +158,25 @@ class MessageLookup extends MessageLookupByLibrary {
       "сглаживает визуальный шум перед кодированием",
     ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
-      "выберите одно или несколько видео, размер которых хотите уменьшить.",
+      "выберите одно или несколько видео. minimo работает с локальными файлами и не трогает оригиналы",
     ),
     "onboardingPickTitle": MessageLookupByLibrary.simpleMessage(
       "выберите видео",
     ),
     "onboardingQualityDescription": MessageLookupByLibrary.simpleMessage(
-      "используйте готовые варианты или настройте качество, скорость и разрешение.",
+      "уменьшайте битрейт, разрешение, частоту кадров или звук. простые пресеты сделают это сами, а расширенные настройки останутся под рукой",
     ),
     "onboardingQualityTitle": MessageLookupByLibrary.simpleMessage(
-      "настройте баланс",
+      "выберите, что менять",
     ),
     "onboardingSaveDescription": MessageLookupByLibrary.simpleMessage(
-      "оцените будущий размер, сожмите видео и сохраните результат в галерею.",
+      "сжатие происходит на устройстве. видео никуда не загружаются; сохраните меньшую копию, когда результат устроит",
     ),
     "onboardingSaveTitle": MessageLookupByLibrary.simpleMessage(
-      "сожмите и сохраните",
+      "приватно по умолчанию",
     ),
     "openSourceNote": MessageLookupByLibrary.simpleMessage(
-      "minimo (видео) — проект с открытым исходным кодом. посмотрите код, следите за проектом или свяжитесь со мной.",
+      "minimo (видео) — проект с открытым исходным кодом. посмотрите код, следите за проектом или свяжитесь со мной",
     ),
     "optimizeForStreaming": MessageLookupByLibrary.simpleMessage(
       "оптимизация для стриминга",
@@ -170,11 +185,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "позволяет начать просмотр до полной загрузки файла",
     ),
     "original": MessageLookupByLibrary.simpleMessage("оригинал"),
+    "overheatWarning": MessageLookupByLibrary.simpleMessage(
+      "сжатие может замедлиться, если устройство нагреется",
+    ),
     "preserveMetadata": MessageLookupByLibrary.simpleMessage(
       "сохранять метаданные",
     ),
     "preserveMetadataDescription": MessageLookupByLibrary.simpleMessage(
       "сохраняет доступные сведения о создании и видео",
+    ),
+    "preserveMetadataSettingDescription": MessageLookupByLibrary.simpleMessage(
+      "сохраняет исходные метаданные в сжатом видео. это может увеличить размер файла",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("сайт проекта"),
     "quality": MessageLookupByLibrary.simpleMessage("качество"),
@@ -192,15 +213,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "resolutionReducedSdDescription": MessageLookupByLibrary.simpleMessage(
       "разрешение будет уменьшено до sd",
     ),
+    "russian": MessageLookupByLibrary.simpleMessage("русский"),
     "save": MessageLookupByLibrary.simpleMessage("сохранить"),
-    "saveVideos": m4,
-    "savedButOriginalsNotDeleted": m5,
-    "savedVideosAndDeletedOriginals": m6,
-    "savedVideosToGallery": m7,
-    "secondsRemaining": m8,
+    "saveVideos": m6,
+    "saveVideosToAlbum": MessageLookupByLibrary.simpleMessage(
+      "сохранять видео в альбом",
+    ),
+    "saveVideosToAlbumDescription": m7,
+    "savedButOriginalsNotDeleted": m8,
+    "savedVideosAndDeletedOriginals": m9,
+    "savedVideosToGallery": m10,
+    "secondsRemaining": m11,
+    "settings": MessageLookupByLibrary.simpleMessage("настройки"),
     "share": MessageLookupByLibrary.simpleMessage("поделиться"),
     "shareWithFriends": MessageLookupByLibrary.simpleMessage(
       "поделиться с друзьями",
+    ),
+    "showOverheatWarning": MessageLookupByLibrary.simpleMessage(
+      "показывать предупреждение о перегреве",
+    ),
+    "showOverheatWarningDescription": MessageLookupByLibrary.simpleMessage(
+      "показывает небольшой баннер во время сжатия, когда устройство может замедлиться",
     ),
     "simpleOptions": MessageLookupByLibrary.simpleMessage("простые настройки"),
     "skip": MessageLookupByLibrary.simpleMessage("пропустить"),
@@ -215,6 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "медленное кодирование обычно создаёт меньший файл при том же качестве",
     ),
     "stereo": MessageLookupByLibrary.simpleMessage("стерео"),
+    "system": MessageLookupByLibrary.simpleMessage("система"),
     "telegram": MessageLookupByLibrary.simpleMessage("telegram"),
     "todo": MessageLookupByLibrary.simpleMessage("В разработке"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("попробовать снова"),
@@ -230,9 +264,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "videoCodecDescription": MessageLookupByLibrary.simpleMessage(
       "выберите совместимость или более эффективное сжатие",
     ),
-    "videoProgress": m9,
-    "videosCompressed": m10,
+    "videoProgress": m12,
+    "videosCompressed": m13,
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m11,
+    "youSavedSize": m14,
   };
 }
