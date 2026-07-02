@@ -63,7 +63,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("о приложении"),
     "aboutStory": MessageLookupByLibrary.simpleMessage(
-      "minimo (видео) появился из простой проблемы. я люблю спорт и часто смотрю короткие фрагменты матчей, которыми делятся клубы и telegram-каналы. даже несколько секунд видео иногда занимают неоправданно много места.\n\nэтот проект даёт каждому удобную и бесплатную возможность сжимать видео прямо на мобильном устройстве, экономить память и сохранять важные моменты.",
+      "minimo (video) появился из простой проблемы. я люблю спорт и часто смотрю короткие фрагменты матчей, которыми делятся клубы и telegram-каналы. даже несколько секунд видео иногда занимают неоправданно много места.\n\nэтот проект даёт каждому удобную и бесплатную возможность сжимать видео прямо на мобильном устройстве, экономить память и сохранять важные моменты.",
     ),
     "addPrefix": m0,
     "addPrefixDescription": m1,
@@ -79,7 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "alreadyOptimizedDescription": MessageLookupByLibrary.simpleMessage(
       "это видео уже маленькое. попробуйте снизить качество или выберите другое видео.",
     ),
-    "appName": MessageLookupByLibrary.simpleMessage("minimo (видео)"),
+    "appName": MessageLookupByLibrary.simpleMessage("minimo (video)"),
     "audio": MessageLookupByLibrary.simpleMessage("звук"),
     "audioDescription": MessageLookupByLibrary.simpleMessage(
       "стерео звучит лучше; моно или удаление звука экономит место",
@@ -176,7 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "приватно по умолчанию",
     ),
     "openSourceNote": MessageLookupByLibrary.simpleMessage(
-      "minimo (видео) — проект с открытым исходным кодом. посмотрите код, следите за проектом или свяжитесь со мной",
+      "minimo (video) — проект с открытым исходным кодом. посмотрите код, следите за проектом или свяжитесь со мной",
     ),
     "optimizeForStreaming": MessageLookupByLibrary.simpleMessage(
       "оптимизация для стриминга",
@@ -266,6 +266,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "videoProgress": m12,
     "videosCompressed": m13,
+    "waiting": MessageLookupByLibrary.simpleMessage("ожидает"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
     "youSavedSize": m14,
   };

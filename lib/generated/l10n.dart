@@ -908,6 +908,11 @@ class S {
     );
   }
 
+  /// `waiting`
+  String get waiting {
+    return Intl.message('waiting', name: 'waiting', desc: '', args: []);
+  }
+
   /// `failed`
   String get failed {
     return Intl.message('failed', name: 'failed', desc: '', args: []);

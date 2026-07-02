@@ -12,6 +12,7 @@ import '../../bloc/compress_bloc.dart';
 import '../../bloc/compress_event.dart';
 import '../../bloc/compress_state.dart';
 import 'selected_videos_preview.dart';
+import 'video_status_list.dart';
 
 class CompressionResultView extends StatelessWidget {
   final CompressState state;
@@ -37,65 +38,76 @@ class CompressionResultView extends StatelessWidget {
 
     return Column(
       children: [
-        const Spacer(flex: 2),
-        SelectedVideosPreview(
-          selectedCount: state.videos.length,
-          thumbnailPaths: state.thumbnailPaths,
-          scale: 1.72,
-        ),
-        const SizedBox(height: 34),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: allFailed
-                    ? CompressionUiColors.red
-                    : CompressionUiColors.green,
-                shape: BoxShape.circle,
-              ),
-              child: const SizedBox.square(dimension: 12),
-            ),
-            const SizedBox(width: 9),
-            Flexible(
-              child: Text(
-                allFailed
-                    ? alreadyOptimized
-                          ? strings.alreadyOptimized
-                          : strings.compressionFailed
-                    : successResults.length == state.results.length
-                    ? strings.compressionCompleted
-                    : strings.videosCompressed(
-                        successResults.length,
-                        state.results.length,
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 24),
+                SelectedVideosPreview(
+                  selectedCount: state.videos.length,
+                  thumbnailPaths: state.thumbnailPaths,
+                  scale: 1.72,
+                ),
+                const SizedBox(height: 34),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: allFailed
+                            ? CompressionUiColors.red
+                            : CompressionUiColors.green,
+                        shape: BoxShape.circle,
                       ),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: CompressionUiColors.dark,
-                  fontSize: 25,
-                  height: 1,
+                      child: const SizedBox.square(dimension: 12),
+                    ),
+                    const SizedBox(width: 9),
+                    Flexible(
+                      child: Text(
+                        allFailed
+                            ? alreadyOptimized
+                                  ? strings.alreadyOptimized
+                                  : strings.compressionFailed
+                            : successResults.length == state.results.length
+                            ? strings.compressionCompleted
+                            : strings.videosCompressed(
+                                successResults.length,
+                                state.results.length,
+                              ),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: CompressionUiColors.dark,
+                          fontSize: 25,
+                          height: 1,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+                const SizedBox(height: 12),
+                Text(
+                  allFailed
+                      ? alreadyOptimized
+                            ? strings.alreadyOptimizedDescription
+                            : strings.compressionFailedDescription
+                      : strings.youSavedSize(
+                          Utils.formatSize(savedBytes).toLowerCase(),
+                        ),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: CompressionUiColors.grey,
+                    fontSize: 19,
+                    height: 1,
+                  ),
+                ),
+                const SizedBox(height: 22),
+                VideoStatusList(state: state),
+                const SizedBox(height: 24),
+              ],
             ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Text(
-          allFailed
-              ? alreadyOptimized
-                    ? strings.alreadyOptimizedDescription
-                    : strings.compressionFailedDescription
-              : strings.youSavedSize(
-                  Utils.formatSize(savedBytes).toLowerCase(),
-                ),
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: CompressionUiColors.grey,
-            fontSize: 19,
-            height: 1,
           ),
         ),
-        const SizedBox(height: 40),
+        const SizedBox(height: 14),
         if (allFailed && !alreadyOptimized)
           AppActionButton(
             width: double.infinity,
@@ -125,7 +137,7 @@ class CompressionResultView extends StatelessWidget {
         ],
         // TODO: Restore Delete Original after implementing platform-safe
         // deletion from Photos/MediaStore with system confirmation.
-        const Spacer(flex: 3),
+        const SizedBox(height: 14),
         AppActionButton(
           width: double.infinity,
           label: strings.compressOtherVideos,

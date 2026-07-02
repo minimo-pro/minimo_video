@@ -79,6 +79,7 @@ class _CompressView extends StatelessWidget {
                   onBack: () => _goToStart(context),
                 ),
                 CompressStatus.processing => CompressionProgressView(
+                  key: ValueKey(state.compressionRunId),
                   state: state,
                 ),
                 CompressStatus.done => CompressionResultView(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/features/compression/bloc/compress_bloc.dart';
 import 'package:minimo_video/features/compression/bloc/compress_event.dart';
@@ -20,6 +22,84 @@ class _FailingCompressor extends VideoCompressorAdapter {
     void Function(double progress)? onProgress,
   }) async {
     throw StateError('encoder failed');
+  }
+}
+
+class _MixedCompressor extends VideoCompressorAdapter {
+  @override
+  Future<String?> createThumbnail(String inputPath) async => null;
+
+  @override
+  Future<CompressionResult> compress(
+    String inputPath,
+    String originalName,
+    CompressionSettings settings, {
+    bool addKompressoPrefix = true,
+    void Function(double progress)? onProgress,
+  }) async {
+    onProgress?.call(1);
+    return inputPath.contains('ok')
+        ? const CompressionResult(
+            success: true,
+            originalSize: 100,
+            outputSize: 40,
+            outputPath: '/ok-small.mp4',
+          )
+        : const CompressionResult(
+            success: false,
+            originalSize: 100,
+            outputSize: 100,
+          );
+  }
+}
+
+class _ControlledCompressor extends VideoCompressorAdapter {
+  final completer = Completer<CompressionResult>();
+
+  @override
+  Future<String?> createThumbnail(String inputPath) async => null;
+
+  @override
+  Future<CompressionResult> compress(
+    String inputPath,
+    String originalName,
+    CompressionSettings settings, {
+    bool addKompressoPrefix = true,
+    void Function(double progress)? onProgress,
+  }) {
+    return completer.future;
+  }
+}
+
+class _StaleProgressCompressor extends VideoCompressorAdapter {
+  void Function(double progress)? staleProgress;
+  final secondRun = Completer<CompressionResult>();
+  var calls = 0;
+
+  @override
+  Future<String?> createThumbnail(String inputPath) async => null;
+
+  @override
+  Future<CompressionResult> compress(
+    String inputPath,
+    String originalName,
+    CompressionSettings settings, {
+    bool addKompressoPrefix = true,
+    void Function(double progress)? onProgress,
+  }) {
+    calls++;
+    if (calls == 1) {
+      staleProgress = onProgress;
+      return Future.value(
+        const CompressionResult(
+          success: true,
+          originalSize: 100,
+          outputSize: 40,
+          outputPath: '/small.mp4',
+        ),
+      );
+    }
+    return secondRun.future;
   }
 }
 
@@ -67,6 +147,14 @@ void main() {
     expect(state.resultsOriginalSize - state.compressedSize, 60);
   });
 
+  test('processing display progress hides stale 100 before first result', () {
+    final state = CompressState.initial(const [
+      PickedVideo(path: '/video.mp4', name: 'video.mp4', size: 100),
+    ]).copyWith(status: CompressStatus.processing, progress: 1);
+
+    expect(state.displayProgress, 0);
+  });
+
   test('compression errors finish with a failed result', () async {
     final bloc = CompressBloc(
       initialVideos: const [
@@ -86,7 +174,104 @@ void main() {
               (state) => state.compressionError,
               'compressionError',
               isNotNull,
-            ),
+            )
+            .having((state) => state.videoStatuses, 'videoStatuses', const [
+              VideoCompressionStatus.failed,
+            ]),
+      ),
+    );
+    await bloc.close();
+  });
+
+  test('mixed compression keeps per-video statuses', () async {
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/ok.mp4', name: 'ok.mp4', size: 100),
+        PickedVideo(path: '/same.mp4', name: 'same.mp4', size: 100),
+      ],
+      videoCompressorAdapter: _MixedCompressor(),
+    );
+
+    bloc.add(const CompressStarted());
+    await expectLater(
+      bloc.stream,
+      emitsThrough(
+        isA<CompressState>()
+            .having((state) => state.status, 'status', CompressStatus.done)
+            .having((state) => state.progress, 'progress', 1)
+            .having((state) => state.videoStatuses, 'videoStatuses', const [
+              VideoCompressionStatus.compressed,
+              VideoCompressionStatus.skipped,
+            ]),
+      ),
+    );
+    await bloc.close();
+  });
+
+  test('current video status changes while compression is running', () async {
+    final compressor = _ControlledCompressor();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/video.mp4', name: 'video.mp4', size: 100),
+      ],
+      videoCompressorAdapter: compressor,
+    );
+
+    bloc.add(const CompressStarted());
+    await expectLater(
+      bloc.stream,
+      emitsThrough(
+        isA<CompressState>().having(
+          (state) => state.videoStatuses,
+          'videoStatuses',
+          const [VideoCompressionStatus.processing],
+        ),
+      ),
+    );
+
+    compressor.completer.complete(
+      const CompressionResult(
+        success: true,
+        originalSize: 100,
+        outputSize: 40,
+        outputPath: '/small.mp4',
+      ),
+    );
+    await bloc.close();
+  });
+
+  test('stale progress from previous run is ignored', () async {
+    final compressor = _StaleProgressCompressor();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/video.mp4', name: 'video.mp4', size: 100),
+      ],
+      videoCompressorAdapter: compressor,
+    );
+
+    bloc.add(const CompressStarted());
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+
+    bloc.add(const CompressStarted());
+    await bloc.stream.firstWhere(
+      (state) =>
+          state.status == CompressStatus.processing &&
+          state.compressionRunId == 2,
+    );
+
+    expect(bloc.state.progress, 0);
+    compressor.staleProgress?.call(0.8);
+    await Future<void>.delayed(Duration.zero);
+    expect(bloc.state.progress, 0);
+
+    compressor.secondRun.complete(
+      const CompressionResult(
+        success: true,
+        originalSize: 100,
+        outputSize: 40,
+        outputPath: '/small-2.mp4',
       ),
     );
     await bloc.close();

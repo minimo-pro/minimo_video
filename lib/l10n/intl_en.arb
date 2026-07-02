@@ -172,6 +172,7 @@
     }
   },
   "compressOtherVideos": "compress other videos",
+  "waiting": "waiting",
   "failed": "failed",
   "crfValue": "CRF {value}",
   "@crfValue": {

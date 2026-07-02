@@ -258,6 +258,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "videoProgress": m12,
     "videosCompressed": m13,
+    "waiting": MessageLookupByLibrary.simpleMessage("waiting"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
     "youSavedSize": m14,
   };

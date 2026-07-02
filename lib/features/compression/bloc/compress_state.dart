@@ -4,6 +4,8 @@ import '../domain/picked_video.dart';
 
 enum CompressStatus { ready, processing, done }
 
+enum VideoCompressionStatus { waiting, processing, compressed, skipped, failed }
+
 class CompressedVideo {
   final PickedVideo source;
   final CompressionResult result;
@@ -15,7 +17,9 @@ class CompressState {
   final CompressStatus status;
   final List<PickedVideo> videos;
   final List<String?> thumbnailPaths;
+  final List<VideoCompressionStatus> videoStatuses;
   final List<CompressedVideo> results;
+  final int compressionRunId;
   final int processingIndex;
   final double progress;
   final Duration elapsed;
@@ -31,7 +35,9 @@ class CompressState {
     required this.status,
     required this.videos,
     required this.thumbnailPaths,
+    required this.videoStatuses,
     required this.results,
+    required this.compressionRunId,
     required this.processingIndex,
     required this.progress,
     required this.elapsed,
@@ -51,7 +57,14 @@ class CompressState {
       thumbnailPaths: List.unmodifiable(
         List<String?>.filled(videos.length, null),
       ),
+      videoStatuses: List.unmodifiable(
+        List<VideoCompressionStatus>.filled(
+          videos.length,
+          VideoCompressionStatus.waiting,
+        ),
+      ),
       results: const [],
+      compressionRunId: 0,
       processingIndex: 0,
       progress: 0,
       elapsed: Duration.zero,
@@ -61,6 +74,15 @@ class CompressState {
   }
 
   bool get showSettings => videos.isNotEmpty && status == CompressStatus.ready;
+
+  double get displayProgress {
+    if (status == CompressStatus.processing &&
+        results.isEmpty &&
+        progress >= 1) {
+      return 0;
+    }
+    return progress.clamp(0.0, 1.0);
+  }
 
   int get totalOriginalSize {
     return videos.fold<int>(0, (sum, video) => sum + video.size);
@@ -99,7 +121,9 @@ class CompressState {
     CompressStatus? status,
     List<PickedVideo>? videos,
     List<String?>? thumbnailPaths,
+    List<VideoCompressionStatus>? videoStatuses,
     List<CompressedVideo>? results,
+    int? compressionRunId,
     int? processingIndex,
     double? progress,
     Duration? elapsed,
@@ -119,7 +143,11 @@ class CompressState {
       thumbnailPaths: thumbnailPaths == null
           ? this.thumbnailPaths
           : List.unmodifiable(thumbnailPaths),
+      videoStatuses: videoStatuses == null
+          ? this.videoStatuses
+          : List.unmodifiable(videoStatuses),
       results: results == null ? this.results : List.unmodifiable(results),
+      compressionRunId: compressionRunId ?? this.compressionRunId,
       processingIndex: processingIndex ?? this.processingIndex,
       progress: progress ?? this.progress,
       elapsed: elapsed ?? this.elapsed,

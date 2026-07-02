@@ -16,6 +16,7 @@ import '../../bloc/compress_event.dart';
 import '../../bloc/compress_state.dart';
 import '../utils/compression_estimate.dart';
 import 'selected_videos_preview.dart';
+import 'video_status_list.dart';
 
 class CompressionProgressView extends StatefulWidget {
   final CompressState state;
@@ -51,57 +52,69 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
   Widget build(BuildContext context) {
     final strings = S.of(context);
     final state = widget.state;
-    final progress = state.progress.clamp(0.0, 1.0);
+    final progress = state.displayProgress;
     final percent = (progress * 100).round();
 
     return Column(
       children: [
-        const Spacer(flex: 3),
-        SelectedVideosPreview(
-          selectedCount: state.videos.length,
-          thumbnailPaths: state.thumbnailPaths,
-          scale: 1.72,
-        ),
-        const SizedBox(height: 30),
-        _ProgressSizeComparison(state: state),
-        const Spacer(flex: 2),
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            '$percent%',
-            style: const TextStyle(
-              color: CompressionUiColors.dark,
-              fontSize: 18,
-              height: 1,
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 24),
+                SelectedVideosPreview(
+                  selectedCount: state.videos.length,
+                  thumbnailPaths: state.thumbnailPaths,
+                  scale: 1.72,
+                ),
+                const SizedBox(height: 30),
+                _ProgressSizeComparison(state: state),
+                const SizedBox(height: 28),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    '$percent%',
+                    style: const TextStyle(
+                      color: CompressionUiColors.dark,
+                      fontSize: 18,
+                      height: 1,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(99),
+                  child: LinearProgressIndicator(
+                    key: ValueKey(state.compressionRunId),
+                    value: progress,
+                    minHeight: 7,
+                    backgroundColor: CompressionUiColors.lightGrey,
+                    color: CompressionUiColors.red,
+                  ),
+                ),
+                const SizedBox(height: 13),
+                Text(
+                  '${strings.videoProgress(state.processingIndex + 1, state.videos.length)} · ${_remainingTimeLabel(strings, state)}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: CompressionUiColors.grey,
+                    fontSize: 17,
+                    height: 1,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                VideoStatusList(state: state),
+                if (AppSettingsService.instance.showOverheatWarning &&
+                    _showThermalWarning) ...[
+                  const SizedBox(height: 14),
+                  const _OverheatWarning(),
+                ],
+                const SizedBox(height: 24),
+              ],
             ),
           ),
         ),
-        const SizedBox(height: 8),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(99),
-          child: LinearProgressIndicator(
-            value: progress,
-            minHeight: 7,
-            backgroundColor: CompressionUiColors.lightGrey,
-            color: CompressionUiColors.red,
-          ),
-        ),
-        const SizedBox(height: 13),
-        Text(
-          _remainingTimeLabel(strings, state),
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: CompressionUiColors.grey,
-            fontSize: 17,
-            height: 1,
-          ),
-        ),
-        if (AppSettingsService.instance.showOverheatWarning &&
-            _showThermalWarning) ...[
-          const SizedBox(height: 14),
-          const _OverheatWarning(),
-        ],
-        const Spacer(flex: 4),
+        const SizedBox(height: 14),
         AppActionButton(
           width: double.infinity,
           label: strings.cancel,
@@ -113,12 +126,12 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
   }
 
   String _remainingTimeLabel(S strings, CompressState state) {
-    if (state.progress < 0.02 || state.elapsed.inSeconds < 1) {
+    final progress = state.displayProgress;
+    if (progress < 0.02 || state.elapsed.inSeconds < 1) {
       return strings.estimatingTimeRemaining;
     }
 
-    final totalMilliseconds =
-        state.elapsed.inMilliseconds / state.progress.clamp(0.01, 1);
+    final totalMilliseconds = state.elapsed.inMilliseconds / progress;
     final remaining = Duration(
       milliseconds: (totalMilliseconds - state.elapsed.inMilliseconds)
           .round()
