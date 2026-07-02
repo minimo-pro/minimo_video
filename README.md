@@ -22,7 +22,7 @@ No cloud upload. No subscription. Your videos stay yours.
 
 ## How to contribute
 
-// TODO
+[![Contributing](https://img.shields.io/badge/Contributing-Guide-414141?style=for-the-badge)](CONTRIBUTING.md) [![Code of Conduct](https://img.shields.io/badge/Code_of_Conduct-Rules-414141?style=for-the-badge)](CODE_OF_CONDUCT.md)
 
 ### Project support
 
