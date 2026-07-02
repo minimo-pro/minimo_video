@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../data/video_compressor_adapter.dart';
@@ -15,6 +17,8 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
   final AppSettingsService _appSettings;
   bool _cancelRequested = false;
   int _compressionRunId = 0;
+  int _estimateRunId = 0;
+  Timer? _estimateDebounce;
 
   CompressBloc({
     List<PickedVideo> initialVideos = const [],
@@ -27,6 +31,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
        _appSettings = appSettings ?? AppSettingsService.instance,
        super(CompressState.initial(initialVideos)) {
     on<CompressThumbnailsRequested>(_onThumbnailsRequested);
+    on<CompressEstimateRequested>(_onEstimateRequested);
     on<CompressSimpleQualityChanged>(_onSimpleQualityChanged);
     on<CompressCrfChanged>(_onCrfChanged);
     on<CompressPresetChanged>(_onPresetChanged);
@@ -38,6 +43,30 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     on<CompressResultsSaved>(_onResultsSaved);
     on<CompressMessagesCleared>(_onMessagesCleared);
     add(const CompressThumbnailsRequested());
+    add(const CompressEstimateRequested());
+  }
+
+  void _requestEstimate() {
+    _estimateRunId++;
+    _estimateDebounce?.cancel();
+    _estimateDebounce = Timer(
+      const Duration(milliseconds: 200),
+      () => add(const CompressEstimateRequested()),
+    );
+  }
+
+  Future<void> _onEstimateRequested(
+    CompressEstimateRequested event,
+    Emitter<CompressState> emit,
+  ) async {
+    final runId = ++_estimateRunId;
+    final settings = state.settings;
+    final estimate = await _videoCompressorAdapter.estimateCompressedSize(
+      state.videos.map((video) => video.path),
+      settings,
+    );
+    if (runId != _estimateRunId) return;
+    emit(state.copyWith(estimatedSize: estimate, clearEstimatedSize: true));
   }
 
   Future<void> _onThumbnailsRequested(
@@ -92,10 +121,12 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
           ),
         );
     }
+    _requestEstimate();
   }
 
   void _onCrfChanged(CompressCrfChanged event, Emitter<CompressState> emit) {
     emit(state.copyWith(settings: state.settings.copyWith(crf: event.crf)));
+    _requestEstimate();
   }
 
   void _onPresetChanged(
@@ -105,6 +136,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     emit(
       state.copyWith(settings: state.settings.copyWith(preset: event.preset)),
     );
+    _requestEstimate();
   }
 
   void _onResolutionChanged(
@@ -116,6 +148,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         settings: state.settings.copyWith(resolution: event.resolution),
       ),
     );
+    _requestEstimate();
   }
 
   void _onSettingsChanged(
@@ -123,6 +156,13 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     Emitter<CompressState> emit,
   ) {
     emit(state.copyWith(settings: event.settings));
+    _requestEstimate();
+  }
+
+  @override
+  Future<void> close() {
+    _estimateDebounce?.cancel();
+    return super.close();
   }
 
   Future<void> _onStarted(

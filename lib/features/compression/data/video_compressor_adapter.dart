@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -61,6 +62,76 @@ class VideoCompressorAdapter {
     return _compressor.cancelCompression();
   }
 
+  Future<int?> estimateCompressedSize(
+    Iterable<String> inputPaths,
+    CompressionSettings settings,
+  ) async {
+    var total = 0;
+    for (final inputPath in inputPaths) {
+      final info = await _compressor.getVideoInfo(inputPath);
+      final estimate = await _compressor.getCompressionEstimate(
+        inputPath,
+        _qualityForCrf(settings.crf),
+        advanced: _buildAdvancedConfig(settings),
+      );
+      if (estimate == null || info == null) return null;
+      var estimatedSize = estimate.estimatedSizeBytes;
+      if (Platform.isAndroid) {
+        // ponytail: v2.0.0 calculates bitrate but does not apply it to Media3.
+        // Remove this floor when the Android encoder starts applying bitrate.
+        final floor = androidEstimateFloor(
+          originalSize: info.fileSizeBytes,
+          width: info.width,
+          height: info.height,
+          settings: settings,
+        );
+        if (floor > estimatedSize) estimatedSize = floor;
+        if (estimatedSize > info.fileSizeBytes) {
+          estimatedSize = info.fileSizeBytes;
+        }
+      }
+      total += estimatedSize;
+    }
+    return total;
+  }
+
+  static int androidEstimateFloor({
+    required int originalSize,
+    required int width,
+    required int height,
+    required CompressionSettings settings,
+  }) {
+    if (originalSize <= 0 || width <= 0 || height <= 0) return 0;
+    final resolution =
+        settings.resolution ??
+        switch (_qualityForCrfStatic(settings.crf)) {
+          VVideoCompressQuality.high => '1920:1080',
+          VVideoCompressQuality.medium => '1280:720',
+          VVideoCompressQuality.low => '854:480',
+          VVideoCompressQuality.veryLow => '640:360',
+          VVideoCompressQuality.ultraLow => '432:240',
+        };
+    final parts = resolution.split(':');
+    if (parts.length != 2) return originalSize;
+    final targetWidth = int.tryParse(parts[0]);
+    final targetHeight = int.tryParse(parts[1]);
+    if (targetWidth == null || targetHeight == null) return originalSize;
+    final scale = [
+      1.0,
+      targetWidth / width,
+      targetHeight / height,
+    ].reduce((a, b) => a < b ? a : b);
+    final qualityRatio = switch (_qualityForCrfStatic(settings.crf)) {
+      VVideoCompressQuality.high => 0.96,
+      VVideoCompressQuality.medium => 0.89,
+      VVideoCompressQuality.low => 0.43,
+      VVideoCompressQuality.veryLow => 0.32,
+      VVideoCompressQuality.ultraLow => 0.24,
+    };
+    final resolutionRatio = math.pow(scale * scale, 0.02);
+    return (originalSize * qualityRatio * resolutionRatio).round();
+  }
+
   Future<String?> createThumbnail(String inputPath) async {
     final result = await _compressor.getVideoThumbnail(
       inputPath,
@@ -115,8 +186,6 @@ class VideoCompressorAdapter {
     CompressionSettings settings,
     String outputPath,
   ) {
-    final (width, height) = _parseResolution(settings.resolution);
-
     return VVideoCompressionConfig(
       quality: _qualityForCrf(settings.crf),
       outputPath: outputPath,
@@ -129,36 +198,46 @@ class VideoCompressorAdapter {
       useFastStart: true,
       useTwoPassEncoding: settings.twoPassEncoding,
       useVariableBitrate: true,
-      advanced: VVideoAdvancedConfig(
-        customWidth: width,
-        customHeight: height,
-        frameRate: settings.frameRate,
-        videoCodec: settings.videoCodec == CompressionVideoCodec.h265
-            ? VVideoCodec.h265
-            : VVideoCodec.h264,
-        audioCodec: VAudioCodec.aac,
-        audioBitrate: settings.audioMode == CompressionAudioMode.mono
-            ? 96000
-            : 128000,
-        audioChannels: settings.audioMode == CompressionAudioMode.mono ? 1 : 2,
-        removeAudio: settings.audioMode == CompressionAudioMode.remove,
-        monoAudio: settings.audioMode == CompressionAudioMode.mono,
-        encodingSpeed: _encodingSpeedForPreset(settings.preset),
-        crf: settings.crf.toInt(),
-        hardwareAcceleration: settings.hardwareAcceleration,
-        twoPassEncoding: settings.twoPassEncoding,
-        variableBitrate: true,
-        noiseReduction: settings.noiseReduction,
-        autoCorrectOrientation: true,
-        dimensionHandling: VDimensionHandling.autoAlign,
-      ),
+      advanced: _buildAdvancedConfig(settings),
+    );
+  }
+
+  VVideoAdvancedConfig _buildAdvancedConfig(CompressionSettings settings) {
+    final (width, height) = _parseResolution(settings.resolution);
+    return VVideoAdvancedConfig(
+      customWidth: width,
+      customHeight: height,
+      frameRate: settings.frameRate,
+      reducedFrameRate: settings.frameRate,
+      videoCodec: settings.videoCodec == CompressionVideoCodec.h265
+          ? VVideoCodec.h265
+          : VVideoCodec.h264,
+      audioCodec: VAudioCodec.aac,
+      audioBitrate: settings.audioMode == CompressionAudioMode.mono
+          ? 96000
+          : 128000,
+      audioChannels: settings.audioMode == CompressionAudioMode.mono ? 1 : 2,
+      removeAudio: settings.audioMode == CompressionAudioMode.remove,
+      monoAudio: settings.audioMode == CompressionAudioMode.mono,
+      encodingSpeed: _encodingSpeedForPreset(settings.preset),
+      crf: settings.crf.toInt(),
+      hardwareAcceleration: settings.hardwareAcceleration,
+      twoPassEncoding: settings.twoPassEncoding,
+      variableBitrate: true,
+      noiseReduction: settings.noiseReduction,
+      autoCorrectOrientation: true,
+      dimensionHandling: VDimensionHandling.autoAlign,
     );
   }
 
   VVideoCompressQuality _qualityForCrf(double crf) {
-    if (crf < 20) return VVideoCompressQuality.high;
-    if (crf < 25) return VVideoCompressQuality.medium;
-    if (crf < 31) return VVideoCompressQuality.low;
+    return _qualityForCrfStatic(crf);
+  }
+
+  static VVideoCompressQuality _qualityForCrfStatic(double crf) {
+    if (crf <= 22) return VVideoCompressQuality.high;
+    if (crf <= 28) return VVideoCompressQuality.medium;
+    if (crf <= 34) return VVideoCompressQuality.low;
     return VVideoCompressQuality.veryLow;
   }
 

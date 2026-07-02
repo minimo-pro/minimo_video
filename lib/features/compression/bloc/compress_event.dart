@@ -14,6 +14,10 @@ class CompressThumbnailsRequested extends CompressEvent {
   const CompressThumbnailsRequested();
 }
 
+class CompressEstimateRequested extends CompressEvent {
+  const CompressEstimateRequested();
+}
+
 class CompressCrfChanged extends CompressEvent {
   final double crf;
 

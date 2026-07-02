@@ -53,6 +53,11 @@
       }
     }
   },
+  "clearCache": "очистка кеша",
+  "clearCacheDescription": "удаляет временные файлы приложения. видео в галерее останутся",
+  "holdToClearCache": "удерживайте кнопку, чтобы очистить кеш",
+  "cacheCleared": "кеш очищен",
+  "cacheClearFailed": "не удалось очистить кеш",
   "language": "язык",
   "languageDescription": "выберите язык приложения",
   "system": "система",

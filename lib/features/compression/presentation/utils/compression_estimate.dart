@@ -21,16 +21,4 @@ abstract final class CompressionEstimate {
     if (settings.noiseReduction) ratio *= 0.96;
     return (originalSize * ratio).round();
   }
-
-  static int savingsPercent({
-    required int originalSize,
-    required CompressionSettings settings,
-  }) {
-    if (originalSize == 0) return 0;
-    final estimatedSize = compressedSize(
-      originalSize: originalSize,
-      settings: settings,
-    );
-    return ((1 - estimatedSize / originalSize) * 100).clamp(0, 99).round();
-  }
 }

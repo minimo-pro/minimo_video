@@ -24,6 +24,7 @@ class CompressState {
   final double progress;
   final Duration elapsed;
   final CompressionSettings settings;
+  final int? estimatedSize;
   final bool isSaving;
   final int? savedVideoCount;
   final int? deletedOriginalCount;
@@ -42,6 +43,7 @@ class CompressState {
     required this.progress,
     required this.elapsed,
     required this.settings,
+    this.estimatedSize,
     required this.isSaving,
     this.savedVideoCount,
     this.deletedOriginalCount,
@@ -69,6 +71,7 @@ class CompressState {
       progress: 0,
       elapsed: Duration.zero,
       settings: CompressionSettings(),
+      estimatedSize: null,
       isSaving: false,
     );
   }
@@ -128,6 +131,7 @@ class CompressState {
     double? progress,
     Duration? elapsed,
     CompressionSettings? settings,
+    int? estimatedSize,
     bool? isSaving,
     int? savedVideoCount,
     int? deletedOriginalCount,
@@ -136,6 +140,7 @@ class CompressState {
     Object? compressionError,
     bool clearSaveNotification = false,
     bool clearCompressionError = false,
+    bool clearEstimatedSize = false,
   }) {
     return CompressState(
       status: status ?? this.status,
@@ -152,6 +157,9 @@ class CompressState {
       progress: progress ?? this.progress,
       elapsed: elapsed ?? this.elapsed,
       settings: settings ?? this.settings,
+      estimatedSize: clearEstimatedSize
+          ? estimatedSize
+          : estimatedSize ?? this.estimatedSize,
       isSaving: isSaving ?? this.isSaving,
       savedVideoCount: clearSaveNotification
           ? savedVideoCount

@@ -53,6 +53,11 @@
       }
     }
   },
+  "clearCache": "clear cache",
+  "clearCacheDescription": "removes temporary app files. videos saved to your gallery remain untouched",
+  "holdToClearCache": "hold the button to clear cache",
+  "cacheCleared": "cache cleared",
+  "cacheClearFailed": "failed to clear cache",
   "language": "language",
   "languageDescription": "select the language for the app",
   "system": "system",

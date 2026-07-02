@@ -89,6 +89,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "битрейт будет уменьшен для экономии места",
     ),
     "cancel": MessageLookupByLibrary.simpleMessage("отмена"),
+    "cacheClearFailed": MessageLookupByLibrary.simpleMessage(
+      "не удалось очистить кеш",
+    ),
+    "cacheCleared": MessageLookupByLibrary.simpleMessage("кеш очищен"),
+    "clearCache": MessageLookupByLibrary.simpleMessage("очистка кеша"),
+    "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
+      "удаляет временные файлы приложения. видео в галерее останутся",
+    ),
+    "holdToClearCache": MessageLookupByLibrary.simpleMessage(
+      "удерживайте кнопку, чтобы очистить кеш",
+    ),
     "compress": MessageLookupByLibrary.simpleMessage("сжать"),
     "compressOtherVideos": MessageLookupByLibrary.simpleMessage(
       "сжать другие видео",

@@ -4,10 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../constants/app_icons.dart';
 import '../generated/l10n.dart';
+import '../services/app_cache_service.dart';
 import '../services/app_settings_service.dart';
+import '../services/utils.dart';
 import '../theme/app_theme.dart';
 import '../widgets/animated_asset_checkbox.dart';
+import '../widgets/app_snack_bar.dart';
 import '../widgets/faded_scroll_view.dart';
+import '../widgets/hold_to_confirm_button.dart';
 
 @RoutePage()
 class SettingsScreen extends StatelessWidget {
@@ -59,6 +63,7 @@ class SettingsScreen extends StatelessWidget {
                         value: settings.saveVideosToAlbum,
                         onChanged: settings.setSaveVideosToAlbum,
                       ),
+                      const _CacheRow(),
                       _LanguageRow(settings: settings),
                     ],
                   ),
@@ -67,6 +72,79 @@ class SettingsScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _CacheRow extends StatefulWidget {
+  const _CacheRow();
+
+  @override
+  State<_CacheRow> createState() => _CacheRowState();
+}
+
+class _CacheRowState extends State<_CacheRow> {
+  int? _size;
+  bool _clearing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSize();
+  }
+
+  Future<void> _loadSize() async {
+    final size = await AppCacheService.size();
+    if (mounted) setState(() => _size = size);
+  }
+
+  Future<void> _clear() async {
+    if (_clearing) return;
+    _clearing = true;
+    var cleared = false;
+    try {
+      await AppCacheService.clear();
+      cleared = true;
+      if (mounted) {
+        AppSnackBar.show(
+          context,
+          message: S.of(context).cacheCleared,
+          type: AppSnackBarType.success,
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        AppSnackBar.show(
+          context,
+          message: S.of(context).cacheClearFailed,
+          type: AppSnackBarType.error,
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          if (cleared) _size = 0;
+          _clearing = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = S.of(context);
+    final enabled = _size != null && _size! > 0 && !_clearing;
+    return _SettingBlock(
+      description: strings.clearCacheDescription,
+      contentPadding: EdgeInsets.zero,
+      child: HoldToConfirmButton(
+        label: strings.clearCache,
+        trailing: _size == null ? '…' : Utils.formatSize(_size!),
+        enabled: enabled,
+        onTap: () =>
+            AppSnackBar.show(context, message: strings.holdToClearCache),
+        onCompleted: _clear,
       ),
     );
   }
@@ -269,16 +347,19 @@ class _LanguageOption extends StatelessWidget {
               width: 1.5,
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(title, style: const TextStyle(fontSize: 17)),
-                ),
-                if (selected)
-                  Icon(Icons.check, size: 20, color: theme.accentColor),
-              ],
+          child: SizedBox(
+            height: 57,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(title, style: const TextStyle(fontSize: 17)),
+                  ),
+                  if (selected)
+                    Icon(Icons.check, size: 20, color: theme.accentColor),
+                ],
+              ),
             ),
           ),
         ),
@@ -290,8 +371,16 @@ class _LanguageOption extends StatelessWidget {
 class _SettingBlock extends StatelessWidget {
   final Widget child;
   final String description;
+  final EdgeInsetsGeometry contentPadding;
 
-  const _SettingBlock({required this.child, required this.description});
+  const _SettingBlock({
+    required this.child,
+    required this.description,
+    this.contentPadding = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 13,
+    ),
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -308,8 +397,11 @@ class _SettingBlock extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-              child: child,
+              padding: contentPadding,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 31),
+                child: child,
+              ),
             ),
           ),
           const SizedBox(height: 12),

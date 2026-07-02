@@ -87,6 +87,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "bitrate will be reduced to save space",
     ),
     "cancel": MessageLookupByLibrary.simpleMessage("cancel"),
+    "cacheClearFailed": MessageLookupByLibrary.simpleMessage(
+      "failed to clear cache",
+    ),
+    "cacheCleared": MessageLookupByLibrary.simpleMessage("cache cleared"),
+    "clearCache": MessageLookupByLibrary.simpleMessage("clear cache"),
+    "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
+      "removes temporary app files. videos saved to your gallery remain untouched",
+    ),
+    "holdToClearCache": MessageLookupByLibrary.simpleMessage(
+      "hold the button to clear cache",
+    ),
     "compress": MessageLookupByLibrary.simpleMessage("compress"),
     "compressOtherVideos": MessageLookupByLibrary.simpleMessage(
       "compress other videos",

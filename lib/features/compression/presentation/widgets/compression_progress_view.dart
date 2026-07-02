@@ -192,10 +192,12 @@ class _ProgressSizeComparison extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final estimatedSize = CompressionEstimate.compressedSize(
-      originalSize: state.totalOriginalSize,
-      settings: state.settings,
-    );
+    final estimatedSize =
+        state.estimatedSize ??
+        CompressionEstimate.compressedSize(
+          originalSize: state.totalOriginalSize,
+          settings: state.settings,
+        );
 
     return SizedBox(
       width: double.infinity,

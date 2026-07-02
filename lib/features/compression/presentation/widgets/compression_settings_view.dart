@@ -86,14 +86,17 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
   @override
   Widget build(BuildContext context) {
     final state = widget.state;
-    final estimatedSize = CompressionEstimate.compressedSize(
-      originalSize: state.totalOriginalSize,
-      settings: state.settings,
-    );
-    final savingsPercent = CompressionEstimate.savingsPercent(
-      originalSize: state.totalOriginalSize,
-      settings: state.settings,
-    );
+    final estimatedSize =
+        state.estimatedSize ??
+        CompressionEstimate.compressedSize(
+          originalSize: state.totalOriginalSize,
+          settings: state.settings,
+        );
+    final savingsPercent = state.totalOriginalSize == 0
+        ? 0
+        : ((1 - estimatedSize / state.totalOriginalSize) * 100)
+              .clamp(0, 99)
+              .round();
 
     return Column(
       children: [

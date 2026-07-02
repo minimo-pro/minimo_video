@@ -319,6 +319,51 @@ class S {
     );
   }
 
+  /// `clear cache`
+  String get clearCache {
+    return Intl.message('clear cache', name: 'clearCache', desc: '', args: []);
+  }
+
+  /// `removes temporary app files. videos saved to your gallery remain untouched`
+  String get clearCacheDescription {
+    return Intl.message(
+      'removes temporary app files. videos saved to your gallery remain untouched',
+      name: 'clearCacheDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `hold the button to clear cache`
+  String get holdToClearCache {
+    return Intl.message(
+      'hold the button to clear cache',
+      name: 'holdToClearCache',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `cache cleared`
+  String get cacheCleared {
+    return Intl.message(
+      'cache cleared',
+      name: 'cacheCleared',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `failed to clear cache`
+  String get cacheClearFailed {
+    return Intl.message(
+      'failed to clear cache',
+      name: 'cacheClearFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `language`
   String get language {
     return Intl.message('language', name: 'language', desc: '', args: []);

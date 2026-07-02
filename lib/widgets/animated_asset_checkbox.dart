@@ -27,7 +27,7 @@ class AnimatedAssetCheckbox extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: () => onChanged(!value),
         child: SizedBox.square(
-          dimension: 48,
+          dimension: size,
           child: Center(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 220),

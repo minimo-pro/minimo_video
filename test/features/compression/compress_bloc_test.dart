@@ -25,6 +25,17 @@ class _FailingCompressor extends VideoCompressorAdapter {
   }
 }
 
+class _EstimatingCompressor extends VideoCompressorAdapter {
+  @override
+  Future<String?> createThumbnail(String inputPath) async => null;
+
+  @override
+  Future<int?> estimateCompressedSize(
+    Iterable<String> inputPaths,
+    CompressionSettings settings,
+  ) async => 15;
+}
+
 class _MixedCompressor extends VideoCompressorAdapter {
   @override
   Future<String?> createThumbnail(String inputPath) async => null;
@@ -104,6 +115,23 @@ class _StaleProgressCompressor extends VideoCompressorAdapter {
 }
 
 void main() {
+  test('uses platform compression estimate', () async {
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/video.mp4', name: 'video.mp4', size: 17),
+      ],
+      videoCompressorAdapter: _EstimatingCompressor(),
+    );
+
+    await expectLater(
+      bloc.stream,
+      emitsThrough(
+        predicate<CompressState>((state) => state.estimatedSize == 15),
+      ),
+    );
+    await bloc.close();
+  });
+
   test('no-saving results are not treated as compressed videos', () {
     final state = CompressState.initial(const []).copyWith(
       results: const [
