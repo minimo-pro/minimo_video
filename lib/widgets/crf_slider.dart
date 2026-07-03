@@ -27,7 +27,7 @@ class CrfSlider extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
       decoration: BoxDecoration(
-        color: CompressionUiColors.lightGrey.withValues(alpha: 0.55),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: CompressionUiColors.grey),
       ),
@@ -41,8 +41,8 @@ class CrfSlider extends StatelessWidget {
                 child: Text(
                   CompressionLabels.quality(value, strings),
                   key: ValueKey(CompressionLabels.quality(value, strings)),
-                  style: const TextStyle(
-                    color: CompressionUiColors.dark,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 20,
                     height: 1,
                   ),

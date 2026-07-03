@@ -22,6 +22,9 @@ class AppTheme {
             onSecondary: DarkModeColors.onAccent,
             surface: DarkModeColors.background,
             onSurface: DarkModeColors.text,
+            surfaceContainerHighest: DarkModeColors.frameBackground,
+            onSurfaceVariant: DarkModeColors.secondaryText,
+            outline: DarkModeColors.frameBorder,
           )
         : const ColorScheme.light(
             primary: LightModeColors.accent,
@@ -30,6 +33,9 @@ class AppTheme {
             onSecondary: LightModeColors.onAccent,
             surface: LightModeColors.background,
             onSurface: LightModeColors.text,
+            surfaceContainerHighest: LightModeColors.frameBackground,
+            onSurfaceVariant: LightModeColors.secondaryText,
+            outline: LightModeColors.frameBorder,
           );
 
     return ThemeData(

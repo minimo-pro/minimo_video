@@ -70,7 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "additionalOptions": MessageLookupByLibrary.simpleMessage(
       "additional options",
     ),
-    "advancedOptions": MessageLookupByLibrary.simpleMessage("advanced options"),
+    "advancedOptions": MessageLookupByLibrary.simpleMessage("advanced"),
     "alreadyOptimized": MessageLookupByLibrary.simpleMessage(
       "already optimized",
     ),
@@ -238,7 +238,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "showOverheatWarningDescription": MessageLookupByLibrary.simpleMessage(
       "shows a small banner during compression when the device may slow down",
     ),
-    "simpleOptions": MessageLookupByLibrary.simpleMessage("simple options"),
+    "simpleOptions": MessageLookupByLibrary.simpleMessage("simple"),
     "skip": MessageLookupByLibrary.simpleMessage("skip"),
     "slow": MessageLookupByLibrary.simpleMessage("slow"),
     "small": MessageLookupByLibrary.simpleMessage("small"),

@@ -209,14 +209,12 @@ class _PinnedSizeSummary extends StatelessWidget {
         filter: ui.ImageFilter.blur(sigmaX: 16, sigmaY: 16),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: CompressionUiColors.white.withValues(alpha: 0.86),
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: CompressionUiColors.white.withValues(alpha: 0.9),
-            ),
+            border: Border.all(color: Theme.of(context).colorScheme.outline),
             boxShadow: [
               BoxShadow(
-                color: CompressionUiColors.dark.withValues(alpha: 0.12),
+                color: Colors.black.withValues(alpha: 0.12),
                 blurRadius: 22,
                 offset: const Offset(0, 10),
               ),
@@ -237,8 +235,8 @@ class _PinnedSizeSummary extends StatelessWidget {
                           Text(
                             Utils.formatSize(originalSize).toLowerCase(),
                             maxLines: 1,
-                            style: const TextStyle(
-                              color: CompressionUiColors.dark,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
                               fontSize: 20,
                               height: 1,
                             ),
@@ -249,6 +247,10 @@ class _PinnedSizeSummary extends StatelessWidget {
                               AppIcons.arrowForward,
                               width: 20,
                               height: 17,
+                              colorFilter: ColorFilter.mode(
+                                Theme.of(context).colorScheme.onSurface,
+                                BlendMode.srcIn,
+                              ),
                             ),
                           ),
                           RollingCounterText(
@@ -312,8 +314,8 @@ class _SimpleCompressionOptions extends StatelessWidget {
       children: [
         Text(
           strings.quality,
-          style: const TextStyle(
-            color: CompressionUiColors.dark,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
             fontSize: 29,
             height: 1,
           ),

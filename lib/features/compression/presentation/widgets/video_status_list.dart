@@ -13,11 +13,9 @@ class VideoStatusList extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: CompressionUiColors.white.withValues(alpha: 0.86),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: CompressionUiColors.white.withValues(alpha: 0.9),
-        ),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
@@ -57,8 +55,8 @@ class _VideoStatusRow extends StatelessWidget {
             state.videos[index].name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: CompressionUiColors.dark,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 15,
               height: 1,
             ),

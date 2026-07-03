@@ -50,8 +50,8 @@ class SelectedVideosSummary extends StatelessWidget {
                     child: Text(
                       Utils.formatSize(originalSize).toLowerCase(),
                       maxLines: 1,
-                      style: const TextStyle(
-                        color: CompressionUiColors.dark,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 28,
                         height: 1,
                       ),
@@ -67,6 +67,10 @@ class SelectedVideosSummary extends StatelessWidget {
                   AppIcons.arrowForward,
                   width: 29,
                   height: 24,
+                  colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.onSurface,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
               const SizedBox(width: 13),

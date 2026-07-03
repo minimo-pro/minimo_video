@@ -23,11 +23,8 @@ abstract final class DarkModeColors {
 }
 
 abstract final class CompressionUiColors {
-  static const dark = LightModeColors.text;
   static const red = LightModeColors.accent;
   static const green = LightModeColors.success;
   static const white = LightModeColors.onAccent;
   static const grey = LightModeColors.secondaryText;
-  static const lightGrey = LightModeColors.frameBackground;
-  static const page = LightModeColors.background;
 }

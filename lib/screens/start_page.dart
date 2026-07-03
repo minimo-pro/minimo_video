@@ -46,7 +46,9 @@ class _StartPageState extends State<StartPage> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/background.png',
+              theme.isDarkTheme
+                  ? 'assets/images/background_dark.png'
+                  : 'assets/images/background.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -117,7 +119,10 @@ class _StartPageState extends State<StartPage> {
                           ),
                         ),
                 ),
-                const BottomFrame(),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 12),
+                  child: BottomFrame(),
+                ),
               ],
             ),
           ),

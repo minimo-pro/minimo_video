@@ -45,13 +45,15 @@ class AppActionButton extends StatelessWidget {
     final isFilled = variant == AppActionButtonVariant.filled;
     final foreground =
         foregroundColor ??
-        (isFilled ? CompressionUiColors.white : CompressionUiColors.dark);
+        (isFilled
+            ? CompressionUiColors.white
+            : Theme.of(context).colorScheme.onSurface);
     final background =
         backgroundColor ??
         (isFilled
             ? CompressionUiColors.red
             : variant == AppActionButtonVariant.outlined
-            ? CompressionUiColors.lightGrey
+            ? Theme.of(context).colorScheme.surfaceContainerHighest
             : Colors.transparent);
     final shape = RoundedRectangleBorder(borderRadius: borderRadius);
     final baseStyle = ButtonStyle(
@@ -59,7 +61,7 @@ class AppActionButton extends StatelessWidget {
       padding: WidgetStatePropertyAll(padding),
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
-          return CompressionUiColors.lightGrey;
+          return Theme.of(context).colorScheme.surfaceContainerHighest;
         }
         return background;
       }),
@@ -72,7 +74,7 @@ class AppActionButton extends StatelessWidget {
       shape: WidgetStatePropertyAll(shape),
       side: variant == AppActionButtonVariant.outlined
           ? WidgetStatePropertyAll(
-              side ?? const BorderSide(color: CompressionUiColors.grey),
+              side ?? BorderSide(color: Theme.of(context).colorScheme.outline),
             )
           : null,
     );

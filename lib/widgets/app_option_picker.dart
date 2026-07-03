@@ -41,12 +41,12 @@ class AppOptionPicker<T> extends StatelessWidget {
               decoration: BoxDecoration(
                 color: selected
                     ? CompressionUiColors.red
-                    : CompressionUiColors.lightGrey,
+                    : Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: selected
                       ? CompressionUiColors.red
-                      : CompressionUiColors.grey,
+                      : Theme.of(context).colorScheme.outline,
                 ),
               ),
               child: Column(
@@ -58,7 +58,7 @@ class AppOptionPicker<T> extends StatelessWidget {
                     style: TextStyle(
                       color: selected
                           ? CompressionUiColors.white
-                          : CompressionUiColors.dark,
+                          : Theme.of(context).colorScheme.onSurface,
                       fontSize: 16,
                       height: 1,
                     ),
@@ -70,7 +70,7 @@ class AppOptionPicker<T> extends StatelessWidget {
                       style: TextStyle(
                         color: selected
                             ? CompressionUiColors.white.withValues(alpha: 0.82)
-                            : CompressionUiColors.grey,
+                            : Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 12,
                         height: 1.1,
                       ),

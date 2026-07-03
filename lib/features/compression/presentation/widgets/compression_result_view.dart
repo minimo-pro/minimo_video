@@ -74,8 +74,8 @@ class CompressionResultView extends StatelessWidget {
                               state.results.length,
                             ),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: CompressionUiColors.dark,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 25,
                         height: 1,
                       ),
@@ -93,8 +93,8 @@ class CompressionResultView extends StatelessWidget {
                         Utils.formatSize(savedBytes).toLowerCase(),
                       ),
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: CompressionUiColors.grey,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 19,
                   height: 1,
                 ),

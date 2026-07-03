@@ -73,8 +73,8 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
                 alignment: Alignment.centerRight,
                 child: Text(
                   '$percent%',
-                  style: const TextStyle(
-                    color: CompressionUiColors.dark,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 18,
                     height: 1,
                   ),
@@ -87,7 +87,9 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
                   key: ValueKey(state.compressionRunId),
                   value: progress,
                   minHeight: 7,
-                  backgroundColor: CompressionUiColors.lightGrey,
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.surfaceContainerHighest,
                   color: CompressionUiColors.red,
                 ),
               ),
@@ -95,8 +97,8 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
               Text(
                 '${strings.videoProgress(state.processingIndex + 1, state.videos.length)} · ${_remainingTimeLabel(strings, state)}',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: CompressionUiColors.grey,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 17,
                   height: 1,
                 ),
@@ -210,8 +212,8 @@ class _ProgressSizeComparison extends StatelessWidget {
               child: Text(
                 Utils.formatSize(state.totalOriginalSize).toLowerCase(),
                 maxLines: 1,
-                style: const TextStyle(
-                  color: CompressionUiColors.dark,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 28,
                   height: 1,
                 ),
@@ -226,6 +228,10 @@ class _ProgressSizeComparison extends StatelessWidget {
               AppIcons.arrowForward,
               width: 29,
               height: 24,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).colorScheme.onSurface,
+                BlendMode.srcIn,
+              ),
             ),
           ),
           const SizedBox(width: 13),

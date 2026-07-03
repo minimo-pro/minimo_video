@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
-
 class AppSettingsSection extends StatelessWidget {
   final String title;
   final String? description;
@@ -21,8 +19,8 @@ class AppSettingsSection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: CompressionUiColors.dark,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
             fontSize: 22,
             height: 1,
           ),
@@ -31,8 +29,8 @@ class AppSettingsSection extends StatelessWidget {
           const SizedBox(height: 7),
           Text(
             description!,
-            style: const TextStyle(
-              color: CompressionUiColors.grey,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 14,
               height: 1.25,
             ),

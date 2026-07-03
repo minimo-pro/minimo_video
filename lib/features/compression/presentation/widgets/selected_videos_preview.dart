@@ -87,7 +87,7 @@ class _VideoThumb extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
         boxShadow: [
           BoxShadow(
-            color: CompressionUiColors.dark.withValues(alpha: 0.16),
+            color: Colors.black.withValues(alpha: 0.16),
             blurRadius: 8 * (width / 58),
             offset: Offset(0, 3 * (width / 58)),
           ),
@@ -96,11 +96,11 @@ class _VideoThumb extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius),
         child: Container(
-          color: CompressionUiColors.white,
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
           foregroundDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(
-              color: CompressionUiColors.white,
+              color: Theme.of(context).colorScheme.outline,
               width: 2 * (width / 58),
             ),
           ),
@@ -112,6 +112,10 @@ class _VideoThumb extends StatelessWidget {
                     AppIcons.video,
                     width: 21,
                     height: 28,
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.onSurface,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 )
               : Image.file(
@@ -142,7 +146,7 @@ class _SelectedCountBadge extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: CompressionUiColors.dark.withValues(alpha: 0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 7 * scale,
             offset: Offset(0, 2 * scale),
           ),

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../generated/l10n.dart';
 import '../../../router/app_router.gr.dart';
-import '../../../theme/app_colors.dart';
 import '../../../widgets/app_snack_bar.dart';
 import '../../../widgets/minimo_loader.dart';
 import '../bloc/compress_bloc.dart';
@@ -69,7 +68,7 @@ class _CompressView extends StatelessWidget {
       listener: _showSaveMessage,
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: CompressionUiColors.page,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(22, 18, 22, 14),

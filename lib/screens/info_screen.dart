@@ -30,7 +30,6 @@ class InfoScreen extends StatelessWidget {
     'telegram': Uri.parse('https://t.me/khlebobul_dev'),
     'github': Uri.parse('https://github.com/minimo-pro/minimo_video'),
     'x': Uri.parse('https://x.com/khlebobul'),
-    'website': Uri.parse('https://khlebobul.github.io'),
   };
 
   Future<void> _open(String link) =>
@@ -73,9 +72,7 @@ class InfoScreen extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 12, 12, 4),
               child: Row(
                 children: [
-                  Expanded(
-                    child: Text(strings.about, style: textTheme.headlineSmall),
-                  ),
+                  Expanded(child: const _VersionIndicator()),
                   Pressable(
                     child: IconButton(
                       hoverColor: Colors.transparent,
@@ -84,8 +81,8 @@ class InfoScreen extends StatelessWidget {
                       onPressed: context.maybePop,
                       icon: SvgPicture.asset(
                         AppIcons.close,
-                        width: 32,
-                        height: 32,
+                        width: 24,
+                        height: 24,
                         colorFilter: ColorFilter.mode(
                           theme.iconColor,
                           BlendMode.srcIn,
@@ -110,18 +107,14 @@ class InfoScreen extends StatelessWidget {
                         height: 1.45,
                       ),
                     ),
-                    const SizedBox(height: 28),
+                    const SizedBox(height: 18),
                     _InfoLink(title: strings.rateTheApp),
                     _InfoLink(title: strings.shareWithFriends),
-                    _InfoLink(
-                      title: strings.projectWebsite,
-                      onTap: () => _open('project'),
-                    ),
                     _InfoLink(
                       title: strings.myOtherApps,
                       onTap: _openOtherApps,
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
                     Text(
                       strings.openSourceNote,
                       textAlign: TextAlign.center,
@@ -131,7 +124,7 @@ class InfoScreen extends StatelessWidget {
                         height: 1.4,
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -146,12 +139,10 @@ class InfoScreen extends StatelessWidget {
                         ),
                         _SocialLink(
                           icon: AppIcons.website,
-                          onTap: () => _open('website'),
+                          onTap: () => _open('project'),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 18),
-                    const _VersionIndicator(),
                   ],
                 ),
               ),
@@ -186,13 +177,9 @@ class _VersionIndicatorState extends State<_VersionIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    if (_version == null) return const SizedBox.shrink();
     return Text(
-      '${S.of(context).appName} $_version',
-      style: TextStyle(
-        color: AppTheme.of(context).secondaryTextColor,
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
+      '${S.of(context).appName}${_version == null ? '' : ' $_version'}',
+      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
         fontFeatures: const [FontFeature.tabularFigures()],
       ),
     );
@@ -210,14 +197,14 @@ class _InfoLink extends StatelessWidget {
     final theme = AppTheme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 6),
       child: Pressable(
-        enabled: onTap != null,
         child: Material(
           color: theme.frameBackgroundColor,
           borderRadius: BorderRadius.circular(13),
           child: InkWell(
-            onTap: onTap,
+            onTap: onTap ?? () {},
+            overlayColor: const WidgetStatePropertyAll(Colors.transparent),
             borderRadius: BorderRadius.circular(13),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
@@ -262,13 +249,13 @@ class _SocialLink extends StatelessWidget {
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         onPressed: onTap,
-        iconSize: 26,
+        iconSize: 22,
         padding: const EdgeInsets.symmetric(horizontal: 14),
         color: theme.iconColor,
         icon: SvgPicture.asset(
           icon,
-          width: 26,
-          height: 26,
+          width: 22,
+          height: 22,
           colorFilter: ColorFilter.mode(theme.iconColor, BlendMode.srcIn),
         ),
       ),

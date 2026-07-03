@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'animated_asset_checkbox.dart';
-import '../theme/app_colors.dart';
 import 'pressable.dart';
 
 class AppSettingToggle extends StatelessWidget {
@@ -34,8 +33,8 @@ class AppSettingToggle extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        color: CompressionUiColors.dark,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 17,
                         height: 1,
                       ),
@@ -44,8 +43,8 @@ class AppSettingToggle extends StatelessWidget {
                       const SizedBox(height: 6),
                       Text(
                         description!,
-                        style: const TextStyle(
-                          color: CompressionUiColors.grey,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 13,
                           height: 1.2,
                         ),

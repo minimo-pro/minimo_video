@@ -694,20 +694,15 @@ class S {
     return Intl.message('compressed', name: 'compressed', desc: '', args: []);
   }
 
-  /// `simple options`
+  /// `simple`
   String get simpleOptions {
-    return Intl.message(
-      'simple options',
-      name: 'simpleOptions',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('simple', name: 'simpleOptions', desc: '', args: []);
   }
 
-  /// `advanced options`
+  /// `advanced`
   String get advancedOptions {
     return Intl.message(
-      'advanced options',
+      'advanced',
       name: 'advancedOptions',
       desc: '',
       args: [],

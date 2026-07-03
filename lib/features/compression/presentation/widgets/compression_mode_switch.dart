@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
 import '../../../../generated/l10n.dart';
-import '../../../../theme/app_colors.dart';
 import '../../../../widgets/pressable.dart';
 
 enum CompressionOptionsMode { simple, advanced }
@@ -67,7 +66,7 @@ class _CompressionModeSwitchState extends State<CompressionModeSwitch>
     return Container(
       height: 45,
       decoration: BoxDecoration(
-        color: CompressionUiColors.lightGrey,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(24),
       ),
       padding: const EdgeInsets.all(5),
@@ -90,10 +89,10 @@ class _CompressionModeSwitchState extends State<CompressionModeSwitch>
                   height: double.infinity,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: CompressionUiColors.white,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: CompressionUiColors.grey.withValues(alpha: 0.45),
+                        color: Theme.of(context).colorScheme.outline,
                       ),
                     ),
                   ),
@@ -148,10 +147,9 @@ class _ModeButton extends StatelessWidget {
               duration: const Duration(milliseconds: 160),
               curve: Curves.easeOut,
               style: TextStyle(
-                color: CompressionUiColors.dark,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: selected ? 14.5 : 14,
                 height: 1,
-                fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
               ),
               child: Text(label),
             ),

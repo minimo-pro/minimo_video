@@ -1,11 +1,40 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../constants/app_icons.dart';
-import '../router/app_router.gr.dart';
+import '../screens/info_screen.dart';
+import '../screens/settings_screen.dart';
 import '../theme/app_theme.dart';
 import 'pressable.dart';
+
+void _showFullScreenSheet(BuildContext context, Widget child) {
+  showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    enableDrag: true,
+    constraints: BoxConstraints(
+      maxHeight: MediaQuery.sizeOf(context).height * 0.95,
+    ),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    clipBehavior: Clip.antiAlias,
+    builder: (context) => Column(
+      children: [
+        Container(
+          width: 36,
+          height: 4,
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        Expanded(child: child),
+      ],
+    ),
+  );
+}
 
 class BottomFrame extends StatelessWidget {
   const BottomFrame({super.key});
@@ -29,7 +58,8 @@ class BottomFrame extends StatelessWidget {
             children: [
               _FrameButton(
                 icon: AppIcons.settings,
-                onTap: () => context.pushRoute(const SettingsRoute()),
+                onTap: () =>
+                    _showFullScreenSheet(context, const SettingsScreen()),
               ),
               Container(
                 width: 1,
@@ -38,7 +68,7 @@ class BottomFrame extends StatelessWidget {
               ),
               _FrameButton(
                 icon: AppIcons.info,
-                onTap: () => context.pushRoute(const InfoRoute()),
+                onTap: () => _showFullScreenSheet(context, const InfoScreen()),
               ),
             ],
           ),

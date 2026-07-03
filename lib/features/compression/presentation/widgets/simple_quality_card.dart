@@ -35,11 +35,11 @@ class SimpleQualityCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: selected
                 ? CompressionUiColors.red
-                : CompressionUiColors.lightGrey,
+                : Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(13),
             border: selected
                 ? null
-                : Border.all(color: CompressionUiColors.grey),
+                : Border.all(color: Theme.of(context).colorScheme.outline),
           ),
           child: Row(
             children: [
@@ -53,7 +53,7 @@ class SimpleQualityCard extends StatelessWidget {
                       style: TextStyle(
                         color: selected
                             ? CompressionUiColors.white
-                            : CompressionUiColors.dark,
+                            : Theme.of(context).colorScheme.onSurface,
                         fontSize: 30,
                         height: 0.85,
                       ),
@@ -66,7 +66,7 @@ class SimpleQualityCard extends StatelessWidget {
                       style: TextStyle(
                         color: selected
                             ? CompressionUiColors.white
-                            : CompressionUiColors.dark,
+                            : Theme.of(context).colorScheme.onSurface,
                         fontSize: 15,
                         height: 1,
                       ),

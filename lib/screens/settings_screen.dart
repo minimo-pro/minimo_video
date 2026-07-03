@@ -175,8 +175,8 @@ class _Header extends StatelessWidget {
               onPressed: context.maybePop,
               icon: SvgPicture.asset(
                 AppIcons.close,
-                width: 32,
-                height: 32,
+                width: 24,
+                height: 24,
                 colorFilter: ColorFilter.mode(theme.iconColor, BlendMode.srcIn),
               ),
             ),
@@ -399,7 +399,7 @@ class _SettingBlock extends StatelessWidget {
     final theme = AppTheme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 26),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -416,7 +416,7 @@ class _SettingBlock extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
