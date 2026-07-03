@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../theme/app_colors.dart';
+import 'pressable.dart';
 
 enum AppActionButtonVariant { filled, outlined, text }
 
@@ -118,6 +119,9 @@ class AppActionButton extends StatelessWidget {
       ),
     };
 
-    return SizedBox(width: width, height: height, child: button);
+    return Pressable(
+      enabled: onPressed != null,
+      child: SizedBox(width: width, height: height, child: button),
+    );
   }
 }

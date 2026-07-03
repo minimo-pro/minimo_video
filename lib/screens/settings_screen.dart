@@ -12,6 +12,7 @@ import '../widgets/animated_asset_checkbox.dart';
 import '../widgets/app_snack_bar.dart';
 import '../widgets/faded_scroll_view.dart';
 import '../widgets/hold_to_confirm_button.dart';
+import '../widgets/pressable.dart';
 
 @RoutePage()
 class SettingsScreen extends StatelessWidget {
@@ -166,16 +167,18 @@ class _Header extends StatelessWidget {
           Expanded(
             child: Text(strings.settings, style: textTheme.headlineSmall),
           ),
-          IconButton(
-            hoverColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onPressed: context.maybePop,
-            icon: SvgPicture.asset(
-              AppIcons.close,
-              width: 32,
-              height: 32,
-              colorFilter: ColorFilter.mode(theme.iconColor, BlendMode.srcIn),
+          Pressable(
+            child: IconButton(
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onPressed: context.maybePop,
+              icon: SvgPicture.asset(
+                AppIcons.close,
+                width: 32,
+                height: 32,
+                colorFilter: ColorFilter.mode(theme.iconColor, BlendMode.srcIn),
+              ),
             ),
           ),
         ],
@@ -201,20 +204,24 @@ class _ToggleRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SettingBlock(
       description: description,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => onChanged(!value),
-        child: Row(
-          children: [
-            Expanded(child: Text(title, style: const TextStyle(fontSize: 16))),
-            IgnorePointer(
-              child: AnimatedAssetCheckbox(
-                value: value,
-                onChanged: (_) {},
-                size: 31,
+      child: Pressable(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => onChanged(!value),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(title, style: const TextStyle(fontSize: 16)),
               ),
-            ),
-          ],
+              IgnorePointer(
+                child: AnimatedAssetCheckbox(
+                  value: value,
+                  onChanged: (_) {},
+                  size: 31,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -237,22 +244,24 @@ class _LanguageRow extends StatelessWidget {
 
     return _SettingBlock(
       description: strings.languageDescription,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => _showLanguageSheet(context),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                strings.language,
-                style: const TextStyle(fontSize: 16),
+      child: Pressable(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => _showLanguageSheet(context),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  strings.language,
+                  style: const TextStyle(fontSize: 16),
+                ),
               ),
-            ),
-            Text(
-              language,
-              style: TextStyle(color: AppTheme.of(context).accentColor),
-            ),
-          ],
+              Text(
+                language,
+                style: TextStyle(color: AppTheme.of(context).accentColor),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -335,30 +344,33 @@ class _LanguageOption extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => Navigator.of(context).pop(value),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: theme.frameBackgroundColor,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: selected ? theme.accentColor : Colors.transparent,
-              width: 1.5,
+      child: Pressable(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => Navigator.of(context).pop(value),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: theme.frameBackgroundColor,
+              borderRadius: BorderRadius.circular(16),
             ),
-          ),
-          child: SizedBox(
-            height: 57,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(title, style: const TextStyle(fontSize: 17)),
-                  ),
-                  if (selected)
-                    Icon(Icons.check, size: 20, color: theme.accentColor),
-                ],
+            child: SizedBox(
+              height: 57,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(title, style: const TextStyle(fontSize: 17)),
+                    ),
+                    IgnorePointer(
+                      child: AnimatedAssetCheckbox(
+                        value: selected,
+                        onChanged: (_) {},
+                        size: 31,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -31,7 +31,8 @@ No cloud upload. No subscription. Your videos stay yours.
 
 ## Credits
 
-// TODO
+Special thanks to [Kamran Bekirov](https://x.com/kamranbekirovyz) and his website [Flutter Pro Design](https://flutterpro.design/). I learned from and adapted many ideas from his work for myself and for this app.
+
 
 ## Contacts
 

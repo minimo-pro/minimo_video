@@ -9,6 +9,7 @@ import '../router/app_router.gr.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bottom_frame.dart';
 import '../widgets/minimo_loader.dart';
+import '../widgets/pressable.dart';
 
 @RoutePage()
 class StartPage extends StatefulWidget {
@@ -77,36 +78,40 @@ class _StartPageState extends State<StartPage> {
                           ),
                         )
                       : Center(
-                          child: GestureDetector(
-                            onTap: _pickAndGo,
-                            child: Container(
-                              width: 300,
-                              height: 300,
-                              padding: const EdgeInsets.all(14),
-                              decoration: BoxDecoration(
-                                color: theme.frameBackgroundColor.withValues(
-                                  alpha: 0.7,
+                          child: Pressable(
+                            child: GestureDetector(
+                              onTap: _pickAndGo,
+                              child: Container(
+                                width: 300,
+                                height: 300,
+                                padding: const EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                  color: theme.frameBackgroundColor.withValues(
+                                    alpha: 0.7,
+                                  ),
+                                  borderRadius: BorderRadius.circular(24),
+                                  border: Border.all(
+                                    color: theme.frameBorderColor,
+                                    width: 2,
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(24),
-                                border: Border.all(
-                                  color: theme.frameBorderColor,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Stack(
-                                children: [
-                                  Center(
-                                    child: SvgPicture.asset(
-                                      AppIcons.plus,
-                                      width: 56,
-                                      height: 56,
-                                      colorFilter: ColorFilter.mode(
-                                        theme.iconColor.withValues(alpha: 0.54),
-                                        BlendMode.srcIn,
+                                child: Stack(
+                                  children: [
+                                    Center(
+                                      child: SvgPicture.asset(
+                                        AppIcons.plus,
+                                        width: 56,
+                                        height: 56,
+                                        colorFilter: ColorFilter.mode(
+                                          theme.iconColor.withValues(
+                                            alpha: 0.54,
+                                          ),
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),

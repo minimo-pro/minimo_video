@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/app_icons.dart';
@@ -11,6 +12,7 @@ import '../generated/l10n.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_snack_bar.dart';
 import '../widgets/faded_scroll_view.dart';
+import '../widgets/pressable.dart';
 
 @RoutePage()
 class InfoScreen extends StatelessWidget {
@@ -74,18 +76,20 @@ class InfoScreen extends StatelessWidget {
                   Expanded(
                     child: Text(strings.about, style: textTheme.headlineSmall),
                   ),
-                  IconButton(
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onPressed: context.maybePop,
-                    icon: SvgPicture.asset(
-                      AppIcons.close,
-                      width: 32,
-                      height: 32,
-                      colorFilter: ColorFilter.mode(
-                        theme.iconColor,
-                        BlendMode.srcIn,
+                  Pressable(
+                    child: IconButton(
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      onPressed: context.maybePop,
+                      icon: SvgPicture.asset(
+                        AppIcons.close,
+                        width: 32,
+                        height: 32,
+                        colorFilter: ColorFilter.mode(
+                          theme.iconColor,
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ),
                   ),
@@ -146,12 +150,50 @@ class InfoScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 18),
+                    const _VersionIndicator(),
                   ],
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _VersionIndicator extends StatefulWidget {
+  const _VersionIndicator();
+
+  @override
+  State<_VersionIndicator> createState() => _VersionIndicatorState();
+}
+
+class _VersionIndicatorState extends State<_VersionIndicator> {
+  String? _version;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final info = await PackageInfo.fromPlatform();
+    if (mounted) setState(() => _version = info.version);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_version == null) return const SizedBox.shrink();
+    return Text(
+      '${S.of(context).appName} $_version',
+      style: TextStyle(
+        color: AppTheme.of(context).secondaryTextColor,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        fontFeatures: const [FontFeature.tabularFigures()],
       ),
     );
   }
@@ -169,29 +211,32 @@ class _InfoLink extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: Material(
-        color: theme.frameBackgroundColor,
-        borderRadius: BorderRadius.circular(13),
-        child: InkWell(
-          onTap: onTap,
+      child: Pressable(
+        enabled: onTap != null,
+        child: Material(
+          color: theme.frameBackgroundColor,
           borderRadius: BorderRadius.circular(13),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(title, style: const TextStyle(fontSize: 20)),
-                ),
-                SvgPicture.asset(
-                  AppIcons.arrowForward,
-                  width: 18,
-                  height: 18,
-                  colorFilter: ColorFilter.mode(
-                    theme.iconColor,
-                    BlendMode.srcIn,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(13),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(title, style: const TextStyle(fontSize: 20)),
                   ),
-                ),
-              ],
+                  SvgPicture.asset(
+                    AppIcons.arrowForward,
+                    width: 18,
+                    height: 18,
+                    colorFilter: ColorFilter.mode(
+                      theme.iconColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -210,19 +255,22 @@ class _SocialLink extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    return IconButton(
-      hoverColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      onPressed: onTap,
-      iconSize: 26,
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      color: theme.iconColor,
-      icon: SvgPicture.asset(
-        icon,
-        width: 26,
-        height: 26,
-        colorFilter: ColorFilter.mode(theme.iconColor, BlendMode.srcIn),
+    return Pressable(
+      enabled: onTap != null,
+      child: IconButton(
+        hoverColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        onPressed: onTap,
+        iconSize: 26,
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        color: theme.iconColor,
+        icon: SvgPicture.asset(
+          icon,
+          width: 26,
+          height: 26,
+          colorFilter: ColorFilter.mode(theme.iconColor, BlendMode.srcIn),
+        ),
       ),
     );
   }

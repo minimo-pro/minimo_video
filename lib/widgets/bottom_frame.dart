@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../constants/app_icons.dart';
 import '../router/app_router.gr.dart';
 import '../theme/app_theme.dart';
+import 'pressable.dart';
 
 class BottomFrame extends StatelessWidget {
   const BottomFrame({super.key});
@@ -56,21 +57,23 @@ class _FrameButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
-          child: SvgPicture.asset(
-            icon,
-            width: 28,
-            height: 28,
-            colorFilter: ColorFilter.mode(theme.iconColor, BlendMode.srcIn),
+    return Pressable(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
+            child: SvgPicture.asset(
+              icon,
+              width: 28,
+              height: 28,
+              colorFilter: ColorFilter.mode(theme.iconColor, BlendMode.srcIn),
+            ),
           ),
         ),
       ),

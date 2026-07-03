@@ -3,6 +3,7 @@ import 'package:flutter/physics.dart';
 
 import '../../../../generated/l10n.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../widgets/pressable.dart';
 
 enum CompressionOptionsMode { simple, advanced }
 
@@ -138,20 +139,22 @@ class _ModeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => onTap(mode),
-        child: Center(
-          child: AnimatedDefaultTextStyle(
-            duration: const Duration(milliseconds: 160),
-            curve: Curves.easeOut,
-            style: TextStyle(
-              color: CompressionUiColors.dark,
-              fontSize: selected ? 14.5 : 14,
-              height: 1,
-              fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+      child: Pressable(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => onTap(mode),
+          child: Center(
+            child: AnimatedDefaultTextStyle(
+              duration: const Duration(milliseconds: 160),
+              curve: Curves.easeOut,
+              style: TextStyle(
+                color: CompressionUiColors.dark,
+                fontSize: selected ? 14.5 : 14,
+                height: 1,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+              ),
+              child: Text(label),
             ),
-            child: Text(label),
           ),
         ),
       ),

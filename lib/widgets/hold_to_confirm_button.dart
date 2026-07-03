@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import 'pressable.dart';
 
 class HoldToConfirmButton extends StatefulWidget {
   final String label;
@@ -81,39 +82,42 @@ class _HoldToConfirmButtonState extends State<HoldToConfirmButton>
     final theme = AppTheme.of(context);
     final enabled = widget.enabled;
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTapDown: enabled ? (_) => _controller.forward(from: 0) : null,
-      onTapUp: enabled ? (_) => _controller.reset() : null,
-      onTapCancel: enabled
-          ? () {
-              _controller.reset();
-              _completedHold = false;
-            }
-          : null,
-      onTap: enabled ? _tap : null,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(18),
-        child: SizedBox(
-          height: 57,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              _content(
-                enabled ? theme.textColor : theme.secondaryTextColor,
-                enabled ? theme.accentColor : theme.secondaryTextColor,
-              ),
-              AnimatedBuilder(
-                animation: _controller,
-                builder: (context, _) => ClipRect(
-                  clipper: _HorizontalProgressClipper(_controller.value),
-                  child: ColoredBox(
-                    color: theme.accentColor,
-                    child: _content(theme.onAccentColor, theme.onAccentColor),
+    return Pressable(
+      enabled: enabled,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTapDown: enabled ? (_) => _controller.forward(from: 0) : null,
+        onTapUp: enabled ? (_) => _controller.reset() : null,
+        onTapCancel: enabled
+            ? () {
+                _controller.reset();
+                _completedHold = false;
+              }
+            : null,
+        onTap: enabled ? _tap : null,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(18),
+          child: SizedBox(
+            height: 57,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                _content(
+                  enabled ? theme.textColor : theme.secondaryTextColor,
+                  enabled ? theme.accentColor : theme.secondaryTextColor,
+                ),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, _) => ClipRect(
+                    clipper: _HorizontalProgressClipper(_controller.value),
+                    child: ColoredBox(
+                      color: theme.accentColor,
+                      child: _content(theme.onAccentColor, theme.onAccentColor),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
