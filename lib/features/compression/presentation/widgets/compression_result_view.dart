@@ -41,13 +41,12 @@ class CompressionResultView extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              const SizedBox(height: 24),
               SelectedVideosPreview(
                 selectedCount: state.videos.length,
                 thumbnailPaths: state.thumbnailPaths,
                 scale: 1.72,
               ),
-              const SizedBox(height: 34),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -83,7 +82,7 @@ class CompressionResultView extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               Text(
                 allFailed
                     ? alreadyOptimized
@@ -99,12 +98,12 @@ class CompressionResultView extends StatelessWidget {
                   height: 1,
                 ),
               ),
-              const SizedBox(height: 22),
+              const SizedBox(height: 12),
               Flexible(
                 fit: FlexFit.loose,
                 child: VideoStatusList(state: state),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 8),
             ],
           ),
         ),
@@ -136,8 +135,16 @@ class CompressionResultView extends StatelessWidget {
                   ),
           ),
         ],
-        // TODO: Restore Delete Original after implementing platform-safe
-        // deletion from Photos/MediaStore with system confirmation.
+        const SizedBox(height: 14),
+        AppActionButton(
+          width: double.infinity,
+          label: strings.deleteOriginal,
+          onPressed: state.isSaving
+              ? null
+              : () => context.read<CompressBloc>().add(
+                  const CompressResultsSaved(deleteOriginals: true),
+                ),
+        ),
         const SizedBox(height: 14),
         AppActionButton(
           width: double.infinity,

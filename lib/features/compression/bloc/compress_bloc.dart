@@ -350,12 +350,19 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
 
       var deletedOriginalCount = 0;
       try {
-        for (final item in state.successResults) {
-          final outputPath = item.result.outputPath;
-          if (outputPath == null || item.source.path == outputPath) continue;
-          final deleted = await _videoFileAdapter.deleteFile(item.source.path);
-          if (deleted) deletedOriginalCount++;
+        final identifiers = state.successResults
+            .where((item) => item.source.path != item.result.outputPath)
+            .map((item) => item.source.sourceIdentifier)
+            .whereType<String>()
+            .toSet();
+        if (identifiers.isEmpty) {
+          throw StateError(
+            'original videos cannot be deleted by this provider',
+          );
         }
+        deletedOriginalCount = await _videoFileAdapter.deleteOriginals(
+          identifiers,
+        );
 
         emit(
           state.copyWith(

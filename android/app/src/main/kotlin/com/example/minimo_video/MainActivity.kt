@@ -1,12 +1,15 @@
 package com.example.minimo_video
 
 import android.content.Context
+import android.content.ContentUris
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.OpenableColumns
+import android.provider.DocumentsContract
+import android.provider.MediaStore
 import java.io.File
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -14,6 +17,8 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
     private var pendingPickResult: MethodChannel.Result? = null
+    private var pendingDeleteResult: MethodChannel.Result? = null
+    private var pendingDeleteCount = 0
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -32,6 +37,7 @@ class MainActivity : FlutterActivity() {
         ).setMethodCallHandler { call, result ->
             when (call.method) {
                 "pickVideos" -> pickVideos(result)
+                "deleteOriginals" -> deleteOriginals(call.arguments as? List<*>, result)
                 else -> result.notImplemented()
             }
         }
@@ -40,6 +46,14 @@ class MainActivity : FlutterActivity() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == DELETE_VIDEOS_REQUEST) {
+            val result = pendingDeleteResult ?: return
+            pendingDeleteResult = null
+            if (resultCode == RESULT_OK) result.success(pendingDeleteCount)
+            else result.error("delete_cancelled", "original video deletion was cancelled", null)
+            pendingDeleteCount = 0
+            return
+        }
         if (requestCode != PICK_VIDEOS_REQUEST) return
 
         val result = pendingPickResult ?: return
@@ -87,6 +101,41 @@ class MainActivity : FlutterActivity() {
         startActivityForResult(intent, PICK_VIDEOS_REQUEST)
     }
 
+    private fun deleteOriginals(arguments: List<*>?, result: MethodChannel.Result) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            result.error("delete_unsupported", "deleting originals requires Android 11 or newer", null)
+            return
+        }
+        if (pendingDeleteResult != null) {
+            result.error("delete_in_progress", "video deletion is already open", null)
+            return
+        }
+        val uris = arguments.orEmpty().filterIsInstance<String>().mapNotNull(::mediaStoreUri).distinct()
+        if (uris.isEmpty()) {
+            result.error("delete_unavailable", "no MediaStore videos to delete", null)
+            return
+        }
+        pendingDeleteResult = result
+        pendingDeleteCount = uris.size
+        val request = MediaStore.createDeleteRequest(contentResolver, uris)
+        startIntentSenderForResult(
+            request.intentSender,
+            DELETE_VIDEOS_REQUEST,
+            null,
+            0,
+            0,
+            0
+        )
+    }
+
+    private fun mediaStoreUri(value: String): Uri? {
+        val uri = Uri.parse(value)
+        if (uri.authority == "media") return uri
+        if (uri.authority != "com.android.providers.media.documents") return null
+        val id = DocumentsContract.getDocumentId(uri).substringAfter(':').toLongOrNull() ?: return null
+        return ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id)
+    }
+
     private fun readPickedVideos(data: Intent): List<Map<String, Any>> {
         val uris = mutableListOf<Uri>()
         data.clipData?.let { clip ->
@@ -112,7 +161,8 @@ class MainActivity : FlutterActivity() {
         return mapOf(
             "path" to outputFile.absolutePath,
             "name" to name,
-            "size" to outputFile.length()
+            "size" to outputFile.length(),
+            "sourceIdentifier" to uri.toString()
         )
     }
 
@@ -153,5 +203,6 @@ class MainActivity : FlutterActivity() {
 
     companion object {
         private const val PICK_VIDEOS_REQUEST = 4207
+        private const val DELETE_VIDEOS_REQUEST = 4208
     }
 }

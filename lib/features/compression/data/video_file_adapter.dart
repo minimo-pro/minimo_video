@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:gal/gal.dart';
 
@@ -16,7 +14,12 @@ class VideoFileAdapter {
       final path = file['path'] as String;
       final name = file['name'] as String;
       final size = file['size'] as int;
-      return PickedVideo(path: path, name: name, size: size);
+      return PickedVideo(
+        path: path,
+        name: name,
+        size: size,
+        sourceIdentifier: file['sourceIdentifier'] as String?,
+      );
     }).toList();
   }
 
@@ -24,10 +27,11 @@ class VideoFileAdapter {
     await Gal.putVideo(filePath, album: album);
   }
 
-  Future<bool> deleteFile(String filePath) async {
-    final file = File(filePath);
-    if (!await file.exists()) return false;
-    await file.delete();
-    return true;
+  Future<int> deleteOriginals(Iterable<String> sourceIdentifiers) async {
+    return await _channel.invokeMethod<int>(
+          'deleteOriginals',
+          sourceIdentifiers.toList(),
+        ) ??
+        0;
   }
 }

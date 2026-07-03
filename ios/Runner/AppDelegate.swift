@@ -34,6 +34,8 @@ import UniformTypeIdentifiers
       switch call.method {
       case "pickVideos":
         self.pickVideos(result)
+      case "deleteOriginals":
+        self.deleteOriginals(call.arguments as? [String] ?? [], result: result)
       default:
         result(FlutterMethodNotImplemented)
       }
@@ -66,11 +68,13 @@ import UniformTypeIdentifiers
           let size = (try? FileManager.default.attributesOfItem(
             atPath: outputURL.path
           )[.size] as? NSNumber)?.intValue ?? 0
-          videos[index] = [
+          var video: [String: Any] = [
             "path": outputURL.path,
             "name": filename,
             "size": size
           ]
+          video["sourceIdentifier"] = item.assetIdentifier
+          videos[index] = video
         } catch {
           videos[index] = nil
         }
@@ -116,6 +120,40 @@ import UniformTypeIdentifiers
     let picker = PHPickerViewController(configuration: configuration)
     picker.delegate = self
     window?.rootViewController?.present(picker, animated: true)
+  }
+
+  private func deleteOriginals(_ identifiers: [String], result: @escaping FlutterResult) {
+    guard !identifiers.isEmpty else {
+      result(FlutterError(code: "delete_unavailable", message: "no Photos assets to delete", details: nil))
+      return
+    }
+
+    PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+      guard status == .authorized || status == .limited else {
+        result(FlutterError(code: "delete_denied", message: "Photos access was denied", details: nil))
+        return
+      }
+      let assets = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+      guard assets.count == identifiers.count else {
+        result(FlutterError(code: "delete_unavailable", message: "some original videos are unavailable", details: nil))
+        return
+      }
+      PHPhotoLibrary.shared().performChanges({
+        PHAssetChangeRequest.deleteAssets(assets)
+      }) { success, error in
+        DispatchQueue.main.async {
+          if success {
+            result(assets.count)
+          } else {
+            result(FlutterError(
+              code: "delete_failed",
+              message: error?.localizedDescription ?? "original videos were not deleted",
+              details: nil
+            ))
+          }
+        }
+      }
+    }
   }
 
   private func originalFilename(for item: PHPickerResult) -> String? {

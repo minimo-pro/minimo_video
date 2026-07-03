@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/features/compression/bloc/compress_bloc.dart';
 import 'package:minimo_video/features/compression/bloc/compress_event.dart';
 import 'package:minimo_video/features/compression/bloc/compress_state.dart';
+import 'package:minimo_video/features/compression/data/video_file_adapter.dart';
 import 'package:minimo_video/features/compression/data/video_compressor_adapter.dart';
 import 'package:minimo_video/features/compression/domain/compression_result.dart';
 import 'package:minimo_video/features/compression/domain/compression_settings.dart';
@@ -139,7 +140,46 @@ class _StaleProgressCompressor extends VideoCompressorAdapter {
   }
 }
 
+class _SavingFileAdapter extends VideoFileAdapter {
+  List<String> deletedIdentifiers = const [];
+
+  @override
+  Future<void> saveToGallery(String filePath, {String? album}) async {}
+
+  @override
+  Future<int> deleteOriginals(Iterable<String> sourceIdentifiers) async {
+    deletedIdentifiers = sourceIdentifiers.toList();
+    return deletedIdentifiers.length;
+  }
+}
+
 void main() {
+  test('deletes successful originals through platform identifiers', () async {
+    final files = _SavingFileAdapter();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(
+          path: '/ok.mp4',
+          name: 'video.mp4',
+          size: 100,
+          sourceIdentifier: 'photos-id',
+        ),
+      ],
+      videoFileAdapter: files,
+      videoCompressorAdapter: _MixedCompressor(),
+    );
+
+    bloc.add(const CompressStarted());
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+    bloc.add(const CompressResultsSaved(deleteOriginals: true));
+    await bloc.stream.firstWhere((state) => state.deletedOriginalCount == 1);
+
+    expect(files.deletedIdentifiers, ['photos-id']);
+    await bloc.close();
+  });
+
   test('uses platform compression estimate', () async {
     final bloc = CompressBloc(
       initialVideos: const [

@@ -100,7 +100,9 @@ class _VideoThumb extends StatelessWidget {
           foregroundDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(
-              color: Theme.of(context).colorScheme.outline,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? CompressionUiColors.white
+                  : Theme.of(context).colorScheme.outline,
               width: 2 * (width / 58),
             ),
           ),
