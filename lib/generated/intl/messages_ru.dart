@@ -88,17 +88,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "битрейт будет уменьшен для экономии места",
     ),
-    "cancel": MessageLookupByLibrary.simpleMessage("отмена"),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage(
       "не удалось очистить кеш",
     ),
     "cacheCleared": MessageLookupByLibrary.simpleMessage("кеш очищен"),
+    "cancel": MessageLookupByLibrary.simpleMessage("отмена"),
     "clearCache": MessageLookupByLibrary.simpleMessage("очистка кеша"),
     "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
       "удаляет временные файлы приложения. видео в галерее останутся",
-    ),
-    "holdToClearCache": MessageLookupByLibrary.simpleMessage(
-      "удерживайте кнопку, чтобы очистить кеш",
     ),
     "compress": MessageLookupByLibrary.simpleMessage("сжать"),
     "compressOtherVideos": MessageLookupByLibrary.simpleMessage(
@@ -145,6 +142,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "использует кодировщик устройства для быстрой обработки",
     ),
     "high": MessageLookupByLibrary.simpleMessage("высокое"),
+    "holdToClearCache": MessageLookupByLibrary.simpleMessage(
+      "удерживайте кнопку, чтобы очистить кеш",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("язык"),
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "выберите язык приложения",

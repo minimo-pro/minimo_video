@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../generated/l10n.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../widgets/faded_scroll_view.dart';
 import '../../bloc/compress_state.dart';
 
 class VideoStatusList extends StatelessWidget {
@@ -11,73 +11,125 @@ class VideoStatusList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final strings = S.of(context);
-
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxHeight: 168),
-      child: ListView.separated(
-        primary: false,
-        shrinkWrap: true,
-        itemCount: state.videos.length,
-        separatorBuilder: (_, _) => const SizedBox(height: 8),
-        itemBuilder: (context, index) {
-          final status = index < state.videoStatuses.length
-              ? state.videoStatuses[index]
-              : VideoCompressionStatus.waiting;
-
-          return Row(
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: CompressionUiColors.white.withValues(alpha: 0.86),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: CompressionUiColors.white.withValues(alpha: 0.9),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        child: FadedScrollView(
+          fadeExtent: 0.12,
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Column(
             children: [
-              _StatusDot(status: status),
-              const SizedBox(width: 9),
-              Expanded(
-                child: Text(
-                  state.videos[index].name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: CompressionUiColors.dark,
-                    fontSize: 15,
-                    height: 1,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                _label(strings, status),
-                style: TextStyle(
-                  color: _color(status),
-                  fontSize: 15,
-                  height: 1,
-                ),
-              ),
+              for (var index = 0; index < state.videos.length; index++) ...[
+                if (index > 0) const SizedBox(height: 10),
+                _VideoStatusRow(state: state, index: index),
+              ],
             ],
-          );
-        },
+          ),
+        ),
       ),
     );
   }
+}
 
-  String _label(S strings, VideoCompressionStatus status) {
-    return switch (status) {
-      VideoCompressionStatus.waiting => strings.waiting,
-      VideoCompressionStatus.processing => strings.compressing,
-      VideoCompressionStatus.compressed => strings.compressed,
-      VideoCompressionStatus.skipped => strings.alreadyOptimized,
-      VideoCompressionStatus.failed => strings.failed,
-    };
+class _VideoStatusRow extends StatelessWidget {
+  final CompressState state;
+  final int index;
+
+  const _VideoStatusRow({required this.state, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    final status = index < state.videoStatuses.length
+        ? state.videoStatuses[index]
+        : VideoCompressionStatus.waiting;
+
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            state.videos[index].name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: CompressionUiColors.dark,
+              fontSize: 15,
+              height: 1,
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        _StatusDot(status: status),
+      ],
+    );
   }
 }
 
-class _StatusDot extends StatelessWidget {
+class _StatusDot extends StatefulWidget {
   final VideoCompressionStatus status;
 
   const _StatusDot({required this.status});
 
   @override
+  State<_StatusDot> createState() => _StatusDotState();
+}
+
+class _StatusDotState extends State<_StatusDot>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 700),
+    lowerBound: 0.7,
+    upperBound: 1,
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _updateAnimation();
+  }
+
+  @override
+  void didUpdateWidget(_StatusDot oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _updateAnimation();
+  }
+
+  void _updateAnimation() {
+    final shouldAnimate =
+        widget.status == VideoCompressionStatus.processing &&
+        !MediaQuery.disableAnimationsOf(context);
+    if (shouldAnimate && !_controller.isAnimating) {
+      _controller.repeat(reverse: true);
+    } else if (!shouldAnimate) {
+      _controller.stop();
+      _controller.value = 1;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(color: _color(status), shape: BoxShape.circle),
-      child: const SizedBox.square(dimension: 8),
+    return ScaleTransition(
+      scale: _controller,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: _color(widget.status),
+          shape: BoxShape.circle,
+        ),
+        child: const SizedBox.square(dimension: 8),
+      ),
     );
   }
 }
@@ -85,7 +137,7 @@ class _StatusDot extends StatelessWidget {
 Color _color(VideoCompressionStatus status) {
   return switch (status) {
     VideoCompressionStatus.waiting => CompressionUiColors.grey,
-    VideoCompressionStatus.processing => CompressionUiColors.red,
+    VideoCompressionStatus.processing => CompressionUiColors.grey,
     VideoCompressionStatus.compressed => CompressionUiColors.green,
     VideoCompressionStatus.skipped => CompressionUiColors.grey,
     VideoCompressionStatus.failed => CompressionUiColors.red,

@@ -11,6 +11,8 @@ import '../../../services/app_settings_service.dart';
 
 class VideoCompressorAdapter {
   final VVideoCompressor _compressor;
+  Future<void> _preparation = Future.value();
+  var _cancelGeneration = 0;
 
   VideoCompressorAdapter({VVideoCompressor? compressor})
     : _compressor = compressor ?? VVideoCompressor();
@@ -22,6 +24,11 @@ class VideoCompressorAdapter {
     bool addKompressoPrefix = true,
     void Function(double progress)? onProgress,
   }) async {
+    final cancelGeneration = _cancelGeneration;
+    await _preparation;
+    if (cancelGeneration != _cancelGeneration) {
+      throw StateError('Video compression cancelled');
+    }
     final outputPath = await _createOutputPath(
       originalName,
       addKompressoPrefix: addKompressoPrefix,
@@ -33,7 +40,7 @@ class VideoCompressorAdapter {
     );
 
     if (result == null) {
-      return const CompressionResult(success: false);
+      throw StateError('Video compression failed');
     }
 
     final compressedFile = File(result.compressedFilePath);
@@ -59,40 +66,43 @@ class VideoCompressorAdapter {
   }
 
   Future<void> cancelCompression() {
+    _cancelGeneration++;
     return _compressor.cancelCompression();
   }
 
   Future<int?> estimateCompressedSize(
     Iterable<String> inputPaths,
     CompressionSettings settings,
-  ) async {
-    var total = 0;
-    for (final inputPath in inputPaths) {
-      final info = await _compressor.getVideoInfo(inputPath);
-      final estimate = await _compressor.getCompressionEstimate(
-        inputPath,
-        _qualityForCrf(settings.crf),
-        advanced: _buildAdvancedConfig(settings),
-      );
-      if (estimate == null || info == null) return null;
-      var estimatedSize = estimate.estimatedSizeBytes;
-      if (Platform.isAndroid) {
-        // ponytail: v2.0.0 calculates bitrate but does not apply it to Media3.
-        // Remove this floor when the Android encoder starts applying bitrate.
-        final floor = androidEstimateFloor(
-          originalSize: info.fileSizeBytes,
-          width: info.width,
-          height: info.height,
-          settings: settings,
+  ) {
+    return _prepare(() async {
+      var total = 0;
+      for (final inputPath in inputPaths) {
+        final info = await _compressor.getVideoInfo(inputPath);
+        final estimate = await _compressor.getCompressionEstimate(
+          inputPath,
+          _qualityForCrf(settings.crf),
+          advanced: _buildAdvancedConfig(settings),
         );
-        if (floor > estimatedSize) estimatedSize = floor;
-        if (estimatedSize > info.fileSizeBytes) {
-          estimatedSize = info.fileSizeBytes;
+        if (estimate == null || info == null) return null;
+        var estimatedSize = estimate.estimatedSizeBytes;
+        if (Platform.isAndroid) {
+          // ponytail: v2.0.0 calculates bitrate but does not apply it to Media3.
+          // Remove this floor when the Android encoder starts applying bitrate.
+          final floor = androidEstimateFloor(
+            originalSize: info.fileSizeBytes,
+            width: info.width,
+            height: info.height,
+            settings: settings,
+          );
+          if (floor > estimatedSize) estimatedSize = floor;
+          if (estimatedSize > info.fileSizeBytes) {
+            estimatedSize = info.fileSizeBytes;
+          }
         }
+        total += estimatedSize;
       }
-      total += estimatedSize;
-    }
-    return total;
+      return total;
+    });
   }
 
   static int androidEstimateFloor({
@@ -132,13 +142,21 @@ class VideoCompressorAdapter {
     return (originalSize * qualityRatio * resolutionRatio).round();
   }
 
-  Future<String?> createThumbnail(String inputPath) async {
-    final result = await _compressor.getVideoThumbnail(
-      inputPath,
-      const VVideoThumbnailConfig.defaults(maxWidth: 220, maxHeight: 220),
-    );
+  Future<String?> createThumbnail(String inputPath) {
+    return _prepare(() async {
+      final result = await _compressor.getVideoThumbnail(
+        inputPath,
+        const VVideoThumbnailConfig.defaults(maxWidth: 220, maxHeight: 220),
+      );
 
-    return result?.thumbnailPath;
+      return result?.thumbnailPath;
+    });
+  }
+
+  Future<T> _prepare<T>(Future<T> Function() task) {
+    final result = _preparation.then((_) => task());
+    _preparation = result.then<void>((_) {}, onError: (_) {});
+    return result;
   }
 
   Future<String> _createOutputPath(

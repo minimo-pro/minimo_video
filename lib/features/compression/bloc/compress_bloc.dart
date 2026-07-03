@@ -59,6 +59,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     CompressEstimateRequested event,
     Emitter<CompressState> emit,
   ) async {
+    if (state.status != CompressStatus.ready) return;
     final runId = ++_estimateRunId;
     final settings = state.settings;
     final estimate = await _videoCompressorAdapter.estimateCompressedSize(
@@ -77,6 +78,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     final count = state.videos.length < 3 ? state.videos.length : 3;
 
     for (var i = 0; i < count; i++) {
+      if (state.status != CompressStatus.ready) return;
       final path = await _videoCompressorAdapter.createThumbnail(
         state.videos[i].path,
       );
@@ -171,10 +173,17 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
   ) async {
     if (state.videos.isEmpty) return;
 
+    _estimateDebounce?.cancel();
+    _estimateRunId++;
     _cancelRequested = false;
     final runId = ++_compressionRunId;
     final stopwatch = Stopwatch()..start();
     final videos = List<PickedVideo>.of(state.videos);
+    final totalWeight = videos.fold<int>(
+      0,
+      (sum, video) => sum + (video.size > 0 ? video.size : 1),
+    );
+    var completedWeight = 0;
     var videoStatuses = List<VideoCompressionStatus>.filled(
       videos.length,
       VideoCompressionStatus.waiting,
@@ -197,7 +206,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       emit(
         state.copyWith(
           processingIndex: i,
-          progress: i / videos.length,
+          progress: completedWeight / totalWeight,
           elapsed: stopwatch.elapsed,
           videoStatuses: videoStatuses = _videoStatusesWith(
             videoStatuses,
@@ -208,6 +217,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       );
 
       final video = videos[i];
+      final weightBeforeVideo = completedWeight;
       late final CompressionResult result;
       var videoStatus = VideoCompressionStatus.compressed;
       try {
@@ -220,7 +230,9 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
           addKompressoPrefix: _appSettings.addKompressoPrefix,
           onProgress: (videoProgress) {
             if (_cancelRequested) return;
-            final overallProgress = (i + videoProgress) / videos.length;
+            final videoWeight = video.size > 0 ? video.size : 1;
+            final overallProgress =
+                (weightBeforeVideo + videoWeight * videoProgress) / totalWeight;
             add(
               CompressProgressChanged(
                 runId: runId,
@@ -241,6 +253,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       if (videoStatus == VideoCompressionStatus.compressed && !result.success) {
         videoStatus = VideoCompressionStatus.skipped;
       }
+      completedWeight += video.size > 0 ? video.size : 1;
 
       emit(
         state.copyWith(
@@ -253,7 +266,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
             i,
             videoStatus,
           ),
-          progress: ((i + 1) / videos.length).clamp(0, 1).toDouble(),
+          progress: (completedWeight / totalWeight).clamp(0, 1).toDouble(),
           elapsed: stopwatch.elapsed,
         ),
       );
@@ -275,6 +288,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
   ) {
     if (event.runId != _compressionRunId) return;
     if (state.status != CompressStatus.processing || _cancelRequested) return;
+    if (event.progress < state.progress) return;
     emit(state.copyWith(progress: event.progress, elapsed: event.elapsed));
   }
 

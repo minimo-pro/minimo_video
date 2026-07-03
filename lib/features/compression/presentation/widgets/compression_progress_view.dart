@@ -58,60 +58,61 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
     return Column(
       children: [
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 24),
-                SelectedVideosPreview(
-                  selectedCount: state.videos.length,
-                  thumbnailPaths: state.thumbnailPaths,
-                  scale: 1.72,
-                ),
-                const SizedBox(height: 30),
-                _ProgressSizeComparison(state: state),
-                const SizedBox(height: 28),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    '$percent%',
-                    style: const TextStyle(
-                      color: CompressionUiColors.dark,
-                      fontSize: 18,
-                      height: 1,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(99),
-                  child: LinearProgressIndicator(
-                    key: ValueKey(state.compressionRunId),
-                    value: progress,
-                    minHeight: 7,
-                    backgroundColor: CompressionUiColors.lightGrey,
-                    color: CompressionUiColors.red,
-                  ),
-                ),
-                const SizedBox(height: 13),
-                Text(
-                  '${strings.videoProgress(state.processingIndex + 1, state.videos.length)} · ${_remainingTimeLabel(strings, state)}',
-                  textAlign: TextAlign.center,
+          child: Column(
+            children: [
+              const SizedBox(height: 24),
+              SelectedVideosPreview(
+                selectedCount: state.videos.length,
+                thumbnailPaths: state.thumbnailPaths,
+                scale: 1.72,
+              ),
+              const SizedBox(height: 30),
+              _ProgressSizeComparison(state: state),
+              const SizedBox(height: 28),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '$percent%',
                   style: const TextStyle(
-                    color: CompressionUiColors.grey,
-                    fontSize: 17,
+                    color: CompressionUiColors.dark,
+                    fontSize: 18,
                     height: 1,
                   ),
                 ),
-                const SizedBox(height: 16),
-                VideoStatusList(state: state),
-                if (AppSettingsService.instance.showOverheatWarning &&
-                    _showThermalWarning) ...[
-                  const SizedBox(height: 14),
-                  const _OverheatWarning(),
-                ],
-                const SizedBox(height: 24),
+              ),
+              const SizedBox(height: 8),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(99),
+                child: LinearProgressIndicator(
+                  key: ValueKey(state.compressionRunId),
+                  value: progress,
+                  minHeight: 7,
+                  backgroundColor: CompressionUiColors.lightGrey,
+                  color: CompressionUiColors.red,
+                ),
+              ),
+              const SizedBox(height: 13),
+              Text(
+                '${strings.videoProgress(state.processingIndex + 1, state.videos.length)} · ${_remainingTimeLabel(strings, state)}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: CompressionUiColors.grey,
+                  fontSize: 17,
+                  height: 1,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Flexible(
+                fit: FlexFit.loose,
+                child: VideoStatusList(state: state),
+              ),
+              if (AppSettingsService.instance.showOverheatWarning &&
+                  _showThermalWarning) ...[
+                const SizedBox(height: 14),
+                const _OverheatWarning(),
               ],
-            ),
+              const SizedBox(height: 24),
+            ],
           ),
         ),
         const SizedBox(height: 14),

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -14,8 +12,8 @@ final _appRouter = AppRouter();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppSettingsService.instance.load();
+  await AppCacheService.clearOld().onError((_, _) {});
   runApp(const MainApp());
-  unawaited(AppCacheService.clearOld().onError((_, _) {}));
 }
 
 class MainApp extends StatelessWidget {

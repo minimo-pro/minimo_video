@@ -39,72 +39,73 @@ class CompressionResultView extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 24),
-                SelectedVideosPreview(
-                  selectedCount: state.videos.length,
-                  thumbnailPaths: state.thumbnailPaths,
-                  scale: 1.72,
-                ),
-                const SizedBox(height: 34),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: allFailed
-                            ? CompressionUiColors.red
-                            : CompressionUiColors.green,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const SizedBox.square(dimension: 12),
+          child: Column(
+            children: [
+              const SizedBox(height: 24),
+              SelectedVideosPreview(
+                selectedCount: state.videos.length,
+                thumbnailPaths: state.thumbnailPaths,
+                scale: 1.72,
+              ),
+              const SizedBox(height: 34),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: allFailed
+                          ? CompressionUiColors.red
+                          : CompressionUiColors.green,
+                      shape: BoxShape.circle,
                     ),
-                    const SizedBox(width: 9),
-                    Flexible(
-                      child: Text(
-                        allFailed
-                            ? alreadyOptimized
-                                  ? strings.alreadyOptimized
-                                  : strings.compressionFailed
-                            : successResults.length == state.results.length
-                            ? strings.compressionCompleted
-                            : strings.videosCompressed(
-                                successResults.length,
-                                state.results.length,
-                              ),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: CompressionUiColors.dark,
-                          fontSize: 25,
-                          height: 1,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  allFailed
-                      ? alreadyOptimized
-                            ? strings.alreadyOptimizedDescription
-                            : strings.compressionFailedDescription
-                      : strings.youSavedSize(
-                          Utils.formatSize(savedBytes).toLowerCase(),
-                        ),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: CompressionUiColors.grey,
-                    fontSize: 19,
-                    height: 1,
+                    child: const SizedBox.square(dimension: 12),
                   ),
+                  const SizedBox(width: 9),
+                  Flexible(
+                    child: Text(
+                      allFailed
+                          ? alreadyOptimized
+                                ? strings.alreadyOptimized
+                                : strings.compressionFailed
+                          : successResults.length == state.results.length
+                          ? strings.compressionCompleted
+                          : strings.videosCompressed(
+                              successResults.length,
+                              state.results.length,
+                            ),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: CompressionUiColors.dark,
+                        fontSize: 25,
+                        height: 1,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                allFailed
+                    ? alreadyOptimized
+                          ? strings.alreadyOptimizedDescription
+                          : strings.compressionFailedDescription
+                    : strings.youSavedSize(
+                        Utils.formatSize(savedBytes).toLowerCase(),
+                      ),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: CompressionUiColors.grey,
+                  fontSize: 19,
+                  height: 1,
                 ),
-                const SizedBox(height: 22),
-                VideoStatusList(state: state),
-                const SizedBox(height: 24),
-              ],
-            ),
+              ),
+              const SizedBox(height: 22),
+              Flexible(
+                fit: FlexFit.loose,
+                child: VideoStatusList(state: state),
+              ),
+              const SizedBox(height: 24),
+            ],
           ),
         ),
         const SizedBox(height: 14),

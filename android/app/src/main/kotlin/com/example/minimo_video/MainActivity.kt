@@ -95,6 +95,7 @@ class MainActivity : FlutterActivity() {
             }
         }
         data.data?.let { uris.add(it) }
+        File(cacheDir, "picked_videos").deleteRecursively()
         return uris.map { copyPickedVideo(it) }
     }
 

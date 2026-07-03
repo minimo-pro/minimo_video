@@ -41,8 +41,8 @@ class SelectedVideosPreview extends StatelessWidget {
             ),
           if (selectedCount > 1)
             Positioned(
-              right: -2 * scale,
-              top: 10 * scale,
+              left: (positions.last.dx + 43) * scale,
+              top: (positions.last.dy - 24) * scale,
               child: _SelectedCountBadge(count: selectedCount, scale: scale),
             ),
         ],
@@ -82,21 +82,46 @@ class _VideoThumb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius),
-      child: path == null
-          ? Container(
-              width: width,
-              height: height,
-              color: Colors.transparent,
-              child: SvgPicture.asset(AppIcons.video, width: 21, height: 28),
-            )
-          : Image.file(
-              File(path!),
-              width: width,
-              height: height,
-              fit: BoxFit.cover,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadius),
+        boxShadow: [
+          BoxShadow(
+            color: CompressionUiColors.dark.withValues(alpha: 0.16),
+            blurRadius: 8 * (width / 58),
+            offset: Offset(0, 3 * (width / 58)),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: Container(
+          color: CompressionUiColors.white,
+          foregroundDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadius),
+            border: Border.all(
+              color: CompressionUiColors.white,
+              width: 2 * (width / 58),
             ),
+          ),
+          child: path == null
+              ? SizedBox(
+                  width: width,
+                  height: height,
+                  child: SvgPicture.asset(
+                    AppIcons.video,
+                    width: 21,
+                    height: 28,
+                  ),
+                )
+              : Image.file(
+                  File(path!),
+                  width: width,
+                  height: height,
+                  fit: BoxFit.cover,
+                ),
+        ),
+      ),
     );
   }
 }
@@ -112,9 +137,16 @@ class _SelectedCountBadge extends StatelessWidget {
     return Container(
       width: 34 * scale,
       height: 34 * scale,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: CompressionUiColors.red,
         shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: CompressionUiColors.dark.withValues(alpha: 0.2),
+            blurRadius: 7 * scale,
+            offset: Offset(0, 2 * scale),
+          ),
+        ],
       ),
       alignment: Alignment.center,
       child: Text(

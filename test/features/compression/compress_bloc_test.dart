@@ -82,6 +82,31 @@ class _ControlledCompressor extends VideoCompressorAdapter {
   }
 }
 
+class _WeightedProgressCompressor extends VideoCompressorAdapter {
+  final firstResult = Completer<CompressionResult>();
+  void Function(double progress)? firstProgress;
+  var calls = 0;
+
+  @override
+  Future<String?> createThumbnail(String inputPath) async => null;
+
+  @override
+  Future<CompressionResult> compress(
+    String inputPath,
+    String originalName,
+    CompressionSettings settings, {
+    bool addKompressoPrefix = true,
+    void Function(double progress)? onProgress,
+  }) {
+    calls++;
+    if (calls == 1) {
+      firstProgress = onProgress;
+      return firstResult.future;
+    }
+    return Future.value(const CompressionResult(success: false));
+  }
+}
+
 class _StaleProgressCompressor extends VideoCompressorAdapter {
   void Function(double progress)? staleProgress;
   final secondRun = Completer<CompressionResult>();
@@ -302,6 +327,31 @@ void main() {
         outputPath: '/small-2.mp4',
       ),
     );
+    await bloc.close();
+  });
+
+  test('overall progress is weighted by video size', () async {
+    final compressor = _WeightedProgressCompressor();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/small.mp4', name: 'small.mp4', size: 100),
+        PickedVideo(path: '/large.mp4', name: 'large.mp4', size: 300),
+      ],
+      videoCompressorAdapter: compressor,
+    );
+
+    bloc.add(const CompressStarted());
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.processing,
+    );
+    compressor.firstProgress?.call(0.5);
+    await Future<void>.delayed(Duration.zero);
+
+    expect(bloc.state.progress, 0.125);
+    compressor.firstProgress?.call(0.25);
+    await Future<void>.delayed(Duration.zero);
+    expect(bloc.state.progress, 0.125);
+    compressor.firstResult.complete(const CompressionResult(success: false));
     await bloc.close();
   });
 }

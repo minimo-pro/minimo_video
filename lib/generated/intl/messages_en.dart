@@ -86,17 +86,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "bitrate will be reduced to save space",
     ),
-    "cancel": MessageLookupByLibrary.simpleMessage("cancel"),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage(
       "failed to clear cache",
     ),
     "cacheCleared": MessageLookupByLibrary.simpleMessage("cache cleared"),
+    "cancel": MessageLookupByLibrary.simpleMessage("cancel"),
     "clearCache": MessageLookupByLibrary.simpleMessage("clear cache"),
     "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
       "removes temporary app files. videos saved to your gallery remain untouched",
-    ),
-    "holdToClearCache": MessageLookupByLibrary.simpleMessage(
-      "hold the button to clear cache",
     ),
     "compress": MessageLookupByLibrary.simpleMessage("compress"),
     "compressOtherVideos": MessageLookupByLibrary.simpleMessage(
@@ -143,6 +140,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "uses the device encoder for faster processing",
     ),
     "high": MessageLookupByLibrary.simpleMessage("high"),
+    "holdToClearCache": MessageLookupByLibrary.simpleMessage(
+      "hold the button to clear cache",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("language"),
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "select the language for the app",
