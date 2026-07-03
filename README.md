@@ -20,6 +20,50 @@ No cloud upload. No subscription. Your videos stay yours.
 - Optional metadata preservation and album saving
 - English and Russian localization
 
+## Native compression pipeline
+
+```mermaid
+flowchart TD
+    A[CompressBloc<br/>processes videos sequentially] --> B[VideoCompressorAdapter<br/>builds quality, resolution, codec and audio config]
+    B --> C[v_video_compressor Dart API]
+    C -->|MethodChannel: compressVideo| D{Native platform plugin}
+
+    subgraph Android
+        E[Media3 Transformer]
+        E --> F[EditedMediaItem<br/>scale, rotate, trim and audio options]
+        F --> G[MediaCodec<br/>H.264 or HEVC video + AAC audio]
+        G --> H[Media3 MP4 output]
+    end
+
+    subgraph iOS
+        I[AVURLAsset]
+        I --> J[AVAssetExportSession<br/>native quality preset]
+        J --> K[Optional AVMutableVideoComposition<br/>scale, rotate and frame rate]
+        K --> L[System H.264 or HEVC + AAC codecs]
+        L --> M[AVFoundation MP4 output]
+    end
+
+    D -->|Android| E
+    D -->|iOS| I
+    E -.->|EventChannel progress| A
+    J -.->|EventChannel progress| A
+    H --> N[Native result]
+    M --> N
+    N -->|MethodChannel result| O{Output is smaller?}
+    O -->|Yes| P[Move MP4 to temporary output]
+    O -->|No| Q[Discard result and keep original]
+```
+
+Compression uses native platform APIs, not FFmpeg. Input, output, and intermediate files stay on the device.
+
+### Why not FFmpeg?
+
+Media3 and AVFoundation keep the app smaller, use platform hardware acceleration, consume less battery, and avoid bundling another native runtime. They cover minimo's current goal: straightforward on-device video compression.
+
+The trade-off is less low-level control and small output differences between Android and iOS. FFmpeg would make sense if the app needed identical cross-platform encoding, uncommon formats, or complex filter pipelines.
+
+FFmpeg is available under LGPL or GPL depending on how it is built and which components are enabled. Shipping its binaries would require tracking that configuration and satisfying the corresponding redistribution, attribution, relinking, and source-code obligations. Using system Media3 and AVFoundation codecs avoids distributing FFmpeg and keeps the app itself under the MIT License. Codec patent and store requirements may still apply independently.
+
 ## How to contribute
 
 [![Contributing](https://img.shields.io/badge/Contributing-Guide-414141?style=for-the-badge)](CONTRIBUTING.md) [![Code of Conduct](https://img.shields.io/badge/Code_of_Conduct-Rules-414141?style=for-the-badge)](CODE_OF_CONDUCT.md)
