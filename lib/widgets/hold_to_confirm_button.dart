@@ -124,7 +124,10 @@ class _HoldToConfirmButtonState extends State<HoldToConfirmButton>
                           ),
                           borderRadius: BorderRadius.circular(13),
                         )
-                      : const BoxDecoration(),
+                      : BoxDecoration(
+                          color: theme.frameBackgroundColor,
+                          borderRadius: BorderRadius.circular(18),
+                        ),
                   child: _content(
                     enabled ? theme.textColor : theme.secondaryTextColor,
                     enabled ? theme.accentColor : theme.secondaryTextColor,

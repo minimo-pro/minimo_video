@@ -37,11 +37,13 @@ class CompressStarted extends CompressEvent {
 class CompressProgressChanged extends CompressEvent {
   final int runId;
   final double progress;
+  final double currentVideoProgress;
   final Duration elapsed;
 
   const CompressProgressChanged({
     required this.runId,
     required this.progress,
+    required this.currentVideoProgress,
     required this.elapsed,
   });
 }

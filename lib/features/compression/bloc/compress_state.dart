@@ -22,6 +22,7 @@ class CompressState {
   final int compressionRunId;
   final int processingIndex;
   final double progress;
+  final double? _currentVideoProgress;
   final Duration elapsed;
   final CompressionSettings settings;
   final int? estimatedSize;
@@ -41,6 +42,7 @@ class CompressState {
     required this.compressionRunId,
     required this.processingIndex,
     required this.progress,
+    double currentVideoProgress = 0,
     required this.elapsed,
     required this.settings,
     this.estimatedSize,
@@ -50,7 +52,7 @@ class CompressState {
     this.saveError,
     this.deleteError,
     this.compressionError,
-  });
+  }) : _currentVideoProgress = currentVideoProgress;
 
   factory CompressState.initial(List<PickedVideo> videos) {
     return CompressState(
@@ -69,6 +71,7 @@ class CompressState {
       compressionRunId: 0,
       processingIndex: 0,
       progress: 0,
+      currentVideoProgress: 0,
       elapsed: Duration.zero,
       settings: CompressionSettings(),
       estimatedSize: null,
@@ -77,6 +80,8 @@ class CompressState {
   }
 
   bool get showSettings => videos.isNotEmpty && status == CompressStatus.ready;
+
+  double get currentVideoProgress => _currentVideoProgress ?? 0;
 
   double get displayProgress {
     if (status == CompressStatus.processing &&
@@ -129,6 +134,7 @@ class CompressState {
     int? compressionRunId,
     int? processingIndex,
     double? progress,
+    double? currentVideoProgress,
     Duration? elapsed,
     CompressionSettings? settings,
     int? estimatedSize,
@@ -155,6 +161,7 @@ class CompressState {
       compressionRunId: compressionRunId ?? this.compressionRunId,
       processingIndex: processingIndex ?? this.processingIndex,
       progress: progress ?? this.progress,
+      currentVideoProgress: currentVideoProgress ?? this.currentVideoProgress,
       elapsed: elapsed ?? this.elapsed,
       settings: settings ?? this.settings,
       estimatedSize: clearEstimatedSize

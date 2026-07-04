@@ -1,0 +1,42 @@
+# Dependencies and Maintenance
+
+## Main Packages
+
+| Package | Purpose |
+|---|---|
+| `light_compressor_v2` `1.0.0` | Native video compression and progress stream |
+| `flutter_bloc` | Compression state orchestration |
+| `auto_route` | Typed navigation |
+| `shared_preferences` | Settings and onboarding state |
+| `gal` | Save videos to gallery |
+| `share_plus` | Share output files |
+| `path_provider`, `path` | Temporary file management |
+| `intl`, `intl_utils` | Localization |
+| `motor` | Press interaction motion |
+| `flutter_svg` | SVG icons |
+
+`light_compressor_v2` stays pinned to `1.0.0` because newer releases require a newer Dart SDK than this project currently uses.
+
+## Commands
+
+```bash
+flutter pub get
+dart run build_runner build
+dart run intl_utils:generate
+flutter analyze
+flutter test
+flutter build apk --debug
+flutter build ios --debug --no-codesign
+```
+
+Use `dart run build_runner build` after route changes. Use `dart run intl_utils:generate` after ARB changes.
+
+## Platform Requirements
+
+- Dart: `^3.9.2`
+- Android min SDK: 24
+- iOS deployment target: 15.0
+
+---
+
+[Back to SKILLS.md](../../SKILLS.md)

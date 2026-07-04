@@ -170,6 +170,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         compressionRunId: runId,
         processingIndex: 0,
         progress: 0,
+        currentVideoProgress: 0,
         elapsed: Duration.zero,
         clearSaveNotification: true,
         clearCompressionError: true,
@@ -181,6 +182,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         state.copyWith(
           processingIndex: i,
           progress: completedWeight / totalWeight,
+          currentVideoProgress: 0,
           elapsed: stopwatch.elapsed,
           videoStatuses: videoStatuses = _videoStatusesWith(
             videoStatuses,
@@ -209,6 +211,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
               CompressProgressChanged(
                 runId: runId,
                 progress: overallProgress.clamp(0, 1).toDouble(),
+                currentVideoProgress: videoProgress.clamp(0, 1).toDouble(),
                 elapsed: stopwatch.elapsed,
               ),
             );
@@ -261,7 +264,13 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     if (event.runId != _compressionRunId) return;
     if (state.status != CompressStatus.processing || _cancelRequested) return;
     if (event.progress < state.progress) return;
-    emit(state.copyWith(progress: event.progress, elapsed: event.elapsed));
+    emit(
+      state.copyWith(
+        progress: event.progress,
+        currentVideoProgress: event.currentVideoProgress,
+        elapsed: event.elapsed,
+      ),
+    );
   }
 
   Future<void> _onCancelled(
@@ -282,6 +291,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         ),
         processingIndex: 0,
         progress: 0,
+        currentVideoProgress: 0,
         elapsed: Duration.zero,
         clearCompressionError: true,
       ),

@@ -63,71 +63,40 @@ class _VideoStatusRow extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 10),
-        _StatusDot(status: status),
+        _StatusIndicator(status: status, progress: state.currentVideoProgress),
       ],
     );
   }
 }
 
-class _StatusDot extends StatefulWidget {
+class _StatusIndicator extends StatelessWidget {
   final VideoCompressionStatus status;
+  final double progress;
 
-  const _StatusDot({required this.status});
-
-  @override
-  State<_StatusDot> createState() => _StatusDotState();
-}
-
-class _StatusDotState extends State<_StatusDot>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 700),
-    lowerBound: 0.7,
-    upperBound: 1,
-  );
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _updateAnimation();
-  }
-
-  @override
-  void didUpdateWidget(_StatusDot oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _updateAnimation();
-  }
-
-  void _updateAnimation() {
-    final shouldAnimate =
-        widget.status == VideoCompressionStatus.processing &&
-        !MediaQuery.disableAnimationsOf(context);
-    if (shouldAnimate && !_controller.isAnimating) {
-      _controller.repeat(reverse: true);
-    } else if (!shouldAnimate) {
-      _controller.stop();
-      _controller.value = 1;
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  const _StatusIndicator({required this.status, required this.progress});
 
   @override
   Widget build(BuildContext context) {
-    return ScaleTransition(
-      scale: _controller,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: _color(widget.status),
-          shape: BoxShape.circle,
+    if (status == VideoCompressionStatus.processing) {
+      return SizedBox(
+        key: const ValueKey('video-status-processing'),
+        width: 34,
+        child: Text(
+          '${(progress * 100).round()}%',
+          textAlign: TextAlign.right,
+          style: const TextStyle(
+            color: CompressionUiColors.red,
+            fontSize: 13,
+            height: 1,
+          ),
         ),
-        child: const SizedBox.square(dimension: 8),
-      ),
+      );
+    }
+
+    return DecoratedBox(
+      key: ValueKey('video-status-${status.name}'),
+      decoration: BoxDecoration(color: _color(status), shape: BoxShape.circle),
+      child: const SizedBox.square(dimension: 8),
     );
   }
 }
@@ -135,7 +104,7 @@ class _StatusDotState extends State<_StatusDot>
 Color _color(VideoCompressionStatus status) {
   return switch (status) {
     VideoCompressionStatus.waiting => CompressionUiColors.grey,
-    VideoCompressionStatus.processing => CompressionUiColors.grey,
+    VideoCompressionStatus.processing => CompressionUiColors.red,
     VideoCompressionStatus.compressed => CompressionUiColors.green,
     VideoCompressionStatus.skipped => CompressionUiColors.grey,
     VideoCompressionStatus.failed => CompressionUiColors.red,

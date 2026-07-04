@@ -441,9 +441,11 @@ void main() {
     await Future<void>.delayed(Duration.zero);
 
     expect(bloc.state.progress, 0.125);
+    expect(bloc.state.currentVideoProgress, 0.5);
     compressor.firstProgress?.call(0.25);
     await Future<void>.delayed(Duration.zero);
     expect(bloc.state.progress, 0.125);
+    expect(bloc.state.currentVideoProgress, 0.5);
     compressor.firstResult.complete(const CompressionResult(success: false));
     await bloc.close();
   });

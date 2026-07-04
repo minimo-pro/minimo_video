@@ -133,6 +133,7 @@ class _CacheRowState extends State<_CacheRow> {
     return _SettingBlock(
       description: strings.clearCacheDescription,
       contentPadding: EdgeInsets.zero,
+      framed: false,
       child: HoldToConfirmButton(
         label: strings.clearCache,
         trailing: _size == null ? '…' : Utils.formatSize(_size!),
@@ -378,6 +379,7 @@ class _SettingBlock extends StatelessWidget {
   final Widget child;
   final String description;
   final EdgeInsetsGeometry contentPadding;
+  final bool framed;
 
   const _SettingBlock({
     required this.child,
@@ -386,6 +388,7 @@ class _SettingBlock extends StatelessWidget {
       horizontal: 16,
       vertical: 13,
     ),
+    this.framed = true,
   });
 
   @override
@@ -399,7 +402,7 @@ class _SettingBlock extends StatelessWidget {
         children: [
           DecoratedBox(
             decoration: BoxDecoration(
-              color: theme.frameBackgroundColor,
+              color: framed ? theme.frameBackgroundColor : Colors.transparent,
               borderRadius: BorderRadius.circular(18),
             ),
             child: Padding(

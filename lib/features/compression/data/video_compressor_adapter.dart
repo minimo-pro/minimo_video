@@ -82,7 +82,7 @@ class VideoCompressorAdapter {
       final originalSize = await File(inputPath).length();
       final outputFile = File(result.destinationPath);
       final outputSize = await outputFile.length();
-      final success = outputSize < originalSize;
+      final success = isUsefulCompression(originalSize, outputSize);
       final savedFile = success
           ? await _moveToOutputPath(outputFile, outputPath)
           : null;
@@ -135,6 +135,10 @@ class VideoCompressorAdapter {
   }) {
     final bitrate = videoBitrateMbps * 1000000 + (includeAudio ? 128000 : 0);
     return (bitrate * durationMs / 8000).round();
+  }
+
+  static bool isUsefulCompression(int originalSize, int outputSize) {
+    return outputSize * 10 <= originalSize * 9;
   }
 
   Future<String?> createThumbnail(String inputPath) {

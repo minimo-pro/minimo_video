@@ -29,6 +29,11 @@ void main() {
     expect(withoutAudio, lessThan(withAudio));
   });
 
+  test('compressed output needs at least ten percent savings', () {
+    expect(VideoCompressorAdapter.isUsefulCompression(1000, 900), isTrue);
+    expect(VideoCompressorAdapter.isUsefulCompression(1000, 901), isFalse);
+  });
+
   test('estimated size changes on every crf step', () {
     var previous = CompressionEstimate.compressedSize(
       originalSize: 1000000,
