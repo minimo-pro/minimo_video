@@ -10,7 +10,8 @@ import '../../../../services/app_settings_service.dart';
 import '../../../../services/thermal_service.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
-import '../../../../widgets/app_action_button.dart';
+import '../../../../widgets/app_snack_bar.dart';
+import '../../../../widgets/hold_to_confirm_button.dart';
 import '../../bloc/compress_bloc.dart';
 import '../../bloc/compress_event.dart';
 import '../../bloc/compress_state.dart';
@@ -118,11 +119,22 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
           ),
         ),
         const SizedBox(height: 14),
-        AppActionButton(
-          width: double.infinity,
+        HoldToConfirmButton(
           label: strings.cancel,
-          onPressed: () =>
-              context.read<CompressBloc>().add(const CompressCancelled()),
+          enabled: true,
+          actionStyle: true,
+          onTap: () => AppSnackBar.show(
+            context,
+            message: strings.holdToCancelCompression,
+          ),
+          onCompleted: () async {
+            context.read<CompressBloc>().add(const CompressCancelled());
+            AppSnackBar.show(
+              context,
+              message: strings.compressionCancelled,
+              type: AppSnackBarType.success,
+            );
+          },
         ),
       ],
     );

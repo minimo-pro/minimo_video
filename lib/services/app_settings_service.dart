@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppSettingsService extends ChangeNotifier {
   static const _addKompressoPrefixKey = 'add_kompresso_prefix';
   static const _showOverheatWarningKey = 'show_overheat_warning';
-  static const _preserveMetadataKey = 'preserve_metadata';
   static const _saveVideosToAlbumKey = 'save_videos_to_album';
   static const _languageCodeKey = 'language_code';
   static const appPrefix = 'minimo_';
@@ -17,7 +16,6 @@ class AppSettingsService extends ChangeNotifier {
   late SharedPreferences _preferences;
   bool addKompressoPrefix = true;
   bool showOverheatWarning = true;
-  bool preserveMetadata = true;
   bool saveVideosToAlbum = false;
   String? languageCode;
 
@@ -29,8 +27,6 @@ class AppSettingsService extends ChangeNotifier {
         _preferences.getBool(_addKompressoPrefixKey) ?? addKompressoPrefix;
     showOverheatWarning =
         _preferences.getBool(_showOverheatWarningKey) ?? showOverheatWarning;
-    preserveMetadata =
-        _preferences.getBool(_preserveMetadataKey) ?? preserveMetadata;
     saveVideosToAlbum =
         _preferences.getBool(_saveVideosToAlbumKey) ?? saveVideosToAlbum;
     languageCode = _preferences.getString(_languageCodeKey);
@@ -41,9 +37,6 @@ class AppSettingsService extends ChangeNotifier {
 
   Future<void> setShowOverheatWarning(bool value) =>
       _setBool(_showOverheatWarningKey, value, (v) => showOverheatWarning = v);
-
-  Future<void> setPreserveMetadata(bool value) =>
-      _setBool(_preserveMetadataKey, value, (v) => preserveMetadata = v);
 
   Future<void> setSaveVideosToAlbum(bool value) =>
       _setBool(_saveVideosToAlbumKey, value, (v) => saveVideosToAlbum = v);

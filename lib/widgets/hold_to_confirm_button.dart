@@ -7,14 +7,16 @@ class HoldToConfirmButton extends StatefulWidget {
   final String label;
   final String trailing;
   final bool enabled;
+  final bool actionStyle;
   final VoidCallback onTap;
   final Future<void> Function() onCompleted;
 
   const HoldToConfirmButton({
     super.key,
     required this.label,
-    required this.trailing,
+    this.trailing = '',
     required this.enabled,
+    this.actionStyle = false,
     required this.onTap,
     required this.onCompleted,
   });
@@ -61,6 +63,15 @@ class _HoldToConfirmButtonState extends State<HoldToConfirmButton>
   }
 
   Widget _content(Color textColor, Color trailingColor) {
+    if (widget.actionStyle) {
+      return Center(
+        child: Text(
+          widget.label,
+          style: TextStyle(fontSize: 25, height: 1, color: textColor),
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -96,15 +107,28 @@ class _HoldToConfirmButtonState extends State<HoldToConfirmButton>
             : null,
         onTap: enabled ? _tap : null,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(widget.actionStyle ? 13 : 18),
           child: SizedBox(
-            height: 57,
+            height: widget.actionStyle ? 47 : 57,
             child: Stack(
               fit: StackFit.expand,
               children: [
-                _content(
-                  enabled ? theme.textColor : theme.secondaryTextColor,
-                  enabled ? theme.accentColor : theme.secondaryTextColor,
+                DecoratedBox(
+                  decoration: widget.actionStyle
+                      ? BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceContainerHighest,
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
+                          borderRadius: BorderRadius.circular(13),
+                        )
+                      : const BoxDecoration(),
+                  child: _content(
+                    enabled ? theme.textColor : theme.secondaryTextColor,
+                    enabled ? theme.accentColor : theme.secondaryTextColor,
+                  ),
                 ),
                 AnimatedBuilder(
                   animation: _controller,

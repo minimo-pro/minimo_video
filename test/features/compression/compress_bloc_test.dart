@@ -67,6 +67,7 @@ class _MixedCompressor extends VideoCompressorAdapter {
 
 class _ControlledCompressor extends VideoCompressorAdapter {
   final completer = Completer<CompressionResult>();
+  var cancelCalls = 0;
 
   @override
   Future<String?> createThumbnail(String inputPath) async => null;
@@ -81,6 +82,9 @@ class _ControlledCompressor extends VideoCompressorAdapter {
   }) {
     return completer.future;
   }
+
+  @override
+  Future<void> cancelCompression() async => cancelCalls++;
 }
 
 class _WeightedProgressCompressor extends VideoCompressorAdapter {
@@ -154,6 +158,55 @@ class _SavingFileAdapter extends VideoFileAdapter {
 }
 
 void main() {
+  test('quality presets select expected bitrate tier and resolution', () async {
+    final bloc = CompressBloc(videoCompressorAdapter: _EstimatingCompressor());
+
+    for (final (quality, crf, resolution) in [
+      (SimpleCompressionQuality.high, 22.0, null),
+      (SimpleCompressionQuality.medium, 28.0, '1280:720'),
+      (SimpleCompressionQuality.low, 34.0, '854:480'),
+    ]) {
+      bloc.add(CompressSimpleQualityChanged(quality));
+      await bloc.stream.firstWhere(
+        (state) =>
+            state.settings.crf == crf &&
+            state.settings.resolution == resolution,
+      );
+    }
+
+    await bloc.close();
+  });
+
+  test(
+    'cancelling active compression resets state and calls compressor',
+    () async {
+      final compressor = _ControlledCompressor();
+      final bloc = CompressBloc(
+        initialVideos: const [
+          PickedVideo(path: '/video.mp4', name: 'video.mp4', size: 100),
+        ],
+        videoCompressorAdapter: compressor,
+      );
+
+      bloc.add(const CompressStarted());
+      await bloc.stream.firstWhere(
+        (state) => state.status == CompressStatus.processing,
+      );
+      bloc.add(const CompressCancelled());
+      await bloc.stream.firstWhere(
+        (state) => state.status == CompressStatus.ready,
+      );
+
+      expect(compressor.cancelCalls, 1);
+      expect(bloc.state.progress, 0);
+      expect(bloc.state.results, isEmpty);
+      expect(bloc.state.videoStatuses, const [VideoCompressionStatus.waiting]);
+
+      compressor.completer.complete(const CompressionResult(success: false));
+      await bloc.close();
+    },
+  );
+
   test('deletes successful originals through platform identifiers', () async {
     final files = _SavingFileAdapter();
     final bloc = CompressBloc(

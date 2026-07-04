@@ -8,7 +8,7 @@
   "onboardingPickTitle": "pick videos",
   "onboardingPickDescription": "choose one or several videos. minimo works with local files and keeps the originals untouched",
   "onboardingQualityTitle": "choose what changes",
-  "onboardingQualityDescription": "reduce bitrate, resolution, frame rate or audio. simple presets do it for you, advanced controls stay available",
+  "onboardingQualityDescription": "choose a quality preset or adjust resolution and audio manually",
   "onboardingSaveTitle": "private by default",
   "onboardingSaveDescription": "compression happens on your device. videos are not uploaded anywhere; save the smaller copy when you like the result",
   "todo": "TODO",
@@ -43,7 +43,6 @@
   },
   "showOverheatWarning": "show overheat warning",
   "showOverheatWarningDescription": "shows a small banner during compression when the device may slow down",
-  "preserveMetadataSettingDescription": "keeps the original media metadata in compressed videos. this can increase output size",
   "saveVideosToAlbum": "save videos to album",
   "saveVideosToAlbumDescription": "saves compressed videos to the {album} album instead of recently saved",
   "@saveVideosToAlbumDescription": {
@@ -65,42 +64,17 @@
   "russian": "русский",
   "overheatWarning": "compression can slow down if your device gets hot",
   "quality": "quality",
-  "speed": "speed",
   "resolution": "resolution",
   "high": "high",
   "good": "good",
   "medium": "medium",
   "low": "low",
   "small": "small",
-  "ultraFast": "ultra fast",
-  "fast": "fast",
-  "slow": "slow",
-  "verySlow": "very slow",
-  "qualityDescription": "lower CRF keeps more detail, higher CRF creates a smaller file",
-  "speedDescription": "slower encoding usually produces a smaller file at the same quality",
   "resolutionDescription": "reduce dimensions for the biggest size savings",
-  "frameRate": "frame rate",
-  "frameRateDescription": "lower frame rate reduces size but can make motion less smooth",
-  "videoCodec": "video codec",
-  "videoCodecDescription": "choose compatibility or better compression",
-  "mostCompatible": "most compatible",
-  "smallerNewerDevices": "smaller, newer devices",
   "audio": "audio",
-  "audioDescription": "stereo sounds best; mono or no audio saves more space",
+  "audioDescription": "keep the original audio or remove it to save more space",
   "stereo": "stereo",
-  "mono": "mono",
   "noAudio": "no audio",
-  "additionalOptions": "additional options",
-  "twoPassEncoding": "two-pass encoding",
-  "twoPassEncodingDescription": "better compression, but takes significantly longer",
-  "noiseReduction": "noise reduction",
-  "noiseReductionDescription": "smooths visual noise before encoding",
-  "optimizeForStreaming": "optimize for streaming",
-  "optimizeForStreamingDescription": "allows playback to start before the file fully downloads",
-  "preserveMetadata": "preserve metadata",
-  "preserveMetadataDescription": "keeps available creation and video information",
-  "hardwareAcceleration": "hardware acceleration",
-  "hardwareAccelerationDescription": "uses the device encoder for faster processing",
   "original": "original",
   "compressed": "compressed",
   "simpleOptions": "simple",
@@ -113,6 +87,8 @@
   "compress": "compress",
   "compressing": "compressing...",
   "cancel": "cancel",
+  "holdToCancelCompression": "hold the button to cancel compression",
+  "compressionCancelled": "compression cancelled",
   "estimatingTimeRemaining": "estimating time remaining...",
   "secondsRemaining": "{count, plural, =1{about 1 second left} other{about {count} seconds left}}",
   "@secondsRemaining": {
@@ -149,6 +125,7 @@
   "share": "share",
   "save": "save",
   "deleteOriginal": "delete original",
+  "holdToDeleteOriginals": "hold the button to delete originals",
   "failedToShare": "failed to share: {error}",
   "@failedToShare": {
     "placeholders": {
@@ -179,14 +156,6 @@
   "compressOtherVideos": "compress other videos",
   "waiting": "waiting",
   "failed": "failed",
-  "crfValue": "CRF {value}",
-  "@crfValue": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
   "videoProgress": "video {current} of {total}",
   "@videoProgress": {
     "placeholders": {

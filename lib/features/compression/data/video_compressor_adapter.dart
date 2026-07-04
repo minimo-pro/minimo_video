@@ -1,21 +1,21 @@
 import 'dart:io';
-import 'dart:math' as math;
 
+import 'package:flutter/services.dart';
+import 'package:light_compressor_v2/light_compressor_v2.dart' as light;
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:v_video_compressor/v_video_compressor.dart';
 
 import '../domain/compression_result.dart';
 import '../domain/compression_settings.dart';
 import '../../../services/app_settings_service.dart';
 
 class VideoCompressorAdapter {
-  final VVideoCompressor _compressor;
+  static const _channel = MethodChannel('minimo_video/videos');
+  final light.LightCompressor _compressor = light.LightCompressor();
   Future<void> _preparation = Future.value();
   var _cancelGeneration = 0;
 
-  VideoCompressorAdapter({VVideoCompressor? compressor})
-    : _compressor = compressor ?? VVideoCompressor();
+  VideoCompressorAdapter();
 
   Future<CompressionResult> compress(
     String inputPath,
@@ -33,41 +33,70 @@ class VideoCompressorAdapter {
       originalName,
       addKompressoPrefix: addKompressoPrefix,
     );
-    final result = await _compressor.compressVideo(
-      inputPath,
-      _buildConfig(settings, path.dirname(outputPath)),
-      onProgress: onProgress,
-    );
-
-    if (result == null) {
-      throw StateError('Video compression failed');
-    }
-
-    final compressedFile = File(result.compressedFilePath);
-    final originalSize = result.originalSizeBytes > 0
-        ? result.originalSizeBytes
-        : await File(inputPath).length();
-    final outputSize = result.compressedSizeBytes > 0
-        ? result.compressedSizeBytes
-        : await compressedFile.length();
-
-    final success = outputSize < originalSize;
-    final outputFile = success
-        ? await _moveToOutputPath(compressedFile, outputPath)
-        : null;
-
-    return CompressionResult(
-      success: success,
-      originalSize: originalSize,
-      outputSize: outputSize,
-      outputPath: outputFile?.path,
-      durationMs: result.timeTaken,
-    );
+    return _compress(inputPath, outputPath, settings, onProgress: onProgress);
   }
 
-  Future<void> cancelCompression() {
+  Future<void> cancelCompression() async {
     _cancelGeneration++;
-    return _compressor.cancelCompression();
+    await _compressor.cancelCompression();
+  }
+
+  Future<CompressionResult> _compress(
+    String inputPath,
+    String outputPath,
+    CompressionSettings settings, {
+    void Function(double progress)? onProgress,
+  }) async {
+    final stopwatch = Stopwatch()..start();
+    final (width, height) = _parseResolution(settings.resolution);
+    final progress = onProgress == null
+        ? null
+        : _compressor.onProgressUpdated.listen(
+            (value) => onProgress((value / 100).clamp(0, 1)),
+          );
+
+    try {
+      final result = await _compressor.compressVideo(
+        path: inputPath,
+        videoQuality: _quality(settings.crf),
+        isMinBitrateCheckEnabled: false,
+        disableAudio: settings.audioMode == CompressionAudioMode.remove,
+        video: light.Video(
+          videoName: path.basenameWithoutExtension(outputPath),
+          keepOriginalResolution: settings.resolution == null,
+          videoBitrateInMbps: _bitrateMbps(settings.crf),
+          videoWidth: width,
+          videoHeight: height,
+        ),
+        android: light.AndroidConfig(isSharedStorage: false),
+        ios: light.IOSConfig(saveInGallery: false),
+      );
+      if (result is light.OnFailure) throw StateError(result.message);
+      if (result is light.OnCancelled) {
+        throw StateError('Video compression cancelled');
+      }
+      if (result is! light.OnSuccess) {
+        throw StateError('Video compression failed');
+      }
+
+      final originalSize = await File(inputPath).length();
+      final outputFile = File(result.destinationPath);
+      final outputSize = await outputFile.length();
+      final success = outputSize < originalSize;
+      final savedFile = success
+          ? await _moveToOutputPath(outputFile, outputPath)
+          : null;
+      if (!success) await outputFile.delete();
+      return CompressionResult(
+        success: success,
+        originalSize: originalSize,
+        outputSize: outputSize,
+        outputPath: savedFile?.path,
+        durationMs: stopwatch.elapsedMilliseconds,
+      );
+    } finally {
+      await progress?.cancel();
+    }
   }
 
   Future<int?> estimateCompressedSize(
@@ -75,81 +104,49 @@ class VideoCompressorAdapter {
     CompressionSettings settings,
   ) {
     return _prepare(() async {
-      var total = 0;
-      for (final inputPath in inputPaths) {
-        final info = await _compressor.getVideoInfo(inputPath);
-        final estimate = await _compressor.getCompressionEstimate(
-          inputPath,
-          _qualityForCrf(settings.crf),
-          advanced: _buildAdvancedConfig(settings),
-        );
-        if (estimate == null || info == null) return null;
-        var estimatedSize = estimate.estimatedSizeBytes;
-        if (Platform.isAndroid) {
-          // ponytail: v2.0.0 calculates bitrate but does not apply it to Media3.
-          // Remove this floor when the Android encoder starts applying bitrate.
-          final floor = androidEstimateFloor(
-            originalSize: info.fileSizeBytes,
-            width: info.width,
-            height: info.height,
-            settings: settings,
+      try {
+        var total = 0;
+        for (final inputPath in inputPaths) {
+          final info = await _channel.invokeMapMethod<String, dynamic>(
+            'videoInfo',
+            inputPath,
           );
-          if (floor > estimatedSize) estimatedSize = floor;
-          if (estimatedSize > info.fileSizeBytes) {
-            estimatedSize = info.fileSizeBytes;
-          }
+          final durationMs = info?['durationMs'] as int?;
+          if (durationMs == null) return null;
+          final originalSize = await File(inputPath).length();
+          final estimate = estimateBytes(
+            durationMs: durationMs,
+            videoBitrateMbps: _bitrateMbps(settings.crf),
+            includeAudio: settings.audioMode != CompressionAudioMode.remove,
+          );
+          total += estimate.clamp(0, originalSize);
         }
-        total += estimatedSize;
+        return total;
+      } catch (_) {
+        return null;
       }
-      return total;
     });
   }
 
-  static int androidEstimateFloor({
-    required int originalSize,
-    required int width,
-    required int height,
-    required CompressionSettings settings,
+  static int estimateBytes({
+    required int durationMs,
+    required int videoBitrateMbps,
+    required bool includeAudio,
   }) {
-    if (originalSize <= 0 || width <= 0 || height <= 0) return 0;
-    final resolution =
-        settings.resolution ??
-        switch (_qualityForCrfStatic(settings.crf)) {
-          VVideoCompressQuality.high => '1920:1080',
-          VVideoCompressQuality.medium => '1280:720',
-          VVideoCompressQuality.low => '854:480',
-          VVideoCompressQuality.veryLow => '640:360',
-          VVideoCompressQuality.ultraLow => '432:240',
-        };
-    final parts = resolution.split(':');
-    if (parts.length != 2) return originalSize;
-    final targetWidth = int.tryParse(parts[0]);
-    final targetHeight = int.tryParse(parts[1]);
-    if (targetWidth == null || targetHeight == null) return originalSize;
-    final scale = [
-      1.0,
-      targetWidth / width,
-      targetHeight / height,
-    ].reduce((a, b) => a < b ? a : b);
-    final qualityRatio = switch (_qualityForCrfStatic(settings.crf)) {
-      VVideoCompressQuality.high => 0.96,
-      VVideoCompressQuality.medium => 0.89,
-      VVideoCompressQuality.low => 0.43,
-      VVideoCompressQuality.veryLow => 0.32,
-      VVideoCompressQuality.ultraLow => 0.24,
-    };
-    final resolutionRatio = math.pow(scale * scale, 0.02);
-    return (originalSize * qualityRatio * resolutionRatio).round();
+    final bitrate = videoBitrateMbps * 1000000 + (includeAudio ? 128000 : 0);
+    return (bitrate * durationMs / 8000).round();
   }
 
   Future<String?> createThumbnail(String inputPath) {
     return _prepare(() async {
-      final result = await _compressor.getVideoThumbnail(
-        inputPath,
-        const VVideoThumbnailConfig.defaults(maxWidth: 220, maxHeight: 220),
-      );
-
-      return result?.thumbnailPath;
+      try {
+        return await _channel.invokeMethod<String>(
+          'createThumbnail',
+          inputPath,
+        );
+      } catch (_) {
+        return null;
+      }
     });
   }
 
@@ -200,82 +197,20 @@ class VideoCompressorAdapter {
     return file.rename(outputPath);
   }
 
-  VVideoCompressionConfig _buildConfig(
-    CompressionSettings settings,
-    String outputPath,
-  ) {
-    return VVideoCompressionConfig(
-      quality: _qualityForCrf(settings.crf),
-      outputPath: outputPath,
-      saveToGallery: false,
-      includeAudio: settings.audioMode != CompressionAudioMode.remove,
-      includeMetadata: settings.preserveMetadata,
-      optimizeForStreaming: settings.optimizeForStreaming,
-      copyMetadata: settings.preserveMetadata,
-      useHardwareAcceleration: settings.hardwareAcceleration,
-      useFastStart: true,
-      useTwoPassEncoding: settings.twoPassEncoding,
-      useVariableBitrate: true,
-      advanced: _buildAdvancedConfig(settings),
-    );
+  static light.VideoQuality _quality(double crf) {
+    if (crf <= 22) return light.VideoQuality.very_high;
+    if (crf <= 28) return light.VideoQuality.medium;
+    if (crf <= 34) return light.VideoQuality.low;
+    return light.VideoQuality.very_low;
   }
 
-  VVideoAdvancedConfig _buildAdvancedConfig(CompressionSettings settings) {
-    final (width, height) = _parseResolution(settings.resolution);
-    return VVideoAdvancedConfig(
-      customWidth: width,
-      customHeight: height,
-      frameRate: settings.frameRate,
-      reducedFrameRate: settings.frameRate,
-      videoCodec: settings.videoCodec == CompressionVideoCodec.h265
-          ? VVideoCodec.h265
-          : VVideoCodec.h264,
-      audioCodec: VAudioCodec.aac,
-      audioBitrate: settings.audioMode == CompressionAudioMode.mono
-          ? 96000
-          : 128000,
-      audioChannels: settings.audioMode == CompressionAudioMode.mono ? 1 : 2,
-      removeAudio: settings.audioMode == CompressionAudioMode.remove,
-      monoAudio: settings.audioMode == CompressionAudioMode.mono,
-      encodingSpeed: _encodingSpeedForPreset(settings.preset),
-      crf: settings.crf.toInt(),
-      hardwareAcceleration: settings.hardwareAcceleration,
-      twoPassEncoding: settings.twoPassEncoding,
-      variableBitrate: true,
-      noiseReduction: settings.noiseReduction,
-      autoCorrectOrientation: true,
-      dimensionHandling: VDimensionHandling.autoAlign,
-    );
+  static int _bitrateMbps(double crf) {
+    if (crf <= 22) return 4;
+    if (crf <= 28) return 2;
+    return 1;
   }
 
-  VVideoCompressQuality _qualityForCrf(double crf) {
-    return _qualityForCrfStatic(crf);
-  }
-
-  static VVideoCompressQuality _qualityForCrfStatic(double crf) {
-    if (crf <= 22) return VVideoCompressQuality.high;
-    if (crf <= 28) return VVideoCompressQuality.medium;
-    if (crf <= 34) return VVideoCompressQuality.low;
-    return VVideoCompressQuality.veryLow;
-  }
-
-  VEncodingSpeed _encodingSpeedForPreset(String preset) {
-    switch (preset) {
-      case 'ultrafast':
-        return VEncodingSpeed.ultrafast;
-      case 'medium':
-        return VEncodingSpeed.medium;
-      case 'slow':
-        return VEncodingSpeed.slow;
-      case 'veryslow':
-        return VEncodingSpeed.veryslow;
-      case 'fast':
-      default:
-        return VEncodingSpeed.fast;
-    }
-  }
-
-  (int?, int?) _parseResolution(String? resolution) {
+  static (int?, int?) _parseResolution(String? resolution) {
     if (resolution == null) return (null, null);
 
     final parts = resolution.split(':');

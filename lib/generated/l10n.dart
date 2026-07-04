@@ -114,10 +114,10 @@ class S {
     );
   }
 
-  /// `reduce bitrate, resolution, frame rate or audio. simple presets do it for you, advanced controls stay available`
+  /// `choose a quality preset or adjust resolution and audio manually`
   String get onboardingQualityDescription {
     return Intl.message(
-      'reduce bitrate, resolution, frame rate or audio. simple presets do it for you, advanced controls stay available',
+      'choose a quality preset or adjust resolution and audio manually',
       name: 'onboardingQualityDescription',
       desc: '',
       args: [],
@@ -289,16 +289,6 @@ class S {
     );
   }
 
-  /// `keeps the original media metadata in compressed videos. this can increase output size`
-  String get preserveMetadataSettingDescription {
-    return Intl.message(
-      'keeps the original media metadata in compressed videos. this can increase output size',
-      name: 'preserveMetadataSettingDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `save videos to album`
   String get saveVideosToAlbum {
     return Intl.message(
@@ -409,11 +399,6 @@ class S {
     return Intl.message('quality', name: 'quality', desc: '', args: []);
   }
 
-  /// `speed`
-  String get speed {
-    return Intl.message('speed', name: 'speed', desc: '', args: []);
-  }
-
   /// `resolution`
   String get resolution {
     return Intl.message('resolution', name: 'resolution', desc: '', args: []);
@@ -444,46 +429,6 @@ class S {
     return Intl.message('small', name: 'small', desc: '', args: []);
   }
 
-  /// `ultra fast`
-  String get ultraFast {
-    return Intl.message('ultra fast', name: 'ultraFast', desc: '', args: []);
-  }
-
-  /// `fast`
-  String get fast {
-    return Intl.message('fast', name: 'fast', desc: '', args: []);
-  }
-
-  /// `slow`
-  String get slow {
-    return Intl.message('slow', name: 'slow', desc: '', args: []);
-  }
-
-  /// `very slow`
-  String get verySlow {
-    return Intl.message('very slow', name: 'verySlow', desc: '', args: []);
-  }
-
-  /// `lower CRF keeps more detail, higher CRF creates a smaller file`
-  String get qualityDescription {
-    return Intl.message(
-      'lower CRF keeps more detail, higher CRF creates a smaller file',
-      name: 'qualityDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `slower encoding usually produces a smaller file at the same quality`
-  String get speedDescription {
-    return Intl.message(
-      'slower encoding usually produces a smaller file at the same quality',
-      name: 'speedDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `reduce dimensions for the biggest size savings`
   String get resolutionDescription {
     return Intl.message(
@@ -494,65 +439,15 @@ class S {
     );
   }
 
-  /// `frame rate`
-  String get frameRate {
-    return Intl.message('frame rate', name: 'frameRate', desc: '', args: []);
-  }
-
-  /// `lower frame rate reduces size but can make motion less smooth`
-  String get frameRateDescription {
-    return Intl.message(
-      'lower frame rate reduces size but can make motion less smooth',
-      name: 'frameRateDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `video codec`
-  String get videoCodec {
-    return Intl.message('video codec', name: 'videoCodec', desc: '', args: []);
-  }
-
-  /// `choose compatibility or better compression`
-  String get videoCodecDescription {
-    return Intl.message(
-      'choose compatibility or better compression',
-      name: 'videoCodecDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `most compatible`
-  String get mostCompatible {
-    return Intl.message(
-      'most compatible',
-      name: 'mostCompatible',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `smaller, newer devices`
-  String get smallerNewerDevices {
-    return Intl.message(
-      'smaller, newer devices',
-      name: 'smallerNewerDevices',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `audio`
   String get audio {
     return Intl.message('audio', name: 'audio', desc: '', args: []);
   }
 
-  /// `stereo sounds best; mono or no audio saves more space`
+  /// `keep the original audio or remove it to save more space`
   String get audioDescription {
     return Intl.message(
-      'stereo sounds best; mono or no audio saves more space',
+      'keep the original audio or remove it to save more space',
       name: 'audioDescription',
       desc: '',
       args: [],
@@ -564,124 +459,9 @@ class S {
     return Intl.message('stereo', name: 'stereo', desc: '', args: []);
   }
 
-  /// `mono`
-  String get mono {
-    return Intl.message('mono', name: 'mono', desc: '', args: []);
-  }
-
   /// `no audio`
   String get noAudio {
     return Intl.message('no audio', name: 'noAudio', desc: '', args: []);
-  }
-
-  /// `additional options`
-  String get additionalOptions {
-    return Intl.message(
-      'additional options',
-      name: 'additionalOptions',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `two-pass encoding`
-  String get twoPassEncoding {
-    return Intl.message(
-      'two-pass encoding',
-      name: 'twoPassEncoding',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `better compression, but takes significantly longer`
-  String get twoPassEncodingDescription {
-    return Intl.message(
-      'better compression, but takes significantly longer',
-      name: 'twoPassEncodingDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `noise reduction`
-  String get noiseReduction {
-    return Intl.message(
-      'noise reduction',
-      name: 'noiseReduction',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `smooths visual noise before encoding`
-  String get noiseReductionDescription {
-    return Intl.message(
-      'smooths visual noise before encoding',
-      name: 'noiseReductionDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `optimize for streaming`
-  String get optimizeForStreaming {
-    return Intl.message(
-      'optimize for streaming',
-      name: 'optimizeForStreaming',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `allows playback to start before the file fully downloads`
-  String get optimizeForStreamingDescription {
-    return Intl.message(
-      'allows playback to start before the file fully downloads',
-      name: 'optimizeForStreamingDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `preserve metadata`
-  String get preserveMetadata {
-    return Intl.message(
-      'preserve metadata',
-      name: 'preserveMetadata',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `keeps available creation and video information`
-  String get preserveMetadataDescription {
-    return Intl.message(
-      'keeps available creation and video information',
-      name: 'preserveMetadataDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `hardware acceleration`
-  String get hardwareAcceleration {
-    return Intl.message(
-      'hardware acceleration',
-      name: 'hardwareAcceleration',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `uses the device encoder for faster processing`
-  String get hardwareAccelerationDescription {
-    return Intl.message(
-      'uses the device encoder for faster processing',
-      name: 'hardwareAccelerationDescription',
-      desc: '',
-      args: [],
-    );
   }
 
   /// `original`
@@ -767,6 +547,26 @@ class S {
   /// `cancel`
   String get cancel {
     return Intl.message('cancel', name: 'cancel', desc: '', args: []);
+  }
+
+  /// `hold the button to cancel compression`
+  String get holdToCancelCompression {
+    return Intl.message(
+      'hold the button to cancel compression',
+      name: 'holdToCancelCompression',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `compression cancelled`
+  String get compressionCancelled {
+    return Intl.message(
+      'compression cancelled',
+      name: 'compressionCancelled',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `estimating time remaining...`
@@ -908,6 +708,16 @@ class S {
     );
   }
 
+  /// `hold the button to delete originals`
+  String get holdToDeleteOriginals {
+    return Intl.message(
+      'hold the button to delete originals',
+      name: 'holdToDeleteOriginals',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `failed to share: {error}`
   String failedToShare(String error) {
     return Intl.message(
@@ -956,16 +766,6 @@ class S {
   /// `failed`
   String get failed {
     return Intl.message('failed', name: 'failed', desc: '', args: []);
-  }
-
-  /// `CRF {value}`
-  String crfValue(int value) {
-    return Intl.message(
-      'CRF $value',
-      name: 'crfValue',
-      desc: '',
-      args: [value],
-    );
   }
 
   /// `video {current} of {total}`

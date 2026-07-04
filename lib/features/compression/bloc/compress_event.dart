@@ -18,18 +18,6 @@ class CompressEstimateRequested extends CompressEvent {
   const CompressEstimateRequested();
 }
 
-class CompressCrfChanged extends CompressEvent {
-  final double crf;
-
-  const CompressCrfChanged(this.crf);
-}
-
-class CompressPresetChanged extends CompressEvent {
-  final String preset;
-
-  const CompressPresetChanged(this.preset);
-}
-
 class CompressResolutionChanged extends CompressEvent {
   final String? resolution;
 

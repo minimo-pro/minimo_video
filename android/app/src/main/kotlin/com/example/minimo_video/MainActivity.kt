@@ -1,4 +1,4 @@
-package com.example.minimo_video
+package com.khlebobul.minimo_video
 
 import android.content.Context
 import android.content.ContentUris
@@ -10,6 +10,7 @@ import android.os.PowerManager
 import android.provider.OpenableColumns
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.media.MediaMetadataRetriever
 import java.io.File
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -38,6 +39,8 @@ class MainActivity : FlutterActivity() {
             when (call.method) {
                 "pickVideos" -> pickVideos(result)
                 "deleteOriginals" -> deleteOriginals(call.arguments as? List<*>, result)
+                "videoInfo" -> videoInfo(call.arguments as? String, result)
+                "createThumbnail" -> createThumbnail(call.arguments as? String, result)
                 else -> result.notImplemented()
             }
         }
@@ -83,6 +86,47 @@ class MainActivity : FlutterActivity() {
             PowerManager.THERMAL_STATUS_SHUTDOWN -> "critical"
             else -> "unknown"
         }
+    }
+
+    private fun videoInfo(path: String?, result: MethodChannel.Result) {
+        if (path == null) {
+            result.error("invalid_path", "video path is missing", null)
+            return
+        }
+        runCatching {
+            val retriever = MediaMetadataRetriever()
+            try {
+                retriever.setDataSource(path)
+                retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull() ?: 0L
+            } finally {
+                retriever.release()
+            }
+        }.onSuccess { result.success(mapOf("durationMs" to it)) }
+            .onFailure { result.error("video_info_failed", it.message, null) }
+    }
+
+    private fun createThumbnail(path: String?, result: MethodChannel.Result) {
+        if (path == null) {
+            result.error("invalid_path", "video path is missing", null)
+            return
+        }
+        runCatching {
+            val retriever = MediaMetadataRetriever()
+            val frame = try {
+                retriever.setDataSource(path)
+                retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
+                    ?: error("unable to decode video thumbnail")
+            } finally {
+                retriever.release()
+            }
+            val output = File(cacheDir, "thumbnail_${System.nanoTime()}.jpg")
+            output.outputStream().use {
+                frame.compress(android.graphics.Bitmap.CompressFormat.JPEG, 82, it)
+            }
+            frame.recycle()
+            output.absolutePath
+        }.onSuccess(result::success)
+            .onFailure { result.error("thumbnail_failed", it.message, null) }
     }
 
     private fun pickVideos(result: MethodChannel.Result) {

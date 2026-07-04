@@ -8,7 +8,7 @@
   "onboardingPickTitle": "выберите видео",
   "onboardingPickDescription": "выберите одно или несколько видео. minimo работает с локальными файлами и не трогает оригиналы",
   "onboardingQualityTitle": "выберите, что менять",
-  "onboardingQualityDescription": "уменьшайте битрейт, разрешение, частоту кадров или звук. простые пресеты сделают это сами, а расширенные настройки останутся под рукой",
+  "onboardingQualityDescription": "выберите готовый уровень качества или настройте разрешение и звук вручную",
   "onboardingSaveTitle": "приватно по умолчанию",
   "onboardingSaveDescription": "сжатие происходит на устройстве. видео никуда не загружаются; сохраните меньшую копию, когда результат устроит",
   "todo": "В разработке",
@@ -43,7 +43,6 @@
   },
   "showOverheatWarning": "показывать предупреждение о перегреве",
   "showOverheatWarningDescription": "показывает небольшой баннер во время сжатия, когда устройство может замедлиться",
-  "preserveMetadataSettingDescription": "сохраняет исходные метаданные в сжатом видео. это может увеличить размер файла",
   "saveVideosToAlbum": "сохранять видео в альбом",
   "saveVideosToAlbumDescription": "сохраняет сжатые видео в альбом {album} вместо недавних сохранений",
   "@saveVideosToAlbumDescription": {
@@ -65,42 +64,17 @@
   "russian": "русский",
   "overheatWarning": "сжатие может замедлиться, если устройство нагреется",
   "quality": "качество",
-  "speed": "скорость",
   "resolution": "разрешение",
   "high": "высокое",
   "good": "хорошее",
   "medium": "среднее",
   "low": "низкое",
   "small": "маленький",
-  "ultraFast": "очень быстро",
-  "fast": "быстро",
-  "slow": "медленно",
-  "verySlow": "очень медленно",
-  "qualityDescription": "низкий CRF сохраняет больше деталей, высокий создаёт меньший файл",
-  "speedDescription": "медленное кодирование обычно создаёт меньший файл при том же качестве",
   "resolutionDescription": "уменьшение разрешения сильнее всего сокращает размер",
-  "frameRate": "частота кадров",
-  "frameRateDescription": "меньшая частота уменьшает размер, но движение может стать менее плавным",
-  "videoCodec": "видеокодек",
-  "videoCodecDescription": "выберите совместимость или более эффективное сжатие",
-  "mostCompatible": "максимальная совместимость",
-  "smallerNewerDevices": "меньше размер, новые устройства",
   "audio": "звук",
-  "audioDescription": "стерео звучит лучше; моно или удаление звука экономит место",
+  "audioDescription": "сохраните исходный звук или удалите его для меньшего размера",
   "stereo": "стерео",
-  "mono": "моно",
   "noAudio": "без звука",
-  "additionalOptions": "дополнительные настройки",
-  "twoPassEncoding": "двухпроходное кодирование",
-  "twoPassEncodingDescription": "лучшее сжатие, но обработка займёт значительно больше времени",
-  "noiseReduction": "шумоподавление",
-  "noiseReductionDescription": "сглаживает визуальный шум перед кодированием",
-  "optimizeForStreaming": "оптимизация для стриминга",
-  "optimizeForStreamingDescription": "позволяет начать просмотр до полной загрузки файла",
-  "preserveMetadata": "сохранять метаданные",
-  "preserveMetadataDescription": "сохраняет доступные сведения о создании и видео",
-  "hardwareAcceleration": "аппаратное ускорение",
-  "hardwareAccelerationDescription": "использует кодировщик устройства для быстрой обработки",
   "original": "оригинал",
   "compressed": "сжатое",
   "simpleOptions": "простой",
@@ -113,6 +87,8 @@
   "compress": "сжать",
   "compressing": "сжатие...",
   "cancel": "отмена",
+  "holdToCancelCompression": "удерживайте кнопку, чтобы отменить сжатие",
+  "compressionCancelled": "сжатие отменено",
   "estimatingTimeRemaining": "оцениваем оставшееся время...",
   "secondsRemaining": "{count, plural, =1{осталась примерно 1 секунда} one{осталась примерно {count} секунда} few{осталось примерно {count} секунды} many{осталось примерно {count} секунд} other{осталось примерно {count} секунды}}",
   "@secondsRemaining": {
@@ -149,6 +125,7 @@
   "share": "поделиться",
   "save": "сохранить",
   "deleteOriginal": "удалить оригинал",
+  "holdToDeleteOriginals": "удерживайте кнопку, чтобы удалить оригиналы",
   "failedToShare": "не удалось поделиться: {error}",
   "@failedToShare": {
     "placeholders": {
@@ -179,14 +156,6 @@
   "compressOtherVideos": "сжать другие видео",
   "waiting": "ожидает",
   "failed": "ошибка",
-  "crfValue": "CRF {value}",
-  "@crfValue": {
-    "placeholders": {
-      "value": {
-        "type": "int"
-      }
-    }
-  },
   "videoProgress": "видео {current} из {total}",
   "@videoProgress": {
     "placeholders": {

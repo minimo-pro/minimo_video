@@ -33,8 +33,6 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     on<CompressThumbnailsRequested>(_onThumbnailsRequested);
     on<CompressEstimateRequested>(_onEstimateRequested);
     on<CompressSimpleQualityChanged>(_onSimpleQualityChanged);
-    on<CompressCrfChanged>(_onCrfChanged);
-    on<CompressPresetChanged>(_onPresetChanged);
     on<CompressResolutionChanged>(_onResolutionChanged);
     on<CompressSettingsChanged>(_onSettingsChanged);
     on<CompressStarted>(_onStarted);
@@ -95,11 +93,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       case SimpleCompressionQuality.high:
         emit(
           state.copyWith(
-            settings: const CompressionSettings(
-              crf: 22,
-              preset: 'fast',
-              resolution: null,
-            ),
+            settings: const CompressionSettings(crf: 22, resolution: null),
           ),
         );
       case SimpleCompressionQuality.medium:
@@ -107,7 +101,6 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
           state.copyWith(
             settings: const CompressionSettings(
               crf: 28,
-              preset: 'fast',
               resolution: '1280:720',
             ),
           ),
@@ -115,29 +108,10 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       case SimpleCompressionQuality.low:
         emit(
           state.copyWith(
-            settings: const CompressionSettings(
-              crf: 34,
-              preset: 'fast',
-              resolution: '854:480',
-            ),
+            settings: const CompressionSettings(crf: 34, resolution: '854:480'),
           ),
         );
     }
-    _requestEstimate();
-  }
-
-  void _onCrfChanged(CompressCrfChanged event, Emitter<CompressState> emit) {
-    emit(state.copyWith(settings: state.settings.copyWith(crf: event.crf)));
-    _requestEstimate();
-  }
-
-  void _onPresetChanged(
-    CompressPresetChanged event,
-    Emitter<CompressState> emit,
-  ) {
-    emit(
-      state.copyWith(settings: state.settings.copyWith(preset: event.preset)),
-    );
     _requestEstimate();
   }
 
@@ -224,9 +198,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         result = await _videoCompressorAdapter.compress(
           video.path,
           video.name,
-          state.settings.copyWith(
-            preserveMetadata: _appSettings.preserveMetadata,
-          ),
+          state.settings,
           addKompressoPrefix: _appSettings.addKompressoPrefix,
           onProgress: (videoProgress) {
             if (_cancelRequested) return;

@@ -25,39 +25,37 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(prefix) =>
       "добавляет \"${prefix}\" перед исходным именем файла. если выключить, имя останется исходным";
 
-  static String m2(value) => "CRF ${value}";
+  static String m2(error) => "не удалось сохранить: ${error}";
 
-  static String m3(error) => "не удалось сохранить: ${error}";
+  static String m3(error) => "не удалось поделиться: ${error}";
 
-  static String m4(error) => "не удалось поделиться: ${error}";
-
-  static String m5(count) =>
+  static String m4(count) =>
       "${Intl.plural(count, one: 'осталась примерно 1 минута', few: 'осталось примерно ${count} минуты', many: 'осталось примерно ${count} минут', other: 'осталось примерно ${count} минуты')}";
 
-  static String m6(count) =>
+  static String m5(count) =>
       "${Intl.plural(count, one: 'сохранить 1 видео', few: 'сохранить ${count} видео', many: 'сохранить ${count} видео', other: 'сохранить ${count} видео')}";
 
-  static String m7(album) =>
+  static String m6(album) =>
       "сохраняет сжатые видео в альбом ${album} вместо недавних сохранений";
 
-  static String m8(error) =>
+  static String m7(error) =>
       "видео сохранены, но некоторые оригиналы удалить не удалось: ${error}";
 
-  static String m9(saved, deleted) =>
+  static String m8(saved, deleted) =>
       "сохранено видео: ${saved}, удалено оригиналов: ${deleted}";
 
-  static String m10(count) =>
+  static String m9(count) =>
       "${Intl.plural(count, one: '1 видео сохранено в галерею', few: '${count} видео сохранено в галерею', many: '${count} видео сохранено в галерею', other: '${count} видео сохранено в галерею')}";
 
-  static String m11(count) =>
+  static String m10(count) =>
       "${Intl.plural(count, one: 'осталась примерно 1 секунда', few: 'осталось примерно ${count} секунды', many: 'осталось примерно ${count} секунд', other: 'осталось примерно ${count} секунды')}";
 
-  static String m12(current, total) => "видео ${current} из ${total}";
+  static String m11(current, total) => "видео ${current} из ${total}";
 
-  static String m13(completed, total) =>
+  static String m12(completed, total) =>
       "сжато видео: ${completed} из ${total}";
 
-  static String m14(size) => "экономия ${size}";
+  static String m13(size) => "экономия ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -67,9 +65,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "addPrefix": m0,
     "addPrefixDescription": m1,
-    "additionalOptions": MessageLookupByLibrary.simpleMessage(
-      "дополнительные настройки",
-    ),
     "advancedOptions": MessageLookupByLibrary.simpleMessage("расширенный"),
     "alreadyOptimized": MessageLookupByLibrary.simpleMessage(
       "уже оптимизировано",
@@ -80,7 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "appName": MessageLookupByLibrary.simpleMessage("minimo (video)"),
     "audio": MessageLookupByLibrary.simpleMessage("звук"),
     "audioDescription": MessageLookupByLibrary.simpleMessage(
-      "стерео звучит лучше; моно или удаление звука экономит место",
+      "сохраните исходный звук или удалите его для меньшего размера",
     ),
     "better": MessageLookupByLibrary.simpleMessage("лучше"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
@@ -101,6 +96,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "compressed": MessageLookupByLibrary.simpleMessage("сжатое"),
     "compressing": MessageLookupByLibrary.simpleMessage("сжатие..."),
+    "compressionCancelled": MessageLookupByLibrary.simpleMessage(
+      "сжатие отменено",
+    ),
     "compressionComplete": MessageLookupByLibrary.simpleMessage(
       "сжатие завершено",
     ),
@@ -113,7 +111,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "compressionFailedDescription": MessageLookupByLibrary.simpleMessage(
       "попробуйте ещё раз или выберите другое видео.",
     ),
-    "crfValue": m2,
     "deleteOriginal": MessageLookupByLibrary.simpleMessage("удалить оригинал"),
     "emailCopied": MessageLookupByLibrary.simpleMessage("почта скопирована"),
     "english": MessageLookupByLibrary.simpleMessage("english"),
@@ -121,27 +118,22 @@ class MessageLookup extends MessageLookupByLibrary {
       "оцениваем оставшееся время...",
     ),
     "failed": MessageLookupByLibrary.simpleMessage("ошибка"),
-    "failedToSave": m3,
-    "failedToShare": m4,
-    "fast": MessageLookupByLibrary.simpleMessage("быстро"),
-    "frameRate": MessageLookupByLibrary.simpleMessage("частота кадров"),
-    "frameRateDescription": MessageLookupByLibrary.simpleMessage(
-      "меньшая частота уменьшает размер, но движение может стать менее плавным",
-    ),
+    "failedToSave": m2,
+    "failedToShare": m3,
     "getStarted": MessageLookupByLibrary.simpleMessage("начать"),
     "githubRepository": MessageLookupByLibrary.simpleMessage(
       "репозиторий github",
     ),
     "good": MessageLookupByLibrary.simpleMessage("хорошее"),
-    "hardwareAcceleration": MessageLookupByLibrary.simpleMessage(
-      "аппаратное ускорение",
-    ),
-    "hardwareAccelerationDescription": MessageLookupByLibrary.simpleMessage(
-      "использует кодировщик устройства для быстрой обработки",
-    ),
     "high": MessageLookupByLibrary.simpleMessage("высокое"),
+    "holdToCancelCompression": MessageLookupByLibrary.simpleMessage(
+      "удерживайте кнопку, чтобы отменить сжатие",
+    ),
     "holdToClearCache": MessageLookupByLibrary.simpleMessage(
       "удерживайте кнопку, чтобы очистить кеш",
+    ),
+    "holdToDeleteOriginals": MessageLookupByLibrary.simpleMessage(
+      "удерживайте кнопку, чтобы удалить оригиналы",
     ),
     "language": MessageLookupByLibrary.simpleMessage("язык"),
     "languageDescription": MessageLookupByLibrary.simpleMessage(
@@ -151,21 +143,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "low": MessageLookupByLibrary.simpleMessage("низкое"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("среднее"),
-    "minutesRemaining": m5,
-    "mono": MessageLookupByLibrary.simpleMessage("моно"),
-    "mostCompatible": MessageLookupByLibrary.simpleMessage(
-      "максимальная совместимость",
-    ),
+    "minutesRemaining": m4,
     "myOtherApps": MessageLookupByLibrary.simpleMessage(
       "другие мои приложения",
     ),
     "myWebsite": MessageLookupByLibrary.simpleMessage("мой сайт"),
     "next": MessageLookupByLibrary.simpleMessage("далее"),
     "noAudio": MessageLookupByLibrary.simpleMessage("без звука"),
-    "noiseReduction": MessageLookupByLibrary.simpleMessage("шумоподавление"),
-    "noiseReductionDescription": MessageLookupByLibrary.simpleMessage(
-      "сглаживает визуальный шум перед кодированием",
-    ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "выберите одно или несколько видео. minimo работает с локальными файлами и не трогает оригиналы",
     ),
@@ -173,7 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "выберите видео",
     ),
     "onboardingQualityDescription": MessageLookupByLibrary.simpleMessage(
-      "уменьшайте битрейт, разрешение, частоту кадров или звук. простые пресеты сделают это сами, а расширенные настройки останутся под рукой",
+      "выберите готовый уровень качества или настройте разрешение и звук вручную",
     ),
     "onboardingQualityTitle": MessageLookupByLibrary.simpleMessage(
       "выберите, что менять",
@@ -187,30 +171,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "openSourceNote": MessageLookupByLibrary.simpleMessage(
       "minimo (video) — проект с открытым исходным кодом. посмотрите код, следите за проектом или свяжитесь со мной",
     ),
-    "optimizeForStreaming": MessageLookupByLibrary.simpleMessage(
-      "оптимизация для стриминга",
-    ),
-    "optimizeForStreamingDescription": MessageLookupByLibrary.simpleMessage(
-      "позволяет начать просмотр до полной загрузки файла",
-    ),
     "original": MessageLookupByLibrary.simpleMessage("оригинал"),
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "сжатие может замедлиться, если устройство нагреется",
     ),
-    "preserveMetadata": MessageLookupByLibrary.simpleMessage(
-      "сохранять метаданные",
-    ),
-    "preserveMetadataDescription": MessageLookupByLibrary.simpleMessage(
-      "сохраняет доступные сведения о создании и видео",
-    ),
-    "preserveMetadataSettingDescription": MessageLookupByLibrary.simpleMessage(
-      "сохраняет исходные метаданные в сжатом видео. это может увеличить размер файла",
-    ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("сайт проекта"),
     "quality": MessageLookupByLibrary.simpleMessage("качество"),
-    "qualityDescription": MessageLookupByLibrary.simpleMessage(
-      "низкий CRF сохраняет больше деталей, высокий создаёт меньший файл",
-    ),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("оценить приложение"),
     "resolution": MessageLookupByLibrary.simpleMessage("разрешение"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
@@ -224,15 +190,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "russian": MessageLookupByLibrary.simpleMessage("русский"),
     "save": MessageLookupByLibrary.simpleMessage("сохранить"),
-    "saveVideos": m6,
+    "saveVideos": m5,
     "saveVideosToAlbum": MessageLookupByLibrary.simpleMessage(
       "сохранять видео в альбом",
     ),
-    "saveVideosToAlbumDescription": m7,
-    "savedButOriginalsNotDeleted": m8,
-    "savedVideosAndDeletedOriginals": m9,
-    "savedVideosToGallery": m10,
-    "secondsRemaining": m11,
+    "saveVideosToAlbumDescription": m6,
+    "savedButOriginalsNotDeleted": m7,
+    "savedVideosAndDeletedOriginals": m8,
+    "savedVideosToGallery": m9,
+    "secondsRemaining": m10,
     "settings": MessageLookupByLibrary.simpleMessage("настройки"),
     "share": MessageLookupByLibrary.simpleMessage("поделиться"),
     "shareWithFriends": MessageLookupByLibrary.simpleMessage(
@@ -246,37 +212,17 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "simpleOptions": MessageLookupByLibrary.simpleMessage("простой"),
     "skip": MessageLookupByLibrary.simpleMessage("пропустить"),
-    "slow": MessageLookupByLibrary.simpleMessage("медленно"),
     "small": MessageLookupByLibrary.simpleMessage("маленький"),
     "smaller": MessageLookupByLibrary.simpleMessage("меньше"),
-    "smallerNewerDevices": MessageLookupByLibrary.simpleMessage(
-      "меньше размер, новые устройства",
-    ),
-    "speed": MessageLookupByLibrary.simpleMessage("скорость"),
-    "speedDescription": MessageLookupByLibrary.simpleMessage(
-      "медленное кодирование обычно создаёт меньший файл при том же качестве",
-    ),
     "stereo": MessageLookupByLibrary.simpleMessage("стерео"),
     "system": MessageLookupByLibrary.simpleMessage("система"),
     "telegram": MessageLookupByLibrary.simpleMessage("telegram"),
     "todo": MessageLookupByLibrary.simpleMessage("В разработке"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("попробовать снова"),
-    "twoPassEncoding": MessageLookupByLibrary.simpleMessage(
-      "двухпроходное кодирование",
-    ),
-    "twoPassEncodingDescription": MessageLookupByLibrary.simpleMessage(
-      "лучшее сжатие, но обработка займёт значительно больше времени",
-    ),
-    "ultraFast": MessageLookupByLibrary.simpleMessage("очень быстро"),
-    "verySlow": MessageLookupByLibrary.simpleMessage("очень медленно"),
-    "videoCodec": MessageLookupByLibrary.simpleMessage("видеокодек"),
-    "videoCodecDescription": MessageLookupByLibrary.simpleMessage(
-      "выберите совместимость или более эффективное сжатие",
-    ),
-    "videoProgress": m12,
-    "videosCompressed": m13,
+    "videoProgress": m11,
+    "videosCompressed": m12,
     "waiting": MessageLookupByLibrary.simpleMessage("ожидает"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m14,
+    "youSavedSize": m13,
   };
 }

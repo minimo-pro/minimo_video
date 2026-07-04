@@ -1,4 +1,5 @@
 import Flutter
+import AVFoundation
 import Photos
 import PhotosUI
 import UIKit
@@ -36,6 +37,10 @@ import UniformTypeIdentifiers
         self.pickVideos(result)
       case "deleteOriginals":
         self.deleteOriginals(call.arguments as? [String] ?? [], result: result)
+      case "videoInfo":
+        self.videoInfo(call.arguments as? String, result: result)
+      case "createThumbnail":
+        self.createThumbnail(call.arguments as? String, result: result)
       default:
         result(FlutterMethodNotImplemented)
       }
@@ -98,6 +103,45 @@ import UniformTypeIdentifiers
       return "critical"
     @unknown default:
       return "unknown"
+    }
+  }
+
+  private func videoInfo(_ path: String?, result: @escaping FlutterResult) {
+    guard let path else {
+      result(FlutterError(code: "invalid_path", message: "video path is missing", details: nil))
+      return
+    }
+    DispatchQueue.global(qos: .userInitiated).async {
+      let asset = AVURLAsset(url: URL(fileURLWithPath: path))
+      let durationMs = Int((asset.duration.seconds * 1000).rounded())
+      DispatchQueue.main.async { result(["durationMs": durationMs]) }
+    }
+  }
+
+  private func createThumbnail(_ path: String?, result: @escaping FlutterResult) {
+    guard let path else {
+      result(FlutterError(code: "invalid_path", message: "video path is missing", details: nil))
+      return
+    }
+    DispatchQueue.global(qos: .userInitiated).async {
+      let asset = AVURLAsset(url: URL(fileURLWithPath: path))
+      let generator = AVAssetImageGenerator(asset: asset)
+      generator.appliesPreferredTrackTransform = true
+      generator.maximumSize = CGSize(width: 220, height: 220)
+      do {
+        let image = try generator.copyCGImage(at: .zero, actualTime: nil)
+        guard let data = UIImage(cgImage: image).jpegData(compressionQuality: 0.82) else {
+          throw NSError(domain: "minimo_video", code: 1)
+        }
+        let url = FileManager.default.temporaryDirectory
+          .appendingPathComponent("thumbnail_\(UUID().uuidString).jpg")
+        try data.write(to: url)
+        DispatchQueue.main.async { result(url.path) }
+      } catch {
+        DispatchQueue.main.async {
+          result(FlutterError(code: "thumbnail_failed", message: error.localizedDescription, details: nil))
+        }
+      }
     }
   }
 

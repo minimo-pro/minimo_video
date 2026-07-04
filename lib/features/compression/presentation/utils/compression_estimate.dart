@@ -15,10 +15,7 @@ abstract final class CompressionEstimate {
       '640:360' => 0.48,
       _ => 0.75,
     };
-    if (settings.videoCodec == CompressionVideoCodec.h265) ratio *= 0.82;
-    if (settings.audioMode == CompressionAudioMode.mono) ratio *= 0.96;
     if (settings.audioMode == CompressionAudioMode.remove) ratio *= 0.9;
-    if (settings.noiseReduction) ratio *= 0.96;
     return (originalSize * ratio).round();
   }
 }

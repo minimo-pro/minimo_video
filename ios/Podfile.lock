@@ -3,6 +3,8 @@ PODS:
   - gal (1.0.0):
     - Flutter
     - FlutterMacOS
+  - light_compressor_v2 (1.0.0):
+    - Flutter
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
@@ -15,24 +17,24 @@ PODS:
     - FlutterMacOS
   - url_launcher_ios (0.0.1):
     - Flutter
-  - v_video_compressor (1.2.1):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - gal (from `.symlinks/plugins/gal/darwin`)
+  - light_compressor_v2 (from `.symlinks/plugins/light_compressor_v2/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
-  - v_video_compressor (from `.symlinks/plugins/v_video_compressor/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   gal:
     :path: ".symlinks/plugins/gal/darwin"
+  light_compressor_v2:
+    :path: ".symlinks/plugins/light_compressor_v2/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -43,18 +45,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
-  v_video_compressor:
-    :path: ".symlinks/plugins/v_video_compressor/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   gal: baecd024ebfd13c441269ca7404792a7152fde89
+  light_compressor_v2: 3e9536b616827259e433bbb21fca70f0e995bf6c
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   path_provider_foundation: bb55f6dbba17d0dccd6737fe6f7f34fbd0376880
   share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
   url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b
-  v_video_compressor: 9016c3f6e5a9928c4f112b4832beedcfb7c7011f
 
 PODFILE CHECKSUM: 4b015915ec662986b54bf30ab778da63f7dda016
 

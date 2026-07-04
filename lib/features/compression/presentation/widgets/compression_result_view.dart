@@ -8,6 +8,7 @@ import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../widgets/app_action_button.dart';
 import '../../../../widgets/app_snack_bar.dart';
+import '../../../../widgets/hold_to_confirm_button.dart';
 import '../../bloc/compress_bloc.dart';
 import '../../bloc/compress_event.dart';
 import '../../bloc/compress_state.dart';
@@ -136,14 +137,15 @@ class CompressionResultView extends StatelessWidget {
           ),
         ],
         const SizedBox(height: 14),
-        AppActionButton(
-          width: double.infinity,
+        HoldToConfirmButton(
           label: strings.deleteOriginal,
-          onPressed: state.isSaving
-              ? null
-              : () => context.read<CompressBloc>().add(
-                  const CompressResultsSaved(deleteOriginals: true),
-                ),
+          enabled: !state.isSaving,
+          actionStyle: true,
+          onTap: () =>
+              AppSnackBar.show(context, message: strings.holdToDeleteOriginals),
+          onCompleted: () async => context.read<CompressBloc>().add(
+            const CompressResultsSaved(deleteOriginals: true),
+          ),
         ),
         const SizedBox(height: 14),
         AppActionButton(

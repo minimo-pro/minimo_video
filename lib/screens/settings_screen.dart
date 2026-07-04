@@ -51,12 +51,6 @@ class SettingsScreen extends StatelessWidget {
                         onChanged: settings.setShowOverheatWarning,
                       ),
                       _ToggleRow(
-                        title: strings.preserveMetadata,
-                        description: strings.preserveMetadataSettingDescription,
-                        value: settings.preserveMetadata,
-                        onChanged: settings.setPreserveMetadata,
-                      ),
-                      _ToggleRow(
                         title: strings.saveVideosToAlbum,
                         description: strings.saveVideosToAlbumDescription(
                           AppSettingsService.albumName.toLowerCase(),

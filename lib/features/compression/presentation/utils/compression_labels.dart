@@ -1,17 +1,6 @@
 import '../../../../generated/l10n.dart';
 
 abstract final class CompressionLabels {
-  static String preset(String preset, S strings) {
-    return switch (preset) {
-      'ultrafast' => strings.ultraFast,
-      'fast' => strings.fast,
-      'medium' => strings.medium,
-      'slow' => strings.slow,
-      'veryslow' => strings.verySlow,
-      _ => preset,
-    };
-  }
-
   static String resolution(String? resolution, S strings) {
     return switch (resolution) {
       null => strings.original,
@@ -21,12 +10,5 @@ abstract final class CompressionLabels {
       '640:360' => '360p',
       _ => resolution,
     };
-  }
-
-  static String quality(double crf, S strings) {
-    if (crf < 20) return strings.high;
-    if (crf < 25) return strings.good;
-    if (crf < 31) return strings.medium;
-    return strings.small;
   }
 }

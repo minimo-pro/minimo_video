@@ -1,6 +1,8 @@
 <div align="center">
 
-// TODO store links + website
+
+<!-- TODO: Add store links after release. -->
+![App Store](https://img.shields.io/badge/App_Store-414141?style=for-the-badge&logo=apple&logoColor=F1F1F1) ![Google Play](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=googleplay&logoColor=F1F1F1) [![Website](https://img.shields.io/badge/Website-414141?style=for-the-badge)](https://github.com/minimo-pro)
 
 <img width="900" alt="minimo video screenshots" src="screenshots/github.png" />
 
@@ -13,56 +15,62 @@ No cloud upload. No subscription. Your videos stay yours.
 ## Features
 
 - Simple quality presets: high, medium, low
-- Advanced controls: CRF, speed preset, resolution, frame rate, codec, audio
+- Advanced controls: resolution and audio
 - Batch compression
 - Progress screen with time estimate
 - Save and share compressed videos
-- Optional metadata preservation and album saving
+- Optional album saving
 - English and Russian localization
+
+## Roadmap
+
+- [x] Simple quality presets
+- [x] Batch compression
+- [x] Resolution and audio controls
+- [x] Compression progress, cancellation, saving, and sharing
+- [ ] Custom bitrate
+- [ ] Frame rate control
+- [ ] H.264 and HEVC codec selection
+- [ ] Compression speed presets
+- [ ] Metadata preservation
 
 ## Native compression pipeline
 
 ```mermaid
 flowchart TD
-    A[CompressBloc<br/>processes videos sequentially] --> B[VideoCompressorAdapter<br/>builds quality, resolution, codec and audio config]
-    B --> C[v_video_compressor Dart API]
-    C -->|MethodChannel: compressVideo| D{Native platform plugin}
+    A[CompressBloc<br/>processes videos sequentially] --> B[VideoCompressorAdapter<br/>builds bitrate, resolution and audio config]
+    B --> C[light_compressor_v2]
+    C --> D{Native platform plugin}
 
     subgraph Android
-        E[Media3 Transformer]
-        E --> F[EditedMediaItem<br/>scale, rotate, trim and audio options]
-        F --> G[MediaCodec<br/>H.264 or HEVC video + AAC audio]
-        G --> H[Media3 MP4 output]
+        E[MediaCodec and MediaMuxer]
+        E --> F[MP4 output]
     end
 
     subgraph iOS
-        I[AVURLAsset]
-        I --> J[AVAssetExportSession<br/>native quality preset]
-        J --> K[Optional AVMutableVideoComposition<br/>scale, rotate and frame rate]
-        K --> L[System H.264 or HEVC + AAC codecs]
-        L --> M[AVFoundation MP4 output]
+        G[AVFoundation]
+        G --> H[MP4 output]
     end
 
     D -->|Android| E
-    D -->|iOS| I
-    E -.->|EventChannel progress| A
-    J -.->|EventChannel progress| A
-    H --> N[Native result]
-    M --> N
-    N -->|MethodChannel result| O{Output is smaller?}
-    O -->|Yes| P[Move MP4 to temporary output]
-    O -->|No| Q[Discard result and keep original]
+    D -->|iOS| G
+    C -.->|progress stream| A
+    F --> I[Native result]
+    H --> I
+    I --> J{Output is smaller?}
+    J -->|Yes| K[Move MP4 to app output]
+    J -->|No| L[Discard result and keep original]
 ```
 
 Compression uses native platform APIs, not FFmpeg. Input, output, and intermediate files stay on the device.
 
 ### Why not FFmpeg?
 
-Media3 and AVFoundation keep the app smaller, use platform hardware acceleration, consume less battery, and avoid bundling another native runtime. They cover minimo's current goal: straightforward on-device video compression.
+Native Android codecs and AVFoundation keep the app smaller, use platform hardware acceleration, consume less battery, and avoid bundling another native runtime. They cover minimo's current goal: straightforward on-device video compression.
 
 The trade-off is less low-level control and small output differences between Android and iOS. FFmpeg would make sense if the app needed identical cross-platform encoding, uncommon formats, or complex filter pipelines.
 
-FFmpeg is available under LGPL or GPL depending on how it is built and which components are enabled. Shipping its binaries would require tracking that configuration and satisfying the corresponding redistribution, attribution, relinking, and source-code obligations. Using system Media3 and AVFoundation codecs avoids distributing FFmpeg and keeps the app itself under the MIT License. Codec patent and store requirements may still apply independently.
+FFmpeg is available under LGPL or GPL depending on how it is built and which components are enabled. Shipping its binaries would require tracking that configuration and satisfying the corresponding redistribution, attribution, relinking, and source-code obligations. Using system Android and iOS codecs avoids distributing FFmpeg and keeps the app itself under the MIT License. Codec patent and store requirements may still apply independently.
 
 ## How to contribute
 
@@ -74,6 +82,8 @@ FFmpeg is available under LGPL or GPL depending on how it is built and which com
 
 
 ## Credits
+
+Video compression is powered by [light_compressor_v2](https://pub.dev/packages/light_compressor_v2). Respect and thanks to its maintainers and contributors.
 
 Special thanks to [Kamran Bekirov](https://x.com/kamranbekirovyz) and his website [Flutter Pro Design](https://flutterpro.design/). I learned from and adapted many ideas from his work for myself and for this app.
 
