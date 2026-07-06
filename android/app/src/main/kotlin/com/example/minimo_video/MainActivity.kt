@@ -11,6 +11,7 @@ import android.provider.OpenableColumns
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.media.MediaMetadataRetriever
+import android.util.Log
 import java.io.File
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -60,17 +61,27 @@ class MainActivity : FlutterActivity() {
         if (requestCode != PICK_VIDEOS_REQUEST) return
 
         val result = pendingPickResult ?: return
-        pendingPickResult = null
         if (resultCode != RESULT_OK || data == null) {
+            pendingPickResult = null
             result.success(emptyList<Map<String, Any>>())
             return
         }
 
-        try {
-            result.success(readPickedVideos(data))
-        } catch (error: Exception) {
-            result.error("pick_failed", error.message, null)
-        }
+        Thread {
+            runCatching { readPickedVideos(data) }
+                .onSuccess { videos ->
+                    runOnUiThread {
+                        pendingPickResult = null
+                        result.success(videos)
+                    }
+                }
+                .onFailure { error ->
+                    runOnUiThread {
+                        pendingPickResult = null
+                        result.error("pick_failed", error.message, null)
+                    }
+                }
+        }.start()
     }
 
     private fun currentThermalState(): String {
@@ -189,7 +200,12 @@ class MainActivity : FlutterActivity() {
         }
         data.data?.let { uris.add(it) }
         File(cacheDir, "picked_videos").deleteRecursively()
-        return uris.map { copyPickedVideo(it) }
+        Log.i(TAG, "Importing ${uris.size} videos sequentially")
+        return uris.mapIndexed { index, uri ->
+            copyPickedVideo(uri).also {
+                Log.i(TAG, "Imported ${index + 1}/${uris.size} videos")
+            }
+        }
     }
 
     private fun copyPickedVideo(uri: Uri): Map<String, Any> {
@@ -246,6 +262,7 @@ class MainActivity : FlutterActivity() {
     }
 
     companion object {
+        private const val TAG = "VideoPicker"
         private const val PICK_VIDEOS_REQUEST = 4207
         private const val DELETE_VIDEOS_REQUEST = 4208
     }

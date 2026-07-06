@@ -12,10 +12,11 @@ final _appRouter = AppRouter();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppSettingsService.instance.load();
-  await AppCacheService.clearOld().onError((_, _) {});
+  await AppCacheService.clear().onError((_, _) {});
   runApp(const MainApp());
 }
 
+// TODO: Remove legacy CocoaPods integration and migrate fully to Swift Package Manager.
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 

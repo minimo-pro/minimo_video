@@ -36,7 +36,7 @@ iOS uses `PHPickerViewController`; Android uses `ACTION_OPEN_DOCUMENT`. Selectio
 
 ## Temporary Copies
 
-Picked and compressed files live in app cache until saved/shared. Originals are never modified in place. Cache cleanup removes entries older than 24 hours.
+Picked and compressed files live in app cache until saved/shared. Originals are never modified in place. Temporary files are cleared on every cold start.
 
 ---
 

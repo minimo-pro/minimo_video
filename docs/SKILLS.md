@@ -49,4 +49,4 @@ Save, share, deletion, result semantics, errors, and known limitations.
 
 ---
 
-*Last updated: July 4, 2026 · v1.0.0+1*
+*Last updated: July 5, 2026 · v1.0.0+3*

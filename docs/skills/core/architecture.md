@@ -21,7 +21,7 @@ lib/
 
 Native integration lives in:
 
-- `ios/Runner/AppDelegate.swift`
+- `ios/Runner/SceneDelegate.swift`
 - `android/app/src/main/kotlin/com/example/minimo_video/MainActivity.kt`
 
 ## Compression State Flow
@@ -55,7 +55,7 @@ Channel `minimo_video/thermal` exposes `currentState` for overheating warnings.
 2. Compressor writes MP4 output into temporary `minimo_video` storage.
 3. Output saving uses `gal`; sharing uses `share_plus`.
 4. Outputs saving less than 10% are deleted and marked skipped.
-5. Cache entries older than 24 hours are cleared on startup.
+5. App and compressor temporary files are cleared on every cold start.
 
 ## Generated Files
 

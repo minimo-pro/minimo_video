@@ -107,6 +107,7 @@
     }
   },
   "loadingVideos": "загрузка видео...",
+  "loadingManyVideosHint": "загрузка большого количества или крупных файлов может занять больше времени",
   "compressionComplete": "сжатие завершено",
   "compressionCompleted": "сжатие завершено",
   "compressionFailed": "не удалось сжать видео",

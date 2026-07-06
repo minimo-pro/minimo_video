@@ -108,8 +108,7 @@ class InfoScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 18),
-                    _InfoLink(title: strings.rateTheApp),
-                    _InfoLink(title: strings.shareWithFriends),
+                    // TODO: Restore rating and sharing after the official store release.
                     _InfoLink(
                       title: strings.myOtherApps,
                       onTap: _openOtherApps,

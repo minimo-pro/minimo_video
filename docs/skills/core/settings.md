@@ -17,7 +17,7 @@ Settings use `shared_preferences` through `AppSettingsService`.
 - `picked_videos` — picker copies
 - `minimo_video` — compressed outputs waiting for save/share
 
-The settings screen can clear both directories. `main()` removes entries older than 24 hours.
+The settings screen clears both directories and the compressor plugin cache. `main()` performs the same full cleanup on every cold start because compression sessions are not restored after relaunch.
 
 ## Compression Settings
 

@@ -107,6 +107,7 @@
     }
   },
   "loadingVideos": "loading videos...",
+  "loadingManyVideosHint": "large or numerous files may take longer to load",
   "compressionComplete": "compression complete",
   "compressionCompleted": "compression completed",
   "compressionFailed": "compression failed",

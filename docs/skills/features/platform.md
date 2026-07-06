@@ -4,11 +4,11 @@
 
 ### iOS
 
-Uses `PHPickerViewController` filtered to videos with unlimited multi-selection. The picker grants access only to selected items and does not require broad library permission.
+Uses `PHPickerViewController` filtered to videos with unlimited multi-selection. Selected files are imported sequentially to avoid parallel disk/memory pressure. The picker grants access only to selected items and does not require broad library permission.
 
 ### Android
 
-Uses `ACTION_OPEN_DOCUMENT`, `video/*`, and multi-selection. Selected URIs are copied into app cache.
+Uses `ACTION_OPEN_DOCUMENT`, `video/*`, and multi-selection. Selected URIs are copied sequentially into app cache on a background thread.
 
 ## Gallery and Deletion
 
@@ -28,7 +28,7 @@ Uses `ACTION_OPEN_DOCUMENT`, `video/*`, and multi-selection. Selected URIs are c
 
 - Android activity: `screenOrientation="portrait"`
 - iPhone: portrait only
-- iPad: portrait and portrait upside-down
+- iPad: all orientations with multitasking and dynamic resizing
 
 ## iOS Configuration
 

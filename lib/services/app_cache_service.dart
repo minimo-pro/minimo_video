@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:light_compressor_v2/light_compressor_v2.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AppCacheService {
@@ -21,22 +22,7 @@ class AppCacheService {
     for (final directory in await _directories(root)) {
       if (await directory.exists()) await directory.delete(recursive: true);
     }
-  }
-
-  static Future<void> clearOld({
-    Directory? root,
-    Duration maxAge = const Duration(hours: 24),
-    DateTime? now,
-  }) async {
-    final cutoff = (now ?? DateTime.now()).subtract(maxAge);
-    for (final directory in await _directories(root)) {
-      if (!await directory.exists()) continue;
-      await for (final entity in directory.list()) {
-        if ((await entity.stat()).modified.isBefore(cutoff)) {
-          await entity.delete(recursive: true);
-        }
-      }
-    }
+    if (root == null) await LightCompressor().clearCache();
   }
 
   static Future<List<Directory>> _directories(Directory? root) async {

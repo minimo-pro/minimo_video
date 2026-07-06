@@ -20,7 +20,7 @@ Current tests cover:
 - Weighted overall progress, current-file progress, and stale-event rejection
 - Saving and original deletion through source identifiers
 - Compression failure state
-- Cache size, manual clearing, and 24-hour cleanup
+- Cache size and full cleanup
 - Preview styling, status percentage, press motion, and hold-button background
 
 ## Test Boundaries

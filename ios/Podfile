@@ -1,3 +1,4 @@
+# TODO: Remove legacy CocoaPods integration and migrate fully to Swift Package Manager.
 # Uncomment this line to define a global platform for your project
 platform :ios, '15.0'
 

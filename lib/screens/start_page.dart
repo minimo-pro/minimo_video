@@ -74,9 +74,31 @@ class _StartPageState extends State<StartPage> {
                 Expanded(
                   child: _loading
                       ? Center(
-                          child: MinimoLoader(
-                            size: 58,
-                            semanticsLabel: S.of(context).loadingVideos,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 32),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                MinimoLoader(
+                                  size: 58,
+                                  semanticsLabel: S.of(context).loadingVideos,
+                                ),
+                                const SizedBox(height: 18),
+                                Text(
+                                  S.of(context).loadingVideos,
+                                  textAlign: TextAlign.center,
+                                  style: materialTheme.textTheme.titleMedium
+                                      ?.copyWith(color: theme.textColor),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  S.of(context).loadingManyVideosHint,
+                                  textAlign: TextAlign.center,
+                                  style: materialTheme.textTheme.bodyMedium
+                                      ?.copyWith(color: theme.textColor),
+                                ),
+                              ],
+                            ),
                           ),
                         )
                       : Center(

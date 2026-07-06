@@ -613,6 +613,16 @@ class S {
     );
   }
 
+  /// `large or numerous files may take longer to load`
+  String get loadingManyVideosHint {
+    return Intl.message(
+      'large or numerous files may take longer to load',
+      name: 'loadingManyVideosHint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `compression complete`
   String get compressionComplete {
     return Intl.message(

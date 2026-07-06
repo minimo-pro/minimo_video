@@ -61,6 +61,9 @@ class VideoCompressorAdapter {
         videoQuality: _quality(settings.crf),
         isMinBitrateCheckEnabled: false,
         disableAudio: settings.audioMode == CompressionAudioMode.remove,
+        audio: settings.audioMode == CompressionAudioMode.stereo
+            ? const light.AudioConfig(bitrate: 128000)
+            : null,
         video: light.Video(
           videoName: path.basenameWithoutExtension(outputPath),
           keepOriginalResolution: settings.resolution == null,

@@ -15,6 +15,8 @@ Advanced mode allows:
 - Original, 1080p, 720p, 480p, or 360p resolution
 - Stereo audio or no audio
 
+Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough: `light_compressor_v2 1.8.1` can crash inside `AVAssetWriter.addInput` when the source audio format is incompatible with MP4.
+
 ## Pipeline
 
 1. Native picker copies selected video to app cache.
