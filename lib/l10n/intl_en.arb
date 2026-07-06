@@ -59,6 +59,8 @@
   "cacheClearFailed": "failed to clear cache",
   "language": "language",
   "languageDescription": "select the language for the app",
+  "darkTheme": "dark theme",
+  "darkThemeDescription": "use the dark appearance",
   "system": "system",
   "english": "english",
   "russian": "русский",

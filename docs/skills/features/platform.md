@@ -10,6 +10,8 @@ Uses `PHPickerViewController` filtered to videos with unlimited multi-selection.
 
 Uses `ACTION_OPEN_DOCUMENT`, `video/*`, and multi-selection. Selected URIs are copied sequentially into app cache on a background thread.
 
+Both platforms report `pickProgress` (`processed`/`total`) over the videos method channel while files are imported.
+
 ## Gallery and Deletion
 
 - Saving uses `gal` and may request add-only gallery permission.

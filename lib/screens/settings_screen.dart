@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,6 +27,7 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: AnimatedBuilder(
           animation: settings,
           builder: (context, _) => Column(
@@ -32,8 +35,12 @@ class SettingsScreen extends StatelessWidget {
               const _Header(),
               Expanded(
                 child: FadedScrollView(
-                  fadeExtent: 0.08,
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 36),
+                  padding: EdgeInsets.fromLTRB(
+                    20,
+                    12,
+                    20,
+                    math.max(36, MediaQuery.viewPaddingOf(context).bottom),
+                  ),
                   child: Column(
                     children: [
                       _ToggleRow(
@@ -57,6 +64,14 @@ class SettingsScreen extends StatelessWidget {
                         ),
                         value: settings.saveVideosToAlbum,
                         onChanged: settings.setSaveVideosToAlbum,
+                      ),
+                      _ToggleRow(
+                        title: strings.darkTheme,
+                        description: strings.darkThemeDescription,
+                        value:
+                            settings.darkTheme ??
+                            Theme.of(context).brightness == Brightness.dark,
+                        onChanged: settings.setDarkTheme,
                       ),
                       const _CacheRow(),
                       _LanguageRow(settings: settings),

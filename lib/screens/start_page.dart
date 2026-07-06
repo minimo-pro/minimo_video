@@ -22,17 +22,27 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   final _videoFileAdapter = VideoFileAdapter();
   bool _loading = false;
+  (int, int)? _loadingProgress;
 
   Future<void> _pickAndGo() async {
     setState(() => _loading = true);
 
     try {
-      final videos = await _videoFileAdapter.pickVideos();
+      final videos = await _videoFileAdapter.pickVideos(
+        onProgress: (processed, total) {
+          if (mounted) setState(() => _loadingProgress = (processed, total));
+        },
+      );
       if (videos.isNotEmpty && mounted) {
         context.pushRoute(CompressRoute(initialVideos: videos));
       }
     } finally {
-      if (mounted) setState(() => _loading = false);
+      if (mounted) {
+        setState(() {
+          _loading = false;
+          _loadingProgress = null;
+        });
+      }
     }
   }
 
@@ -90,6 +100,17 @@ class _StartPageState extends State<StartPage> {
                                   style: materialTheme.textTheme.titleMedium
                                       ?.copyWith(color: theme.textColor),
                                 ),
+                                if (_loadingProgress case (
+                                  final done,
+                                  final total,
+                                )) ...[
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    '$done / $total',
+                                    style: materialTheme.textTheme.titleLarge
+                                        ?.copyWith(color: theme.textColor),
+                                  ),
+                                ],
                                 const SizedBox(height: 8),
                                 Text(
                                   S.of(context).loadingManyVideosHint,

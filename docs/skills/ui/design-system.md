@@ -2,7 +2,7 @@
 
 ## Theme
 
-`AppTheme` follows system light/dark mode. Color definitions live in `lib/theme/app_colors.dart`.
+`AppTheme` follows system light/dark mode until the user selects and saves a theme in settings. Color definitions live in `lib/theme/app_colors.dart`.
 
 | Token | Light | Dark |
 |---|---|---|
@@ -22,7 +22,7 @@ Font family: **Pangolin**.
 | `HoldToConfirmButton` | 1.5-second hold confirmation with red fill |
 | `AppActionButton` | Primary/secondary screen actions |
 | `AppSnackBar` | Success, error, and instruction messages |
-| `FadedScrollView` | Scroll content with edge fading |
+| `FadedScrollView` | Clamped scroll with static alpha-only edge fading |
 | `AppOptionPicker` | Compact option selection |
 | `AnimatedAssetCheckbox` | Custom settings checkbox |
 

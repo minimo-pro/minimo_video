@@ -38,4 +38,20 @@ void main() {
       1,
     );
   });
+
+  testWidgets('ignores pointer up after disposal', (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Pressable(child: SizedBox(width: 100, height: 50)),
+      ),
+    );
+    final gesture = await tester.startGesture(
+      tester.getCenter(find.byType(SizedBox)),
+    );
+    await tester.pumpWidget(const MaterialApp(home: SizedBox()));
+    await gesture.up();
+    await tester.pump();
+
+    expect(tester.takeException(), isNull);
+  });
 }

@@ -441,10 +441,10 @@ packages:
     dependency: "direct main"
     description:
       name: light_compressor_v2
-      sha256: "85dc939c42a50a6f7cc44f609508a4fc90bbd1c266153830694e7097d529c684"
+      sha256: "5e58fa9591de54ea44ef35e70da086aac96275c1508006c6bfabb01ab589825f"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.1"
+    version: "1.8.2"
   lints:
     dependency: transitive
     description:
@@ -1019,5 +1019,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.11.0 <4.0.0"
-  flutter: ">=3.41.0"
+  dart: ">=3.10.0-0 <4.0.0"
+  flutter: ">=3.35.0"

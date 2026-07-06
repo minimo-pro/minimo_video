@@ -7,6 +7,7 @@ import UniformTypeIdentifiers
 
 class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
   private var pendingPickResult: FlutterResult?
+  private var videosChannel: FlutterMethodChannel?
 
   override func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     super.scene(scene, willConnectTo: session, options: connectionOptions)
@@ -30,6 +31,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
       name: "minimo_video/videos",
       binaryMessenger: controller.binaryMessenger
     )
+    self.videosChannel = videosChannel
     videosChannel.setMethodCallHandler { call, result in
       switch call.method {
       case "pickVideos":
@@ -57,6 +59,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
     }
 
     print("[VideoPicker] Importing \(results.count) videos sequentially")
+    videosChannel?.invokeMethod(
+      "pickProgress",
+      arguments: ["processed": 0, "total": results.count]
+    )
     importVideos(results) { [weak self] videos in
       DispatchQueue.main.async {
         self?.pendingPickResult = nil
@@ -108,6 +114,12 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
       }
 
       print("[VideoPicker] Processed \(index + 1)/\(results.count) videos")
+      DispatchQueue.main.async {
+        self.videosChannel?.invokeMethod(
+          "pickProgress",
+          arguments: ["processed": index + 1, "total": results.count]
+        )
+      }
       self.importVideos(
         results,
         index: index + 1,

@@ -16,6 +16,7 @@ class _PressableState extends State<Pressable> {
   double _scale = 1;
 
   void _setPressed(bool pressed) {
+    if (!mounted) return;
     final scale = pressed && widget.enabled ? 0.96 : 1.0;
     if (scale != _scale) setState(() => _scale = scale);
   }

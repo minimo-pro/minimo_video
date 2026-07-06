@@ -8,6 +8,7 @@ Settings use `shared_preferences` through `AppSettingsService`.
 | `show_overheat_warning` | `bool` | `true` | Show thermal warning during compression |
 | `save_videos_to_album` | `bool` | `false` | Save into gallery album `Minimo` |
 | `language_code` | `String?` | system | Override locale with `en` or `ru` |
+| `dark_theme` | `bool?` | system | Override system theme after user selection |
 | `onboarding_completed` | `bool` | `false` | Skip onboarding after completion |
 
 ## Cache

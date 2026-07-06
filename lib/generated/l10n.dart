@@ -369,6 +369,21 @@ class S {
     );
   }
 
+  /// `dark theme`
+  String get darkTheme {
+    return Intl.message('dark theme', name: 'darkTheme', desc: '', args: []);
+  }
+
+  /// `use the dark appearance`
+  String get darkThemeDescription {
+    return Intl.message(
+      'use the dark appearance',
+      name: 'darkThemeDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `system`
   String get system {
     return Intl.message('system', name: 'system', desc: '', args: []);

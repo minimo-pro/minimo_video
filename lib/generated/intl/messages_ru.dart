@@ -111,6 +111,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "compressionFailedDescription": MessageLookupByLibrary.simpleMessage(
       "попробуйте ещё раз или выберите другое видео.",
     ),
+    "darkTheme": MessageLookupByLibrary.simpleMessage("темная тема"),
+    "darkThemeDescription": MessageLookupByLibrary.simpleMessage(
+      "использовать темное оформление",
+    ),
     "deleteOriginal": MessageLookupByLibrary.simpleMessage("удалить оригинал"),
     "emailCopied": MessageLookupByLibrary.simpleMessage("почта скопирована"),
     "english": MessageLookupByLibrary.simpleMessage("english"),

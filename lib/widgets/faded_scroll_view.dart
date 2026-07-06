@@ -44,8 +44,12 @@ class _FadedScrollViewState extends State<FadedScrollView> {
   }
 
   void _updateFadesFor(ScrollMetrics metrics) {
-    final fadeStart = metrics.pixels > metrics.minScrollExtent + 1;
-    final fadeEnd = metrics.pixels < metrics.maxScrollExtent - 1;
+    final pixels = metrics.pixels.clamp(
+      metrics.minScrollExtent,
+      metrics.maxScrollExtent,
+    );
+    final fadeStart = pixels > metrics.minScrollExtent + 1;
+    final fadeEnd = pixels < metrics.maxScrollExtent - 1;
     if (fadeStart == _fadeStart && fadeEnd == _fadeEnd) return;
     setState(() {
       _fadeStart = fadeStart;
@@ -80,7 +84,7 @@ class _FadedScrollViewState extends State<FadedScrollView> {
         child: SingleChildScrollView(
           controller: _controller,
           padding: widget.padding,
-          physics: widget.physics,
+          physics: widget.physics ?? const ClampingScrollPhysics(),
           child: widget.child,
         ),
       ),

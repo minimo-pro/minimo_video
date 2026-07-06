@@ -6,6 +6,7 @@ class AppSettingsService extends ChangeNotifier {
   static const _showOverheatWarningKey = 'show_overheat_warning';
   static const _saveVideosToAlbumKey = 'save_videos_to_album';
   static const _languageCodeKey = 'language_code';
+  static const _darkThemeKey = 'dark_theme';
   static const appPrefix = 'minimo_';
   static const albumName = 'Minimo';
 
@@ -18,8 +19,14 @@ class AppSettingsService extends ChangeNotifier {
   bool showOverheatWarning = true;
   bool saveVideosToAlbum = false;
   String? languageCode;
+  bool? darkTheme;
 
   Locale? get locale => languageCode == null ? null : Locale(languageCode!);
+  ThemeMode get themeMode => switch (darkTheme) {
+    true => ThemeMode.dark,
+    false => ThemeMode.light,
+    null => ThemeMode.system,
+  };
 
   Future<void> load() async {
     _preferences = await SharedPreferences.getInstance();
@@ -30,6 +37,7 @@ class AppSettingsService extends ChangeNotifier {
     saveVideosToAlbum =
         _preferences.getBool(_saveVideosToAlbumKey) ?? saveVideosToAlbum;
     languageCode = _preferences.getString(_languageCodeKey);
+    darkTheme = _preferences.getBool(_darkThemeKey);
   }
 
   Future<void> setAddKompressoPrefix(bool value) =>
@@ -40,6 +48,9 @@ class AppSettingsService extends ChangeNotifier {
 
   Future<void> setSaveVideosToAlbum(bool value) =>
       _setBool(_saveVideosToAlbumKey, value, (v) => saveVideosToAlbum = v);
+
+  Future<void> setDarkTheme(bool value) =>
+      _setBool(_darkThemeKey, value, (v) => darkTheme = v);
 
   Future<void> setLanguageCode(String? value) async {
     languageCode = value;

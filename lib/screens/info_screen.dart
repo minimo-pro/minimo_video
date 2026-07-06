@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class InfoScreen extends StatelessWidget {
     final uri = Uri(
       scheme: 'mailto',
       path: _email,
-      queryParameters: {'subject': 'feedback - ${strings.appName}'},
+      queryParameters: {'subject': 'feedback ${strings.appName}'},
     );
 
     if (await canLaunchUrl(uri)) {
@@ -66,6 +67,7 @@ class InfoScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             Padding(
@@ -95,8 +97,12 @@ class InfoScreen extends StatelessWidget {
             ),
             Expanded(
               child: FadedScrollView(
-                fadeExtent: 0.08,
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 36),
+                padding: EdgeInsets.fromLTRB(
+                  20,
+                  12,
+                  20,
+                  math.max(36, MediaQuery.viewPaddingOf(context).bottom),
+                ),
                 child: Column(
                   children: [
                     Text(

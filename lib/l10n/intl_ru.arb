@@ -59,6 +59,8 @@
   "cacheClearFailed": "не удалось очистить кеш",
   "language": "язык",
   "languageDescription": "выберите язык приложения",
+  "darkTheme": "темная тема",
+  "darkThemeDescription": "использовать темное оформление",
   "system": "система",
   "english": "english",
   "russian": "русский",

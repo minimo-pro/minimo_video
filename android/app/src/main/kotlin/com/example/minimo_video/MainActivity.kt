@@ -18,6 +18,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
+    private lateinit var videosChannel: MethodChannel
     private var pendingPickResult: MethodChannel.Result? = null
     private var pendingDeleteResult: MethodChannel.Result? = null
     private var pendingDeleteCount = 0
@@ -33,10 +34,11 @@ class MainActivity : FlutterActivity() {
                 else -> result.notImplemented()
             }
         }
-        MethodChannel(
+        videosChannel = MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
             "minimo_video/videos"
-        ).setMethodCallHandler { call, result ->
+        )
+        videosChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "pickVideos" -> pickVideos(result)
                 "deleteOriginals" -> deleteOriginals(call.arguments as? List<*>, result)
@@ -201,11 +203,20 @@ class MainActivity : FlutterActivity() {
         data.data?.let { uris.add(it) }
         File(cacheDir, "picked_videos").deleteRecursively()
         Log.i(TAG, "Importing ${uris.size} videos sequentially")
+        sendPickProgress(0, uris.size)
         return uris.mapIndexed { index, uri ->
             copyPickedVideo(uri).also {
                 Log.i(TAG, "Imported ${index + 1}/${uris.size} videos")
+                sendPickProgress(index + 1, uris.size)
             }
         }
+    }
+
+    private fun sendPickProgress(processed: Int, total: Int) = runOnUiThread {
+        videosChannel.invokeMethod(
+            "pickProgress",
+            mapOf("processed" to processed, "total" to total)
+        )
     }
 
     private fun copyPickedVideo(uri: Uri): Map<String, Any> {

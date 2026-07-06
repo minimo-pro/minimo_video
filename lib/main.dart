@@ -30,7 +30,7 @@ class MainApp extends StatelessWidget {
         onGenerateTitle: (context) => S.of(context).appName,
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
-        themeMode: ThemeMode.system,
+        themeMode: AppSettingsService.instance.themeMode,
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
