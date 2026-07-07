@@ -52,6 +52,14 @@ class CompressCancelled extends CompressEvent {
   const CompressCancelled();
 }
 
+class CompressBackgrounded extends CompressEvent {
+  const CompressBackgrounded();
+}
+
+class CompressForegroundResumed extends CompressEvent {
+  const CompressForegroundResumed();
+}
+
 class CompressResultsSaved extends CompressEvent {
   final bool deleteOriginals;
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -109,6 +110,10 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
                 fit: FlexFit.loose,
                 child: VideoStatusList(state: state),
               ),
+              if (defaultTargetPlatform == TargetPlatform.iOS) ...[
+                const SizedBox(height: 14),
+                const _IosBackgroundWarning(),
+              ],
               if (AppSettingsService.instance.showOverheatWarning &&
                   _showThermalWarning) ...[
                 const SizedBox(height: 14),
@@ -172,6 +177,35 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
   }
 }
 
+class _IosBackgroundWarning extends StatelessWidget {
+  const _IosBackgroundWarning();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: CompressionUiColors.red.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          child: Text(
+            S.of(context).iosBackgroundCompressionWarning,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: CompressionUiColors.red,
+              fontSize: 14,
+              height: 1.15,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _OverheatWarning extends StatelessWidget {
   const _OverheatWarning();
 
@@ -179,20 +213,23 @@ class _OverheatWarning extends StatelessWidget {
   Widget build(BuildContext context) {
     final strings = S.of(context);
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: CompressionUiColors.red.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        child: Text(
-          strings.overheatWarning,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: CompressionUiColors.red,
-            fontSize: 14,
-            height: 1.15,
+    return SizedBox(
+      width: double.infinity,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: CompressionUiColors.red.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          child: Text(
+            strings.overheatWarning,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: CompressionUiColors.red,
+              fontSize: 14,
+              height: 1.15,
+            ),
           ),
         ),
       ),

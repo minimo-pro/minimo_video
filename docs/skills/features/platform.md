@@ -8,7 +8,7 @@ Uses `PHPickerViewController` filtered to videos with unlimited multi-selection.
 
 ### Android
 
-Uses `ACTION_OPEN_DOCUMENT`, `video/*`, and multi-selection. Selected URIs are copied sequentially into app cache on a background thread.
+Uses `ACTION_OPEN_DOCUMENT`, `video/*`, and multi-selection. Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer.
 
 Both platforms report `pickProgress` (`processed`/`total`) over the videos method channel while files are imported.
 

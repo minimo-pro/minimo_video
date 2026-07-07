@@ -409,6 +409,16 @@ class S {
     );
   }
 
+  /// `keep minimo open during compression. if you leave, the current video restarts when you return`
+  String get iosBackgroundCompressionWarning {
+    return Intl.message(
+      'keep minimo open during compression. if you leave, the current video restarts when you return',
+      name: 'iosBackgroundCompressionWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `quality`
   String get quality {
     return Intl.message('quality', name: 'quality', desc: '', args: []);

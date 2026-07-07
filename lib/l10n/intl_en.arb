@@ -65,6 +65,7 @@
   "english": "english",
   "russian": "русский",
   "overheatWarning": "compression can slow down if your device gets hot",
+  "iosBackgroundCompressionWarning": "keep minimo open during compression. if you leave, the current video restarts when you return",
   "quality": "quality",
   "resolution": "resolution",
   "high": "high",

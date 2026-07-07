@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -59,8 +60,46 @@ class _StartRedirectState extends State<_StartRedirect> {
   }
 }
 
-class _CompressView extends StatelessWidget {
+class _CompressView extends StatefulWidget {
   const _CompressView();
+
+  @override
+  State<_CompressView> createState() => _CompressViewState();
+}
+
+class _CompressViewState extends State<_CompressView>
+    with WidgetsBindingObserver {
+  var _backgroundedWhileProcessing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (defaultTargetPlatform != TargetPlatform.iOS) return;
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden) {
+      _backgroundedWhileProcessing =
+          context.read<CompressBloc>().state.status ==
+          CompressStatus.processing;
+      if (_backgroundedWhileProcessing) {
+        context.read<CompressBloc>().add(const CompressBackgrounded());
+      }
+    } else if (state == AppLifecycleState.resumed &&
+        _backgroundedWhileProcessing) {
+      _backgroundedWhileProcessing = false;
+      context.read<CompressBloc>().add(const CompressForegroundResumed());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

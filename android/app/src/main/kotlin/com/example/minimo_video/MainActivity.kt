@@ -226,7 +226,9 @@ class MainActivity : FlutterActivity() {
 
         contentResolver.openInputStream(uri).use { input ->
             requireNotNull(input) { "unable to open selected video" }
-            outputFile.outputStream().use { output -> input.copyTo(output) }
+            outputFile.outputStream().use { output ->
+                input.copyTo(output, 1024 * 1024)
+            }
         }
 
         return mapOf(

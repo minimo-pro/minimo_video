@@ -144,6 +144,41 @@ class _StaleProgressCompressor extends VideoCompressorAdapter {
   }
 }
 
+class _IosRecoveryCompressor extends VideoCompressorAdapter {
+  final interrupted = Completer<CompressionResult>();
+  final calls = <String>[];
+  var cancelCalls = 0;
+
+  @override
+  Future<String?> createThumbnail(String inputPath) async => null;
+
+  @override
+  Future<CompressionResult> compress(
+    String inputPath,
+    String originalName,
+    CompressionSettings settings, {
+    bool addKompressoPrefix = true,
+    void Function(double progress)? onProgress,
+  }) {
+    calls.add(inputPath);
+    if (calls.length == 2) return interrupted.future;
+    return Future.value(
+      CompressionResult(
+        success: true,
+        originalSize: 100,
+        outputSize: 40,
+        outputPath: '$inputPath-small.mp4',
+      ),
+    );
+  }
+
+  @override
+  Future<void> cancelCompression() async {
+    cancelCalls++;
+    interrupted.complete(const CompressionResult(success: false));
+  }
+}
+
 class _SavingFileAdapter extends VideoFileAdapter {
   List<String> deletedIdentifiers = const [];
 
@@ -206,6 +241,35 @@ void main() {
       await bloc.close();
     },
   );
+
+  test('iOS background recovery retries only the interrupted video', () async {
+    final compressor = _IosRecoveryCompressor();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/one.mp4', name: 'one.mp4', size: 100),
+        PickedVideo(path: '/two.mp4', name: 'two.mp4', size: 100),
+      ],
+      videoCompressorAdapter: compressor,
+    );
+
+    bloc.add(const CompressStarted());
+    while (compressor.calls.length < 2) {
+      await Future<void>.delayed(Duration.zero);
+    }
+    bloc.add(const CompressBackgrounded());
+    while (compressor.cancelCalls < 1) {
+      await Future<void>.delayed(Duration.zero);
+    }
+    bloc.add(const CompressForegroundResumed());
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+
+    expect(compressor.calls, ['/one.mp4', '/two.mp4', '/two.mp4']);
+    expect(compressor.cancelCalls, 1);
+    expect(bloc.state.results, hasLength(2));
+    await bloc.close();
+  });
 
   test('deletes successful originals through platform identifiers', () async {
     final files = _SavingFileAdapter();

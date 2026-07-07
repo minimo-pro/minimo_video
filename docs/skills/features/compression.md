@@ -26,6 +26,10 @@ Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough:
 5. Output is moved to app temporary storage only when it saves at least 10%.
 6. Smaller savings are treated as already optimized: output is deleted, original remains.
 
+`BackgroundConfig` keeps compression running through an Android foreground service when the app is minimized or the screen is off. iOS does not support continuous background transcoding; the native job can remain stuck after the OS suspends the app.
+
+On iOS the compression screen warns the user to keep the app open. If the app is backgrounded during compression, the active native job is cancelled immediately; returning restarts only the current video and keeps completed batch items.
+
 ## Estimates
 
 Estimate formula:

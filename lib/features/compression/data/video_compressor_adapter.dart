@@ -73,6 +73,9 @@ class VideoCompressorAdapter {
         ),
         android: light.AndroidConfig(isSharedStorage: false),
         ios: light.IOSConfig(saveInGallery: false),
+        background: const light.BackgroundConfig(
+          notificationTitle: 'minimo · compression',
+        ),
       );
       if (result is light.OnFailure) throw StateError(result.message);
       if (result is light.OnCancelled) {

@@ -65,6 +65,7 @@
   "english": "english",
   "russian": "русский",
   "overheatWarning": "сжатие может замедлиться, если устройство нагреется",
+  "iosBackgroundCompressionWarning": "не сворачивайте minimo во время сжатия. иначе текущий ролик начнёт сжиматься заново после возвращения",
   "quality": "качество",
   "resolution": "разрешение",
   "high": "высокое",

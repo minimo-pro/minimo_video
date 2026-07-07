@@ -139,6 +139,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "holdToDeleteOriginals": MessageLookupByLibrary.simpleMessage(
       "удерживайте кнопку, чтобы удалить оригиналы",
     ),
+    "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
+      "не сворачивайте minimo во время сжатия. иначе текущий ролик начнёт сжиматься заново после возвращения",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("язык"),
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "выберите язык приложения",

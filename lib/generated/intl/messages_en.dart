@@ -139,6 +139,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "holdToDeleteOriginals": MessageLookupByLibrary.simpleMessage(
       "hold the button to delete originals",
     ),
+    "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
+      "keep minimo open during compression. if you leave, the current video restarts when you return",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("language"),
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "select the language for the app",
