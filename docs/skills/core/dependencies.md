@@ -30,6 +30,7 @@ flutter build ios --debug --no-codesign
 ```
 
 Use `dart run build_runner build` after route changes. Use `dart run intl_utils:generate` after ARB changes.
+The iOS project uses Flutter's Swift Package Manager integration. Do not add CocoaPods back unless a dependency has no SPM path.
 
 ## Platform Requirements
 

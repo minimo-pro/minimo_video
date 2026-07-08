@@ -35,6 +35,7 @@ Both platforms report `pickProgress` (`processed`/`total`) over the videos metho
 ## iOS Configuration
 
 - Deployment target: 15.0
+- Flutter plugins are linked through Swift Package Manager.
 - `ITSAppUsesNonExemptEncryption = false`
 - Photo library usage strings are defined in `Info.plist`
 

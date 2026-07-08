@@ -16,7 +16,6 @@ Future<void> main() async {
   runApp(const MainApp());
 }
 
-// TODO: Remove legacy CocoaPods integration and migrate fully to Swift Package Manager.
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
