@@ -13,7 +13,7 @@ void _showFullScreenSheet(BuildContext context, Widget child) {
     isScrollControlled: true,
     enableDrag: true,
     constraints: BoxConstraints(
-      maxHeight: MediaQuery.sizeOf(context).height * 0.95,
+      maxHeight: MediaQuery.sizeOf(context).height * 0.90,
     ),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),

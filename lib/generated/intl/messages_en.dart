@@ -139,6 +139,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "holdToDeleteOriginals": MessageLookupByLibrary.simpleMessage(
       "hold the button to delete originals",
     ),
+    "howCompressionWorksBody": MessageLookupByLibrary.simpleMessage(
+      "minimo makes a new copy of your video and stores it more efficiently. it can lower the bitrate, reduce the picture size, or remove audio if you choose that.\n\nlower bitrate means the video keeps fewer tiny details that are hard to notice. lower resolution means each frame has fewer pixels. both reduce file size.\n\nyour original video stays untouched, and compression happens on your device.",
+    ),
+    "howCompressionWorksTitle": MessageLookupByLibrary.simpleMessage(
+      "how video gets smaller",
+    ),
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "keep minimo open during compression. if you leave, the current video restarts when you return",
     ),

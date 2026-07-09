@@ -164,6 +164,26 @@ class S {
     );
   }
 
+  /// `how video gets smaller`
+  String get howCompressionWorksTitle {
+    return Intl.message(
+      'how video gets smaller',
+      name: 'howCompressionWorksTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `minimo makes a new copy of your video and stores it more efficiently. it can lower the bitrate, reduce the picture size, or remove audio if you choose that.\n\nlower bitrate means the video keeps fewer tiny details that are hard to notice. lower resolution means each frame has fewer pixels. both reduce file size.\n\nyour original video stays untouched, and compression happens on your device.`
+  String get howCompressionWorksBody {
+    return Intl.message(
+      'minimo makes a new copy of your video and stores it more efficiently. it can lower the bitrate, reduce the picture size, or remove audio if you choose that.\n\nlower bitrate means the video keeps fewer tiny details that are hard to notice. lower resolution means each frame has fewer pixels. both reduce file size.\n\nyour original video stays untouched, and compression happens on your device.',
+      name: 'howCompressionWorksBody',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `minimo (video) is open source. explore the code, follow the project or get in touch`
   String get openSourceNote {
     return Intl.message(

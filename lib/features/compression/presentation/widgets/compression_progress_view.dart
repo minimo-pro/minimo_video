@@ -181,38 +181,25 @@ class _IosBackgroundWarning extends StatelessWidget {
   const _IosBackgroundWarning();
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: CompressionUiColors.red.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-          child: Text(
-            S.of(context).iosBackgroundCompressionWarning,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: CompressionUiColors.red,
-              fontSize: 14,
-              height: 1.15,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      _WarningBanner(message: S.of(context).iosBackgroundCompressionWarning);
 }
 
 class _OverheatWarning extends StatelessWidget {
   const _OverheatWarning();
 
   @override
-  Widget build(BuildContext context) {
-    final strings = S.of(context);
+  Widget build(BuildContext context) =>
+      _WarningBanner(message: S.of(context).overheatWarning);
+}
 
+class _WarningBanner extends StatelessWidget {
+  final String message;
+
+  const _WarningBanner({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: DecoratedBox(
@@ -222,14 +209,31 @@ class _OverheatWarning extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-          child: Text(
-            strings.overheatWarning,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: CompressionUiColors.red,
-              fontSize: 14,
-              height: 1.15,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                AppIcons.warning,
+                width: 18,
+                height: 20,
+                colorFilter: const ColorFilter.mode(
+                  CompressionUiColors.red,
+                  BlendMode.srcIn,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: CompressionUiColors.red,
+                    fontSize: 14,
+                    height: 1.15,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

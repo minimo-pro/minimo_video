@@ -15,4 +15,5 @@ abstract final class AppIcons {
   static const website = 'assets/icons/website.svg';
   static const mail = 'assets/icons/mail.svg';
   static const code = 'assets/icons/code.svg';
+  static const warning = 'assets/icons/warning.svg';
 }

@@ -85,7 +85,7 @@ class _AppSnackBarOverlayState extends State<_AppSnackBarOverlay>
       end: 1,
     ).animate(curvedAnimation);
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.35),
+      begin: const Offset(0, -0.35),
       end: Offset.zero,
     ).animate(curvedAnimation);
 
@@ -115,14 +115,14 @@ class _AppSnackBarOverlayState extends State<_AppSnackBarOverlay>
     return Positioned(
       left: 18,
       right: 18,
-      bottom: mediaQuery.padding.bottom + mediaQuery.viewInsets.bottom + 14,
+      top: mediaQuery.padding.top + 14,
       child: SlideTransition(
         position: _slideAnimation,
         child: FadeTransition(
           opacity: _fadeAnimation,
           child: ScaleTransition(
             scale: _scaleAnimation,
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.topCenter,
             child: _SnackBarCard(
               message: widget.message,
               type: widget.type,

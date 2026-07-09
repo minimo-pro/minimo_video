@@ -29,7 +29,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.khlebobul.pegma"
+        applicationId = "com.khlebobul.minimo_video"
         minSdk = 24
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

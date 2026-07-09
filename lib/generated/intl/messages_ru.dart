@@ -139,6 +139,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "holdToDeleteOriginals": MessageLookupByLibrary.simpleMessage(
       "удерживайте кнопку, чтобы удалить оригиналы",
     ),
+    "howCompressionWorksBody": MessageLookupByLibrary.simpleMessage(
+      "minimo создаёт новую копию видео и сохраняет её компактнее. приложение может уменьшить битрейт, снизить размер картинки или убрать звук, если вы это выбрали.\n\nменьший битрейт значит, что в видео остаётся меньше мелких деталей, которые обычно сложно заметить. меньшее разрешение значит, что в каждом кадре меньше пикселей. так файл занимает меньше места.\n\nоригинал не меняется, а сжатие происходит на вашем устройстве.",
+    ),
+    "howCompressionWorksTitle": MessageLookupByLibrary.simpleMessage(
+      "за счёт чего видео становится меньше",
+    ),
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "не сворачивайте minimo во время сжатия. иначе текущий ролик начнёт сжиматься заново после возвращения",
     ),

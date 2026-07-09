@@ -113,6 +113,8 @@ class InfoScreen extends StatelessWidget {
                         height: 1.45,
                       ),
                     ),
+                    const SizedBox(height: 24),
+                    _CompressionExplanation(strings: strings),
                     const SizedBox(height: 18),
                     // TODO: Restore rating and sharing after the official store release.
                     _InfoLink(
@@ -155,6 +157,37 @@ class InfoScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _CompressionExplanation extends StatelessWidget {
+  final S strings;
+
+  const _CompressionExplanation({required this.strings});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
+    final textTheme = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          strings.howCompressionWorksTitle,
+          style: textTheme.titleLarge?.copyWith(fontSize: 22),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          strings.howCompressionWorksBody,
+          style: textTheme.bodyLarge?.copyWith(
+            color: theme.secondaryTextColor,
+            fontSize: 17,
+            height: 1.4,
+          ),
+        ),
+      ],
     );
   }
 }
