@@ -12,6 +12,7 @@ class SimpleQualityCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final ValueChanged<SimpleCompressionQuality> onSelected;
+  final bool compact;
 
   const SimpleQualityCard({
     super.key,
@@ -20,6 +21,7 @@ class SimpleQualityCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.onSelected,
+    this.compact = false,
   });
 
   @override
@@ -30,8 +32,13 @@ class SimpleQualityCard extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 160),
           width: double.infinity,
-          height: 69,
-          padding: const EdgeInsets.fromLTRB(10, 8, 14, 8),
+          height: compact ? 58 : 69,
+          padding: EdgeInsets.fromLTRB(
+            10,
+            compact ? 7 : 8,
+            14,
+            compact ? 7 : 8,
+          ),
           decoration: BoxDecoration(
             color: selected
                 ? CompressionUiColors.red
@@ -54,11 +61,11 @@ class SimpleQualityCard extends StatelessWidget {
                         color: selected
                             ? CompressionUiColors.white
                             : Theme.of(context).colorScheme.onSurface,
-                        fontSize: 30,
+                        fontSize: compact ? 25 : 30,
                         height: 0.85,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: compact ? 6 : 8),
                     Text(
                       subtitle,
                       maxLines: 1,
@@ -67,7 +74,7 @@ class SimpleQualityCard extends StatelessWidget {
                         color: selected
                             ? CompressionUiColors.white
                             : Theme.of(context).colorScheme.onSurface,
-                        fontSize: 15,
+                        fontSize: compact ? 13 : 15,
                         height: 1,
                       ),
                     ),

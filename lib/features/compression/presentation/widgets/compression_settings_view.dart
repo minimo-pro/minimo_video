@@ -99,70 +99,82 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
     return Column(
       children: [
         Expanded(
-          child: Stack(
-            children: [
-              NotificationListener<ScrollNotification>(
-                onNotification: _onScroll,
-                child: FadedScrollView(
-                  fadeExtent: 0.08,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Column(
-                    children: [
-                      SelectedVideosSummary(
-                        sizeRowKey: _sizeRowKey,
-                        selectedCount: state.videos.length,
-                        thumbnailPaths: state.thumbnailPaths,
-                        originalSize: state.totalOriginalSize,
-                        estimatedSize: estimatedSize,
-                        savingsPercent: savingsPercent,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final compact = constraints.maxHeight < 640;
+              return Stack(
+                children: [
+                  NotificationListener<ScrollNotification>(
+                    onNotification: _onScroll,
+                    child: FadedScrollView(
+                      fadeExtent: 0.08,
+                      padding: EdgeInsets.symmetric(vertical: compact ? 4 : 10),
+                      child: Column(
+                        children: [
+                          SelectedVideosSummary(
+                            sizeRowKey: _sizeRowKey,
+                            selectedCount: state.videos.length,
+                            thumbnailPaths: state.thumbnailPaths,
+                            originalSize: state.totalOriginalSize,
+                            estimatedSize: estimatedSize,
+                            savingsPercent: savingsPercent,
+                            compact: compact,
+                          ),
+                          SizedBox(height: compact ? 14 : 22),
+                          CompressionModeSwitch(
+                            value: _mode,
+                            onChanged: (value) =>
+                                _changeMode(context, state.settings, value),
+                          ),
+                          SizedBox(height: compact ? 14 : 24),
+                          SpringTabContent(
+                            value: _mode,
+                            child: _mode == CompressionOptionsMode.simple
+                                ? _SimpleCompressionOptions(
+                                    state: state,
+                                    compact: compact,
+                                  )
+                                : _AdvancedCompressionOptions(
+                                    state: state,
+                                    compact: compact,
+                                  ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 22),
-                      CompressionModeSwitch(
-                        value: _mode,
-                        onChanged: (value) =>
-                            _changeMode(context, state.settings, value),
-                      ),
-                      const SizedBox(height: 24),
-                      SpringTabContent(
-                        value: _mode,
-                        child: _mode == CompressionOptionsMode.simple
-                            ? _SimpleCompressionOptions(state: state)
-                            : _AdvancedCompressionOptions(state: state),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              Positioned(
-                top: 4,
-                left: 8,
-                right: 8,
-                child: IgnorePointer(
-                  child: AnimatedOpacity(
-                    opacity: _showPinnedSummary ? 1 : 0,
-                    duration: const Duration(milliseconds: 180),
-                    curve: Curves.easeOutCubic,
-                    child: AnimatedSlide(
-                      offset: _showPinnedSummary
-                          ? Offset.zero
-                          : const Offset(0, -0.35),
-                      duration: const Duration(milliseconds: 260),
-                      curve: Curves.easeOutCubic,
-                      child: AnimatedScale(
-                        scale: _showPinnedSummary ? 1 : 0.96,
-                        duration: const Duration(milliseconds: 260),
+                  Positioned(
+                    top: 4,
+                    left: 8,
+                    right: 8,
+                    child: IgnorePointer(
+                      child: AnimatedOpacity(
+                        opacity: _showPinnedSummary ? 1 : 0,
+                        duration: const Duration(milliseconds: 180),
                         curve: Curves.easeOutCubic,
-                        child: _PinnedSizeSummary(
-                          originalSize: state.totalOriginalSize,
-                          estimatedSize: estimatedSize,
-                          savingsPercent: savingsPercent,
+                        child: AnimatedSlide(
+                          offset: _showPinnedSummary
+                              ? Offset.zero
+                              : const Offset(0, -0.35),
+                          duration: const Duration(milliseconds: 260),
+                          curve: Curves.easeOutCubic,
+                          child: AnimatedScale(
+                            scale: _showPinnedSummary ? 1 : 0.96,
+                            duration: const Duration(milliseconds: 260),
+                            curve: Curves.easeOutCubic,
+                            child: _PinnedSizeSummary(
+                              originalSize: state.totalOriginalSize,
+                              estimatedSize: estimatedSize,
+                              savingsPercent: savingsPercent,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           ),
         ),
         const SizedBox(height: 12),
@@ -299,8 +311,9 @@ class _PinnedSizeSummary extends StatelessWidget {
 
 class _SimpleCompressionOptions extends StatelessWidget {
   final CompressState state;
+  final bool compact;
 
-  const _SimpleCompressionOptions({required this.state});
+  const _SimpleCompressionOptions({required this.state, required this.compact});
 
   @override
   Widget build(BuildContext context) {
@@ -314,33 +327,36 @@ class _SimpleCompressionOptions extends StatelessWidget {
           strings.quality,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onSurface,
-            fontSize: 29,
+            fontSize: compact ? 24 : 29,
             height: 1,
           ),
         ),
-        const SizedBox(height: 31),
+        SizedBox(height: compact ? 17 : 31),
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.high,
           quality: SimpleCompressionQuality.high,
           title: strings.high,
           subtitle: strings.bitrateReducedDescription,
           onSelected: _onSelected(context),
+          compact: compact,
         ),
-        const SizedBox(height: 21),
+        SizedBox(height: compact ? 12 : 21),
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.medium,
           quality: SimpleCompressionQuality.medium,
           title: strings.medium,
           subtitle: strings.resolutionReducedHdDescription,
           onSelected: _onSelected(context),
+          compact: compact,
         ),
-        const SizedBox(height: 21),
+        SizedBox(height: compact ? 12 : 21),
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.low,
           quality: SimpleCompressionQuality.low,
           title: strings.low,
           subtitle: strings.resolutionReducedSdDescription,
           onSelected: _onSelected(context),
+          compact: compact,
         ),
       ],
     );
@@ -354,8 +370,12 @@ class _SimpleCompressionOptions extends StatelessWidget {
 
 class _AdvancedCompressionOptions extends StatelessWidget {
   final CompressState state;
+  final bool compact;
 
-  const _AdvancedCompressionOptions({required this.state});
+  const _AdvancedCompressionOptions({
+    required this.state,
+    required this.compact,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -383,7 +403,7 @@ class _AdvancedCompressionOptions extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 28),
+        SizedBox(height: compact ? 18 : 28),
         AppSettingsSection(
           title: strings.audio,
           description: strings.audioDescription,

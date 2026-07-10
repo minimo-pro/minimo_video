@@ -31,6 +31,7 @@ Font family: **Pangolin**.
 - Respect `MediaQuery.disableAnimations` where applicable.
 - Current video progress is static red text, not a pulsing indicator.
 - Hold progress fills left-to-right while the whole button uses `Pressable` scaling.
+- Duplicate `AppSnackBar` messages shake the existing snackbar, bring it to the front, and reset its timer instead of adding another copy.
 - Avoid Material splash/highlight fills; the app uses scale feedback instead.
 
 ---

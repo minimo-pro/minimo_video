@@ -9,6 +9,8 @@ import 'package:minimo_video/features/compression/data/video_compressor_adapter.
 import 'package:minimo_video/features/compression/domain/compression_result.dart';
 import 'package:minimo_video/features/compression/domain/compression_settings.dart';
 import 'package:minimo_video/features/compression/domain/picked_video.dart';
+import 'package:minimo_video/services/app_settings_service.dart';
+import 'package:minimo_video/services/screen_awake_service.dart';
 
 class _FailingCompressor extends VideoCompressorAdapter {
   @override
@@ -192,6 +194,15 @@ class _SavingFileAdapter extends VideoFileAdapter {
   }
 }
 
+class _FakeScreenAwakeService extends ScreenAwakeService {
+  final calls = <bool>[];
+
+  @override
+  Future<void> setEnabled(bool enabled) async {
+    calls.add(enabled);
+  }
+}
+
 void main() {
   test('quality presets select expected bitrate tier and resolution', () async {
     final bloc = CompressBloc(videoCompressorAdapter: _EstimatingCompressor());
@@ -311,6 +322,68 @@ void main() {
         predicate<CompressState>((state) => state.estimatedSize == 15),
       ),
     );
+    await bloc.close();
+  });
+
+  test('keeps screen awake while compression is active', () async {
+    final settings = AppSettingsService.instance;
+    final previous = settings.preventScreenSleep;
+    settings.preventScreenSleep = true;
+    addTearDown(() => settings.preventScreenSleep = previous);
+
+    final compressor = _ControlledCompressor();
+    final screenAwake = _FakeScreenAwakeService();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/video.mp4', name: 'video.mp4', size: 100),
+      ],
+      videoCompressorAdapter: compressor,
+      screenAwakeService: screenAwake,
+    );
+
+    bloc.add(const CompressStarted());
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.processing,
+    );
+    expect(screenAwake.calls, [true]);
+
+    compressor.completer.complete(
+      const CompressionResult(
+        success: true,
+        originalSize: 100,
+        outputSize: 40,
+        outputPath: '/small.mp4',
+      ),
+    );
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+
+    expect(screenAwake.calls, [true, false]);
+    await bloc.close();
+  });
+
+  test('does not keep screen awake when setting is off', () async {
+    final settings = AppSettingsService.instance;
+    final previous = settings.preventScreenSleep;
+    settings.preventScreenSleep = false;
+    addTearDown(() => settings.preventScreenSleep = previous);
+
+    final screenAwake = _FakeScreenAwakeService();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/ok.mp4', name: 'ok.mp4', size: 100),
+      ],
+      videoCompressorAdapter: _MixedCompressor(),
+      screenAwakeService: screenAwake,
+    );
+
+    bloc.add(const CompressStarted());
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+
+    expect(screenAwake.calls, isEmpty);
     await bloc.close();
   });
 

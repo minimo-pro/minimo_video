@@ -54,6 +54,8 @@
       }
     }
   },
+  "preventScreenSleep": "не выключать экран",
+  "preventScreenSleepDescription": "не даёт экрану уснуть, пока видео сжимаются",
   "clearCache": "очистка кеша",
   "clearCacheDescription": "удаляет временные файлы приложения. видео в галерее останутся",
   "holdToClearCache": "удерживайте кнопку, чтобы очистить кеш",

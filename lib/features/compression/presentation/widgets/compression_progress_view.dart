@@ -60,67 +60,81 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
     return Column(
       children: [
         Expanded(
-          child: Column(
-            children: [
-              const SizedBox(height: 24),
-              SelectedVideosPreview(
-                selectedCount: state.videos.length,
-                thumbnailPaths: state.thumbnailPaths,
-                scale: 1.72,
-              ),
-              const SizedBox(height: 30),
-              _ProgressSizeComparison(state: state),
-              const SizedBox(height: 28),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  '$percent%',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 18,
-                    height: 1,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final compact = constraints.maxHeight < 620;
+              final topGap = compact ? 10.0 : 24.0;
+              final previewScale = compact ? 1.34 : 1.72;
+              final afterPreviewGap = compact ? 16.0 : 30.0;
+              final progressGap = compact ? 16.0 : 28.0;
+              final statusGap = compact ? 9.0 : 13.0;
+              final listGap = compact ? 10.0 : 16.0;
+              final warningGap = compact ? 10.0 : 14.0;
+              final bottomGap = compact ? 12.0 : 24.0;
+
+              return Column(
+                children: [
+                  SizedBox(height: topGap),
+                  SelectedVideosPreview(
+                    selectedCount: state.videos.length,
+                    thumbnailPaths: state.thumbnailPaths,
+                    scale: previewScale,
                   ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(99),
-                child: LinearProgressIndicator(
-                  key: ValueKey(state.compressionRunId),
-                  value: progress,
-                  minHeight: 7,
-                  backgroundColor: Theme.of(
-                    context,
-                  ).colorScheme.surfaceContainerHighest,
-                  color: CompressionUiColors.red,
-                ),
-              ),
-              const SizedBox(height: 13),
-              Text(
-                '${strings.videoProgress(state.processingIndex + 1, state.videos.length)} · ${_remainingTimeLabel(strings, state)}',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontSize: 17,
-                  height: 1,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Flexible(
-                fit: FlexFit.loose,
-                child: VideoStatusList(state: state),
-              ),
-              if (defaultTargetPlatform == TargetPlatform.iOS) ...[
-                const SizedBox(height: 14),
-                const _IosBackgroundWarning(),
-              ],
-              if (AppSettingsService.instance.showOverheatWarning &&
-                  _showThermalWarning) ...[
-                const SizedBox(height: 14),
-                const _OverheatWarning(),
-              ],
-              const SizedBox(height: 24),
-            ],
+                  SizedBox(height: afterPreviewGap),
+                  _ProgressSizeComparison(state: state, compact: compact),
+                  SizedBox(height: progressGap),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      '$percent%',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: compact ? 16 : 18,
+                        height: 1,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(99),
+                    child: LinearProgressIndicator(
+                      key: ValueKey(state.compressionRunId),
+                      value: progress,
+                      minHeight: compact ? 6 : 7,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
+                      color: CompressionUiColors.red,
+                    ),
+                  ),
+                  SizedBox(height: statusGap),
+                  Text(
+                    '${strings.videoProgress(state.processingIndex + 1, state.videos.length)} · ${_remainingTimeLabel(strings, state)}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: compact ? 15 : 17,
+                      height: 1.05,
+                    ),
+                  ),
+                  SizedBox(height: listGap),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: VideoStatusList(state: state),
+                  ),
+                  if (defaultTargetPlatform == TargetPlatform.iOS) ...[
+                    SizedBox(height: warningGap),
+                    const _IosBackgroundWarning(),
+                  ],
+                  if (AppSettingsService.instance.showOverheatWarning &&
+                      _showThermalWarning) ...[
+                    SizedBox(height: warningGap),
+                    const _OverheatWarning(),
+                  ],
+                  SizedBox(height: bottomGap),
+                ],
+              );
+            },
           ),
         ),
         const SizedBox(height: 14),
@@ -200,37 +214,35 @@ class _WarningBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = CompressionUiColors.red;
+
     return SizedBox(
       width: double.infinity,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: CompressionUiColors.red.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(12),
+          color: color.withValues(alpha: 0.08),
+          border: Border.all(color: color.withValues(alpha: 0.18)),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          padding: const EdgeInsets.fromLTRB(12, 10, 14, 10),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SvgPicture.asset(
-                AppIcons.warning,
-                width: 18,
-                height: 20,
-                colorFilter: const ColorFilter.mode(
-                  CompressionUiColors.red,
-                  BlendMode.srcIn,
+              Padding(
+                padding: const EdgeInsets.only(top: 1),
+                child: SvgPicture.asset(
+                  AppIcons.warning,
+                  width: 18,
+                  height: 18,
+                  colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
                 ),
               ),
               const SizedBox(width: 8),
               Flexible(
                 child: Text(
                   message,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: CompressionUiColors.red,
-                    fontSize: 14,
-                    height: 1.15,
-                  ),
+                  style: TextStyle(color: color, fontSize: 14, height: 1.22),
                 ),
               ),
             ],
@@ -243,8 +255,9 @@ class _WarningBanner extends StatelessWidget {
 
 class _ProgressSizeComparison extends StatelessWidget {
   final CompressState state;
+  final bool compact;
 
-  const _ProgressSizeComparison({required this.state});
+  const _ProgressSizeComparison({required this.state, required this.compact});
 
   @override
   Widget build(BuildContext context) {
@@ -267,36 +280,36 @@ class _ProgressSizeComparison extends StatelessWidget {
                 maxLines: 1,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 28,
+                  fontSize: compact ? 23 : 28,
                   height: 1,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 13),
+          SizedBox(width: compact ? 10 : 13),
           SizedBox(
-            width: 29,
-            height: 24,
+            width: compact ? 24 : 29,
+            height: compact ? 20 : 24,
             child: SvgPicture.asset(
               AppIcons.arrowForward,
-              width: 29,
-              height: 24,
+              width: compact ? 24 : 29,
+              height: compact ? 20 : 24,
               colorFilter: ColorFilter.mode(
                 Theme.of(context).colorScheme.onSurface,
                 BlendMode.srcIn,
               ),
             ),
           ),
-          const SizedBox(width: 13),
+          SizedBox(width: compact ? 10 : 13),
           Expanded(
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 Utils.formatSize(estimatedSize).toLowerCase(),
                 maxLines: 1,
-                style: const TextStyle(
+                style: TextStyle(
                   color: CompressionUiColors.red,
-                  fontSize: 28,
+                  fontSize: compact ? 23 : 28,
                   height: 1,
                 ),
               ),

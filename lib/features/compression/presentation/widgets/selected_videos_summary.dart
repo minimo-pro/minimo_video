@@ -15,6 +15,7 @@ class SelectedVideosSummary extends StatelessWidget {
   final int estimatedSize;
   final int savingsPercent;
   final Key? sizeRowKey;
+  final bool compact;
 
   const SelectedVideosSummary({
     super.key,
@@ -24,6 +25,7 @@ class SelectedVideosSummary extends StatelessWidget {
     required this.estimatedSize,
     required this.savingsPercent,
     this.sizeRowKey,
+    this.compact = false,
   });
 
   @override
@@ -35,8 +37,9 @@ class SelectedVideosSummary extends StatelessWidget {
         SelectedVideosPreview(
           selectedCount: selectedCount,
           thumbnailPaths: thumbnailPaths,
+          scale: compact ? 0.82 : 1,
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: compact ? 0 : 4),
         SizedBox(
           key: sizeRowKey,
           width: double.infinity,
@@ -52,28 +55,28 @@ class SelectedVideosSummary extends StatelessWidget {
                       maxLines: 1,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 28,
+                        fontSize: compact ? 23 : 28,
                         height: 1,
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 13),
+              SizedBox(width: compact ? 10 : 13),
               SizedBox(
-                width: 29,
-                height: 24,
+                width: compact ? 24 : 29,
+                height: compact ? 20 : 24,
                 child: SvgPicture.asset(
                   AppIcons.arrowForward,
-                  width: 29,
-                  height: 24,
+                  width: compact ? 24 : 29,
+                  height: compact ? 20 : 24,
                   colorFilter: ColorFilter.mode(
                     Theme.of(context).colorScheme.onSurface,
                     BlendMode.srcIn,
                   ),
                 ),
               ),
-              const SizedBox(width: 13),
+              SizedBox(width: compact ? 10 : 13),
               Expanded(
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -83,9 +86,9 @@ class SelectedVideosSummary extends StatelessWidget {
                       value: estimatedSize,
                       formatter: (value) =>
                           Utils.formatSize(value.toInt()).toLowerCase(),
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: CompressionUiColors.red,
-                        fontSize: 28,
+                        fontSize: compact ? 23 : 28,
                         height: 1,
                       ),
                     ),
@@ -95,21 +98,21 @@ class SelectedVideosSummary extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: compact ? 10 : 18),
         RollingCounterText(
           value: savingsPercent,
           formatter: (value) => '${value.toInt()}%',
-          style: const TextStyle(
+          style: TextStyle(
             color: CompressionUiColors.red,
-            fontSize: 27,
+            fontSize: compact ? 22 : 27,
             height: 0.9,
           ),
         ),
         Text(
           strings.smaller,
-          style: const TextStyle(
+          style: TextStyle(
             color: CompressionUiColors.red,
-            fontSize: 19,
+            fontSize: compact ? 16 : 19,
             height: 1.15,
           ),
         ),

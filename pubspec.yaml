@@ -1,7 +1,7 @@
 name: minimo_video
 description: "minimo (video) - video compression app."
 publish_to: 'none'
-version: 1.0.0+10
+version: 1.0.0+11
 
 environment:
   sdk: ^3.9.2
@@ -29,6 +29,7 @@ dependencies:
   reel_text: ^0.4.0
   motor: ^1.1.0
   package_info_plus: ^9.0.1
+  wakelock_plus: ^1.5.2
 
 dev_dependencies:
   flutter_test:

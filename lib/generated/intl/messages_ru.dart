@@ -191,6 +191,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "сжатие может замедлиться, если устройство нагреется",
     ),
+    "preventScreenSleep": MessageLookupByLibrary.simpleMessage(
+      "не выключать экран",
+    ),
+    "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
+      "не даёт экрану уснуть, пока видео сжимаются",
+    ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("сайт проекта"),
     "quality": MessageLookupByLibrary.simpleMessage("качество"),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("оценить приложение"),

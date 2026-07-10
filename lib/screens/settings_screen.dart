@@ -66,6 +66,12 @@ class SettingsScreen extends StatelessWidget {
                         onChanged: settings.setSaveVideosToAlbum,
                       ),
                       _ToggleRow(
+                        title: strings.preventScreenSleep,
+                        description: strings.preventScreenSleepDescription,
+                        value: settings.preventScreenSleep,
+                        onChanged: settings.setPreventScreenSleep,
+                      ),
+                      _ToggleRow(
                         title: strings.darkTheme,
                         description: strings.darkThemeDescription,
                         value:

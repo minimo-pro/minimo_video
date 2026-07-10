@@ -26,6 +26,10 @@ Both platforms report `pickProgress` (`processed`/`total`) over the videos metho
 | iOS | `AVURLAsset`, `AVAssetImageGenerator` |
 | Android | `MediaMetadataRetriever` |
 
+## Screen Awake
+
+`wakelock_plus` keeps the display awake during compression when the setting is enabled.
+
 ## Orientation
 
 - Android activity: `screenOrientation="portrait"`

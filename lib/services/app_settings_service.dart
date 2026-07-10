@@ -5,6 +5,7 @@ class AppSettingsService extends ChangeNotifier {
   static const _addKompressoPrefixKey = 'add_kompresso_prefix';
   static const _showOverheatWarningKey = 'show_overheat_warning';
   static const _saveVideosToAlbumKey = 'save_videos_to_album';
+  static const _preventScreenSleepKey = 'prevent_screen_sleep';
   static const _languageCodeKey = 'language_code';
   static const _darkThemeKey = 'dark_theme';
   static const appPrefix = 'minimo_';
@@ -18,6 +19,7 @@ class AppSettingsService extends ChangeNotifier {
   bool addKompressoPrefix = true;
   bool showOverheatWarning = true;
   bool saveVideosToAlbum = false;
+  bool preventScreenSleep = true;
   String? languageCode;
   bool? darkTheme;
 
@@ -36,6 +38,8 @@ class AppSettingsService extends ChangeNotifier {
         _preferences.getBool(_showOverheatWarningKey) ?? showOverheatWarning;
     saveVideosToAlbum =
         _preferences.getBool(_saveVideosToAlbumKey) ?? saveVideosToAlbum;
+    preventScreenSleep =
+        _preferences.getBool(_preventScreenSleepKey) ?? preventScreenSleep;
     languageCode = _preferences.getString(_languageCodeKey);
     darkTheme = _preferences.getBool(_darkThemeKey);
   }
@@ -48,6 +52,9 @@ class AppSettingsService extends ChangeNotifier {
 
   Future<void> setSaveVideosToAlbum(bool value) =>
       _setBool(_saveVideosToAlbumKey, value, (v) => saveVideosToAlbum = v);
+
+  Future<void> setPreventScreenSleep(bool value) =>
+      _setBool(_preventScreenSleepKey, value, (v) => preventScreenSleep = v);
 
   Future<void> setDarkTheme(bool value) =>
       _setBool(_darkThemeKey, value, (v) => darkTheme = v);

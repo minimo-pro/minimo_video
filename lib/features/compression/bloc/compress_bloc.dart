@@ -8,6 +8,7 @@ import '../domain/compression_result.dart';
 import '../domain/compression_settings.dart';
 import '../domain/picked_video.dart';
 import '../../../services/app_settings_service.dart';
+import '../../../services/screen_awake_service.dart';
 import 'compress_event.dart';
 import 'compress_state.dart';
 
@@ -15,8 +16,10 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
   final VideoFileAdapter _videoFileAdapter;
   final VideoCompressorAdapter _videoCompressorAdapter;
   final AppSettingsService _appSettings;
+  final ScreenAwakeService _screenAwakeService;
   bool _cancelRequested = false;
   bool _resumeAfterBackground = false;
+  bool _screenAwakeEnabled = false;
   int _compressionRunId = 0;
   int _estimateRunId = 0;
   Timer? _estimateDebounce;
@@ -26,10 +29,12 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     VideoFileAdapter? videoFileAdapter,
     VideoCompressorAdapter? videoCompressorAdapter,
     AppSettingsService? appSettings,
+    ScreenAwakeService? screenAwakeService,
   }) : _videoFileAdapter = videoFileAdapter ?? VideoFileAdapter(),
        _videoCompressorAdapter =
            videoCompressorAdapter ?? VideoCompressorAdapter(),
        _appSettings = appSettings ?? AppSettingsService.instance,
+       _screenAwakeService = screenAwakeService ?? ScreenAwakeService.instance,
        super(CompressState.initial(initialVideos)) {
     on<CompressThumbnailsRequested>(_onThumbnailsRequested);
     on<CompressEstimateRequested>(_onEstimateRequested);
@@ -139,8 +144,9 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
   }
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
     _estimateDebounce?.cancel();
+    await _setScreenAwake(false);
     return super.close();
   }
 
@@ -195,84 +201,91 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       ),
     );
 
-    for (var i = startIndex; i < videos.length; i++) {
-      emit(
-        state.copyWith(
-          processingIndex: i,
-          progress: completedWeight / totalWeight,
-          currentVideoProgress: 0,
-          elapsed: elapsed(),
-          videoStatuses: videoStatuses = _videoStatusesWith(
-            videoStatuses,
-            i,
-            VideoCompressionStatus.processing,
+    await _setScreenAwake(_appSettings.preventScreenSleep);
+    try {
+      for (var i = startIndex; i < videos.length; i++) {
+        emit(
+          state.copyWith(
+            processingIndex: i,
+            progress: completedWeight / totalWeight,
+            currentVideoProgress: 0,
+            elapsed: elapsed(),
+            videoStatuses: videoStatuses = _videoStatusesWith(
+              videoStatuses,
+              i,
+              VideoCompressionStatus.processing,
+            ),
           ),
-        ),
-      );
-
-      final video = videos[i];
-      final weightBeforeVideo = completedWeight;
-      late final CompressionResult result;
-      var videoStatus = VideoCompressionStatus.compressed;
-      try {
-        result = await _videoCompressorAdapter.compress(
-          video.path,
-          video.name,
-          state.settings,
-          addKompressoPrefix: _appSettings.addKompressoPrefix,
-          onProgress: (videoProgress) {
-            if (_cancelRequested || runId != _compressionRunId) return;
-            final videoWeight = video.size > 0 ? video.size : 1;
-            final overallProgress =
-                (weightBeforeVideo + videoWeight * videoProgress) / totalWeight;
-            add(
-              CompressProgressChanged(
-                runId: runId,
-                progress: overallProgress.clamp(0, 1).toDouble(),
-                currentVideoProgress: videoProgress.clamp(0, 1).toDouble(),
-                elapsed: elapsed(),
-              ),
-            );
-          },
         );
-      } catch (error) {
-        if (_cancelRequested || runId != _compressionRunId) return;
-        result = const CompressionResult(success: false);
-        videoStatus = VideoCompressionStatus.failed;
-        emit(state.copyWith(compressionError: error));
-      }
 
-      if (_cancelRequested || runId != _compressionRunId) return;
-      if (videoStatus == VideoCompressionStatus.compressed && !result.success) {
-        videoStatus = VideoCompressionStatus.skipped;
+        final video = videos[i];
+        final weightBeforeVideo = completedWeight;
+        late final CompressionResult result;
+        var videoStatus = VideoCompressionStatus.compressed;
+        try {
+          result = await _videoCompressorAdapter.compress(
+            video.path,
+            video.name,
+            state.settings,
+            addKompressoPrefix: _appSettings.addKompressoPrefix,
+            onProgress: (videoProgress) {
+              if (_cancelRequested || runId != _compressionRunId) return;
+              final videoWeight = video.size > 0 ? video.size : 1;
+              final overallProgress =
+                  (weightBeforeVideo + videoWeight * videoProgress) /
+                  totalWeight;
+              add(
+                CompressProgressChanged(
+                  runId: runId,
+                  progress: overallProgress.clamp(0, 1).toDouble(),
+                  currentVideoProgress: videoProgress.clamp(0, 1).toDouble(),
+                  elapsed: elapsed(),
+                ),
+              );
+            },
+          );
+        } catch (error) {
+          if (_cancelRequested || runId != _compressionRunId) return;
+          result = const CompressionResult(success: false);
+          videoStatus = VideoCompressionStatus.failed;
+          emit(state.copyWith(compressionError: error));
+        }
+
+        if (_cancelRequested || runId != _compressionRunId) return;
+        if (videoStatus == VideoCompressionStatus.compressed &&
+            !result.success) {
+          videoStatus = VideoCompressionStatus.skipped;
+        }
+        completedWeight += video.size > 0 ? video.size : 1;
+
+        emit(
+          state.copyWith(
+            results: [
+              ...state.results,
+              CompressedVideo(source: video, result: result),
+            ],
+            videoStatuses: videoStatuses = _videoStatusesWith(
+              videoStatuses,
+              i,
+              videoStatus,
+            ),
+            progress: (completedWeight / totalWeight).clamp(0, 1).toDouble(),
+            elapsed: elapsed(),
+          ),
+        );
       }
-      completedWeight += video.size > 0 ? video.size : 1;
 
       emit(
         state.copyWith(
-          results: [
-            ...state.results,
-            CompressedVideo(source: video, result: result),
-          ],
-          videoStatuses: videoStatuses = _videoStatusesWith(
-            videoStatuses,
-            i,
-            videoStatus,
-          ),
-          progress: (completedWeight / totalWeight).clamp(0, 1).toDouble(),
+          status: CompressStatus.done,
+          progress: 1,
           elapsed: elapsed(),
         ),
       );
+    } finally {
+      stopwatch.stop();
+      await _setScreenAwake(false);
     }
-
-    stopwatch.stop();
-    emit(
-      state.copyWith(
-        status: CompressStatus.done,
-        progress: 1,
-        elapsed: elapsed(),
-      ),
-    );
   }
 
   Future<void> _onForegroundResumed(
@@ -304,6 +317,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     _cancelRequested = true;
     _compressionRunId++;
     await _videoCompressorAdapter.cancelCompression();
+    await _setScreenAwake(false);
   }
 
   void _onProgressChanged(
@@ -330,6 +344,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     _cancelRequested = true;
     _compressionRunId++;
     await _videoCompressorAdapter.cancelCompression();
+    await _setScreenAwake(false);
     emit(
       state.copyWith(
         status: CompressStatus.ready,
@@ -440,5 +455,15 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     final next = List<VideoCompressionStatus>.of(statuses);
     if (index >= 0 && index < next.length) next[index] = status;
     return next;
+  }
+
+  Future<void> _setScreenAwake(bool enabled) async {
+    if (enabled == _screenAwakeEnabled) return;
+    _screenAwakeEnabled = enabled;
+    try {
+      await _screenAwakeService.setEnabled(enabled);
+    } catch (_) {
+      _screenAwakeEnabled = !enabled;
+    }
   }
 }

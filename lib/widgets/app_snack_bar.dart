@@ -7,7 +7,7 @@ import '../theme/app_colors.dart';
 enum AppSnackBarType { info, success, error }
 
 abstract final class AppSnackBar {
-  static OverlayEntry? _currentEntry;
+  static final List<_SnackBarEntry> _entries = [];
 
   static void show(
     BuildContext context, {
@@ -16,26 +16,83 @@ abstract final class AppSnackBar {
     Duration duration = const Duration(seconds: 3),
     Duration animationDuration = const Duration(milliseconds: 280),
   }) {
-    _currentEntry?.remove();
-
     final overlay = Overlay.of(context, rootOverlay: true);
-    late final OverlayEntry entry;
-    entry = OverlayEntry(
-      builder: (context) => _AppSnackBarOverlay(
+    _entries.removeWhere((entry) => !entry.overlayEntry.mounted);
+
+    final duplicate = _findEntry(message, type);
+    if (duplicate != null) {
+      if (identical(_entries.last, duplicate)) {
+        duplicate.key.currentState?.replay(duration);
+        return;
+      }
+
+      duplicate.overlayEntry.remove();
+      _entries.remove(duplicate);
+      _insert(
+        overlay,
         message: message,
         type: type,
         duration: duration,
         animationDuration: animationDuration,
+        shakeOnShow: true,
+      );
+      return;
+    }
+
+    _insert(
+      overlay,
+      message: message,
+      type: type,
+      duration: duration,
+      animationDuration: animationDuration,
+    );
+  }
+
+  static _SnackBarEntry? _findEntry(String message, AppSnackBarType type) {
+    for (final entry in _entries) {
+      if (entry.message == message && entry.type == type) return entry;
+    }
+    return null;
+  }
+
+  static void _insert(
+    OverlayState overlay, {
+    required String message,
+    required AppSnackBarType type,
+    required Duration duration,
+    required Duration animationDuration,
+    bool shakeOnShow = false,
+  }) {
+    final snackBarEntry = _SnackBarEntry(message: message, type: type);
+    late final OverlayEntry overlayEntry;
+    overlayEntry = OverlayEntry(
+      builder: (context) => _AppSnackBarOverlay(
+        key: snackBarEntry.key,
+        message: message,
+        type: type,
+        duration: duration,
+        animationDuration: animationDuration,
+        shakeOnShow: shakeOnShow,
         onDismissed: () {
-          if (entry.mounted) entry.remove();
-          if (identical(_currentEntry, entry)) _currentEntry = null;
+          if (overlayEntry.mounted) overlayEntry.remove();
+          _entries.remove(snackBarEntry);
         },
       ),
     );
 
-    _currentEntry = entry;
-    overlay.insert(entry);
+    snackBarEntry.overlayEntry = overlayEntry;
+    _entries.add(snackBarEntry);
+    overlay.insert(overlayEntry);
   }
+}
+
+class _SnackBarEntry {
+  final String message;
+  final AppSnackBarType type;
+  final key = GlobalKey<_AppSnackBarOverlayState>();
+  late final OverlayEntry overlayEntry;
+
+  _SnackBarEntry({required this.message, required this.type});
 }
 
 class _AppSnackBarOverlay extends StatefulWidget {
@@ -43,13 +100,16 @@ class _AppSnackBarOverlay extends StatefulWidget {
   final AppSnackBarType type;
   final Duration duration;
   final Duration animationDuration;
+  final bool shakeOnShow;
   final VoidCallback onDismissed;
 
   const _AppSnackBarOverlay({
+    super.key,
     required this.message,
     required this.type,
     required this.duration,
     required this.animationDuration,
+    this.shakeOnShow = false,
     required this.onDismissed,
   });
 
@@ -58,12 +118,15 @@ class _AppSnackBarOverlay extends StatefulWidget {
 }
 
 class _AppSnackBarOverlayState extends State<_AppSnackBarOverlay>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _controller;
+  late final AnimationController _shakeController;
   late final Animation<double> _fadeAnimation;
   late final Animation<double> _scaleAnimation;
   late final Animation<Offset> _slideAnimation;
+  late final Animation<double> _shakeAnimation;
   Timer? _dismissTimer;
+  late Duration _duration;
   bool _isDismissing = false;
 
   @override
@@ -88,9 +151,38 @@ class _AppSnackBarOverlayState extends State<_AppSnackBarOverlay>
       begin: const Offset(0, -0.35),
       end: Offset.zero,
     ).animate(curvedAnimation);
+    _shakeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 420),
+    );
+    _shakeAnimation = TweenSequence<double>(
+      [
+        TweenSequenceItem(tween: Tween(begin: 0.0, end: -8.0), weight: 1),
+        TweenSequenceItem(tween: Tween(begin: -8.0, end: 8.0), weight: 2),
+        TweenSequenceItem(tween: Tween(begin: 8.0, end: -5.0), weight: 2),
+        TweenSequenceItem(tween: Tween(begin: -5.0, end: 5.0), weight: 2),
+        TweenSequenceItem(tween: Tween(begin: 5.0, end: 0.0), weight: 1),
+      ],
+    ).animate(CurvedAnimation(parent: _shakeController, curve: Curves.easeOut));
 
     _controller.forward();
-    _dismissTimer = Timer(widget.duration, _dismiss);
+    _duration = widget.duration;
+    _restartTimer();
+    if (widget.shakeOnShow) _shakeController.forward();
+  }
+
+  void replay(Duration duration) {
+    if (!mounted) return;
+    _duration = duration;
+    _isDismissing = false;
+    _controller.forward();
+    _shakeController.forward(from: 0);
+    _restartTimer();
+  }
+
+  void _restartTimer() {
+    _dismissTimer?.cancel();
+    _dismissTimer = Timer(_duration, _dismiss);
   }
 
   Future<void> _dismiss() async {
@@ -105,6 +197,7 @@ class _AppSnackBarOverlayState extends State<_AppSnackBarOverlay>
   void dispose() {
     _dismissTimer?.cancel();
     _controller.dispose();
+    _shakeController.dispose();
     super.dispose();
   }
 
@@ -120,13 +213,22 @@ class _AppSnackBarOverlayState extends State<_AppSnackBarOverlay>
         position: _slideAnimation,
         child: FadeTransition(
           opacity: _fadeAnimation,
-          child: ScaleTransition(
-            scale: _scaleAnimation,
-            alignment: Alignment.topCenter,
-            child: _SnackBarCard(
-              message: widget.message,
-              type: widget.type,
-              onTap: _dismiss,
+          child: AnimatedBuilder(
+            animation: _shakeAnimation,
+            builder: (context, child) {
+              final dx = mediaQuery.disableAnimations
+                  ? 0.0
+                  : _shakeAnimation.value;
+              return Transform.translate(offset: Offset(dx, 0), child: child);
+            },
+            child: ScaleTransition(
+              scale: _scaleAnimation,
+              alignment: Alignment.topCenter,
+              child: _SnackBarCard(
+                message: widget.message,
+                type: widget.type,
+                onTap: _dismiss,
+              ),
             ),
           ),
         ),

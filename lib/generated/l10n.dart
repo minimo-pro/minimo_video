@@ -329,6 +329,26 @@ class S {
     );
   }
 
+  /// `keep screen awake`
+  String get preventScreenSleep {
+    return Intl.message(
+      'keep screen awake',
+      name: 'preventScreenSleep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `prevents the screen from sleeping while videos are compressing`
+  String get preventScreenSleepDescription {
+    return Intl.message(
+      'prevents the screen from sleeping while videos are compressing',
+      name: 'preventScreenSleepDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `clear cache`
   String get clearCache {
     return Intl.message('clear cache', name: 'clearCache', desc: '', args: []);

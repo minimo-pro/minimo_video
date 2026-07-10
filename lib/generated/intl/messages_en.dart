@@ -187,6 +187,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "compression can slow down if your device gets hot",
     ),
+    "preventScreenSleep": MessageLookupByLibrary.simpleMessage(
+      "keep screen awake",
+    ),
+    "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
+      "prevents the screen from sleeping while videos are compressing",
+    ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("project website"),
     "quality": MessageLookupByLibrary.simpleMessage("quality"),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("rate the app"),
