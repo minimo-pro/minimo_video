@@ -6,10 +6,10 @@ Routes use `auto_route` with fade transitions.
 |---|---|
 | `SplashRoute` | Resolve first-launch destination |
 | `OnboardingRoute` | Explain local selection, quality, and privacy |
-| `StartRoute` | Select one or more videos |
+| `StartRoute` | Select one or more videos, show store update and changelog prompts |
 | `CompressRoute` | Configure, run, cancel, save, share, or delete originals |
 | `SettingsRoute` | Filename prefix, thermal warning, album, cache, language |
-| `InfoRoute` | App/version information and external links |
+| `InfoRoute` | App/version information, rating, sharing, and external links |
 
 Settings and info are presented as 90%-height draggable sheets with a drag handle and swipe-down dismissal.
 

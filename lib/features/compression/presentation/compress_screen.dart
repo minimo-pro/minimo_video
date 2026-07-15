@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../generated/l10n.dart';
 import '../../../router/app_router.gr.dart';
+import '../../../services/review_service.dart';
 import '../../../widgets/app_snack_bar.dart';
 import '../../../widgets/minimo_loader.dart';
 import '../bloc/compress_bloc.dart';
@@ -70,6 +73,7 @@ class _CompressView extends StatefulWidget {
 class _CompressViewState extends State<_CompressView>
     with WidgetsBindingObserver {
   var _backgroundedWhileProcessing = false;
+  int? _reviewRequestedForRunId;
 
   @override
   void initState() {
@@ -104,7 +108,10 @@ class _CompressViewState extends State<_CompressView>
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CompressBloc, CompressState>(
-      listener: _showSaveMessage,
+      listener: (context, state) {
+        _showSaveMessage(context, state);
+        _requestReviewAfterSuccessfulCompression(state);
+      },
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.surface,
@@ -131,6 +138,20 @@ class _CompressViewState extends State<_CompressView>
           ),
         );
       },
+    );
+  }
+
+  void _requestReviewAfterSuccessfulCompression(CompressState state) {
+    if (state.status != CompressStatus.done ||
+        _reviewRequestedForRunId == state.compressionRunId) {
+      return;
+    }
+
+    _reviewRequestedForRunId = state.compressionRunId;
+    unawaited(
+      ReviewService.instance.onSuccessfulConversions(
+        state.successfulOutputPaths.length,
+      ),
     );
   }
 

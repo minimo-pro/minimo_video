@@ -1,0 +1,16 @@
+{
+  "1.0.0": {
+    "en": [
+      "share minimo with friends.",
+      "rate the app from the about screen.",
+      "get a gentle review prompt after successful conversions.",
+      "see update prompts when a new store version is available."
+    ],
+    "ru": [
+      "можно поделиться minimo с друзьями.",
+      "можно оценить приложение из экрана о приложении.",
+      "после успешных конвертаций появляется аккуратный запрос оценки.",
+      "приложение подсказывает, когда в магазине доступно обновление."
+    ]
+  }
+}

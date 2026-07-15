@@ -209,6 +209,41 @@ class S {
     );
   }
 
+  /// `try minimo (video) — a simple app for making videos smaller on your phone: {url}`
+  String shareAppText(String url) {
+    return Intl.message(
+      'try minimo (video) — a simple app for making videos smaller on your phone: $url',
+      name: 'shareAppText',
+      desc: '',
+      args: [url],
+    );
+  }
+
+  /// `what's new in {version}`
+  String changelogTitle(String version) {
+    return Intl.message(
+      'what\'s new in $version',
+      name: 'changelogTitle',
+      desc: '',
+      args: [version],
+    );
+  }
+
+  /// `changes from updates you have not seen yet`
+  String get changelogSubtitle {
+    return Intl.message(
+      'changes from updates you have not seen yet',
+      name: 'changelogSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `got it`
+  String get changelogDone {
+    return Intl.message('got it', name: 'changelogDone', desc: '', args: []);
+  }
+
   /// `project website`
   String get projectWebsite {
     return Intl.message(

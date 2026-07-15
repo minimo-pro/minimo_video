@@ -10,8 +10,12 @@
 | `shared_preferences` | Settings and onboarding state |
 | `gal` | Save videos to gallery |
 | `share_plus` | Share output files |
+| `in_app_review` | Request or open app review |
+| `upgrader` | Prompt when a store update is available |
+| `pub_semver` | Compare changelog versions |
 | `path_provider`, `path` | Temporary file management |
 | `intl`, `intl_utils` | Localization |
+| `package_info_plus` | App version for changelog and about screen |
 | `motor` | Press interaction motion |
 | `flutter_svg` | SVG icons |
 

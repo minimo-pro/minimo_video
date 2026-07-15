@@ -19,6 +19,24 @@
   "openSourceNote": "minimo (video) is open source. explore the code, follow the project or get in touch",
   "rateTheApp": "rate the app",
   "shareWithFriends": "share with friends",
+  "shareAppText": "try minimo (video) — a simple app for making videos smaller on your phone: {url}",
+  "@shareAppText": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "changelogTitle": "what's new in {version}",
+  "@changelogTitle": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "changelogSubtitle": "changes from updates you have not seen yet",
+  "changelogDone": "got it",
   "projectWebsite": "project website",
   "telegram": "telegram",
   "githubRepository": "github repository",

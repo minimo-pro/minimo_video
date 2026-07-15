@@ -19,6 +19,24 @@
   "openSourceNote": "minimo (video) — проект с открытым исходным кодом. посмотрите код, следите за проектом или свяжитесь со мной",
   "rateTheApp": "оценить приложение",
   "shareWithFriends": "поделиться с друзьями",
+  "shareAppText": "попробуй minimo (video) — простое приложение, чтобы сжимать видео прямо на телефоне: {url}",
+  "@shareAppText": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "changelogTitle": "что нового в {version}",
+  "@changelogTitle": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "changelogSubtitle": "изменения из обновлений, которые вы ещё не видели",
+  "changelogDone": "понятно",
   "projectWebsite": "сайт проекта",
   "telegram": "telegram",
   "githubRepository": "репозиторий github",

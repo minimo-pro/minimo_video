@@ -41,6 +41,9 @@ Compression presets, native pipeline, progress, cancellation, and output policy.
 ### #[[file:skills/features/localization.md]]
 English/Russian ARB workflow and generated files.
 
+### #[[file:skills/features/changelog.md]]
+Versioned in-app changelog, remote copy override, and seen-version tracking.
+
 ### #[[file:skills/features/platform.md]]
 iOS/Android media pickers, permissions, deletion, thumbnails, and orientation.
 
