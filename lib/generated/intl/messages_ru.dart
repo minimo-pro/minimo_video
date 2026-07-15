@@ -100,11 +100,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
       "удаляет временные файлы приложения. видео в галерее останутся",
     ),
+    "compareVideos": MessageLookupByLibrary.simpleMessage("сравнить"),
     "compress": MessageLookupByLibrary.simpleMessage("сжать"),
-    "compressOtherVideos": MessageLookupByLibrary.simpleMessage(
-      "сжать другие видео",
-    ),
     "compressed": MessageLookupByLibrary.simpleMessage("сжатое"),
+    "compressedVideo": MessageLookupByLibrary.simpleMessage("стало"),
     "compressing": MessageLookupByLibrary.simpleMessage("сжатие..."),
     "compressionCancelled": MessageLookupByLibrary.simpleMessage(
       "сжатие отменено",
@@ -198,6 +197,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "minimo (video) — проект с открытым исходным кодом. посмотрите код, следите за проектом или свяжитесь со мной",
     ),
     "original": MessageLookupByLibrary.simpleMessage("оригинал"),
+    "originalVideo": MessageLookupByLibrary.simpleMessage("было"),
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "сжатие может замедлиться, если устройство нагреется",
     ),
@@ -252,6 +252,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "telegram": MessageLookupByLibrary.simpleMessage("telegram"),
     "todo": MessageLookupByLibrary.simpleMessage("В разработке"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("попробовать снова"),
+    "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
+      "предпросмотр недоступен",
+    ),
     "videoProgress": m13,
     "videosCompressed": m14,
     "waiting": MessageLookupByLibrary.simpleMessage("ожидает"),

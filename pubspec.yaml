@@ -33,6 +33,7 @@ dependencies:
   in_app_review: ^2.0.12
   upgrader: ^13.5.0
   pub_semver: ^2.2.0
+  video_player: 2.10.0
 
 dev_dependencies:
   flutter_test:

@@ -10,6 +10,7 @@
 | `shared_preferences` | Settings and onboarding state |
 | `gal` | Save videos to gallery |
 | `share_plus` | Share output files |
+| `video_player` | Local before/after playback on the result screen |
 | `in_app_review` | Request or open app review |
 | `upgrader` | Prompt when a store update is available |
 | `pub_semver` | Compare changelog versions |

@@ -19,7 +19,9 @@ The screen renders from `CompressStatus`:
 
 - `ready` → simple/advanced settings
 - `processing` → size estimate, overall progress, current-file percentage, status list, cancellation
-- `done` → results, saved space, save/share/delete actions
+- `done` → results, saved space, before/after comparison, share/save, compress-more, and delete-original actions
+
+On the done screen, share appears before save. The compress-more action is an icon-only back button placed before the hold-to-delete-originals button.
 
 Simple presets are the primary UX. Advanced mode currently exposes only resolution and audio.
 

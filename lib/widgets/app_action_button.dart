@@ -55,10 +55,11 @@ class AppActionButton extends StatelessWidget {
             : variant == AppActionButtonVariant.outlined
             ? Theme.of(context).colorScheme.surfaceContainerHighest
             : Colors.transparent);
+    final effectivePadding = label == null ? EdgeInsets.zero : padding;
     final shape = RoundedRectangleBorder(borderRadius: borderRadius);
     final baseStyle = ButtonStyle(
       minimumSize: WidgetStatePropertyAll(Size(0, height)),
-      padding: WidgetStatePropertyAll(padding),
+      padding: WidgetStatePropertyAll(effectivePadding),
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
           return Theme.of(context).colorScheme.surfaceContainerHighest;

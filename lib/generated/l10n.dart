@@ -803,6 +803,31 @@ class S {
     return Intl.message('share', name: 'share', desc: '', args: []);
   }
 
+  /// `compare`
+  String get compareVideos {
+    return Intl.message('compare', name: 'compareVideos', desc: '', args: []);
+  }
+
+  /// `before`
+  String get originalVideo {
+    return Intl.message('before', name: 'originalVideo', desc: '', args: []);
+  }
+
+  /// `after`
+  String get compressedVideo {
+    return Intl.message('after', name: 'compressedVideo', desc: '', args: []);
+  }
+
+  /// `preview unavailable`
+  String get videoPreviewUnavailable {
+    return Intl.message(
+      'preview unavailable',
+      name: 'videoPreviewUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `save`
   String get save {
     return Intl.message('save', name: 'save', desc: '', args: []);
@@ -855,16 +880,6 @@ class S {
       name: 'savedButOriginalsNotDeleted',
       desc: '',
       args: [error],
-    );
-  }
-
-  /// `compress other videos`
-  String get compressOtherVideos {
-    return Intl.message(
-      'compress other videos',
-      name: 'compressOtherVideos',
-      desc: '',
-      args: [],
     );
   }
 

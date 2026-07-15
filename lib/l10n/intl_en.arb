@@ -149,6 +149,10 @@
     }
   },
   "share": "share",
+  "compareVideos": "compare",
+  "originalVideo": "before",
+  "compressedVideo": "after",
+  "videoPreviewUnavailable": "preview unavailable",
   "save": "save",
   "deleteOriginal": "delete original",
   "holdToDeleteOriginals": "hold the button to delete originals",
@@ -179,7 +183,6 @@
       }
     }
   },
-  "compressOtherVideos": "compress other videos",
   "waiting": "waiting",
   "failed": "failed",
   "videoProgress": "video {current} of {total}",

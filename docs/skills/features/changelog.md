@@ -31,10 +31,11 @@ so users jumping multiple releases see all unseen changes.
 
 ## UI
 
-`StartPage` initializes changelog display after the first frame. If unseen changes exist, `showChangelogDialog()` presents a styled modal using the app theme. Dismissing the modal marks the current version as seen.
+`StartPage` initializes changelog display after the first frame. If unseen changes exist, `showChangelogDialog()` presents a bottom sheet using the app theme. Dismissing the sheet marks the current version as seen.
 
 ## Release Checklist
 
+- Update root `CHANGELOG.md` and group entries under category headings such as `### Added`.
 - Add a local `_changelog` entry for every app version.
 - Publish/update remote `changelog.json` before release.
 - Keep English and Russian copy in sync.

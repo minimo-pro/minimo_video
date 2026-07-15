@@ -149,6 +149,10 @@
     }
   },
   "share": "поделиться",
+  "compareVideos": "сравнить",
+  "originalVideo": "было",
+  "compressedVideo": "стало",
+  "videoPreviewUnavailable": "предпросмотр недоступен",
   "save": "сохранить",
   "deleteOriginal": "удалить оригинал",
   "holdToDeleteOriginals": "удерживайте кнопку, чтобы удалить оригиналы",
@@ -179,7 +183,6 @@
       }
     }
   },
-  "compressOtherVideos": "сжать другие видео",
   "waiting": "ожидает",
   "failed": "ошибка",
   "videoProgress": "видео {current} из {total}",

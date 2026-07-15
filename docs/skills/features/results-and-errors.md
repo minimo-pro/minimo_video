@@ -11,6 +11,12 @@
 
 Mixed batches can contain compressed, skipped, and failed items. Save/share actions use successful output paths only. Saved-space totals exclude skipped and failed videos.
 
+## Preview
+
+Successful results can be previewed from `CompressionResultView`. The preview uses `video_player` to show original and compressed local files side by side with a center divider, shared play/pause, shared seek, and muted playback.
+
+Only `state.successResults` are previewable. Skipped and failed items stay in the status list.
+
 ## Share
 
 `CompressionResultView` passes all successful MP4 paths to `share_plus`. On tablets, `sharePositionOrigin` comes from result-view bounds. Failures are shown through an error snackbar.

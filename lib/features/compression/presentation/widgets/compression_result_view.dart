@@ -12,6 +12,7 @@ import '../../../../widgets/hold_to_confirm_button.dart';
 import '../../bloc/compress_bloc.dart';
 import '../../bloc/compress_event.dart';
 import '../../bloc/compress_state.dart';
+import 'compression_comparison_sheet.dart';
 import 'selected_videos_preview.dart';
 import 'video_status_list.dart';
 
@@ -130,42 +131,66 @@ class CompressionResultView extends StatelessWidget {
                 else ...[
                   AppActionButton(
                     width: double.infinity,
-                    label: strings.share,
-                    icon: AppIcons.share,
-                    onPressed: () => _shareResults(context),
+                    label: strings.compareVideos,
+                    onPressed: () => _showComparison(context),
                   ),
                   SizedBox(height: buttonGap),
-                  AppActionButton(
-                    width: double.infinity,
-                    label: strings.save,
-                    icon: AppIcons.download,
-                    variant: AppActionButtonVariant.filled,
-                    onPressed: state.isSaving
-                        ? null
-                        : () => context.read<CompressBloc>().add(
-                            const CompressResultsSaved(deleteOriginals: false),
-                          ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AppActionButton(
+                          width: double.infinity,
+                          label: strings.share,
+                          fontSize: compact ? 20 : 22,
+                          onPressed: () => _shareResults(context),
+                        ),
+                      ),
+                      SizedBox(width: buttonGap),
+                      Expanded(
+                        child: AppActionButton(
+                          width: double.infinity,
+                          label: strings.save,
+                          fontSize: compact ? 20 : 22,
+                          variant: AppActionButtonVariant.filled,
+                          onPressed: state.isSaving
+                              ? null
+                              : () => context.read<CompressBloc>().add(
+                                  const CompressResultsSaved(
+                                    deleteOriginals: false,
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
                 SizedBox(height: buttonGap),
-                HoldToConfirmButton(
-                  label: strings.deleteOriginal,
-                  enabled: !state.isSaving,
-                  actionStyle: true,
-                  onTap: () => AppSnackBar.show(
-                    context,
-                    message: strings.holdToDeleteOriginals,
-                  ),
-                  onCompleted: () async => context.read<CompressBloc>().add(
-                    const CompressResultsSaved(deleteOriginals: true),
-                  ),
-                ),
-                SizedBox(height: buttonGap),
-                AppActionButton(
-                  width: double.infinity,
-                  label: strings.compressOtherVideos,
-                  fontSize: compact ? 20 : 22,
-                  onPressed: onCompressOtherVideos,
+                Row(
+                  children: [
+                    AppActionButton(
+                      width: 47,
+                      icon: AppIcons.arrowBack,
+                      iconWidth: 22,
+                      iconHeight: 22,
+                      onPressed: onCompressOtherVideos,
+                    ),
+                    SizedBox(width: buttonGap),
+                    Expanded(
+                      child: HoldToConfirmButton(
+                        label: strings.deleteOriginal,
+                        enabled: !state.isSaving,
+                        actionStyle: true,
+                        onTap: () => AppSnackBar.show(
+                          context,
+                          message: strings.holdToDeleteOriginals,
+                        ),
+                        onCompleted: () async =>
+                            context.read<CompressBloc>().add(
+                              const CompressResultsSaved(deleteOriginals: true),
+                            ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             );
@@ -200,5 +225,17 @@ class CompressionResultView extends StatelessWidget {
         type: AppSnackBarType.error,
       );
     }
+  }
+
+  void _showComparison(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.sizeOf(context).height * 0.86,
+      ),
+      builder: (_) => CompressionComparisonSheet(results: state.successResults),
+    );
   }
 }
