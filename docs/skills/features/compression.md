@@ -15,6 +15,13 @@ Advanced mode allows:
 - Original, 1080p, 720p, 480p, or 360p resolution
 - Stereo audio or no audio
 
+Reduced-resolution presets preserve the source orientation. Before passing a
+custom `videoWidth`/`videoHeight` to `light_compressor_v2`,
+`VideoCompressorAdapter` reads `LightCompressor.getMediaInfo()` and swaps the
+target dimensions for portrait-encoded sources. Original resolution does not
+pass custom dimensions and relies on the package's `keepOriginalResolution`
+path.
+
 Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough: `light_compressor_v2 1.8.1` can crash inside `AVAssetWriter.addInput` when the source audio format is incompatible with MP4.
 
 ## Pipeline

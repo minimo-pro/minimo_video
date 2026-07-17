@@ -1,5 +1,10 @@
 ## [1.0.1]
 
+### Fixed
+
+* Fixed portrait Android screen recordings being squeezed when compressed with reduced-resolution presets.
+* Improved before/after preview scrubbing so frames update while dragging the timeline.
+
 ### Added
 
 * Added app sharing from the about screen.

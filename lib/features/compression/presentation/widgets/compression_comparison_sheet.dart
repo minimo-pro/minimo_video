@@ -422,7 +422,7 @@ class _FittedVideo extends StatelessWidget {
   }
 }
 
-class _PlayerControls extends StatelessWidget {
+class _PlayerControls extends StatefulWidget {
   final VideoPlayerController originalController;
   final VideoPlayerController compressedController;
 
@@ -430,6 +430,17 @@ class _PlayerControls extends StatelessWidget {
     required this.originalController,
     required this.compressedController,
   });
+
+  @override
+  State<_PlayerControls> createState() => _PlayerControlsState();
+}
+
+class _PlayerControlsState extends State<_PlayerControls> {
+  var _wasPlayingBeforeScrub = false;
+
+  VideoPlayerController get originalController => widget.originalController;
+
+  VideoPlayerController get compressedController => widget.compressedController;
 
   Future<void> _togglePlay(VideoPlayerValue value) async {
     if (value.isPlaying) {
@@ -448,6 +459,20 @@ class _PlayerControls extends StatelessWidget {
     await Future.wait([
       originalController.seekTo(position),
       compressedController.seekTo(position),
+    ]);
+  }
+
+  Future<void> _startScrub() async {
+    _wasPlayingBeforeScrub = compressedController.value.isPlaying;
+    if (_wasPlayingBeforeScrub) return;
+    await Future.wait([originalController.play(), compressedController.play()]);
+  }
+
+  Future<void> _endScrub() async {
+    if (_wasPlayingBeforeScrub) return;
+    await Future.wait([
+      originalController.pause(),
+      compressedController.pause(),
     ]);
   }
 
@@ -471,6 +496,8 @@ class _PlayerControls extends StatelessWidget {
                 positionMs: positionMs,
                 durationMs: durationMs,
                 onSeek: (position) => _seek(Duration(milliseconds: position)),
+                onScrubStart: _startScrub,
+                onScrubEnd: _endScrub,
               ),
             ),
           ],
@@ -514,11 +541,15 @@ class _ProgressBar extends StatelessWidget {
   final int positionMs;
   final int durationMs;
   final ValueChanged<int> onSeek;
+  final VoidCallback onScrubStart;
+  final VoidCallback onScrubEnd;
 
   const _ProgressBar({
     required this.positionMs,
     required this.durationMs,
     required this.onSeek,
+    required this.onScrubStart,
+    required this.onScrubEnd,
   });
 
   void _seekFromLocal(Offset localPosition, double width) {
@@ -544,8 +575,11 @@ class _ProgressBar extends StatelessWidget {
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTapDown: (details) => _seekFromLocal(details.localPosition, width),
+          onHorizontalDragStart: (_) => onScrubStart(),
           onHorizontalDragUpdate: (details) =>
               _seekFromLocal(details.localPosition, width),
+          onHorizontalDragEnd: (_) => onScrubEnd(),
+          onHorizontalDragCancel: onScrubEnd,
           child: SizedBox(
             height: 28,
             child: Stack(

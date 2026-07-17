@@ -48,7 +48,10 @@ class VideoCompressorAdapter {
     void Function(double progress)? onProgress,
   }) async {
     final stopwatch = Stopwatch()..start();
-    final (width, height) = _parseResolution(settings.resolution);
+    final (width, height) = await _targetResolution(
+      inputPath,
+      settings.resolution,
+    );
     final progress = onProgress == null
         ? null
         : _compressor.onProgressUpdated.listen(
@@ -227,5 +230,44 @@ class VideoCompressorAdapter {
     if (parts.length != 2) return (null, null);
 
     return (int.tryParse(parts[0]), int.tryParse(parts[1]));
+  }
+
+  Future<(int?, int?)> _targetResolution(
+    String inputPath,
+    String? resolution,
+  ) async {
+    final target = _parseResolution(resolution);
+    final (targetWidth, targetHeight) = target;
+    if (targetWidth == null || targetHeight == null) return target;
+
+    try {
+      final info = await _compressor.getMediaInfo(inputPath);
+      return targetResolutionForSource(
+        targetWidth: targetWidth,
+        targetHeight: targetHeight,
+        sourceWidth: info.width,
+        sourceHeight: info.height,
+      );
+    } catch (_) {
+      return target;
+    }
+  }
+
+  static (int, int) targetResolutionForSource({
+    required int targetWidth,
+    required int targetHeight,
+    required int? sourceWidth,
+    required int? sourceHeight,
+  }) {
+    if (sourceWidth == null || sourceHeight == null) {
+      return (targetWidth, targetHeight);
+    }
+
+    final sourcePortrait = sourceHeight > sourceWidth;
+    final targetPortrait = targetHeight > targetWidth;
+
+    return sourcePortrait == targetPortrait
+        ? (targetWidth, targetHeight)
+        : (targetHeight, targetWidth);
   }
 }

@@ -34,6 +34,36 @@ void main() {
     expect(VideoCompressorAdapter.isUsefulCompression(1000, 901), isFalse);
   });
 
+  test('target resolution follows source orientation', () {
+    expect(
+      VideoCompressorAdapter.targetResolutionForSource(
+        targetWidth: 1280,
+        targetHeight: 720,
+        sourceWidth: 1080,
+        sourceHeight: 1920,
+      ),
+      (720, 1280),
+    );
+    expect(
+      VideoCompressorAdapter.targetResolutionForSource(
+        targetWidth: 1280,
+        targetHeight: 720,
+        sourceWidth: 1920,
+        sourceHeight: 1080,
+      ),
+      (1280, 720),
+    );
+    expect(
+      VideoCompressorAdapter.targetResolutionForSource(
+        targetWidth: 1280,
+        targetHeight: 720,
+        sourceWidth: 1920,
+        sourceHeight: 1080,
+      ),
+      (1280, 720),
+    );
+  });
+
   test('estimated size changes on every crf step', () {
     var previous = CompressionEstimate.compressedSize(
       originalSize: 1000000,

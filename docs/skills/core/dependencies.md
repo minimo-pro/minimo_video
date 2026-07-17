@@ -4,7 +4,7 @@
 
 | Package | Purpose |
 |---|---|
-| `light_compressor_v2` `1.0.0` | Native video compression and progress stream |
+| `light_compressor_v2` `1.8.2` | Native video compression, metadata, and progress stream |
 | `flutter_bloc` | Compression state orchestration |
 | `auto_route` | Typed navigation |
 | `shared_preferences` | Settings and onboarding state |
@@ -20,7 +20,7 @@
 | `motor` | Press interaction motion |
 | `flutter_svg` | SVG icons |
 
-`light_compressor_v2` stays pinned to `1.0.0` because newer releases require a newer Dart SDK than this project currently uses.
+`light_compressor_v2` stays pinned in `pubspec.yaml`; verify its example app before changing compression options.
 
 ## Commands
 
