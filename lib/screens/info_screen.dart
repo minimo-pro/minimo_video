@@ -94,6 +94,7 @@ class InfoScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
+        top: false,
         bottom: false,
         child: Column(
           children: [

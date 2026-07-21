@@ -38,6 +38,10 @@ iOS uses `PHPickerViewController`; Android uses `ACTION_OPEN_DOCUMENT`. Selectio
 
 Picked and compressed files live in app cache until saved/shared. Originals are never modified in place. Temporary files are cleared on every cold start.
 
+## Sheets via `stupid_simple_sheet`
+
+Settings, info, changelog, and comparison use `StupidSimpleSheetRoute` (through `showAppSheet` / `showAppContentSheet`) instead of `showModalBottomSheet`. Material's modal sheet does not hand a downward swipe from a list at its top edge over to sheet dismissal; users expect that native behavior. Small pickers without nested scrolling (e.g. language) may still use `showModalBottomSheet`.
+
 ---
 
 [Back to SKILLS.md](../../SKILLS.md)

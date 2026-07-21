@@ -11,7 +11,7 @@ Routes use `auto_route` with fade transitions.
 | `SettingsRoute` | Filename prefix, thermal warning, album, cache, language |
 | `InfoRoute` | App/version information, rating, sharing, and external links |
 
-Settings and info are presented as 90%-height draggable sheets with a drag handle and swipe-down dismissal.
+Settings and info are presented as 90%-height sheets via `stupid_simple_sheet` (`showAppSheet` in `lib/widgets/app_sheet.dart`). Swiping down at the top of a nested list dismisses the sheet; while the list can scroll, the same gesture scrolls it. Changelog and before/after comparison use the same route type. Do not wrap sheet content in a custom `ScrollConfiguration` — the package needs Flutter's default scroll behavior for the scroll-to-drag handoff.
 
 ## Compression Screen Modes
 

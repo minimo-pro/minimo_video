@@ -23,6 +23,7 @@ Font family: **Pangolin**.
 | `AppActionButton` | Primary/secondary screen actions |
 | `AppSnackBar` | Success, error, and instruction messages |
 | `FadedScrollView` | Clamped scroll with static alpha-only edge fading |
+| `showAppSheet` / `showAppContentSheet` | Modal sheets with scroll-to-drag dismissal |
 | `AppOptionPicker` | Compact option selection |
 | `AnimatedAssetCheckbox` | Custom settings checkbox |
 

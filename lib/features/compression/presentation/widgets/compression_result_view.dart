@@ -7,6 +7,7 @@ import '../../../../generated/l10n.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../widgets/app_action_button.dart';
+import '../../../../widgets/app_sheet.dart';
 import '../../../../widgets/app_snack_bar.dart';
 import '../../../../widgets/hold_to_confirm_button.dart';
 import '../../bloc/compress_bloc.dart';
@@ -228,14 +229,12 @@ class CompressionResultView extends StatelessWidget {
   }
 
   void _showComparison(BuildContext context) {
-    showModalBottomSheet<void>(
+    showAppSheet(
       context: context,
-      isScrollControlled: true,
+      heightFraction: 0.86,
+      showDragHandle: false,
       backgroundColor: Theme.of(context).colorScheme.surface,
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.sizeOf(context).height * 0.86,
-      ),
-      builder: (_) => CompressionComparisonSheet(results: state.successResults),
+      child: CompressionComparisonSheet(results: state.successResults),
     );
   }
 }

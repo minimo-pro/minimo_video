@@ -18,6 +18,7 @@
 | `intl`, `intl_utils` | Localization |
 | `package_info_plus` | App version for changelog and about screen |
 | `motor` | Press interaction motion |
+| `stupid_simple_sheet` | Modal sheets with scroll-to-drag dismissal |
 | `flutter_svg` | SVG icons |
 
 `light_compressor_v2` stays pinned in `pubspec.yaml`; verify its example app before changing compression options.

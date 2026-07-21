@@ -4,16 +4,16 @@ import '../generated/l10n.dart';
 import '../services/changelog_service.dart';
 import '../theme/app_theme.dart';
 import 'app_action_button.dart';
+import 'app_sheet.dart';
 
 Future<void> showChangelogDialog(
   BuildContext context,
   ChangelogUpdate update,
 ) async {
-  await showModalBottomSheet<void>(
+  await showAppContentSheet<void>(
     context: context,
-    isScrollControlled: true,
     backgroundColor: Theme.of(context).colorScheme.surface,
-    builder: (context) => _ChangelogSheet(update: update),
+    child: _ChangelogSheet(update: update),
   );
   await ChangelogService.instance.dismiss();
 }

@@ -27,6 +27,7 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
+        top: false,
         bottom: false,
         child: AnimatedBuilder(
           animation: settings,
