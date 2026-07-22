@@ -17,10 +17,11 @@ Advanced mode allows:
 
 Reduced-resolution presets preserve the source orientation. Before passing a
 custom `videoWidth`/`videoHeight` to `light_compressor_v2`,
-`VideoCompressorAdapter` reads `LightCompressor.getMediaInfo()` and swaps the
-target dimensions for portrait-encoded sources. Original resolution does not
-pass custom dimensions and relies on the package's `keepOriginalResolution`
-path.
+`VideoCompressorAdapter` reads `LightCompressor.getMediaInfo()` and fits the
+target inside the raw encoded `width`/`height` while preserving the source
+aspect ratio. The plugin applies rotation metadata itself, so passing display
+dimensions would rotate the target twice. Original resolution does not pass
+custom dimensions and relies on the package's `keepOriginalResolution` path.
 
 Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough: `light_compressor_v2 1.8.1` can crash inside `AVAssetWriter.addInput` when the source audio format is incompatible with MP4.
 
@@ -42,10 +43,14 @@ On iOS the compression screen warns the user to keep the app open. If the app is
 Estimate formula:
 
 ```text
-(video bitrate + optional 128 kbps audio) × duration / 8
+(video bitrate × resolution scale + optional 128 kbps audio) × duration / 8
 ```
 
-Each estimate is capped at original file size. Duration comes from native `videoInfo`.
+Lower target resolutions use progressively smaller estimate scales. Each
+estimate is capped at original file size. Duration comes from native
+`videoInfo`. Changing settings immediately clears the previous asynchronous
+estimate so the UI shows the local fallback until fresh metadata-based output
+arrives.
 
 ## Batch and Progress
 

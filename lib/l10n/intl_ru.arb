@@ -109,6 +109,7 @@
   "resolutionReducedSdDescription": "разрешение будет уменьшено до sd",
   "better": "лучше",
   "smaller": "меньше",
+  "noSavingsHint": "попробуйте другой режим — размер почти не изменится",
   "compress": "сжать",
   "compressing": "сжатие...",
   "cancel": "отмена",

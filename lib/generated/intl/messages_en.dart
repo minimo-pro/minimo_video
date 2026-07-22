@@ -173,6 +173,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "myWebsite": MessageLookupByLibrary.simpleMessage("my website"),
     "next": MessageLookupByLibrary.simpleMessage("next"),
     "noAudio": MessageLookupByLibrary.simpleMessage("no audio"),
+    "noSavingsHint": MessageLookupByLibrary.simpleMessage(
+      "try another mode — this won\'t make it smaller",
+    ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "choose one or several videos. minimo works with local files and keeps the originals untouched",
     ),

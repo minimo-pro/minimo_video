@@ -109,6 +109,7 @@
   "resolutionReducedSdDescription": "resolution will be reduced to sd",
   "better": "better",
   "smaller": "smaller",
+  "noSavingsHint": "try another mode — this won't make it smaller",
   "compress": "compress",
   "compressing": "compressing...",
   "cancel": "cancel",

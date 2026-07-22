@@ -31,7 +31,11 @@ so users jumping multiple releases see all unseen changes.
 
 ## UI
 
-`StartPage` initializes changelog display after the first frame. If unseen changes exist, `showChangelogDialog()` presents a content-sized `stupid_simple_sheet` (scroll-to-drag dismiss). Dismissing the sheet marks the current version as seen.
+`StartPage` waits for the upgrader check to finish (and for any
+`UpgradeAlert` prompt to be dismissed) before showing the changelog sheet.
+If unseen changes exist, `showChangelogDialog()` presents a content-sized
+`stupid_simple_sheet` (scroll-to-drag dismiss). Dismissing the sheet marks
+the current version as seen.
 
 ## Release Checklist
 

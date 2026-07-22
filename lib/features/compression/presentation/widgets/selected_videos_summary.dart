@@ -99,23 +99,38 @@ class SelectedVideosSummary extends StatelessWidget {
           ),
         ),
         SizedBox(height: compact ? 10 : 18),
-        RollingCounterText(
-          value: savingsPercent,
-          formatter: (value) => '${value.toInt()}%',
-          style: TextStyle(
-            color: CompressionUiColors.red,
-            fontSize: compact ? 22 : 27,
-            height: 0.9,
+        if (savingsPercent == 0)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Text(
+              strings.noSavingsHint,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: CompressionUiColors.red,
+                fontSize: compact ? 16 : 18,
+                height: 1.2,
+              ),
+            ),
+          )
+        else ...[
+          RollingCounterText(
+            value: savingsPercent,
+            formatter: (value) => '${value.toInt()}%',
+            style: TextStyle(
+              color: CompressionUiColors.red,
+              fontSize: compact ? 22 : 27,
+              height: 0.9,
+            ),
           ),
-        ),
-        Text(
-          strings.smaller,
-          style: TextStyle(
-            color: CompressionUiColors.red,
-            fontSize: compact ? 16 : 19,
-            height: 1.15,
+          Text(
+            strings.smaller,
+            style: TextStyle(
+              color: CompressionUiColors.red,
+              fontSize: compact ? 16 : 19,
+              height: 1.15,
+            ),
           ),
-        ),
+        ],
       ],
     );
   }

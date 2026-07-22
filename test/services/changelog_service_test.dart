@@ -32,6 +32,45 @@ void main() {
     expect(changes, ['middle', 'latest']);
   });
 
+  test('unseenChanges treats malformed lastSeen as never seen', () {
+    final changes = unseenChanges(
+      lastSeen: 'not-a-version',
+      current: '1.5.0',
+      language: Language.en,
+      changelog: const {
+        '1.3.0': {
+          Language.en: ['middle'],
+        },
+        '1.5.0': {
+          Language.en: ['latest'],
+        },
+      },
+    );
+
+    expect(changes, ['middle', 'latest']);
+  });
+
+  test('initialize discards corrupt last_seen_version and continues', () async {
+    SharedPreferences.setMockInitialValues({
+      'onboarding_completed': true,
+      'last_seen_version': 'corrupt',
+    });
+    final service = ChangelogService(
+      packageInfo: () async => _packageInfo('1.0.1'),
+      remoteChangelog: () async => {
+        '1.0.1': {
+          Language.en: ['fresh'],
+        },
+      },
+    );
+
+    final update = await service.initialize(language: Language.en);
+
+    expect(update?.changes, ['fresh']);
+    final prefs = await SharedPreferences.getInstance();
+    expect(prefs.getString('last_seen_version'), isNull);
+  });
+
   test('initialize skips first install and saves current version', () async {
     SharedPreferences.setMockInitialValues({'onboarding_completed': false});
     final service = ChangelogService(

@@ -21,25 +21,34 @@ Future<T?> showAppSheet<T>({
     'heightFraction must be in (0, 1]',
   );
 
-  final theme = Theme.of(context);
-  final height = MediaQuery.sizeOf(context).height * heightFraction;
-
   return Navigator.of(context).push<T>(
     StupidSimpleSheetRoute<T>(
       child: _SheetMediaQuery(
-        child: SizedBox(
-          height: height,
-          child: SheetBackground(
-            backgroundColor: backgroundColor ?? theme.colorScheme.surface,
-            shape: shape,
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              children: [
-                if (showDragHandle) const _SheetDragHandle(),
-                Expanded(child: child),
-              ],
-            ),
-          ),
+        child: Builder(
+          builder: (context) {
+            final theme = Theme.of(context);
+            final height = MediaQuery.sizeOf(context).height * heightFraction;
+            final surface = backgroundColor ?? theme.colorScheme.surface;
+
+            return SizedBox(
+              height: height,
+              child: SheetBackground(
+                backgroundColor: surface,
+                shape: shape,
+                clipBehavior: Clip.antiAlias,
+                // Needed: this route has no Scaffold, so text/chips miss app styles.
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: Column(
+                    children: [
+                      if (showDragHandle) const _SheetDragHandle(),
+                      Expanded(child: child),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     ),
@@ -55,16 +64,24 @@ Future<T?> showAppContentSheet<T>({
     borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
   ),
 }) {
-  final theme = Theme.of(context);
-
   return Navigator.of(context).push<T>(
     StupidSimpleSheetRoute<T>(
       child: _SheetMediaQuery(
-        child: SheetBackground(
-          backgroundColor: backgroundColor ?? theme.colorScheme.surface,
-          shape: shape,
-          clipBehavior: Clip.antiAlias,
-          child: child,
+        child: Builder(
+          builder: (context) {
+            final surface =
+                backgroundColor ?? Theme.of(context).colorScheme.surface;
+
+            return SheetBackground(
+              backgroundColor: surface,
+              shape: shape,
+              clipBehavior: Clip.antiAlias,
+              child: Material(
+                type: MaterialType.transparency,
+                child: child,
+              ),
+            );
+          },
         ),
       ),
     ),

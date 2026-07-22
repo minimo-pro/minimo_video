@@ -629,6 +629,16 @@ class S {
     return Intl.message('smaller', name: 'smaller', desc: '', args: []);
   }
 
+  /// `try another mode — this won't make it smaller`
+  String get noSavingsHint {
+    return Intl.message(
+      'try another mode — this won\'t make it smaller',
+      name: 'noSavingsHint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `compress`
   String get compress {
     return Intl.message('compress', name: 'compress', desc: '', args: []);

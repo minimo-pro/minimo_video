@@ -51,20 +51,34 @@ List<String> unseenChanges({
   required Language language,
   Changelog changelog = _changelog,
 }) {
-  final lastSeenVersion = Version.parse(lastSeen);
-  final currentVersion = Version.parse(current);
+  final lastSeenVersion = _tryParseVersion(lastSeen) ?? Version(0, 0, 0);
+  final currentVersion = _tryParseVersion(current);
+  if (currentVersion == null) return const [];
+
   final result = <String>[];
-  final entries = changelog.entries.toList()
-    ..sort((a, b) => Version.parse(a.key).compareTo(Version.parse(b.key)));
+  final entries = <({Version version, Map<Language, List<String>> texts})>[];
+  for (final entry in changelog.entries) {
+    final entryVersion = _tryParseVersion(entry.key);
+    if (entryVersion == null) continue;
+    entries.add((version: entryVersion, texts: entry.value));
+  }
+  entries.sort((a, b) => a.version.compareTo(b.version));
 
   for (final entry in entries) {
-    final entryVersion = Version.parse(entry.key);
-    if (entryVersion > lastSeenVersion && entryVersion <= currentVersion) {
-      result.addAll(entry.value[language] ?? entry.value[Language.en] ?? []);
+    if (entry.version > lastSeenVersion && entry.version <= currentVersion) {
+      result.addAll(entry.texts[language] ?? entry.texts[Language.en] ?? []);
     }
   }
 
   return result;
+}
+
+Version? _tryParseVersion(String value) {
+  try {
+    return Version.parse(value);
+  } on FormatException {
+    return null;
+  }
 }
 
 class ChangelogUpdate {
@@ -97,7 +111,14 @@ class ChangelogService {
     _currentVersion = current;
 
     final prefs = await _preferences();
-    final lastSeen = prefs.getString(_lastSeenVersionKey);
+    final lastSeenRaw = prefs.getString(_lastSeenVersionKey);
+    final lastSeen = lastSeenRaw == null
+        ? null
+        : (_tryParseVersion(lastSeenRaw) == null ? null : lastSeenRaw);
+
+    if (lastSeenRaw != null && lastSeen == null) {
+      await prefs.remove(_lastSeenVersionKey);
+    }
 
     if (lastSeen == null && await FirstLaunchService.shouldShowOnboarding()) {
       await prefs.setString(_lastSeenVersionKey, current);
@@ -141,7 +162,10 @@ Future<Changelog?> _fetchRemoteChangelog() async {
         .timeout(const Duration(seconds: 3));
     final response = await request.close().timeout(const Duration(seconds: 3));
     if (response.statusCode != HttpStatus.ok) return null;
-    final body = await response.transform(utf8.decoder).join();
+    final body = await response
+        .transform(utf8.decoder)
+        .join()
+        .timeout(const Duration(seconds: 3));
     return _parseChangelog(jsonDecode(body));
   } catch (_) {
     return null;
@@ -157,11 +181,7 @@ Changelog? _parseChangelog(Object? value) {
   for (final versionEntry in value.entries) {
     if (versionEntry.key is! String || versionEntry.value is! Map) continue;
     final version = versionEntry.key as String;
-    try {
-      Version.parse(version);
-    } on FormatException {
-      continue;
-    }
+    if (_tryParseVersion(version) == null) continue;
 
     final languages = <Language, List<String>>{};
     for (final languageEntry in (versionEntry.value as Map).entries) {

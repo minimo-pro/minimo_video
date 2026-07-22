@@ -56,7 +56,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     _estimateRunId++;
     _estimateDebounce?.cancel();
     _estimateDebounce = Timer(
-      const Duration(milliseconds: 200),
+      Duration.zero,
       () => add(const CompressEstimateRequested()),
     );
   }
@@ -102,6 +102,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         emit(
           state.copyWith(
             settings: const CompressionSettings(crf: 22, resolution: null),
+            clearEstimatedSize: true,
           ),
         );
       case SimpleCompressionQuality.medium:
@@ -111,12 +112,14 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
               crf: 28,
               resolution: '1280:720',
             ),
+            clearEstimatedSize: true,
           ),
         );
       case SimpleCompressionQuality.low:
         emit(
           state.copyWith(
             settings: const CompressionSettings(crf: 34, resolution: '854:480'),
+            clearEstimatedSize: true,
           ),
         );
     }
@@ -130,6 +133,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     emit(
       state.copyWith(
         settings: state.settings.copyWith(resolution: event.resolution),
+        clearEstimatedSize: true,
       ),
     );
     _requestEstimate();
@@ -139,7 +143,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     CompressSettingsChanged event,
     Emitter<CompressState> emit,
   ) {
-    emit(state.copyWith(settings: event.settings));
+    emit(state.copyWith(settings: event.settings, clearEstimatedSize: true));
     _requestEstimate();
   }
 

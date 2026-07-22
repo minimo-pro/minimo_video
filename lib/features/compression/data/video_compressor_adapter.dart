@@ -127,6 +127,7 @@ class VideoCompressorAdapter {
             durationMs: durationMs,
             videoBitrateMbps: _bitrateMbps(settings.crf),
             includeAudio: settings.audioMode != CompressionAudioMode.remove,
+            resolutionScale: settings.resolutionEstimateScale,
           );
           total += estimate.clamp(0, originalSize);
         }
@@ -141,8 +142,11 @@ class VideoCompressorAdapter {
     required int durationMs,
     required int videoBitrateMbps,
     required bool includeAudio,
+    double resolutionScale = 1,
   }) {
-    final bitrate = videoBitrateMbps * 1000000 + (includeAudio ? 128000 : 0);
+    final bitrate =
+        videoBitrateMbps * 1000000 * resolutionScale +
+        (includeAudio ? 128000 : 0);
     return (bitrate * durationMs / 8000).round();
   }
 
@@ -265,9 +269,26 @@ class VideoCompressorAdapter {
 
     final sourcePortrait = sourceHeight > sourceWidth;
     final targetPortrait = targetHeight > targetWidth;
+    final maxWidth = sourcePortrait == targetPortrait
+        ? targetWidth
+        : targetHeight;
+    final maxHeight = sourcePortrait == targetPortrait
+        ? targetHeight
+        : targetWidth;
+    final scale = [
+      maxWidth / sourceWidth,
+      maxHeight / sourceHeight,
+      1.0,
+    ].reduce((a, b) => a < b ? a : b);
 
-    return sourcePortrait == targetPortrait
-        ? (targetWidth, targetHeight)
-        : (targetHeight, targetWidth);
+    return (
+      _evenDimension(sourceWidth * scale),
+      _evenDimension(sourceHeight * scale),
+    );
+  }
+
+  static int _evenDimension(double value) {
+    final rounded = value.round();
+    return rounded.isEven ? rounded : rounded - 1;
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
@@ -28,13 +29,55 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   final _videoFileAdapter = VideoFileAdapter();
   final _upgrader = Upgrader();
+  final _upgradeFlowDone = Completer<void>();
+  var _changelogStarted = false;
   bool _loading = false;
   (int, int)? _loadingProgress;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _showChangelog());
+    _upgrader.willDisplayUpgrade =
+        ({
+          required bool display,
+          String? installedVersion,
+          UpgraderVersionInfo? versionInfo,
+        }) {
+          if (!display) _completeUpgradeFlow();
+        };
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      unawaited(_showChangelogWhenReady());
+    });
+  }
+
+  void _completeUpgradeFlow() {
+    if (!_upgradeFlowDone.isCompleted) {
+      _upgradeFlowDone.complete();
+    }
+  }
+
+  bool _onUpgradeDismissed() {
+    _completeUpgradeFlow();
+    return true;
+  }
+
+  Future<void> _showChangelogWhenReady() async {
+    unawaited(_releaseUpgradeFlowIfCheckStalls());
+    await _upgradeFlowDone.future;
+    if (!mounted || _changelogStarted) return;
+    _changelogStarted = true;
+    await _showChangelog();
+  }
+
+  /// Store lookup can finish without [UpgraderState.versionInfo], and then
+  /// [UpgradeAlert] never calls [Upgrader.shouldDisplayUpgrade].
+  Future<void> _releaseUpgradeFlowIfCheckStalls() async {
+    try {
+      await _upgrader.initialize().timeout(const Duration(seconds: 8));
+    } catch (_) {}
+    if (_upgrader.state.versionInfo == null) {
+      _completeUpgradeFlow();
+    }
   }
 
   Future<void> _showChangelog() async {
@@ -84,6 +127,9 @@ class _StartPageState extends State<StartPage> {
           ? UpgradeDialogStyle.cupertino
           : UpgradeDialogStyle.material,
       upgrader: _upgrader,
+      onIgnore: _onUpgradeDismissed,
+      onLater: _onUpgradeDismissed,
+      onUpdate: _onUpgradeDismissed,
       child: Scaffold(
         body: Stack(
           children: [

@@ -6,15 +6,10 @@ abstract final class CompressionEstimate {
     required CompressionSettings settings,
   }) {
     final crfProgress = ((settings.crf - 18) / 16).clamp(0.0, 1.0);
-    var ratio = 0.95 - crfProgress * 0.35;
-    ratio *= switch (settings.resolution) {
-      null => 0.93,
-      '1920:1080' => 0.86,
-      '1280:720' => 0.75,
-      '854:480' => 0.58,
-      '640:360' => 0.48,
-      _ => 0.75,
-    };
+    var ratio =
+        (0.95 - crfProgress * 0.35) *
+        0.93 *
+        settings.resolutionEstimateScale;
     if (settings.audioMode == CompressionAudioMode.remove) ratio *= 0.9;
     return (originalSize * ratio).round();
   }
