@@ -56,7 +56,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     _estimateRunId++;
     _estimateDebounce?.cancel();
     _estimateDebounce = Timer(
-      Duration.zero,
+      const Duration(milliseconds: 100),
       () => add(const CompressEstimateRequested()),
     );
   }
