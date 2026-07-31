@@ -26,13 +26,8 @@ import 'simple_quality_card.dart';
 
 class CompressionSettingsView extends StatefulWidget {
   final CompressState state;
-  final VoidCallback onBack;
 
-  const CompressionSettingsView({
-    super.key,
-    required this.state,
-    required this.onBack,
-  });
+  const CompressionSettingsView({super.key, required this.state});
 
   @override
   State<CompressionSettingsView> createState() =>
@@ -178,14 +173,12 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
         ),
         const SizedBox(height: 12),
         CompressionBottomActions(
-          onBack: widget.onBack,
           onCompress: () =>
               context.read<CompressBloc>().add(const CompressStarted()),
         ),
       ],
     );
   }
-
 }
 
 class _PinnedSizeSummary extends StatelessWidget {

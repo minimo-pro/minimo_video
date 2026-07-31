@@ -22,6 +22,7 @@ Current tests cover:
 - Compression failure state
 - Cache size and full cleanup
 - Preview styling, status percentage, press motion, and hold-button background
+- Compact icon-only `AppActionButton` layout for wide SVG assets (`arrow_back`, `share`, `more`)
 
 ## Test Boundaries
 

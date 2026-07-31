@@ -5,9 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../constants/app_icons.dart';
 import '../../../generated/l10n.dart';
 import '../../../router/app_router.gr.dart';
 import '../../../services/review_service.dart';
+import '../../../widgets/app_action_button.dart';
 import '../../../widgets/app_snack_bar.dart';
 import '../../../widgets/minimo_loader.dart';
 import '../bloc/compress_bloc.dart';
@@ -113,27 +115,49 @@ class _CompressViewState extends State<_CompressView>
         _requestReviewAfterSuccessfulCompression(state);
       },
       builder: (context, state) {
-        return Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(22, 18, 22, 14),
-              child: switch (state.status) {
-                CompressStatus.ready => CompressionSettingsView(
-                  state: state,
-                  onBack: () => _goToStart(context),
+        return PopScope(
+          canPop: state.status != CompressStatus.processing,
+          child: Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(22, 18, 22, 14),
+                child: Column(
+                  children: [
+                    if (state.status != CompressStatus.processing) ...[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: AppActionButton(
+                          width: 47,
+                          icon: AppIcons.arrowBack,
+                          iconWidth: 22,
+                          iconHeight: 22,
+                          variant: AppActionButtonVariant.text,
+                          onPressed: () => _goToStart(context),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                    Expanded(
+                      child: switch (state.status) {
+                        CompressStatus.ready => CompressionSettingsView(
+                          state: state,
+                        ),
+                        CompressStatus.processing => CompressionProgressView(
+                          key: ValueKey(state.compressionRunId),
+                          state: state,
+                        ),
+                        CompressStatus.done => CompressionResultView(
+                          state: state,
+                          onTryAgain: () => context.read<CompressBloc>().add(
+                            const CompressStarted(),
+                          ),
+                        ),
+                      },
+                    ),
+                  ],
                 ),
-                CompressStatus.processing => CompressionProgressView(
-                  key: ValueKey(state.compressionRunId),
-                  state: state,
-                ),
-                CompressStatus.done => CompressionResultView(
-                  state: state,
-                  onTryAgain: () =>
-                      context.read<CompressBloc>().add(const CompressStarted()),
-                  onCompressOtherVideos: () => _goToStart(context),
-                ),
-              },
+              ),
             ),
           ),
         );

@@ -19,17 +19,17 @@ Only `state.successResults` are previewable. Skipped and failed items stay in th
 
 ## Share
 
-`CompressionResultView` passes all successful MP4 paths to `share_plus`. On tablets, `sharePositionOrigin` comes from result-view bounds. Failures are shown through an error snackbar.
+`CompressionResultView` exposes share as an icon-only bottom action and passes all successful MP4 paths to `share_plus`. On tablets, `sharePositionOrigin` comes from result-view bounds. Failures are shown through an error snackbar.
 
 ## Save
 
-`CompressResultsSaved(deleteOriginals: false)` saves each successful output through `gal`. If album saving is enabled, album name is `Minimo`.
+Filled primary save on the done screen dispatches `CompressResultsSaved(deleteOriginals: false)` and saves each successful output through `gal`. If album saving is enabled, album name is `Minimo`.
 
 Saving is guarded by `state.isSaving` to prevent duplicate actions. A failure stops the operation and stores `saveError` for UI notification.
 
 ## Save and Delete Originals
 
-`CompressResultsSaved(deleteOriginals: true)` saves successful outputs first, then requests source deletion using unique non-null `sourceIdentifier` values.
+Delete originals is reached from the done-screen more sheet through `HoldToConfirmButton`. Completing the hold dispatches `CompressResultsSaved(deleteOriginals: true)`, which saves successful outputs first, then requests source deletion using unique non-null `sourceIdentifier` values.
 
 - Save success remains valid if original deletion fails.
 - Deletion failures use `deleteError`, separate from `saveError`.

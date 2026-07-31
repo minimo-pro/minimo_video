@@ -85,11 +85,14 @@ class AppActionButton extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (icon != null)
-          SvgPicture.asset(
-            icon!,
+          SizedBox(
             width: iconWidth,
             height: iconHeight,
-            colorFilter: ColorFilter.mode(foreground, BlendMode.srcIn),
+            child: SvgPicture.asset(
+              icon!,
+              fit: BoxFit.contain,
+              colorFilter: ColorFilter.mode(foreground, BlendMode.srcIn),
+            ),
           ),
         if (icon != null && label != null) const SizedBox(width: 10),
         if (label != null)
