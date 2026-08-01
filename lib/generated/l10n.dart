@@ -713,6 +713,26 @@ class S {
     );
   }
 
+  /// `from gallery`
+  String get pickFromGallery {
+    return Intl.message(
+      'from gallery',
+      name: 'pickFromGallery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `from files`
+  String get pickFromFiles {
+    return Intl.message(
+      'from files',
+      name: 'pickFromFiles',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `loading videos...`
   String get loadingVideos {
     return Intl.message(

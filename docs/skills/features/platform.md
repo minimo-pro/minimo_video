@@ -2,13 +2,21 @@
 
 ## Media Selection
 
+The start screen shows a source sheet (`from gallery` / `from files`) before opening a native picker. Flutter passes `source` (`gallery` | `files`) to `pickVideos`.
+
 ### iOS
 
-Uses `PHPickerViewController` filtered to videos with unlimited multi-selection. Selected files are imported sequentially to avoid parallel disk/memory pressure. The picker grants access only to selected items and does not require broad library permission.
+- **Gallery:** `PHPickerViewController` filtered to videos with unlimited multi-selection. Preserves Photos `assetIdentifier` for original deletion.
+- **Files:** `UIDocumentPickerViewController` for `UTType.movie`, multi-selection, `asCopy: true`. No Photos identifier — original deletion is unavailable for these picks.
+
+Selected files are imported sequentially to avoid parallel disk/memory pressure. Neither path requests broad library permission.
 
 ### Android
 
-Uses `ACTION_OPEN_DOCUMENT`, `video/*`, and multi-selection. Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer.
+- **Gallery:** system photo picker (`MediaStore.ACTION_PICK_IMAGES`, `video/*`) on Android 13+; `ACTION_GET_CONTENT` + `video/*` on older versions.
+- **Files:** `ACTION_OPEN_DOCUMENT`, `video/*`, multi-selection.
+
+Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer.
 
 Both platforms report `pickProgress` (`processed`/`total`) over the videos method channel while files are imported.
 

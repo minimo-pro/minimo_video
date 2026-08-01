@@ -40,7 +40,7 @@ class MainActivity : FlutterActivity() {
         )
         videosChannel.setMethodCallHandler { call, result ->
             when (call.method) {
-                "pickVideos" -> pickVideos(result)
+                "pickVideos" -> pickVideos(call.arguments, result)
                 "deleteOriginals" -> deleteOriginals(call.arguments as? List<*>, result)
                 "videoInfo" -> videoInfo(call.arguments as? String, result)
                 "createThumbnail" -> createThumbnail(call.arguments as? String, result)
@@ -142,20 +142,43 @@ class MainActivity : FlutterActivity() {
             .onFailure { result.error("thumbnail_failed", it.message, null) }
     }
 
-    private fun pickVideos(result: MethodChannel.Result) {
+    private fun pickVideos(arguments: Any?, result: MethodChannel.Result) {
         if (pendingPickResult != null) {
             result.error("pick_in_progress", "video picker is already open", null)
             return
         }
 
         pendingPickResult = result
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+        val source = (arguments as? Map<*, *>)?.get("source") as? String ?: "gallery"
+        val intent = if (source == "files") {
+            openDocumentIntent()
+        } else {
+            galleryIntent()
+        }
+        startActivityForResult(intent, PICK_VIDEOS_REQUEST)
+    }
+
+    private fun openDocumentIntent(): Intent {
+        return Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "video/*"
             putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-        startActivityForResult(intent, PICK_VIDEOS_REQUEST)
+    }
+
+    private fun galleryIntent(): Intent {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return Intent(MediaStore.ACTION_PICK_IMAGES).apply {
+                type = "video/*"
+                putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, MediaStore.getPickImagesMaxLimit())
+            }
+        }
+        return Intent(Intent.ACTION_GET_CONTENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "video/*"
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        }
     }
 
     private fun deleteOriginals(arguments: List<*>?, result: MethodChannel.Result) {
