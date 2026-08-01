@@ -132,6 +132,8 @@
       }
     }
   },
+  "pickFromGallery": "из галереи",
+  "pickFromFiles": "из файлов",
   "loadingVideos": "загрузка видео...",
   "loadingManyVideosHint": "загрузка большого количества или крупных файлов может занять больше времени",
   "compressionComplete": "сжатие завершено",

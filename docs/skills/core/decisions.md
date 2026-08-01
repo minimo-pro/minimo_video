@@ -32,7 +32,7 @@ Videos are compressed one at a time. This keeps memory, thermal load, cancellati
 
 ## Privacy-preserving Pickers
 
-iOS uses `PHPickerViewController`; Android uses `ACTION_OPEN_DOCUMENT`. Selection should not request unrestricted media-library access. Broader authorization is deferred until saving or explicit source deletion requires it.
+Users choose gallery or files before a native picker opens. Gallery uses privacy-preserving system pickers (`PHPicker` / Android photo picker); files use document pickers (`UIDocumentPicker` / `ACTION_OPEN_DOCUMENT`). Selection should not request unrestricted media-library access. Broader authorization is deferred until saving or explicit source deletion requires it. Original deletion remains available only for gallery picks that return a provider identifier.
 
 ## Temporary Copies
 

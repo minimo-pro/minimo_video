@@ -42,7 +42,7 @@ Channel: `minimo_video/videos`
 
 | Method | Purpose |
 |---|---|
-| `pickVideos` | Open native privacy-preserving picker and copy selected videos to cache |
+| `pickVideos` | Open gallery or files picker (`source`) and copy selected videos to cache |
 | `deleteOriginals` | Request explicit system deletion of source assets |
 | `videoInfo` | Read duration for size estimates |
 | `createThumbnail` | Generate cached JPEG preview |

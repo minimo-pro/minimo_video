@@ -2,11 +2,13 @@ import 'package:flutter/services.dart';
 import 'package:gal/gal.dart';
 
 import '../domain/picked_video.dart';
+import '../domain/video_pick_source.dart';
 
 class VideoFileAdapter {
   static const _channel = MethodChannel('minimo_video/videos');
 
   Future<List<PickedVideo>> pickVideos({
+    VideoPickSource source = VideoPickSource.gallery,
     void Function(int processed, int total)? onProgress,
   }) async {
     _channel.setMethodCallHandler((call) async {
@@ -16,7 +18,9 @@ class VideoFileAdapter {
     });
     final List<dynamic>? result;
     try {
-      result = await _channel.invokeMethod<List<dynamic>>('pickVideos');
+      result = await _channel.invokeMethod<List<dynamic>>('pickVideos', {
+        'source': source.channelValue,
+      });
     } finally {
       _channel.setMethodCallHandler(null);
     }

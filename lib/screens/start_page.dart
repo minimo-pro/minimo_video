@@ -8,6 +8,7 @@ import 'package:upgrader/upgrader.dart';
 
 import '../constants/app_icons.dart';
 import '../features/compression/data/video_file_adapter.dart';
+import '../features/compression/presentation/widgets/video_pick_source_sheet.dart';
 import '../generated/l10n.dart';
 import '../router/app_router.gr.dart';
 import '../services/app_settings_service.dart';
@@ -95,10 +96,14 @@ class _StartPageState extends State<StartPage> {
   }
 
   Future<void> _pickAndGo() async {
+    final source = await showVideoPickSourceSheet(context);
+    if (source == null || !mounted) return;
+
     setState(() => _loading = true);
 
     try {
       final videos = await _videoFileAdapter.pickVideos(
+        source: source,
         onProgress: (processed, total) {
           if (mounted) setState(() => _loadingProgress = (processed, total));
         },
