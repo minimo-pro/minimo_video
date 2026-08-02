@@ -38,6 +38,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
        super(CompressState.initial(initialVideos)) {
     on<CompressThumbnailsRequested>(_onThumbnailsRequested);
     on<CompressEstimateRequested>(_onEstimateRequested);
+    on<CompressVideosAdded>(_onVideosAdded);
     on<CompressSimpleQualityChanged>(_onSimpleQualityChanged);
     on<CompressResolutionChanged>(_onResolutionChanged);
     on<CompressSettingsChanged>(_onSettingsChanged);
@@ -80,17 +81,65 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     CompressThumbnailsRequested event,
     Emitter<CompressState> emit,
   ) async {
-    final thumbnails = List<String?>.of(state.thumbnailPaths);
     final count = state.videos.length < 3 ? state.videos.length : 3;
 
     for (var i = 0; i < count; i++) {
       if (state.status != CompressStatus.ready) return;
+      if (i < state.thumbnailPaths.length && state.thumbnailPaths[i] != null) {
+        continue;
+      }
       final path = await _videoCompressorAdapter.createThumbnail(
         state.videos[i].path,
       );
+      if (state.status != CompressStatus.ready ||
+          i >= state.thumbnailPaths.length) {
+        return;
+      }
+      final thumbnails = List<String?>.of(state.thumbnailPaths);
       thumbnails[i] = path;
       emit(state.copyWith(thumbnailPaths: thumbnails));
     }
+  }
+
+  void _onVideosAdded(CompressVideosAdded event, Emitter<CompressState> emit) {
+    if (state.status != CompressStatus.ready || event.videos.isEmpty) return;
+
+    final identities = state.videos.map(_videoIdentity).toSet();
+    final addedVideos = <PickedVideo>[];
+    for (final video in event.videos) {
+      if (identities.add(_videoIdentity(video))) {
+        addedVideos.add(video);
+      }
+    }
+    if (addedVideos.isEmpty) return;
+
+    emit(
+      state.copyWith(
+        videos: [...state.videos, ...addedVideos],
+        thumbnailPaths: [
+          ...state.thumbnailPaths,
+          ...List<String?>.filled(addedVideos.length, null),
+        ],
+        videoStatuses: [
+          ...state.videoStatuses,
+          ...List<VideoCompressionStatus>.filled(
+            addedVideos.length,
+            VideoCompressionStatus.waiting,
+          ),
+        ],
+        clearEstimatedSize: true,
+      ),
+    );
+    add(const CompressThumbnailsRequested());
+    _requestEstimate();
+  }
+
+  String _videoIdentity(PickedVideo video) {
+    final sourceIdentifier = video.sourceIdentifier;
+    if (sourceIdentifier != null && sourceIdentifier.isNotEmpty) {
+      return 'source:$sourceIdentifier';
+    }
+    return 'file:${video.name}\u0000${video.size}';
   }
 
   void _onSimpleQualityChanged(

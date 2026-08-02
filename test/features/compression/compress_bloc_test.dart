@@ -223,6 +223,101 @@ void main() {
     await bloc.close();
   });
 
+  test('adds picked videos while keeping compression settings', () async {
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/one.mp4', name: 'one.mp4', size: 100),
+      ],
+      videoCompressorAdapter: _EstimatingCompressor(),
+    );
+
+    bloc.add(
+      const CompressSettingsChanged(
+        CompressionSettings(
+          crf: 34,
+          resolution: '854:480',
+          audioMode: CompressionAudioMode.remove,
+        ),
+      ),
+    );
+    await bloc.stream.firstWhere(
+      (state) => state.settings.audioMode == CompressionAudioMode.remove,
+    );
+
+    bloc.add(
+      const CompressVideosAdded([
+        PickedVideo(path: '/two.mp4', name: 'two.mp4', size: 200),
+        PickedVideo(path: '/three.mp4', name: 'three.mp4', size: 300),
+      ]),
+    );
+    await bloc.stream.firstWhere((state) => state.videos.length == 3);
+
+    expect(bloc.state.videos.map((video) => video.name), [
+      'one.mp4',
+      'two.mp4',
+      'three.mp4',
+    ]);
+    expect(bloc.state.thumbnailPaths, hasLength(3));
+    expect(bloc.state.videoStatuses, [
+      VideoCompressionStatus.waiting,
+      VideoCompressionStatus.waiting,
+      VideoCompressionStatus.waiting,
+    ]);
+    expect(bloc.state.settings.resolution, '854:480');
+    expect(bloc.state.settings.audioMode, CompressionAudioMode.remove);
+
+    await bloc.close();
+  });
+
+  test('does not add videos already present in the batch', () async {
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(
+          path: '/cached/original.mp4',
+          name: 'original.mp4',
+          size: 100,
+          sourceIdentifier: 'gallery-id',
+        ),
+        PickedVideo(
+          path: '/cached/document.mov',
+          name: 'document.mov',
+          size: 200,
+        ),
+      ],
+      videoCompressorAdapter: _EstimatingCompressor(),
+    );
+
+    bloc.add(
+      const CompressVideosAdded([
+        PickedVideo(
+          path: '/cached/original_2.mp4',
+          name: 'original.mp4',
+          size: 100,
+          sourceIdentifier: 'gallery-id',
+        ),
+        PickedVideo(
+          path: '/cached/document_2.mov',
+          name: 'document.mov',
+          size: 200,
+        ),
+        PickedVideo(
+          path: '/cached/new-document.mov',
+          name: 'document.mov',
+          size: 300,
+        ),
+      ]),
+    );
+    await bloc.stream.firstWhere((state) => state.videos.length != 2);
+
+    expect(bloc.state.videos.map((video) => video.path), [
+      '/cached/original.mp4',
+      '/cached/document.mov',
+      '/cached/new-document.mov',
+    ]);
+
+    await bloc.close();
+  });
+
   test(
     'cancelling active compression resets state and calls compressor',
     () async {

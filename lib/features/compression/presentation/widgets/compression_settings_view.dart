@@ -26,8 +26,13 @@ import 'simple_quality_card.dart';
 
 class CompressionSettingsView extends StatefulWidget {
   final CompressState state;
+  final VoidCallback onAddVideos;
 
-  const CompressionSettingsView({super.key, required this.state});
+  const CompressionSettingsView({
+    super.key,
+    required this.state,
+    required this.onAddVideos,
+  });
 
   @override
   State<CompressionSettingsView> createState() =>
@@ -173,6 +178,7 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
         ),
         const SizedBox(height: 12),
         CompressionBottomActions(
+          onAdd: widget.onAddVideos,
           onCompress: () =>
               context.read<CompressBloc>().add(const CompressStarted()),
         ),

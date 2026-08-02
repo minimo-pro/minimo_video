@@ -2,7 +2,7 @@
 
 ## Media Selection
 
-The start screen shows a source sheet (`from gallery` / `from files`) before opening a native picker. Flutter passes `source` (`gallery` | `files`) to `pickVideos`.
+The start screen and the compression screen's add-more action show the same source sheet (`from gallery` / `from files`) before opening a native picker. Flutter passes `source` (`gallery` | `files`) to `pickVideos`. Selection from the compression screen is restricted to the pre-compression `ready` state and appends files to the existing batch.
 
 ### iOS
 
@@ -16,7 +16,7 @@ Selected files are imported sequentially to avoid parallel disk/memory pressure.
 - **Gallery:** system photo picker (`MediaStore.ACTION_PICK_IMAGES`, `video/*`) on Android 13+; `ACTION_GET_CONTENT` + `video/*` on older versions.
 - **Files:** `ACTION_OPEN_DOCUMENT`, `video/*`, multi-selection.
 
-Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer.
+Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer. A later add-more pick must not clear `picked_videos`, because the existing batch still references those cached copies; cold-start cleanup owns removal of the directory.
 
 Both platforms report `pickProgress` (`processed`/`total`) over the videos method channel while files are imported.
 

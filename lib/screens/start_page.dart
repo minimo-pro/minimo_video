@@ -8,6 +8,7 @@ import 'package:upgrader/upgrader.dart';
 
 import '../constants/app_icons.dart';
 import '../features/compression/data/video_file_adapter.dart';
+import '../features/compression/presentation/widgets/video_loading_view.dart';
 import '../features/compression/presentation/widgets/video_pick_source_sheet.dart';
 import '../generated/l10n.dart';
 import '../router/app_router.gr.dart';
@@ -16,7 +17,6 @@ import '../services/changelog_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bottom_frame.dart';
 import '../widgets/changelog_dialog.dart';
-import '../widgets/minimo_loader.dart';
 import '../widgets/pressable.dart';
 
 @RoutePage()
@@ -168,47 +168,7 @@ class _StartPageState extends State<StartPage> {
                   ),
                   Expanded(
                     child: _loading
-                        ? Center(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 32,
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  MinimoLoader(
-                                    size: 58,
-                                    semanticsLabel: S.of(context).loadingVideos,
-                                  ),
-                                  const SizedBox(height: 18),
-                                  Text(
-                                    S.of(context).loadingVideos,
-                                    textAlign: TextAlign.center,
-                                    style: materialTheme.textTheme.titleMedium
-                                        ?.copyWith(color: theme.textColor),
-                                  ),
-                                  if (_loadingProgress case (
-                                    final done,
-                                    final total,
-                                  )) ...[
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      '$done / $total',
-                                      style: materialTheme.textTheme.titleLarge
-                                          ?.copyWith(color: theme.textColor),
-                                    ),
-                                  ],
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    S.of(context).loadingManyVideosHint,
-                                    textAlign: TextAlign.center,
-                                    style: materialTheme.textTheme.bodyMedium
-                                        ?.copyWith(color: theme.textColor),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
+                        ? VideoLoadingView(progress: _loadingProgress)
                         : Center(
                             child: Pressable(
                               child: GestureDetector(
