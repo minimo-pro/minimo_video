@@ -262,6 +262,10 @@ class MainActivity : FlutterActivity() {
                 input.copyTo(output, 1024 * 1024)
             }
         }
+        if (!isVideoFile(outputFile)) {
+            outputFile.delete()
+            error("selected file is not a video")
+        }
 
         return mapOf(
             "path" to outputFile.absolutePath,
@@ -270,6 +274,16 @@ class MainActivity : FlutterActivity() {
             "sourceIdentifier" to (deleteUri?.toString() ?: uri.toString()),
             "canDeleteOriginal" to (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && deleteUri != null)
         )
+    }
+
+    private fun isVideoFile(file: File): Boolean {
+        val retriever = MediaMetadataRetriever()
+        return try {
+            retriever.setDataSource(file.absolutePath)
+            retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO) == "yes"
+        } finally {
+            retriever.release()
+        }
     }
 
     private fun queryMetadata(uri: Uri): Pair<String, Long> {

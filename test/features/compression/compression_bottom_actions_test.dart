@@ -40,4 +40,25 @@ void main() {
     expect(addCalls, 1);
     expect(compressCalls, 1);
   });
+
+  testWidgets('compress is disabled without savings', (tester) async {
+    var compressCalls = 0;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        home: Scaffold(
+          body: CompressionBottomActions(onAdd: () {}, onCompress: null),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('compress'));
+    expect(compressCalls, 0);
+  });
 }

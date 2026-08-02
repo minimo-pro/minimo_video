@@ -136,6 +136,7 @@
   "pickFromFiles": "from files",
   "loadingVideos": "loading videos...",
   "loadingManyVideosHint": "large or numerous files may take longer to load",
+  "failedToPickVideos": "choose a video file",
   "compressionComplete": "compression complete",
   "compressionCompleted": "compression completed",
   "compressionFailed": "compression failed",

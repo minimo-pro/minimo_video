@@ -131,6 +131,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "estimating time remaining...",
     ),
     "failed": MessageLookupByLibrary.simpleMessage("failed"),
+    "failedToPickVideos": MessageLookupByLibrary.simpleMessage(
+      "choose a video file",
+    ),
     "failedToSave": m3,
     "failedToShare": m4,
     "getStarted": MessageLookupByLibrary.simpleMessage("get started"),

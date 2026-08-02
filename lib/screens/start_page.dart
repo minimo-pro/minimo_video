@@ -17,6 +17,7 @@ import '../services/changelog_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bottom_frame.dart';
 import '../widgets/changelog_dialog.dart';
+import '../widgets/app_snack_bar.dart';
 import '../widgets/pressable.dart';
 
 @RoutePage()
@@ -110,6 +111,14 @@ class _StartPageState extends State<StartPage> {
       );
       if (videos.isNotEmpty && mounted) {
         context.pushRoute(CompressRoute(initialVideos: videos));
+      }
+    } catch (_) {
+      if (mounted) {
+        AppSnackBar.show(
+          context,
+          message: S.of(context).failedToPickVideos,
+          type: AppSnackBarType.error,
+        );
       }
     } finally {
       if (mounted) {

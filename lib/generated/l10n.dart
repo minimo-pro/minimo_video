@@ -753,6 +753,16 @@ class S {
     );
   }
 
+  /// `choose a video file`
+  String get failedToPickVideos {
+    return Intl.message(
+      'choose a video file',
+      name: 'failedToPickVideos',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `compression complete`
   String get compressionComplete {
     return Intl.message(

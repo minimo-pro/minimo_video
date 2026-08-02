@@ -179,8 +179,9 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
         const SizedBox(height: 12),
         CompressionBottomActions(
           onAdd: widget.onAddVideos,
-          onCompress: () =>
-              context.read<CompressBloc>().add(const CompressStarted()),
+          onCompress: savingsPercent == 0
+              ? null
+              : () => context.read<CompressBloc>().add(const CompressStarted()),
         ),
       ],
     );

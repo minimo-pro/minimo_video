@@ -136,6 +136,7 @@
   "pickFromFiles": "из файлов",
   "loadingVideos": "загрузка видео...",
   "loadingManyVideosHint": "загрузка большого количества или крупных файлов может занять больше времени",
+  "failedToPickVideos": "выберите видеофайл",
   "compressionComplete": "сжатие завершено",
   "compressionCompleted": "сжатие завершено",
   "compressionFailed": "не удалось сжать видео",

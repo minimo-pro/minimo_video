@@ -42,6 +42,7 @@ Deletion saves successful outputs first, then requests source deletion using uni
 
 ## Compression Errors
 
+- Picker errors, including providers returning non-video files, show an error snackbar and do not add files to the batch.
 - Plugin failure/cancel variants become `StateError` in the adapter.
 - Normal encoder errors mark that item failed; remaining batch items continue.
 - User cancellation exits the active run and ignores later callbacks.

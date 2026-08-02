@@ -16,7 +16,7 @@ Selected files are imported sequentially to avoid parallel disk/memory pressure.
 - **Gallery:** system photo picker (`MediaStore.ACTION_PICK_IMAGES`, `video/*`) on Android 13+; `ACTION_GET_CONTENT` + `video/*` on older versions. Android maps picker/document URIs to MediaStore video URIs when possible so originals can be selected for deletion. Providers that cannot be mapped remain non-deletable.
 - **Files:** `ACTION_OPEN_DOCUMENT`, `video/*`, multi-selection. Document picks are non-deletable.
 
-Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer. A later add-more pick must not clear `picked_videos`, because the existing batch still references those cached copies; cold-start cleanup owns removal of the directory.
+Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer. After copying, native code verifies that the cached file contains a video track; invalid files are deleted and the pick fails so Flutter shows an error snackbar instead of opening compression. A later add-more pick must not clear `picked_videos`, because the existing batch still references those cached copies; cold-start cleanup owns removal of the directory.
 
 Both platforms report `pickProgress` (`processed`/`total`) over the videos method channel while files are imported.
 

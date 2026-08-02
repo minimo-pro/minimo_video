@@ -87,11 +87,20 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       "pickProgress",
       arguments: ["processed": 0, "total": urls.count]
     )
-    importDocumentVideos(urls) { [weak self] videos in
+    importDocumentVideos(urls) { [weak self] result in
       DispatchQueue.main.async {
         self?.pendingPickResult = nil
-        print("[VideoPicker] Imported \(videos.count)/\(urls.count) videos")
-        pendingPickResult(videos)
+        switch result {
+        case .success(let videos):
+          print("[VideoPicker] Imported \(videos.count)/\(urls.count) videos")
+          pendingPickResult(videos)
+        case .failure(let error):
+          pendingPickResult(FlutterError(
+            code: "pick_failed",
+            message: error.localizedDescription,
+            details: nil
+          ))
+        }
       }
     }
   }
@@ -166,17 +175,21 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     _ urls: [URL],
     index: Int = 0,
     videos: [[String: Any]] = [],
-    completion: @escaping ([[String: Any]]) -> Void
+    completion: @escaping (Result<[[String: Any]], Error>) -> Void
   ) {
     guard index < urls.count else {
-      completion(videos)
+      completion(.success(videos))
       return
     }
 
     let url = urls[index]
     DispatchQueue.global(qos: .userInitiated).async { [weak self] in
       guard let self else {
-        completion(videos)
+        completion(.failure(NSError(
+          domain: "VideoPicker",
+          code: 2,
+          userInfo: [NSLocalizedDescriptionKey: "video picker is unavailable"]
+        )))
         return
       }
 
@@ -194,6 +207,8 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
         ])
       } catch {
         print("[VideoPicker] Failed to copy document video \(index + 1): \(error.localizedDescription)")
+        completion(.failure(error))
+        return
       }
 
       print("[VideoPicker] Processed \(index + 1)/\(urls.count) videos")
@@ -371,7 +386,19 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     }
 
     try FileManager.default.copyItem(at: sourceURL, to: outputURL)
+    guard isVideoFile(outputURL) else {
+      try? FileManager.default.removeItem(at: outputURL)
+      throw NSError(
+        domain: "VideoPicker",
+        code: 1,
+        userInfo: [NSLocalizedDescriptionKey: "selected file is not a video"]
+      )
+    }
     return outputURL
+  }
+
+  private func isVideoFile(_ url: URL) -> Bool {
+    !AVURLAsset(url: url).tracks(withMediaType: .video).isEmpty
   }
 
   private func sanitizeFilename(_ filename: String) -> String {
