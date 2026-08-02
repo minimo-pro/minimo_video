@@ -47,7 +47,7 @@ Delete originals is reached from the done-screen more sheet through `HoldToConfi
 
 ## Known Limitations
 
-- `light_compressor_v2` is pinned to `1.0.0` for current Dart compatibility.
+- `light_compressor_v2` is pinned to `1.9.0`; update it deliberately and repeat physical-device codec checks.
 - Installing/changing a native plugin requires a full rebuild; hot reload cannot register new platform channels.
 - Already compressed inputs are re-encoded before the 10% policy decides whether to keep output.
 - Estimates are bitrate-based approximations, not guarantees.

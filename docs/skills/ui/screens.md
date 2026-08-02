@@ -7,7 +7,7 @@ Routes use `auto_route` with fade transitions.
 | `SplashRoute` | Resolve first-launch destination |
 | `OnboardingRoute` | Explain local selection, quality, and privacy |
 | `StartRoute` | Choose gallery or files, select one or more videos, show store update and changelog prompts |
-| `CompressRoute` | Configure, run, cancel, save, share, or delete originals |
+| `CompressRoute` | Add more videos, configure, run, cancel, save, share, or delete originals |
 | `SettingsRoute` | Filename prefix, thermal warning, album, cache, language |
 | `InfoRoute` | App/version information, rating, sharing, and external links |
 
@@ -17,15 +17,15 @@ Settings and info are presented as 90%-height sheets via `stupid_simple_sheet` (
 
 The screen renders from `CompressStatus`:
 
-- `ready` → simple/advanced settings and full-width compress action
+- `ready` → simple/advanced settings and a bottom action row with add-more and compress
 - `processing` → size estimate, overall progress, current-file percentage, status list, hold-to-cancel
 - `done` → results, saved space, and compact post-compression actions
 
 ### Navigation chrome
 
-`CompressScreen` owns the top-left icon-only back button for `ready` and `done`. It uses the `AppActionButton` text variant (no border or fill). Back is hidden during `processing`.
+`CompressScreen` owns the top-left icon-only back button for `ready` and `done`. It uses the `AppActionButton` text variant (no border or fill). Navigation chrome is hidden during `processing` and while picked videos are copied into cache.
 
-During `processing`, `PopScope(canPop: false)` blocks route pops, including Android system back and the iOS edge-swipe gesture. Hold-to-cancel is the only exit back to settings.
+During `processing` and add-more file copying, `PopScope(canPop: false)` blocks route pops, including Android system back and the iOS edge-swipe gesture. Hold-to-cancel is the only exit from processing back to settings; copying must finish or fail before navigation resumes.
 
 ### Done-screen actions
 
@@ -38,7 +38,7 @@ On a successful result:
 
 Failed compression replaces save with retry and keeps the more menu. Already-optimized results keep the more menu without a primary filled action.
 
-`CompressionBottomActions` on the settings screen is compress-only; back lives in the shared top chrome.
+`CompressionBottomActions` places an outlined icon-only plus button and the filled compress button in the same bottom row. The plus button opens the same gallery/files source sheet as `StartRoute`, appends selected videos, and refreshes thumbnails and the size estimate without resetting compression settings. Back remains in the shared top chrome.
 
 Simple presets are the primary UX. Advanced mode currently exposes only resolution and audio.
 

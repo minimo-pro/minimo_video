@@ -224,7 +224,6 @@ class MainActivity : FlutterActivity() {
             }
         }
         data.data?.let { uris.add(it) }
-        File(cacheDir, "picked_videos").deleteRecursively()
         Log.i(TAG, "Importing ${uris.size} videos sequentially")
         sendPickProgress(0, uris.size)
         return uris.mapIndexed { index, uri ->

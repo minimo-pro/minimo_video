@@ -4,7 +4,7 @@
 
 ## Current Capabilities
 
-- Select one or multiple local videos
+- Select one or multiple local videos and append more while configuring compression
 - High, medium, and low quality presets
 - Manual resolution and audio controls
 - Sequential batch compression with overall and per-video progress
@@ -30,6 +30,7 @@
 | Routing | `lib/router/app_router.dart` |
 | Main selection screen | `lib/screens/start_page.dart` |
 | Compression feature | `lib/features/compression/` |
+| Shared video loading UI | `lib/features/compression/presentation/widgets/video_loading_view.dart` |
 | Persistent settings | `lib/services/app_settings_service.dart` |
 
 ---

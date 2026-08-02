@@ -27,7 +27,7 @@ Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough:
 
 ## Pipeline
 
-1. Native picker copies selected video to app cache.
+1. Native picker copies selected videos to app cache.
 2. `VideoCompressorAdapter` maps settings to `light_compressor_v2`.
 3. Plugin compresses with native Android/iOS codecs.
 4. Progress stream is normalized from `0–100` to `0–1`.
@@ -37,6 +37,14 @@ Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough:
 `BackgroundConfig` keeps compression running through an Android foreground service when the app is minimized or the screen is off. iOS does not support continuous background transcoding; the native job can remain stuck after the OS suspends the app.
 
 On iOS the compression screen warns the user to keep the app open. If the app is backgrounded during compression, the active native job is cancelled immediately; returning restarts only the current video and keeps completed batch items.
+
+## Adding Videos During Configuration
+
+The plus action beside the bottom compress button is available only in `CompressStatus.ready`. It uses the same gallery/files source sheet and `VideoFileAdapter.pickVideos` path as the start screen. While native files are copied, the settings content is replaced by the shared `VideoLoadingView`, picker progress is shown when available, and route popping is blocked.
+
+Picked videos are appended through `CompressVideosAdded`; existing compression settings remain unchanged. Videos already in the batch are ignored: provider `sourceIdentifier` is the primary identity, with original filename plus file size as the fallback for providers that do not expose an identifier. The same filtering also removes duplicates returned in one additional pick.
+
+The Bloc keeps `videos`, `thumbnailPaths`, and `videoStatuses` aligned, requests thumbnails for the first three items, invalidates any stale asynchronous estimate, and computes a new estimate for the expanded batch. Empty, cancelled, or duplicate-only picker results leave the batch unchanged. Adding files is not available during processing or on the result screen.
 
 ## Estimates
 
