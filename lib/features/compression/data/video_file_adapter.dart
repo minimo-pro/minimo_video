@@ -35,6 +35,7 @@ class VideoFileAdapter {
         name: name,
         size: size,
         sourceIdentifier: file['sourceIdentifier'] as String?,
+        canDeleteOriginal: file['canDeleteOriginal'] as bool? ?? false,
       );
     }).toList();
   }

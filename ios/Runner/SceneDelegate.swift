@@ -134,7 +134,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
             "name": filename,
             "size": size
           ]
-          video["sourceIdentifier"] = item.assetIdentifier
+          if let assetIdentifier = item.assetIdentifier {
+            video["sourceIdentifier"] = assetIdentifier
+            video["canDeleteOriginal"] = true
+          }
           imported.append(video)
         } catch {
           print("[VideoPicker] Failed to copy video \(index + 1): \(error.localizedDescription)")

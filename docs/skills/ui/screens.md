@@ -11,7 +11,7 @@ Routes use `auto_route` with fade transitions.
 | `SettingsRoute` | Filename prefix, thermal warning, album, cache, language |
 | `InfoRoute` | App/version information, rating, sharing, and external links |
 
-Settings and info are presented as 90%-height sheets via `stupid_simple_sheet` (`showAppSheet` in `lib/widgets/app_sheet.dart`). Swiping down at the top of a nested list dismisses the sheet; while the list can scroll, the same gesture scrolls it. Changelog and before/after comparison use the same route type. Compact action menus use content-sized sheets via `showAppContentSheet`. Do not wrap sheet content in a custom `ScrollConfiguration` — the package needs Flutter's default scroll behavior for the scroll-to-drag handoff.
+Settings, info, comparison, and original-management sheets use fixed-height `showAppSheet` routes via `stupid_simple_sheet`. Compact menus — video source pick, post-compression more actions, and changelog — use content-sized `showAppContentSheet` so Android does not stretch a short action list to a tall fraction of the screen. Both helpers show the shared top drag handle by default. Swiping down at the top of a nested list dismisses the sheet; while the list can scroll, the same gesture scrolls it. Do not wrap sheet content in a custom `ScrollConfiguration` — the package needs Flutter's default scroll behavior for the scroll-to-drag handoff.
 
 ## Compression Screen Modes
 
@@ -34,7 +34,8 @@ On a successful result:
 | Placement | Actions |
 |---|---|
 | Bottom row | Icon-only share, filled primary save, icon-only more |
-| More sheet (`showAppContentSheet`) | Compare, hold-to-delete-originals |
+| More sheet (`showAppContentSheet`) | Compare, delete original |
+| Original-management sheet | Per-video delete selection for multi-video results; unavailable originals are greyed out |
 
 Failed compression replaces save with retry and keeps the more menu. Already-optimized results keep the more menu without a primary filled action.
 

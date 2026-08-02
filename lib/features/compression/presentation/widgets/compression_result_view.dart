@@ -6,6 +6,7 @@ import '../../../../constants/app_icons.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../widgets/animated_asset_checkbox.dart';
 import '../../../../widgets/app_action_button.dart';
 import '../../../../widgets/app_sheet.dart';
 import '../../../../widgets/app_snack_bar.dart';
@@ -220,7 +221,7 @@ class CompressionResultView extends StatelessWidget {
         builder: (sheetContext) => SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(22, 20, 22, 14),
+            padding: const EdgeInsets.fromLTRB(22, 12, 22, 14),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -235,19 +236,31 @@ class CompressionResultView extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                 ],
-                HoldToConfirmButton(
-                  label: strings.deleteOriginal,
-                  enabled: !state.isSaving,
-                  actionStyle: true,
-                  fontSize: 18,
-                  onTap: () => AppSnackBar.show(
-                    sheetContext,
-                    message: strings.holdToDeleteOriginals,
+                if (state.successResults.length > 1)
+                  AppActionButton(
+                    width: double.infinity,
+                    label: strings.deleteOriginal,
+                    fontSize: 20,
+                    onPressed: state.isSaving
+                        ? null
+                        : () => Navigator.of(
+                            sheetContext,
+                          ).pop(_ResultMoreAction.deleteOriginals),
+                  )
+                else
+                  HoldToConfirmButton(
+                    label: strings.deleteOriginal,
+                    enabled: !state.isSaving,
+                    actionStyle: true,
+                    fontSize: 18,
+                    onTap: () => AppSnackBar.show(
+                      sheetContext,
+                      message: strings.holdToDeleteOriginals,
+                    ),
+                    onCompleted: () async => Navigator.of(
+                      sheetContext,
+                    ).pop(_ResultMoreAction.deleteOriginals),
                   ),
-                  onCompleted: () async => Navigator.of(
-                    sheetContext,
-                  ).pop(_ResultMoreAction.deleteOriginals),
-                ),
               ],
             ),
           ),
@@ -261,6 +274,10 @@ class CompressionResultView extends StatelessWidget {
         _showComparison(context);
         return;
       case _ResultMoreAction.deleteOriginals:
+        if (state.successResults.length > 1) {
+          _showOriginalsManage(context);
+          return;
+        }
         context.read<CompressBloc>().add(
           const CompressResultsSaved(deleteOriginals: true),
         );
@@ -272,9 +289,115 @@ class CompressionResultView extends StatelessWidget {
     showAppSheet(
       context: context,
       heightFraction: 0.86,
-      showDragHandle: false,
       backgroundColor: Theme.of(context).colorScheme.surface,
       child: CompressionComparisonSheet(results: state.successResults),
+    );
+  }
+
+  Future<void> _showOriginalsManage(BuildContext context) async {
+    final selected = state.successResults
+        .where((item) => item.source.canDeleteOriginal)
+        .map((item) => item.source.sourceIdentifier)
+        .whereType<String>()
+        .toSet();
+    final identifiers = await showAppSheet<Set<String>>(
+      context: context,
+      heightFraction: 0.72,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      child: StatefulBuilder(
+        builder: (sheetContext, setSheetState) => SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(22, 20, 22, 14),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: state.successResults.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 10),
+                    itemBuilder: (context, index) {
+                      final result = state.successResults[index];
+                      final source = result.source;
+                      final identifier = source.sourceIdentifier;
+                      final canDelete =
+                          source.canDeleteOriginal && identifier != null;
+                      final checked =
+                          canDelete && selected.contains(identifier);
+                      final rowColor = Theme.of(context).colorScheme.onSurface
+                          .withValues(alpha: canDelete ? 1 : 0.38);
+                      final metaColor = Theme.of(context)
+                          .colorScheme
+                          .onSurfaceVariant
+                          .withValues(alpha: canDelete ? 1 : 0.5);
+                      return Row(
+                        children: [
+                          Opacity(
+                            opacity: canDelete ? 1 : 0.35,
+                            child: AnimatedAssetCheckbox(
+                              value: checked,
+                              onChanged: canDelete
+                                  ? (value) => setSheetState(() {
+                                      if (value) {
+                                        selected.add(identifier);
+                                      } else {
+                                        selected.remove(identifier);
+                                      }
+                                    })
+                                  : (_) {},
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              source.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodyLarge?.copyWith(color: rowColor),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            canDelete
+                                ? S.of(context).deleteOriginal
+                                : S.of(context).original,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodySmall?.copyWith(color: metaColor),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 14),
+                HoldToConfirmButton(
+                  label: S.of(context).deleteOriginal,
+                  enabled: selected.isNotEmpty && !state.isSaving,
+                  actionStyle: true,
+                  fontSize: 18,
+                  onTap: () => AppSnackBar.show(
+                    sheetContext,
+                    message: S.of(context).holdToDeleteOriginals,
+                  ),
+                  onCompleted: () async =>
+                      Navigator.of(sheetContext).pop(Set.of(selected)),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    if (!context.mounted || identifiers == null) return;
+    context.read<CompressBloc>().add(
+      CompressResultsSaved(
+        deleteOriginals: true,
+        deleteSourceIdentifiers: identifiers,
+      ),
     );
   }
 }

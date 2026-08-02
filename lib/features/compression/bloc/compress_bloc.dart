@@ -449,11 +449,14 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
 
       var deletedOriginalCount = 0;
       try {
-        final identifiers = state.successResults
-            .where((item) => item.source.path != item.result.outputPath)
-            .map((item) => item.source.sourceIdentifier)
-            .whereType<String>()
-            .toSet();
+        final identifiers =
+            event.deleteSourceIdentifiers ??
+            state.successResults
+                .where((item) => item.source.path != item.result.outputPath)
+                .where((item) => item.source.canDeleteOriginal)
+                .map((item) => item.source.sourceIdentifier)
+                .whereType<String>()
+                .toSet();
         if (identifiers.isEmpty) {
           throw StateError(
             'original videos cannot be deleted by this provider',

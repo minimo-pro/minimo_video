@@ -108,7 +108,7 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
                     onNotification: _onScroll,
                     child: FadedScrollView(
                       fadeExtent: 0.08,
-                      padding: EdgeInsets.symmetric(vertical: compact ? 4 : 10),
+                      padding: EdgeInsets.symmetric(vertical: compact ? 4 : 6),
                       child: Column(
                         children: [
                           SelectedVideosSummary(

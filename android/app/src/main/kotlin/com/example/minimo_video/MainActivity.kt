@@ -20,6 +20,7 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterActivity() {
     private lateinit var videosChannel: MethodChannel
     private var pendingPickResult: MethodChannel.Result? = null
+    private var pendingPickSource = "gallery"
     private var pendingDeleteResult: MethodChannel.Result? = null
     private var pendingDeleteCount = 0
 
@@ -63,6 +64,7 @@ class MainActivity : FlutterActivity() {
         if (requestCode != PICK_VIDEOS_REQUEST) return
 
         val result = pendingPickResult ?: return
+        val source = pendingPickSource
         if (resultCode != RESULT_OK || data == null) {
             pendingPickResult = null
             result.success(emptyList<Map<String, Any>>())
@@ -70,7 +72,7 @@ class MainActivity : FlutterActivity() {
         }
 
         Thread {
-            runCatching { readPickedVideos(data) }
+            runCatching { readPickedVideos(data, source) }
                 .onSuccess { videos ->
                     runOnUiThread {
                         pendingPickResult = null
@@ -150,6 +152,7 @@ class MainActivity : FlutterActivity() {
 
         pendingPickResult = result
         val source = (arguments as? Map<*, *>)?.get("source") as? String ?: "gallery"
+        pendingPickSource = source
         val intent = if (source == "files") {
             openDocumentIntent()
         } else {
@@ -210,13 +213,19 @@ class MainActivity : FlutterActivity() {
 
     private fun mediaStoreUri(value: String): Uri? {
         val uri = Uri.parse(value)
-        if (uri.authority == "media") return uri
+        if (uri.authority == "media") {
+            if (uri.pathSegments.contains("picker")) {
+                val id = uri.lastPathSegment?.toLongOrNull() ?: return null
+                return ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id)
+            }
+            return uri
+        }
         if (uri.authority != "com.android.providers.media.documents") return null
         val id = DocumentsContract.getDocumentId(uri).substringAfter(':').toLongOrNull() ?: return null
         return ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id)
     }
 
-    private fun readPickedVideos(data: Intent): List<Map<String, Any>> {
+    private fun readPickedVideos(data: Intent, source: String): List<Map<String, Any>> {
         val uris = mutableListOf<Uri>()
         data.clipData?.let { clip ->
             for (index in 0 until clip.itemCount) {
@@ -227,7 +236,7 @@ class MainActivity : FlutterActivity() {
         Log.i(TAG, "Importing ${uris.size} videos sequentially")
         sendPickProgress(0, uris.size)
         return uris.mapIndexed { index, uri ->
-            copyPickedVideo(uri).also {
+            copyPickedVideo(uri, source).also {
                 Log.i(TAG, "Imported ${index + 1}/${uris.size} videos")
                 sendPickProgress(index + 1, uris.size)
             }
@@ -241,10 +250,11 @@ class MainActivity : FlutterActivity() {
         )
     }
 
-    private fun copyPickedVideo(uri: Uri): Map<String, Any> {
+    private fun copyPickedVideo(uri: Uri, source: String): Map<String, Any> {
         val metadata = queryMetadata(uri)
         val name = sanitizeFileName(metadata.first)
         val outputFile = uniqueCacheFile(name)
+        val deleteUri = if (source == "gallery") mediaStoreUri(uri.toString()) else null
 
         contentResolver.openInputStream(uri).use { input ->
             requireNotNull(input) { "unable to open selected video" }
@@ -257,7 +267,8 @@ class MainActivity : FlutterActivity() {
             "path" to outputFile.absolutePath,
             "name" to name,
             "size" to outputFile.length(),
-            "sourceIdentifier" to uri.toString()
+            "sourceIdentifier" to (deleteUri?.toString() ?: uri.toString()),
+            "canDeleteOriginal" to (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && deleteUri != null)
         )
     }
 

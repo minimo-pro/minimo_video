@@ -29,11 +29,14 @@ Saving is guarded by `state.isSaving` to prevent duplicate actions. A failure st
 
 ## Save and Delete Originals
 
-Delete originals is reached from the done-screen more sheet through `HoldToConfirmButton`. Completing the hold dispatches `CompressResultsSaved(deleteOriginals: true)`, which saves successful outputs first, then requests source deletion using unique non-null `sourceIdentifier` values.
+Delete originals is reached from the done-screen more sheet. For a single successful video, the more sheet shows `HoldToConfirmButton` directly. For multiple successful videos, the more sheet opens a per-video manage sheet first; deletable originals can be selected individually, and non-deletable originals are shown greyed out. Holding the delete action dispatches `CompressResultsSaved(deleteOriginals: true, deleteSourceIdentifiers: selectedIds)`.
+
+Deletion saves successful outputs first, then requests source deletion using unique non-null `sourceIdentifier` values whose source is marked deletable.
 
 - Save success remains valid if original deletion fails.
 - Deletion failures use `deleteError`, separate from `saveError`.
 - Sources without a platform identifier cannot be deleted.
+- Sources without delete capability remain visible but disabled in the manage sheet.
 - Output paths equal to source paths are excluded defensively.
 - System confirmation remains authoritative; cancellation is not deletion success.
 

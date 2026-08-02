@@ -36,22 +36,11 @@ class _ChangelogSheet extends StatelessWidget {
           maxHeight: MediaQuery.sizeOf(context).height * 0.78,
         ),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(22, 10, 22, 18),
+          padding: const EdgeInsets.fromLTRB(22, 8, 22, 18),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: Container(
-                  width: 42,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: theme.frameBorderColor,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 18),
               Text(
                 strings.changelogTitle(update.version),
                 style: textTheme.headlineSmall?.copyWith(
