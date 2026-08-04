@@ -8,10 +8,10 @@ Routes use `auto_route` with fade transitions.
 | `OnboardingRoute` | Explain local selection, quality, and privacy |
 | `StartRoute` | Choose gallery or files, select one or more videos, show store update and changelog prompts |
 | `CompressRoute` | Add more videos, configure, run, cancel, save, share, or delete originals |
-| `SettingsRoute` | Filename prefix, thermal warning, album, cache, language |
+| `SettingsRoute` | Filename prefix, thermal warning, save/delete defaults, album, cache, language |
 | `InfoRoute` | App/version information, rating, sharing, and external links |
 
-Settings, info, comparison, and original-management sheets use fixed-height `showAppSheet` routes via `stupid_simple_sheet`. Compact menus — video source pick, post-compression more actions, and changelog — use content-sized `showAppContentSheet` so Android does not stretch a short action list to a tall fraction of the screen. Both helpers show the shared top drag handle by default. Swiping down at the top of a nested list dismisses the sheet; while the list can scroll, the same gesture scrolls it. Do not wrap sheet content in a custom `ScrollConfiguration` — the package needs Flutter's default scroll behavior for the scroll-to-drag handoff.
+Settings, info, comparison, and save sheets use fixed-height `showAppSheet` routes via `stupid_simple_sheet`. Compact menus — video source pick and changelog — use content-sized `showAppContentSheet` so Android does not stretch a short action list to a tall fraction of the screen. Both helpers show the shared top drag handle by default. Swiping down at the top of a nested list dismisses the sheet; while the list can scroll, the same gesture scrolls it. Do not wrap sheet content in a custom `ScrollConfiguration` — the package needs Flutter's default scroll behavior for the scroll-to-drag handoff.
 
 ## Compression Screen Modes
 
@@ -33,11 +33,10 @@ On a successful result:
 
 | Placement | Actions |
 |---|---|
-| Bottom row | Icon-only share, filled primary save, icon-only more |
-| More sheet (`showAppContentSheet`) | Compare |
-| Save sheet | Per-video delete selection before saving; unavailable originals are greyed out |
+| Bottom row | `VS` compare, filled primary save, icon-only share |
+| Save sheet | Per-video delete selection before saving; unavailable originals are greyed out and long lists fade at scroll edges |
 
-Failed compression replaces save with retry and keeps the more menu. Already-optimized results keep the more menu without a primary filled action.
+Failed compression replaces save with retry and disables `VS`. Already-optimized results keep `VS` disabled without a primary filled action.
 
 `CompressionBottomActions` places an outlined icon-only plus button and the filled compress button in the same bottom row. The plus button opens the same gallery/files source sheet as `StartRoute`, appends selected videos, and refreshes thumbnails and the size estimate without resetting compression settings. Back remains in the shared top chrome.
 

@@ -19,7 +19,7 @@ Only `state.successResults` are previewable. Skipped and failed items stay in th
 
 ## Share
 
-`CompressionResultView` exposes share as an icon-only bottom action and passes all successful MP4 paths to `share_plus`. On tablets, `sharePositionOrigin` comes from result-view bounds. Failures are shown through an error snackbar.
+`CompressionResultView` places `VS`, save, and icon-only share in the bottom row. `VS` opens comparison immediately. Share passes all successful MP4 paths to `share_plus`. On tablets, `sharePositionOrigin` comes from result-view bounds. Failures are shown through an error snackbar.
 
 ## Save
 

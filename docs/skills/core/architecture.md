@@ -34,7 +34,7 @@ CompressScreen
         → native Android/iOS codecs
 ```
 
-`CompressBloc` owns the selected batch, settings, estimates, status per video, progress, cancellation, results, saving, and deletion. `CompressVideosAdded` appends newly picked files only while the Bloc is `ready`, extends the aligned thumbnail/status lists, and schedules fresh thumbnails and an estimate without resetting settings. `CompressResultsSaved` can delete all deletable originals or only selected source identifiers from the per-video manage sheet. Videos are compressed sequentially. Overall progress is weighted by input file size.
+`CompressBloc` owns the selected batch, settings, estimates, status per video, progress, cancellation, results, saving, and deletion. `CompressVideosAdded` appends newly picked files only while the Bloc is `ready`, extends the aligned thumbnail/status lists, and schedules fresh thumbnails and an estimate without resetting settings. `CompressResultsSaved` receives selected source identifiers from the save sheet and deletes them only after all outputs save. Videos are compressed sequentially. Overall progress is weighted by input file size.
 
 ## Platform Channel
 

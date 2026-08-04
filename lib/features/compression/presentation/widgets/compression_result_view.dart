@@ -124,19 +124,19 @@ class CompressionResultView extends StatelessWidget {
                 SizedBox(height: compact ? 8 : 12),
                 Row(
                   children: [
-                    if (!allFailed) ...[
-                      Tooltip(
-                        message: strings.share,
-                        child: AppActionButton(
-                          width: 47,
-                          icon: AppIcons.share,
-                          iconWidth: 22,
-                          iconHeight: 22,
-                          onPressed: () => _shareResults(context),
-                        ),
+                    Tooltip(
+                      message: strings.compareVideos,
+                      child: AppActionButton(
+                        width: 47,
+                        label: 'VS',
+                        fontSize: 16,
+                        padding: EdgeInsets.zero,
+                        onPressed: allFailed
+                            ? null
+                            : () => _showComparison(context),
                       ),
-                      SizedBox(width: buttonGap),
-                    ],
+                    ),
+                    SizedBox(width: buttonGap),
                     if (!alreadyOptimized)
                       Expanded(
                         child: AppActionButton(
@@ -153,22 +153,19 @@ class CompressionResultView extends StatelessWidget {
                       )
                     else
                       const Spacer(),
-                    SizedBox(width: buttonGap),
-                    Tooltip(
-                      message: MaterialLocalizations.of(
-                        context,
-                      ).moreButtonTooltip,
-                      child: AppActionButton(
-                        width: 47,
-                        icon: AppIcons.more,
-                        iconWidth: 24,
-                        iconHeight: 24,
-                        onPressed: () => _showMoreActions(
-                          context,
-                          showComparison: !allFailed,
+                    if (!allFailed) ...[
+                      SizedBox(width: buttonGap),
+                      Tooltip(
+                        message: strings.share,
+                        child: AppActionButton(
+                          width: 47,
+                          icon: AppIcons.share,
+                          iconWidth: 22,
+                          iconHeight: 22,
+                          onPressed: () => _shareResults(context),
                         ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ],
@@ -203,48 +200,6 @@ class CompressionResultView extends StatelessWidget {
         message: strings.failedToShare(error.toString()),
         type: AppSnackBarType.error,
       );
-    }
-  }
-
-  Future<void> _showMoreActions(
-    BuildContext context, {
-    required bool showComparison,
-  }) async {
-    final strings = S.of(context);
-    final action = await showAppContentSheet<_ResultMoreAction>(
-      context: context,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      child: Builder(
-        builder: (sheetContext) => SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(22, 12, 22, 14),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (showComparison) ...[
-                  AppActionButton(
-                    width: double.infinity,
-                    label: strings.compareVideos,
-                    fontSize: 20,
-                    onPressed: () => Navigator.of(
-                      sheetContext,
-                    ).pop(_ResultMoreAction.compare),
-                  ),
-                  const SizedBox(height: 10),
-                ],
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-
-    if (!context.mounted || action == null) return;
-    switch (action) {
-      case _ResultMoreAction.compare:
-        _showComparison(context);
-        return;
     }
   }
 
@@ -384,5 +339,3 @@ class CompressionResultView extends StatelessWidget {
     );
   }
 }
-
-enum _ResultMoreAction { compare }
