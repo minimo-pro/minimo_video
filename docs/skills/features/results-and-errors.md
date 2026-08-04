@@ -23,15 +23,13 @@ Only `state.successResults` are previewable. Skipped and failed items stay in th
 
 ## Save
 
-Filled primary save on the done screen dispatches `CompressResultsSaved(deleteOriginals: false)` and saves each successful output through `gal`. If album saving is enabled, album name is `Minimo`.
+Filled primary save opens the per-video save sheet. It preselects deletable originals from `delete_originals_after_saving`; the user can keep or unselect each original. Confirming dispatches `CompressResultsSaved` with selected source identifiers and saves each successful output through `gal`. If album saving is enabled, album name is `Minimo`.
 
 Saving is guarded by `state.isSaving` to prevent duplicate actions. A failure stops the operation and stores `saveError` for UI notification.
 
 ## Save and Delete Originals
 
-Delete originals is reached from the done-screen more sheet. For a single successful video, the more sheet shows `HoldToConfirmButton` directly. For multiple successful videos, the more sheet opens a per-video manage sheet first; deletable originals can be selected individually, and non-deletable originals are shown greyed out. Holding the delete action dispatches `CompressResultsSaved(deleteOriginals: true, deleteSourceIdentifiers: selectedIds)`.
-
-Deletion saves successful outputs first, then requests source deletion using unique non-null `sourceIdentifier` values whose source is marked deletable.
+The save sheet is the only deletion path. Deletion runs only after every output saves successfully, then requests source deletion using unique non-null `sourceIdentifier` values whose source is marked deletable.
 
 - Save success remains valid if original deletion fails.
 - Deletion failures use `deleteError`, separate from `saveError`.

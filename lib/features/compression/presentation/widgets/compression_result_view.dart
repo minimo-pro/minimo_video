@@ -4,13 +4,14 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../constants/app_icons.dart';
 import '../../../../generated/l10n.dart';
+import '../../../../services/app_settings_service.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../widgets/animated_asset_checkbox.dart';
 import '../../../../widgets/app_action_button.dart';
 import '../../../../widgets/app_sheet.dart';
 import '../../../../widgets/app_snack_bar.dart';
-import '../../../../widgets/hold_to_confirm_button.dart';
+import '../../../../widgets/faded_scroll_view.dart';
 import '../../bloc/compress_bloc.dart';
 import '../../bloc/compress_event.dart';
 import '../../bloc/compress_state.dart';
@@ -147,11 +148,7 @@ class CompressionResultView extends StatelessWidget {
                               ? null
                               : allFailed
                               ? onTryAgain
-                              : () => context.read<CompressBloc>().add(
-                                  const CompressResultsSaved(
-                                    deleteOriginals: false,
-                                  ),
-                                ),
+                              : () => _showSaveOptions(context),
                         ),
                       )
                     else
@@ -236,31 +233,6 @@ class CompressionResultView extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                 ],
-                if (state.successResults.length > 1)
-                  AppActionButton(
-                    width: double.infinity,
-                    label: strings.deleteOriginal,
-                    fontSize: 20,
-                    onPressed: state.isSaving
-                        ? null
-                        : () => Navigator.of(
-                            sheetContext,
-                          ).pop(_ResultMoreAction.deleteOriginals),
-                  )
-                else
-                  HoldToConfirmButton(
-                    label: strings.deleteOriginal,
-                    enabled: !state.isSaving,
-                    actionStyle: true,
-                    fontSize: 18,
-                    onTap: () => AppSnackBar.show(
-                      sheetContext,
-                      message: strings.holdToDeleteOriginals,
-                    ),
-                    onCompleted: () async => Navigator.of(
-                      sheetContext,
-                    ).pop(_ResultMoreAction.deleteOriginals),
-                  ),
               ],
             ),
           ),
@@ -272,15 +244,6 @@ class CompressionResultView extends StatelessWidget {
     switch (action) {
       case _ResultMoreAction.compare:
         _showComparison(context);
-        return;
-      case _ResultMoreAction.deleteOriginals:
-        if (state.successResults.length > 1) {
-          _showOriginalsManage(context);
-          return;
-        }
-        context.read<CompressBloc>().add(
-          const CompressResultsSaved(deleteOriginals: true),
-        );
         return;
     }
   }
@@ -294,12 +257,16 @@ class CompressionResultView extends StatelessWidget {
     );
   }
 
-  Future<void> _showOriginalsManage(BuildContext context) async {
-    final selected = state.successResults
-        .where((item) => item.source.canDeleteOriginal)
-        .map((item) => item.source.sourceIdentifier)
-        .whereType<String>()
-        .toSet();
+  Future<void> _showSaveOptions(BuildContext context) async {
+    final deleteByDefault =
+        AppSettingsService.instance.deleteOriginalsAfterSaving;
+    final selected = deleteByDefault
+        ? state.successResults
+              .where((item) => item.source.canDeleteOriginal)
+              .map((item) => item.source.sourceIdentifier)
+              .whereType<String>()
+              .toSet()
+        : <String>{};
     final identifiers = await showAppSheet<Set<String>>(
       context: context,
       heightFraction: 0.72,
@@ -311,79 +278,95 @@ class CompressionResultView extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(22, 20, 22, 14),
             child: Column(
               children: [
+                Text(
+                  S.of(context).deleteOriginalsAfterSaving,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 14),
                 Expanded(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: state.successResults.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: 10),
-                    itemBuilder: (context, index) {
-                      final result = state.successResults[index];
-                      final source = result.source;
-                      final identifier = source.sourceIdentifier;
-                      final canDelete =
-                          source.canDeleteOriginal && identifier != null;
-                      final checked =
-                          canDelete && selected.contains(identifier);
-                      final rowColor = Theme.of(context).colorScheme.onSurface
-                          .withValues(alpha: canDelete ? 1 : 0.38);
-                      final metaColor = Theme.of(context)
-                          .colorScheme
-                          .onSurfaceVariant
-                          .withValues(alpha: canDelete ? 1 : 0.5);
-                      return Row(
-                        children: [
-                          Opacity(
-                            opacity: canDelete ? 1 : 0.35,
-                            child: AnimatedAssetCheckbox(
-                              value: checked,
-                              onChanged: canDelete
-                                  ? (value) => setSheetState(() {
-                                      if (value) {
-                                        selected.add(identifier);
-                                      } else {
-                                        selected.remove(identifier);
-                                      }
-                                    })
-                                  : (_) {},
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              source.name,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.bodyLarge?.copyWith(color: rowColor),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            canDelete
-                                ? S.of(context).deleteOriginal
-                                : S.of(context).original,
-                            style: Theme.of(
-                              context,
-                            ).textTheme.bodySmall?.copyWith(color: metaColor),
+                  child: FadedScrollView(
+                    fadeExtent: 0.08,
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Column(
+                      children: [
+                        for (
+                          var index = 0;
+                          index < state.successResults.length;
+                          index++
+                        ) ...[
+                          if (index > 0) const SizedBox(height: 10),
+                          Builder(
+                            builder: (context) {
+                              final source = state.successResults[index].source;
+                              final identifier = source.sourceIdentifier;
+                              final canDelete =
+                                  source.canDeleteOriginal &&
+                                  identifier != null;
+                              final checked =
+                                  canDelete && selected.contains(identifier);
+                              final rowColor = Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(alpha: canDelete ? 1 : 0.38);
+                              final metaColor = Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant
+                                  .withValues(alpha: canDelete ? 1 : 0.5);
+                              return Row(
+                                children: [
+                                  Opacity(
+                                    opacity: canDelete ? 1 : 0.35,
+                                    child: AnimatedAssetCheckbox(
+                                      value: checked,
+                                      onChanged: canDelete
+                                          ? (value) => setSheetState(() {
+                                              if (value) {
+                                                selected.add(identifier);
+                                              } else {
+                                                selected.remove(identifier);
+                                              }
+                                            })
+                                          : (_) {},
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      source.name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(color: rowColor),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    canDelete
+                                        ? S.of(context).deleteOriginal
+                                        : S.of(context).original,
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(color: metaColor),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         ],
-                      );
-                    },
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 14),
-                HoldToConfirmButton(
-                  label: S.of(context).deleteOriginal,
-                  enabled: selected.isNotEmpty && !state.isSaving,
-                  actionStyle: true,
-                  fontSize: 18,
-                  onTap: () => AppSnackBar.show(
-                    sheetContext,
-                    message: S.of(context).holdToDeleteOriginals,
-                  ),
-                  onCompleted: () async =>
-                      Navigator.of(sheetContext).pop(Set.of(selected)),
+                AppActionButton(
+                  width: double.infinity,
+                  label: S.of(context).save,
+                  variant: AppActionButtonVariant.filled,
+                  fontSize: 20,
+                  onPressed: state.isSaving
+                      ? null
+                      : () => Navigator.of(sheetContext).pop(Set.of(selected)),
                 ),
               ],
             ),
@@ -395,11 +378,11 @@ class CompressionResultView extends StatelessWidget {
     if (!context.mounted || identifiers == null) return;
     context.read<CompressBloc>().add(
       CompressResultsSaved(
-        deleteOriginals: true,
+        deleteOriginals: identifiers.isNotEmpty,
         deleteSourceIdentifiers: identifiers,
       ),
     );
   }
 }
 
-enum _ResultMoreAction { compare, deleteOriginals }
+enum _ResultMoreAction { compare }

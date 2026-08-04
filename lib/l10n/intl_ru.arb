@@ -72,6 +72,8 @@
       }
     }
   },
+  "deleteOriginalsAfterSaving": "удалять оригиналы после сохранения",
+  "deleteOriginalsAfterSavingDescription": "удаляет выбранные оригиналы только после сохранения сжатых видео",
   "preventScreenSleep": "не выключать экран",
   "preventScreenSleepDescription": "не даёт экрану уснуть, пока видео сжимаются",
   "clearCache": "очистка кеша",

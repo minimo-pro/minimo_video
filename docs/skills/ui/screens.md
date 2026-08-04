@@ -34,8 +34,8 @@ On a successful result:
 | Placement | Actions |
 |---|---|
 | Bottom row | Icon-only share, filled primary save, icon-only more |
-| More sheet (`showAppContentSheet`) | Compare, delete original |
-| Original-management sheet | Per-video delete selection for multi-video results; unavailable originals are greyed out |
+| More sheet (`showAppContentSheet`) | Compare |
+| Save sheet | Per-video delete selection before saving; unavailable originals are greyed out |
 
 Failed compression replaces save with retry and keeps the more menu. Already-optimized results keep the more menu without a primary filled action.
 

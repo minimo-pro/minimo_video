@@ -125,6 +125,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "использовать темное оформление",
     ),
     "deleteOriginal": MessageLookupByLibrary.simpleMessage("удалить оригинал"),
+    "deleteOriginalsAfterSaving": MessageLookupByLibrary.simpleMessage(
+      "удалять оригиналы после сохранения",
+    ),
+    "deleteOriginalsAfterSavingDescription":
+        MessageLookupByLibrary.simpleMessage(
+          "удаляет выбранные оригиналы только после сохранения сжатых видео",
+        ),
     "emailCopied": MessageLookupByLibrary.simpleMessage("почта скопирована"),
     "english": MessageLookupByLibrary.simpleMessage("english"),
     "estimatingTimeRemaining": MessageLookupByLibrary.simpleMessage(

@@ -364,6 +364,26 @@ class S {
     );
   }
 
+  /// `delete originals after saving`
+  String get deleteOriginalsAfterSaving {
+    return Intl.message(
+      'delete originals after saving',
+      name: 'deleteOriginalsAfterSaving',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `deletes selected originals only after compressed videos are saved`
+  String get deleteOriginalsAfterSavingDescription {
+    return Intl.message(
+      'deletes selected originals only after compressed videos are saved',
+      name: 'deleteOriginalsAfterSavingDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `keep screen awake`
   String get preventScreenSleep {
     return Intl.message(
