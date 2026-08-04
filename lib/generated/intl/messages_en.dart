@@ -125,12 +125,22 @@ class MessageLookup extends MessageLookupByLibrary {
       "use the dark appearance",
     ),
     "deleteOriginal": MessageLookupByLibrary.simpleMessage("delete original"),
+    "deleteOriginalsAfterSaving": MessageLookupByLibrary.simpleMessage(
+      "delete originals after saving",
+    ),
+    "deleteOriginalsAfterSavingDescription":
+        MessageLookupByLibrary.simpleMessage(
+          "deletes selected originals only after compressed videos are saved",
+        ),
     "emailCopied": MessageLookupByLibrary.simpleMessage("email copied"),
     "english": MessageLookupByLibrary.simpleMessage("english"),
     "estimatingTimeRemaining": MessageLookupByLibrary.simpleMessage(
       "estimating time remaining...",
     ),
     "failed": MessageLookupByLibrary.simpleMessage("failed"),
+    "failedToPickVideos": MessageLookupByLibrary.simpleMessage(
+      "choose a video file",
+    ),
     "failedToSave": m3,
     "failedToShare": m4,
     "getStarted": MessageLookupByLibrary.simpleMessage("get started"),

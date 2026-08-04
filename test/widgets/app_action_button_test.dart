@@ -5,7 +5,7 @@ import 'package:minimo_video/theme/app_theme.dart';
 import 'package:minimo_video/widgets/app_action_button.dart';
 
 void main() {
-  for (final icon in [AppIcons.arrowBack, AppIcons.share, AppIcons.more]) {
+  for (final icon in [AppIcons.arrowBack, AppIcons.share, AppIcons.settings]) {
     testWidgets('icon-only action fits a 47px button: $icon', (tester) async {
       await tester.pumpWidget(
         MaterialApp(

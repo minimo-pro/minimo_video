@@ -194,6 +194,13 @@ class _SavingFileAdapter extends VideoFileAdapter {
   }
 }
 
+class _FailingSaveFileAdapter extends _SavingFileAdapter {
+  @override
+  Future<void> saveToGallery(String filePath, {String? album}) async {
+    throw StateError('gallery unavailable');
+  }
+}
+
 class _FakeScreenAwakeService extends ScreenAwakeService {
   final calls = <bool>[];
 
@@ -386,6 +393,7 @@ void main() {
           name: 'video.mp4',
           size: 100,
           sourceIdentifier: 'photos-id',
+          canDeleteOriginal: true,
         ),
       ],
       videoFileAdapter: files,
@@ -400,6 +408,98 @@ void main() {
     await bloc.stream.firstWhere((state) => state.deletedOriginalCount == 1);
 
     expect(files.deletedIdentifiers, ['photos-id']);
+    await bloc.close();
+  });
+
+  test('does not delete originals when saving fails', () async {
+    final files = _FailingSaveFileAdapter();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(
+          path: '/ok.mp4',
+          name: 'video.mp4',
+          size: 100,
+          sourceIdentifier: 'photos-id',
+          canDeleteOriginal: true,
+        ),
+      ],
+      videoFileAdapter: files,
+      videoCompressorAdapter: _MixedCompressor(),
+    );
+
+    bloc.add(const CompressStarted());
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+    bloc.add(const CompressResultsSaved(deleteOriginals: true));
+    await bloc.stream.firstWhere((state) => state.saveError != null);
+
+    expect(files.deletedIdentifiers, isEmpty);
+    await bloc.close();
+  });
+
+  test('does not delete originals without delete capability', () async {
+    final files = _SavingFileAdapter();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(
+          path: '/ok.mp4',
+          name: 'video.mp4',
+          size: 100,
+          sourceIdentifier: 'picker-uri',
+        ),
+      ],
+      videoFileAdapter: files,
+      videoCompressorAdapter: _MixedCompressor(),
+    );
+
+    bloc.add(const CompressStarted());
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+    bloc.add(const CompressResultsSaved(deleteOriginals: true));
+    await bloc.stream.firstWhere((state) => state.deleteError != null);
+
+    expect(files.deletedIdentifiers, isEmpty);
+    await bloc.close();
+  });
+
+  test('deletes only selected original identifiers', () async {
+    final files = _SavingFileAdapter();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(
+          path: '/ok-one.mp4',
+          name: 'one.mp4',
+          size: 100,
+          sourceIdentifier: 'one-id',
+          canDeleteOriginal: true,
+        ),
+        PickedVideo(
+          path: '/ok-two.mp4',
+          name: 'two.mp4',
+          size: 100,
+          sourceIdentifier: 'two-id',
+          canDeleteOriginal: true,
+        ),
+      ],
+      videoFileAdapter: files,
+      videoCompressorAdapter: _MixedCompressor(),
+    );
+
+    bloc.add(const CompressStarted());
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+    bloc.add(
+      const CompressResultsSaved(
+        deleteOriginals: true,
+        deleteSourceIdentifiers: {'two-id'},
+      ),
+    );
+    await bloc.stream.firstWhere((state) => state.deletedOriginalCount == 1);
+
+    expect(files.deletedIdentifiers, ['two-id']);
     await bloc.close();
   });
 

@@ -38,7 +38,7 @@ When rendering icons inside `AppActionButton`, the SVG is wrapped in a fixed `Si
 | `AppActionButton` | Primary/secondary screen actions (`filled`, `outlined`, `text`) |
 | `AppSnackBar` | Success, error, and instruction messages |
 | `FadedScrollView` | Clamped scroll with static alpha-only edge fading |
-| `showAppSheet` / `showAppContentSheet` | Modal sheets with scroll-to-drag dismissal |
+| `showAppSheet` / `showAppContentSheet` | Modal sheets with shared drag handle and scroll-to-drag dismissal |
 | `AppOptionPicker` | Compact option selection |
 | `AnimatedAssetCheckbox` | Custom settings checkbox |
 

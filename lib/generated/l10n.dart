@@ -364,6 +364,26 @@ class S {
     );
   }
 
+  /// `delete originals after saving`
+  String get deleteOriginalsAfterSaving {
+    return Intl.message(
+      'delete originals after saving',
+      name: 'deleteOriginalsAfterSaving',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `deletes selected originals only after compressed videos are saved`
+  String get deleteOriginalsAfterSavingDescription {
+    return Intl.message(
+      'deletes selected originals only after compressed videos are saved',
+      name: 'deleteOriginalsAfterSavingDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `keep screen awake`
   String get preventScreenSleep {
     return Intl.message(
@@ -748,6 +768,16 @@ class S {
     return Intl.message(
       'large or numerous files may take longer to load',
       name: 'loadingManyVideosHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `choose a video file`
+  String get failedToPickVideos {
+    return Intl.message(
+      'choose a video file',
+      name: 'failedToPickVideos',
       desc: '',
       args: [],
     );

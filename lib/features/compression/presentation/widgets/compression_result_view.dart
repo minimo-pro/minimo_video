@@ -4,12 +4,14 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../constants/app_icons.dart';
 import '../../../../generated/l10n.dart';
+import '../../../../services/app_settings_service.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../widgets/animated_asset_checkbox.dart';
 import '../../../../widgets/app_action_button.dart';
 import '../../../../widgets/app_sheet.dart';
 import '../../../../widgets/app_snack_bar.dart';
-import '../../../../widgets/hold_to_confirm_button.dart';
+import '../../../../widgets/faded_scroll_view.dart';
 import '../../bloc/compress_bloc.dart';
 import '../../bloc/compress_event.dart';
 import '../../bloc/compress_state.dart';
@@ -122,19 +124,19 @@ class CompressionResultView extends StatelessWidget {
                 SizedBox(height: compact ? 8 : 12),
                 Row(
                   children: [
-                    if (!allFailed) ...[
-                      Tooltip(
-                        message: strings.share,
-                        child: AppActionButton(
-                          width: 47,
-                          icon: AppIcons.share,
-                          iconWidth: 22,
-                          iconHeight: 22,
-                          onPressed: () => _shareResults(context),
-                        ),
+                    Tooltip(
+                      message: strings.compareVideos,
+                      child: AppActionButton(
+                        width: 47,
+                        label: 'VS',
+                        fontSize: 16,
+                        padding: EdgeInsets.zero,
+                        onPressed: allFailed
+                            ? null
+                            : () => _showComparison(context),
                       ),
-                      SizedBox(width: buttonGap),
-                    ],
+                    ),
+                    SizedBox(width: buttonGap),
                     if (!alreadyOptimized)
                       Expanded(
                         child: AppActionButton(
@@ -146,31 +148,24 @@ class CompressionResultView extends StatelessWidget {
                               ? null
                               : allFailed
                               ? onTryAgain
-                              : () => context.read<CompressBloc>().add(
-                                  const CompressResultsSaved(
-                                    deleteOriginals: false,
-                                  ),
-                                ),
+                              : () => _showSaveOptions(context),
                         ),
                       )
                     else
                       const Spacer(),
-                    SizedBox(width: buttonGap),
-                    Tooltip(
-                      message: MaterialLocalizations.of(
-                        context,
-                      ).moreButtonTooltip,
-                      child: AppActionButton(
-                        width: 47,
-                        icon: AppIcons.more,
-                        iconWidth: 24,
-                        iconHeight: 24,
-                        onPressed: () => _showMoreActions(
-                          context,
-                          showComparison: !allFailed,
+                    if (!allFailed) ...[
+                      SizedBox(width: buttonGap),
+                      Tooltip(
+                        message: strings.share,
+                        child: AppActionButton(
+                          width: 47,
+                          icon: AppIcons.share,
+                          iconWidth: 22,
+                          iconHeight: 22,
+                          onPressed: () => _shareResults(context),
                         ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ],
@@ -208,45 +203,125 @@ class CompressionResultView extends StatelessWidget {
     }
   }
 
-  Future<void> _showMoreActions(
-    BuildContext context, {
-    required bool showComparison,
-  }) async {
-    final strings = S.of(context);
-    final action = await showAppContentSheet<_ResultMoreAction>(
+  void _showComparison(BuildContext context) {
+    showAppSheet(
       context: context,
+      heightFraction: 0.86,
       backgroundColor: Theme.of(context).colorScheme.surface,
-      child: Builder(
-        builder: (sheetContext) => SafeArea(
+      child: CompressionComparisonSheet(results: state.successResults),
+    );
+  }
+
+  Future<void> _showSaveOptions(BuildContext context) async {
+    final deleteByDefault =
+        AppSettingsService.instance.deleteOriginalsAfterSaving;
+    final selected = deleteByDefault
+        ? state.successResults
+              .where((item) => item.source.canDeleteOriginal)
+              .map((item) => item.source.sourceIdentifier)
+              .whereType<String>()
+              .toSet()
+        : <String>{};
+    final identifiers = await showAppSheet<Set<String>>(
+      context: context,
+      heightFraction: 0.72,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      child: StatefulBuilder(
+        builder: (sheetContext, setSheetState) => SafeArea(
           top: false,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(22, 20, 22, 14),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                if (showComparison) ...[
-                  AppActionButton(
-                    width: double.infinity,
-                    label: strings.compareVideos,
-                    fontSize: 20,
-                    onPressed: () => Navigator.of(
-                      sheetContext,
-                    ).pop(_ResultMoreAction.compare),
+                Text(
+                  S.of(context).deleteOriginalsAfterSaving,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 14),
+                Expanded(
+                  child: FadedScrollView(
+                    fadeExtent: 0.08,
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Column(
+                      children: [
+                        for (
+                          var index = 0;
+                          index < state.successResults.length;
+                          index++
+                        ) ...[
+                          if (index > 0) const SizedBox(height: 10),
+                          Builder(
+                            builder: (context) {
+                              final source = state.successResults[index].source;
+                              final identifier = source.sourceIdentifier;
+                              final canDelete =
+                                  source.canDeleteOriginal &&
+                                  identifier != null;
+                              final checked =
+                                  canDelete && selected.contains(identifier);
+                              final rowColor = Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(alpha: canDelete ? 1 : 0.38);
+                              final metaColor = Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant
+                                  .withValues(alpha: canDelete ? 1 : 0.5);
+                              return Row(
+                                children: [
+                                  Opacity(
+                                    opacity: canDelete ? 1 : 0.35,
+                                    child: AnimatedAssetCheckbox(
+                                      value: checked,
+                                      onChanged: canDelete
+                                          ? (value) => setSheetState(() {
+                                              if (value) {
+                                                selected.add(identifier);
+                                              } else {
+                                                selected.remove(identifier);
+                                              }
+                                            })
+                                          : (_) {},
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      source.name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(color: rowColor),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    canDelete
+                                        ? S.of(context).deleteOriginal
+                                        : S.of(context).original,
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(color: metaColor),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                ],
-                HoldToConfirmButton(
-                  label: strings.deleteOriginal,
-                  enabled: !state.isSaving,
-                  actionStyle: true,
-                  fontSize: 18,
-                  onTap: () => AppSnackBar.show(
-                    sheetContext,
-                    message: strings.holdToDeleteOriginals,
-                  ),
-                  onCompleted: () async => Navigator.of(
-                    sheetContext,
-                  ).pop(_ResultMoreAction.deleteOriginals),
+                ),
+                const SizedBox(height: 14),
+                AppActionButton(
+                  width: double.infinity,
+                  label: S.of(context).save,
+                  variant: AppActionButtonVariant.filled,
+                  fontSize: 20,
+                  onPressed: state.isSaving
+                      ? null
+                      : () => Navigator.of(sheetContext).pop(Set.of(selected)),
                 ),
               ],
             ),
@@ -255,28 +330,12 @@ class CompressionResultView extends StatelessWidget {
       ),
     );
 
-    if (!context.mounted || action == null) return;
-    switch (action) {
-      case _ResultMoreAction.compare:
-        _showComparison(context);
-        return;
-      case _ResultMoreAction.deleteOriginals:
-        context.read<CompressBloc>().add(
-          const CompressResultsSaved(deleteOriginals: true),
-        );
-        return;
-    }
-  }
-
-  void _showComparison(BuildContext context) {
-    showAppSheet(
-      context: context,
-      heightFraction: 0.86,
-      showDragHandle: false,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      child: CompressionComparisonSheet(results: state.successResults),
+    if (!context.mounted || identifiers == null) return;
+    context.read<CompressBloc>().add(
+      CompressResultsSaved(
+        deleteOriginals: identifiers.isNotEmpty,
+        deleteSourceIdentifiers: identifiers,
+      ),
     );
   }
 }
-
-enum _ResultMoreAction { compare, deleteOriginals }

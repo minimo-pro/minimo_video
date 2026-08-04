@@ -59,6 +59,7 @@ Future<T?> showAppSheet<T>({
 Future<T?> showAppContentSheet<T>({
   required BuildContext context,
   required Widget child,
+  bool showDragHandle = true,
   Color? backgroundColor,
   ShapeBorder shape = const RoundedRectangleBorder(
     borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -78,7 +79,13 @@ Future<T?> showAppContentSheet<T>({
               clipBehavior: Clip.antiAlias,
               child: Material(
                 type: MaterialType.transparency,
-                child: child,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (showDragHandle) const _SheetDragHandle(),
+                    child,
+                  ],
+                ),
               ),
             );
           },

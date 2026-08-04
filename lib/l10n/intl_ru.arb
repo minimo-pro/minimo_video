@@ -72,6 +72,8 @@
       }
     }
   },
+  "deleteOriginalsAfterSaving": "удалять оригиналы после сохранения",
+  "deleteOriginalsAfterSavingDescription": "удаляет выбранные оригиналы только после сохранения сжатых видео",
   "preventScreenSleep": "не выключать экран",
   "preventScreenSleepDescription": "не даёт экрану уснуть, пока видео сжимаются",
   "clearCache": "очистка кеша",
@@ -136,6 +138,7 @@
   "pickFromFiles": "из файлов",
   "loadingVideos": "загрузка видео...",
   "loadingManyVideosHint": "загрузка большого количества или крупных файлов может занять больше времени",
+  "failedToPickVideos": "выберите видеофайл",
   "compressionComplete": "сжатие завершено",
   "compressionCompleted": "сжатие завершено",
   "compressionFailed": "не удалось сжать видео",

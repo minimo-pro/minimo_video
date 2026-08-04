@@ -15,7 +15,7 @@ Future<VideoPickSource?> showVideoPickSourceSheet(BuildContext context) {
         return SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(22, 20, 22, 14),
+            padding: const EdgeInsets.fromLTRB(22, 12, 22, 14),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -23,18 +23,16 @@ Future<VideoPickSource?> showVideoPickSourceSheet(BuildContext context) {
                   width: double.infinity,
                   label: strings.pickFromGallery,
                   fontSize: 20,
-                  onPressed: () => Navigator.of(
-                    sheetContext,
-                  ).pop(VideoPickSource.gallery),
+                  onPressed: () =>
+                      Navigator.of(sheetContext).pop(VideoPickSource.gallery),
                 ),
                 const SizedBox(height: 10),
                 AppActionButton(
                   width: double.infinity,
                   label: strings.pickFromFiles,
                   fontSize: 20,
-                  onPressed: () => Navigator.of(
-                    sheetContext,
-                  ).pop(VideoPickSource.files),
+                  onPressed: () =>
+                      Navigator.of(sheetContext).pop(VideoPickSource.files),
                 ),
               ],
             ),

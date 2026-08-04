@@ -72,6 +72,8 @@
       }
     }
   },
+  "deleteOriginalsAfterSaving": "delete originals after saving",
+  "deleteOriginalsAfterSavingDescription": "deletes selected originals only after compressed videos are saved",
   "preventScreenSleep": "keep screen awake",
   "preventScreenSleepDescription": "prevents the screen from sleeping while videos are compressing",
   "clearCache": "clear cache",
@@ -136,6 +138,7 @@
   "pickFromFiles": "from files",
   "loadingVideos": "loading videos...",
   "loadingManyVideosHint": "large or numerous files may take longer to load",
+  "failedToPickVideos": "choose a video file",
   "compressionComplete": "compression complete",
   "compressionCompleted": "compression completed",
   "compressionFailed": "compression failed",

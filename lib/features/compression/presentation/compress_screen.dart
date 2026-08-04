@@ -199,6 +199,14 @@ class _CompressViewState extends State<_CompressView>
       if (videos.isNotEmpty && mounted) {
         context.read<CompressBloc>().add(CompressVideosAdded(videos));
       }
+    } catch (_) {
+      if (mounted) {
+        AppSnackBar.show(
+          context,
+          message: S.of(context).failedToPickVideos,
+          type: AppSnackBarType.error,
+        );
+      }
     } finally {
       if (mounted) {
         setState(() {

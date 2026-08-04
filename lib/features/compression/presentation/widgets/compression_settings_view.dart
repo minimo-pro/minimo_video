@@ -108,7 +108,7 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
                     onNotification: _onScroll,
                     child: FadedScrollView(
                       fadeExtent: 0.08,
-                      padding: EdgeInsets.symmetric(vertical: compact ? 4 : 10),
+                      padding: EdgeInsets.symmetric(vertical: compact ? 4 : 6),
                       child: Column(
                         children: [
                           SelectedVideosSummary(
@@ -179,8 +179,9 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
         const SizedBox(height: 12),
         CompressionBottomActions(
           onAdd: widget.onAddVideos,
-          onCompress: () =>
-              context.read<CompressBloc>().add(const CompressStarted()),
+          onCompress: savingsPercent == 0
+              ? null
+              : () => context.read<CompressBloc>().add(const CompressStarted()),
         ),
       ],
     );

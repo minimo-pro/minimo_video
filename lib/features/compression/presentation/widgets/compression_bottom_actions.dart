@@ -6,12 +6,12 @@ import '../../../../widgets/app_action_button.dart';
 
 class CompressionBottomActions extends StatelessWidget {
   final VoidCallback onAdd;
-  final VoidCallback onCompress;
+  final VoidCallback? onCompress;
 
   const CompressionBottomActions({
     super.key,
     required this.onAdd,
-    required this.onCompress,
+    this.onCompress,
   });
 
   @override

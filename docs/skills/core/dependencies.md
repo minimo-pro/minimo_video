@@ -4,7 +4,7 @@
 
 | Package | Purpose |
 |---|---|
-| `light_compressor_v2` `1.8.2` | Native video compression, metadata, and progress stream |
+| `light_compressor_v2` | Native video compression, metadata, and progress stream |
 | `flutter_bloc` | Compression state orchestration |
 | `auto_route` | Typed navigation |
 | `shared_preferences` | Settings and onboarding state |
