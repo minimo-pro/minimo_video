@@ -66,7 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("about"),
     "aboutStory": MessageLookupByLibrary.simpleMessage(
-      "minimo (video) was born from a simple frustration. i love sports and often watch short match clips shared by clubs and telegram channels. even a few seconds of video can take up far more space than they should.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.",
+      "minimo (video) was born from a simple frustration.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.",
     ),
     "addPrefix": m0,
     "addPrefixDescription": m1,
@@ -260,7 +260,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "smaller": MessageLookupByLibrary.simpleMessage("smaller"),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "system": MessageLookupByLibrary.simpleMessage("system"),
-    "telegram": MessageLookupByLibrary.simpleMessage("telegram"),
     "todo": MessageLookupByLibrary.simpleMessage("TODO"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("try again"),
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
