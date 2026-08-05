@@ -154,10 +154,10 @@ class S {
     return Intl.message('about', name: 'about', desc: '', args: []);
   }
 
-  /// `minimo (video) was born from a simple frustration. i love sports and often watch short match clips shared by clubs and telegram channels. even a few seconds of video can take up far more space than they should.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.`
+  /// `minimo (video) was born from a simple frustration.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.`
   String get aboutStory {
     return Intl.message(
-      'minimo (video) was born from a simple frustration. i love sports and often watch short match clips shared by clubs and telegram channels. even a few seconds of video can take up far more space than they should.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.',
+      'minimo (video) was born from a simple frustration.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.',
       name: 'aboutStory',
       desc: '',
       args: [],
@@ -252,11 +252,6 @@ class S {
       desc: '',
       args: [],
     );
-  }
-
-  /// `telegram`
-  String get telegram {
-    return Intl.message('telegram', name: 'telegram', desc: '', args: []);
   }
 
   /// `github repository`

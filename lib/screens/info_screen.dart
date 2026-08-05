@@ -35,7 +35,6 @@ class InfoScreen extends StatelessWidget {
   );
   static final _links = <String, Uri>{
     'project': Uri.parse('https://github.com/minimo-pro'),
-    'telegram': Uri.parse('https://t.me/khlebobul_dev'),
     'github': Uri.parse('https://github.com/minimo-pro/minimo_video'),
     'x': Uri.parse('https://x.com/khlebobul'),
   };
