@@ -55,7 +55,7 @@ Future<T?> showAppSheet<T>({
   );
 }
 
-/// Content-sized sheet (changelog-style). Still gets scroll-to-dismiss handoff.
+/// Content-sized sheet with scroll-to-dismiss handoff.
 Future<T?> showAppContentSheet<T>({
   required BuildContext context,
   required Widget child,

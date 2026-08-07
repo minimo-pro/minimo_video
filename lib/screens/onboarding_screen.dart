@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../constants/app_icons.dart';
 import '../generated/l10n.dart';
 import '../router/app_router.gr.dart';
-import '../services/changelog_service.dart';
 import '../services/first_launch_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_action_button.dart';
@@ -33,7 +32,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (_finishing) return;
     setState(() => _finishing = true);
     await FirstLaunchService.completeOnboarding();
-    await ChangelogService.instance.markCurrentVersionSeen();
     if (mounted) {
       context.router.replace(const StartRoute());
     }

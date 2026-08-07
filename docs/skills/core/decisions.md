@@ -40,7 +40,7 @@ Picked and compressed files live in app cache until saved/shared. Originals are 
 
 ## Sheets via `stupid_simple_sheet`
 
-Settings, info, changelog, and comparison use `StupidSimpleSheetRoute` (through `showAppSheet` / `showAppContentSheet`) instead of `showModalBottomSheet`. Material's modal sheet does not hand a downward swipe from a list at its top edge over to sheet dismissal; users expect that native behavior. Small pickers without nested scrolling (e.g. language) may still use `showModalBottomSheet`.
+Settings, info, and comparison use `StupidSimpleSheetRoute` (through `showAppSheet` / `showAppContentSheet`) instead of `showModalBottomSheet`. Material's modal sheet does not hand a downward swipe from a list at its top edge over to sheet dismissal; users expect that native behavior. Small pickers without nested scrolling (e.g. language) may still use `showModalBottomSheet`.
 
 ---
 

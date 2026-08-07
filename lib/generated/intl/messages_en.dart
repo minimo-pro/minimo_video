@@ -25,42 +25,37 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(prefix) =>
       "adds \"${prefix}\" before the original file name. disabling keeps the original file name";
 
-  static String m2(version) => "what\'s new in ${version}";
+  static String m2(error) => "failed to save: ${error}";
 
-  static String m3(error) => "failed to save: ${error}";
+  static String m3(error) => "failed to share: ${error}";
 
-  static String m4(error) => "failed to share: ${error}";
-
-  static String m5(count) =>
+  static String m4(count) =>
       "${Intl.plural(count, one: 'about 1 minute left', other: 'about ${count} minutes left')}";
 
-  static String m6(count) =>
+  static String m5(count) =>
       "${Intl.plural(count, one: 'save 1 video', other: 'save ${count} videos')}";
 
-  static String m7(album) =>
+  static String m6(album) =>
       "saves compressed videos to the ${album} album instead of recently saved";
 
-  static String m8(error) =>
+  static String m7(error) =>
       "videos saved, but some originals could not be deleted: ${error}";
 
-  static String m9(saved, deleted) =>
+  static String m8(saved, deleted) =>
       "saved ${saved} video(s) and deleted ${deleted} original(s)";
 
-  static String m10(count) =>
+  static String m9(count) =>
       "${Intl.plural(count, one: 'saved 1 video to gallery', other: 'saved ${count} videos to gallery')}";
 
-  static String m11(count) =>
+  static String m10(count) =>
       "${Intl.plural(count, one: 'about 1 second left', other: 'about ${count} seconds left')}";
 
-  static String m12(url) =>
-      "try minimo (video) — a simple app for making videos smaller on your phone: ${url}";
+  static String m11(current, total) => "video ${current} of ${total}";
 
-  static String m13(current, total) => "video ${current} of ${total}";
-
-  static String m14(completed, total) =>
+  static String m12(completed, total) =>
       "${completed} of ${total} videos compressed";
 
-  static String m15(size) => "you saved ${size}";
+  static String m13(size) => "you saved ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -91,11 +86,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cacheCleared": MessageLookupByLibrary.simpleMessage("cache cleared"),
     "cancel": MessageLookupByLibrary.simpleMessage("cancel"),
-    "changelogDone": MessageLookupByLibrary.simpleMessage("got it"),
-    "changelogSubtitle": MessageLookupByLibrary.simpleMessage(
-      "changes from updates you have not seen yet",
-    ),
-    "changelogTitle": m2,
     "clearCache": MessageLookupByLibrary.simpleMessage("clear cache"),
     "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
       "removes temporary app files. videos saved to your gallery remain untouched",
@@ -141,8 +131,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToPickVideos": MessageLookupByLibrary.simpleMessage(
       "choose a video file",
     ),
-    "failedToSave": m3,
-    "failedToShare": m4,
+    "failedToSave": m2,
+    "failedToShare": m3,
     "getStarted": MessageLookupByLibrary.simpleMessage("get started"),
     "githubRepository": MessageLookupByLibrary.simpleMessage(
       "github repository",
@@ -178,7 +168,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "low": MessageLookupByLibrary.simpleMessage("low"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("medium"),
-    "minutesRemaining": m5,
+    "minutesRemaining": m4,
     "myOtherApps": MessageLookupByLibrary.simpleMessage("my other apps"),
     "myWebsite": MessageLookupByLibrary.simpleMessage("my website"),
     "next": MessageLookupByLibrary.simpleMessage("next"),
@@ -220,7 +210,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("project website"),
     "quality": MessageLookupByLibrary.simpleMessage("quality"),
-    "rateTheApp": MessageLookupByLibrary.simpleMessage("rate the app"),
     "resolution": MessageLookupByLibrary.simpleMessage("resolution"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "reduce dimensions for the biggest size savings",
@@ -233,21 +222,17 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "russian": MessageLookupByLibrary.simpleMessage("русский"),
     "save": MessageLookupByLibrary.simpleMessage("save"),
-    "saveVideos": m6,
+    "saveVideos": m5,
     "saveVideosToAlbum": MessageLookupByLibrary.simpleMessage(
       "save videos to album",
     ),
-    "saveVideosToAlbumDescription": m7,
-    "savedButOriginalsNotDeleted": m8,
-    "savedVideosAndDeletedOriginals": m9,
-    "savedVideosToGallery": m10,
-    "secondsRemaining": m11,
+    "saveVideosToAlbumDescription": m6,
+    "savedButOriginalsNotDeleted": m7,
+    "savedVideosAndDeletedOriginals": m8,
+    "savedVideosToGallery": m9,
+    "secondsRemaining": m10,
     "settings": MessageLookupByLibrary.simpleMessage("settings"),
     "share": MessageLookupByLibrary.simpleMessage("share"),
-    "shareAppText": m12,
-    "shareWithFriends": MessageLookupByLibrary.simpleMessage(
-      "share with friends",
-    ),
     "showOverheatWarning": MessageLookupByLibrary.simpleMessage(
       "show overheat warning",
     ),
@@ -265,10 +250,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "preview unavailable",
     ),
-    "videoProgress": m13,
-    "videosCompressed": m14,
+    "videoProgress": m11,
+    "videosCompressed": m12,
     "waiting": MessageLookupByLibrary.simpleMessage("waiting"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m15,
+    "youSavedSize": m13,
   };
 }

@@ -25,42 +25,37 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(prefix) =>
       "добавляет \"${prefix}\" перед исходным именем файла. если выключить, имя останется исходным";
 
-  static String m2(version) => "что нового в ${version}";
+  static String m2(error) => "не удалось сохранить: ${error}";
 
-  static String m3(error) => "не удалось сохранить: ${error}";
+  static String m3(error) => "не удалось поделиться: ${error}";
 
-  static String m4(error) => "не удалось поделиться: ${error}";
-
-  static String m5(count) =>
+  static String m4(count) =>
       "${Intl.plural(count, one: 'осталась примерно 1 минута', few: 'осталось примерно ${count} минуты', many: 'осталось примерно ${count} минут', other: 'осталось примерно ${count} минуты')}";
 
-  static String m6(count) =>
+  static String m5(count) =>
       "${Intl.plural(count, one: 'сохранить 1 видео', few: 'сохранить ${count} видео', many: 'сохранить ${count} видео', other: 'сохранить ${count} видео')}";
 
-  static String m7(album) =>
+  static String m6(album) =>
       "сохраняет сжатые видео в альбом ${album} вместо недавних сохранений";
 
-  static String m8(error) =>
+  static String m7(error) =>
       "видео сохранены, но некоторые оригиналы удалить не удалось: ${error}";
 
-  static String m9(saved, deleted) =>
+  static String m8(saved, deleted) =>
       "сохранено видео: ${saved}, удалено оригиналов: ${deleted}";
 
-  static String m10(count) =>
+  static String m9(count) =>
       "${Intl.plural(count, one: '1 видео сохранено в галерею', few: '${count} видео сохранено в галерею', many: '${count} видео сохранено в галерею', other: '${count} видео сохранено в галерею')}";
 
-  static String m11(count) =>
+  static String m10(count) =>
       "${Intl.plural(count, one: 'осталась примерно 1 секунда', few: 'осталось примерно ${count} секунды', many: 'осталось примерно ${count} секунд', other: 'осталось примерно ${count} секунды')}";
 
-  static String m12(url) =>
-      "попробуй minimo (video) — простое приложение, чтобы сжимать видео прямо на телефоне: ${url}";
+  static String m11(current, total) => "видео ${current} из ${total}";
 
-  static String m13(current, total) => "видео ${current} из ${total}";
-
-  static String m14(completed, total) =>
+  static String m12(completed, total) =>
       "сжато видео: ${completed} из ${total}";
 
-  static String m15(size) => "экономия ${size}";
+  static String m13(size) => "экономия ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -91,11 +86,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cacheCleared": MessageLookupByLibrary.simpleMessage("кеш очищен"),
     "cancel": MessageLookupByLibrary.simpleMessage("отмена"),
-    "changelogDone": MessageLookupByLibrary.simpleMessage("понятно"),
-    "changelogSubtitle": MessageLookupByLibrary.simpleMessage(
-      "изменения из обновлений, которые вы ещё не видели",
-    ),
-    "changelogTitle": m2,
     "clearCache": MessageLookupByLibrary.simpleMessage("очистка кеша"),
     "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
       "удаляет временные файлы приложения. видео в галерее останутся",
@@ -141,8 +131,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToPickVideos": MessageLookupByLibrary.simpleMessage(
       "выберите видеофайл",
     ),
-    "failedToSave": m3,
-    "failedToShare": m4,
+    "failedToSave": m2,
+    "failedToShare": m3,
     "getStarted": MessageLookupByLibrary.simpleMessage("начать"),
     "githubRepository": MessageLookupByLibrary.simpleMessage(
       "репозиторий github",
@@ -178,7 +168,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "low": MessageLookupByLibrary.simpleMessage("низкое"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("среднее"),
-    "minutesRemaining": m5,
+    "minutesRemaining": m4,
     "myOtherApps": MessageLookupByLibrary.simpleMessage(
       "другие мои приложения",
     ),
@@ -224,7 +214,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("сайт проекта"),
     "quality": MessageLookupByLibrary.simpleMessage("качество"),
-    "rateTheApp": MessageLookupByLibrary.simpleMessage("оценить приложение"),
     "resolution": MessageLookupByLibrary.simpleMessage("разрешение"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "уменьшение разрешения сильнее всего сокращает размер",
@@ -237,21 +226,17 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "russian": MessageLookupByLibrary.simpleMessage("русский"),
     "save": MessageLookupByLibrary.simpleMessage("сохранить"),
-    "saveVideos": m6,
+    "saveVideos": m5,
     "saveVideosToAlbum": MessageLookupByLibrary.simpleMessage(
       "сохранять видео в альбом",
     ),
-    "saveVideosToAlbumDescription": m7,
-    "savedButOriginalsNotDeleted": m8,
-    "savedVideosAndDeletedOriginals": m9,
-    "savedVideosToGallery": m10,
-    "secondsRemaining": m11,
+    "saveVideosToAlbumDescription": m6,
+    "savedButOriginalsNotDeleted": m7,
+    "savedVideosAndDeletedOriginals": m8,
+    "savedVideosToGallery": m9,
+    "secondsRemaining": m10,
     "settings": MessageLookupByLibrary.simpleMessage("настройки"),
     "share": MessageLookupByLibrary.simpleMessage("поделиться"),
-    "shareAppText": m12,
-    "shareWithFriends": MessageLookupByLibrary.simpleMessage(
-      "поделиться с друзьями",
-    ),
     "showOverheatWarning": MessageLookupByLibrary.simpleMessage(
       "показывать предупреждение о перегреве",
     ),
@@ -269,10 +254,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "предпросмотр недоступен",
     ),
-    "videoProgress": m13,
-    "videosCompressed": m14,
+    "videoProgress": m11,
+    "videosCompressed": m12,
     "waiting": MessageLookupByLibrary.simpleMessage("ожидает"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m15,
+    "youSavedSize": m13,
   };
 }

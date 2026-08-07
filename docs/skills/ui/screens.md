@@ -6,12 +6,12 @@ Routes use `auto_route` with fade transitions.
 |---|---|
 | `SplashRoute` | Resolve first-launch destination |
 | `OnboardingRoute` | Explain local selection, quality, and privacy |
-| `StartRoute` | Choose gallery or files, select one or more videos, show store update and changelog prompts |
+| `StartRoute` | Choose gallery or files and select one or more videos |
 | `CompressRoute` | Add more videos, configure, run, cancel, save, share, or delete originals |
 | `SettingsRoute` | Filename prefix, thermal warning, save/delete defaults, album, cache, language |
 | `InfoRoute` | App/version information, rating, sharing, and external links |
 
-Settings, info, comparison, and save sheets use fixed-height `showAppSheet` routes via `stupid_simple_sheet`. Compact menus — video source pick and changelog — use content-sized `showAppContentSheet` so Android does not stretch a short action list to a tall fraction of the screen. Both helpers show the shared top drag handle by default. Swiping down at the top of a nested list dismisses the sheet; while the list can scroll, the same gesture scrolls it. Do not wrap sheet content in a custom `ScrollConfiguration` — the package needs Flutter's default scroll behavior for the scroll-to-drag handoff.
+Settings, info, comparison, and save sheets use fixed-height `showAppSheet` routes via `stupid_simple_sheet`. Compact menus such as video source pick use content-sized `showAppContentSheet` so Android does not stretch a short action list to a tall fraction of the screen. Both helpers show the shared top drag handle by default. Swiping down at the top of a nested list dismisses the sheet; while the list can scroll, the same gesture scrolls it. Do not wrap sheet content in a custom `ScrollConfiguration` — the package needs Flutter's default scroll behavior for the scroll-to-drag handoff.
 
 ## Compression Screen Modes
 

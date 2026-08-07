@@ -397,22 +397,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.0"
-  in_app_review:
-    dependency: "direct main"
-    description:
-      name: in_app_review
-      sha256: "364db0c160b37fe7fad9cdaa18f968473924b17368869010af902760421b6bf8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.12"
-  in_app_review_platform_interface:
-    dependency: transitive
-    description:
-      name: in_app_review_platform_interface
-      sha256: fed2c755f2125caa9ae10495a3c163aa7fab5af3585a9c62ef4a6920c5b45f10
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.5"
   intl:
     dependency: "direct main"
     description:
@@ -549,14 +533,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  os_detect:
-    dependency: transitive
-    description:
-      name: os_detect
-      sha256: "7d87c0dd98c6faf110d5aa498e9a6df02ffce4bb78cc9cfc8ad02929be9bb71f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.3"
   package_config:
     dependency: transitive
     description:
@@ -694,7 +670,7 @@ packages:
     source: hosted
     version: "6.1.5+1"
   pub_semver:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: pub_semver
       sha256: "5bfcf68ca79ef689f8990d1160781b4bad40a3bd5e5218ad4076ddb7f4081585"
@@ -898,14 +874,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-  upgrader:
-    dependency: "direct main"
-    description:
-      name: upgrader
-      sha256: "6282524d4b664e48e24736ce343eedd115dcc1ce79198fc0bd46f14692e1f05e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "13.5.0"
   url_launcher:
     dependency: "direct main"
     description:
@@ -1010,14 +978,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
-  version:
-    dependency: transitive
-    description:
-      name: version
-      sha256: "3d4140128e6ea10d83da32fef2fa4003fccbf6852217bb854845802f04191f94"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.2"
   video_player:
     dependency: "direct main"
     description:
