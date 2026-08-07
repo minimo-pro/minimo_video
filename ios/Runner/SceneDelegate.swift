@@ -5,7 +5,7 @@ import PhotosUI
 import UIKit
 import UniformTypeIdentifiers
 
-class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
+class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDocumentPickerDelegate {
   private var pendingPickResult: FlutterResult?
   private var videosChannel: FlutterMethodChannel?
 
@@ -35,7 +35,8 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
     videosChannel.setMethodCallHandler { call, result in
       switch call.method {
       case "pickVideos":
-        self.pickVideos(result)
+        let source = (call.arguments as? [String: Any])?["source"] as? String ?? "gallery"
+        self.pickVideos(source: source, result: result)
       case "deleteOriginals":
         self.deleteOriginals(call.arguments as? [String] ?? [], result: result)
       case "videoInfo":
@@ -63,7 +64,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
       "pickProgress",
       arguments: ["processed": 0, "total": results.count]
     )
-    importVideos(results) { [weak self] videos in
+    importPhotosVideos(results) { [weak self] videos in
       DispatchQueue.main.async {
         self?.pendingPickResult = nil
         print("[VideoPicker] Imported \(videos.count)/\(results.count) videos")
@@ -72,7 +73,45 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
     }
   }
 
-  private func importVideos(
+  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    guard let pendingPickResult else { return }
+
+    if urls.isEmpty {
+      self.pendingPickResult = nil
+      pendingPickResult([])
+      return
+    }
+
+    print("[VideoPicker] Importing \(urls.count) document videos sequentially")
+    videosChannel?.invokeMethod(
+      "pickProgress",
+      arguments: ["processed": 0, "total": urls.count]
+    )
+    importDocumentVideos(urls) { [weak self] result in
+      DispatchQueue.main.async {
+        self?.pendingPickResult = nil
+        switch result {
+        case .success(let videos):
+          print("[VideoPicker] Imported \(videos.count)/\(urls.count) videos")
+          pendingPickResult(videos)
+        case .failure(let error):
+          pendingPickResult(FlutterError(
+            code: "pick_failed",
+            message: error.localizedDescription,
+            details: nil
+          ))
+        }
+      }
+    }
+  }
+
+  func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+    guard let pendingPickResult else { return }
+    self.pendingPickResult = nil
+    pendingPickResult([])
+  }
+
+  private func importPhotosVideos(
     _ results: [PHPickerResult],
     index: Int = 0,
     videos: [[String: Any]] = [],
@@ -104,7 +143,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
             "name": filename,
             "size": size
           ]
-          video["sourceIdentifier"] = item.assetIdentifier
+          if let assetIdentifier = item.assetIdentifier {
+            video["sourceIdentifier"] = assetIdentifier
+            video["canDeleteOriginal"] = true
+          }
           imported.append(video)
         } catch {
           print("[VideoPicker] Failed to copy video \(index + 1): \(error.localizedDescription)")
@@ -120,8 +162,64 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
           arguments: ["processed": index + 1, "total": results.count]
         )
       }
-      self.importVideos(
+      self.importPhotosVideos(
         results,
+        index: index + 1,
+        videos: imported,
+        completion: completion
+      )
+    }
+  }
+
+  private func importDocumentVideos(
+    _ urls: [URL],
+    index: Int = 0,
+    videos: [[String: Any]] = [],
+    completion: @escaping (Result<[[String: Any]], Error>) -> Void
+  ) {
+    guard index < urls.count else {
+      completion(.success(videos))
+      return
+    }
+
+    let url = urls[index]
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      guard let self else {
+        completion(.failure(NSError(
+          domain: "VideoPicker",
+          code: 2,
+          userInfo: [NSLocalizedDescriptionKey: "video picker is unavailable"]
+        )))
+        return
+      }
+
+      var imported = videos
+      do {
+        let filename = url.lastPathComponent.isEmpty ? "video.mov" : url.lastPathComponent
+        let outputURL = try self.copyPickedVideo(from: url, filename: filename)
+        let size = (try? FileManager.default.attributesOfItem(
+          atPath: outputURL.path
+        )[.size] as? NSNumber)?.intValue ?? 0
+        imported.append([
+          "path": outputURL.path,
+          "name": filename,
+          "size": size
+        ])
+      } catch {
+        print("[VideoPicker] Failed to copy document video \(index + 1): \(error.localizedDescription)")
+        completion(.failure(error))
+        return
+      }
+
+      print("[VideoPicker] Processed \(index + 1)/\(urls.count) videos")
+      DispatchQueue.main.async {
+        self.videosChannel?.invokeMethod(
+          "pickProgress",
+          arguments: ["processed": index + 1, "total": urls.count]
+        )
+      }
+      self.importDocumentVideos(
+        urls,
         index: index + 1,
         videos: imported,
         completion: completion
@@ -183,7 +281,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
     }
   }
 
-  private func pickVideos(_ result: @escaping FlutterResult) {
+  private func pickVideos(source: String, result: @escaping FlutterResult) {
     if pendingPickResult != nil {
       result(FlutterError(
         code: "pick_in_progress",
@@ -194,12 +292,30 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
     }
 
     pendingPickResult = result
+    if source == "files" {
+      presentDocumentPicker()
+    } else {
+      presentPhotosPicker()
+    }
+  }
+
+  private func presentPhotosPicker() {
     var configuration = PHPickerConfiguration(photoLibrary: .shared())
     configuration.filter = .videos
     configuration.selectionLimit = 0
     configuration.preferredAssetRepresentationMode = .current
 
     let picker = PHPickerViewController(configuration: configuration)
+    picker.delegate = self
+    window?.rootViewController?.present(picker, animated: true)
+  }
+
+  private func presentDocumentPicker() {
+    let picker = UIDocumentPickerViewController(
+      forOpeningContentTypes: [.movie],
+      asCopy: true
+    )
+    picker.allowsMultipleSelection = true
     picker.delegate = self
     window?.rootViewController?.present(picker, animated: true)
   }
@@ -270,7 +386,19 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate {
     }
 
     try FileManager.default.copyItem(at: sourceURL, to: outputURL)
+    guard isVideoFile(outputURL) else {
+      try? FileManager.default.removeItem(at: outputURL)
+      throw NSError(
+        domain: "VideoPicker",
+        code: 1,
+        userInfo: [NSLocalizedDescriptionKey: "selected file is not a video"]
+      )
+    }
     return outputURL
+  }
+
+  private func isVideoFile(_ url: URL) -> Bool {
+    !AVURLAsset(url: url).tracks(withMediaType: .video).isEmpty
   }
 
   private func sanitizeFilename(_ filename: String) -> String {

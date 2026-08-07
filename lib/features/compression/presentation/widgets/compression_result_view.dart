@@ -4,27 +4,29 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../constants/app_icons.dart';
 import '../../../../generated/l10n.dart';
+import '../../../../services/app_settings_service.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../widgets/animated_asset_checkbox.dart';
 import '../../../../widgets/app_action_button.dart';
+import '../../../../widgets/app_sheet.dart';
 import '../../../../widgets/app_snack_bar.dart';
-import '../../../../widgets/hold_to_confirm_button.dart';
+import '../../../../widgets/faded_scroll_view.dart';
 import '../../bloc/compress_bloc.dart';
 import '../../bloc/compress_event.dart';
 import '../../bloc/compress_state.dart';
+import 'compression_comparison_sheet.dart';
 import 'selected_videos_preview.dart';
 import 'video_status_list.dart';
 
 class CompressionResultView extends StatelessWidget {
   final CompressState state;
   final VoidCallback onTryAgain;
-  final VoidCallback onCompressOtherVideos;
 
   const CompressionResultView({
     super.key,
     required this.state,
     required this.onTryAgain,
-    required this.onCompressOtherVideos,
   });
 
   @override
@@ -114,58 +116,57 @@ class CompressionResultView extends StatelessWidget {
           ),
         ),
         LayoutBuilder(
-          builder: (context, constraints) {
+          builder: (context, _) {
             final compact = MediaQuery.sizeOf(context).height < 720;
-            final buttonGap = compact ? 9.0 : 14.0;
+            final buttonGap = compact ? 8.0 : 10.0;
             return Column(
               children: [
-                SizedBox(height: compact ? 8 : 14),
-                if (allFailed && !alreadyOptimized)
-                  AppActionButton(
-                    width: double.infinity,
-                    label: strings.tryAgain,
-                    variant: AppActionButtonVariant.filled,
-                    onPressed: onTryAgain,
-                  )
-                else ...[
-                  AppActionButton(
-                    width: double.infinity,
-                    label: strings.share,
-                    icon: AppIcons.share,
-                    onPressed: () => _shareResults(context),
-                  ),
-                  SizedBox(height: buttonGap),
-                  AppActionButton(
-                    width: double.infinity,
-                    label: strings.save,
-                    icon: AppIcons.download,
-                    variant: AppActionButtonVariant.filled,
-                    onPressed: state.isSaving
-                        ? null
-                        : () => context.read<CompressBloc>().add(
-                            const CompressResultsSaved(deleteOriginals: false),
-                          ),
-                  ),
-                ],
-                SizedBox(height: buttonGap),
-                HoldToConfirmButton(
-                  label: strings.deleteOriginal,
-                  enabled: !state.isSaving,
-                  actionStyle: true,
-                  onTap: () => AppSnackBar.show(
-                    context,
-                    message: strings.holdToDeleteOriginals,
-                  ),
-                  onCompleted: () async => context.read<CompressBloc>().add(
-                    const CompressResultsSaved(deleteOriginals: true),
-                  ),
-                ),
-                SizedBox(height: buttonGap),
-                AppActionButton(
-                  width: double.infinity,
-                  label: strings.compressOtherVideos,
-                  fontSize: compact ? 20 : 22,
-                  onPressed: onCompressOtherVideos,
+                SizedBox(height: compact ? 8 : 12),
+                Row(
+                  children: [
+                    Tooltip(
+                      message: strings.compareVideos,
+                      child: AppActionButton(
+                        width: 47,
+                        label: 'VS',
+                        fontSize: 16,
+                        padding: EdgeInsets.zero,
+                        onPressed: allFailed
+                            ? null
+                            : () => _showComparison(context),
+                      ),
+                    ),
+                    SizedBox(width: buttonGap),
+                    if (!alreadyOptimized)
+                      Expanded(
+                        child: AppActionButton(
+                          width: double.infinity,
+                          label: allFailed ? strings.tryAgain : strings.save,
+                          fontSize: 20,
+                          variant: AppActionButtonVariant.filled,
+                          onPressed: state.isSaving
+                              ? null
+                              : allFailed
+                              ? onTryAgain
+                              : () => _showSaveOptions(context),
+                        ),
+                      )
+                    else
+                      const Spacer(),
+                    if (!allFailed) ...[
+                      SizedBox(width: buttonGap),
+                      Tooltip(
+                        message: strings.share,
+                        child: AppActionButton(
+                          width: 47,
+                          icon: AppIcons.share,
+                          iconWidth: 22,
+                          iconHeight: 22,
+                          onPressed: () => _shareResults(context),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ],
             );
@@ -200,5 +201,141 @@ class CompressionResultView extends StatelessWidget {
         type: AppSnackBarType.error,
       );
     }
+  }
+
+  void _showComparison(BuildContext context) {
+    showAppSheet(
+      context: context,
+      heightFraction: 0.86,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      child: CompressionComparisonSheet(results: state.successResults),
+    );
+  }
+
+  Future<void> _showSaveOptions(BuildContext context) async {
+    final deleteByDefault =
+        AppSettingsService.instance.deleteOriginalsAfterSaving;
+    final selected = deleteByDefault
+        ? state.successResults
+              .where((item) => item.source.canDeleteOriginal)
+              .map((item) => item.source.sourceIdentifier)
+              .whereType<String>()
+              .toSet()
+        : <String>{};
+    final identifiers = await showAppSheet<Set<String>>(
+      context: context,
+      heightFraction: 0.72,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      child: StatefulBuilder(
+        builder: (sheetContext, setSheetState) => SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(22, 20, 22, 14),
+            child: Column(
+              children: [
+                Text(
+                  S.of(context).deleteOriginalsAfterSaving,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 14),
+                Expanded(
+                  child: FadedScrollView(
+                    fadeExtent: 0.08,
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Column(
+                      children: [
+                        for (
+                          var index = 0;
+                          index < state.successResults.length;
+                          index++
+                        ) ...[
+                          if (index > 0) const SizedBox(height: 10),
+                          Builder(
+                            builder: (context) {
+                              final source = state.successResults[index].source;
+                              final identifier = source.sourceIdentifier;
+                              final canDelete =
+                                  source.canDeleteOriginal &&
+                                  identifier != null;
+                              final checked =
+                                  canDelete && selected.contains(identifier);
+                              final rowColor = Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(alpha: canDelete ? 1 : 0.38);
+                              final metaColor = Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant
+                                  .withValues(alpha: canDelete ? 1 : 0.5);
+                              return Row(
+                                children: [
+                                  Opacity(
+                                    opacity: canDelete ? 1 : 0.35,
+                                    child: AnimatedAssetCheckbox(
+                                      value: checked,
+                                      onChanged: canDelete
+                                          ? (value) => setSheetState(() {
+                                              if (value) {
+                                                selected.add(identifier);
+                                              } else {
+                                                selected.remove(identifier);
+                                              }
+                                            })
+                                          : (_) {},
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      source.name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(color: rowColor),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    canDelete
+                                        ? S.of(context).deleteOriginal
+                                        : S.of(context).original,
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(color: metaColor),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                AppActionButton(
+                  width: double.infinity,
+                  label: S.of(context).save,
+                  variant: AppActionButtonVariant.filled,
+                  fontSize: 20,
+                  onPressed: state.isSaving
+                      ? null
+                      : () => Navigator.of(sheetContext).pop(Set.of(selected)),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    if (!context.mounted || identifiers == null) return;
+    context.read<CompressBloc>().add(
+      CompressResultsSaved(
+        deleteOriginals: identifiers.isNotEmpty,
+        deleteSourceIdentifiers: identifiers,
+      ),
+    );
   }
 }

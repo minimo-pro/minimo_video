@@ -2,13 +2,21 @@
 
 ## Media Selection
 
+The start screen and the compression screen's add-more action show the same source sheet (`from gallery` / `from files`) before opening a native picker. Flutter passes `source` (`gallery` | `files`) to `pickVideos`. Selection from the compression screen is restricted to the pre-compression `ready` state and appends files to the existing batch.
+
 ### iOS
 
-Uses `PHPickerViewController` filtered to videos with unlimited multi-selection. Selected files are imported sequentially to avoid parallel disk/memory pressure. The picker grants access only to selected items and does not require broad library permission.
+- **Gallery:** `PHPickerViewController` filtered to videos with unlimited multi-selection. Preserves Photos `assetIdentifier` and marks the pick deletable.
+- **Files:** `UIDocumentPickerViewController` for `UTType.movie`, multi-selection, `asCopy: true`. No Photos identifier — original deletion is unavailable for these picks.
+
+Selected files are imported sequentially to avoid parallel disk/memory pressure. Neither path requests broad library permission.
 
 ### Android
 
-Uses `ACTION_OPEN_DOCUMENT`, `video/*`, and multi-selection. Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer.
+- **Gallery:** system photo picker (`MediaStore.ACTION_PICK_IMAGES`, `video/*`) on Android 13+; `ACTION_GET_CONTENT` + `video/*` on older versions. Android maps picker/document URIs to MediaStore video URIs when possible so originals can be selected for deletion. Providers that cannot be mapped remain non-deletable.
+- **Files:** `ACTION_OPEN_DOCUMENT`, `video/*`, multi-selection. Document picks are non-deletable.
+
+Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer. After copying, native code verifies that the cached file contains a video track; invalid files are deleted and the pick fails so Flutter shows an error snackbar instead of opening compression. A later add-more pick must not clear `picked_videos`, because the existing batch still references those cached copies; cold-start cleanup owns removal of the directory.
 
 Both platforms report `pickProgress` (`processed`/`total`) over the videos method channel while files are imported.
 
@@ -16,8 +24,9 @@ Both platforms report `pickProgress` (`processed`/`total`) over the videos metho
 
 - Saving uses `gal` and may request add-only gallery permission.
 - iOS original deletion requests Photos read/write authorization only when deletion is confirmed.
-- Android 11+ uses `MediaStore.createDeleteRequest`, which shows the system confirmation UI.
+- Android 11+ uses `MediaStore.createDeleteRequest` only for picks marked deletable, which shows the system confirmation UI.
 - Android versions below 11 report original deletion as unsupported.
+- Flutter carries both `sourceIdentifier` and `canDeleteOriginal`; UI must not infer delete capability from identifier presence alone.
 
 ## Native Metadata
 

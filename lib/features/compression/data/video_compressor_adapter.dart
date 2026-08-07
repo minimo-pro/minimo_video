@@ -48,7 +48,10 @@ class VideoCompressorAdapter {
     void Function(double progress)? onProgress,
   }) async {
     final stopwatch = Stopwatch()..start();
-    final (width, height) = _parseResolution(settings.resolution);
+    final (width, height) = await _targetResolution(
+      inputPath,
+      settings.resolution,
+    );
     final progress = onProgress == null
         ? null
         : _compressor.onProgressUpdated.listen(
@@ -124,6 +127,7 @@ class VideoCompressorAdapter {
             durationMs: durationMs,
             videoBitrateMbps: _bitrateMbps(settings.crf),
             includeAudio: settings.audioMode != CompressionAudioMode.remove,
+            resolutionScale: settings.resolutionEstimateScale,
           );
           total += estimate.clamp(0, originalSize);
         }
@@ -138,8 +142,11 @@ class VideoCompressorAdapter {
     required int durationMs,
     required int videoBitrateMbps,
     required bool includeAudio,
+    double resolutionScale = 1,
   }) {
-    final bitrate = videoBitrateMbps * 1000000 + (includeAudio ? 128000 : 0);
+    final bitrate =
+        videoBitrateMbps * 1000000 * resolutionScale +
+        (includeAudio ? 128000 : 0);
     return (bitrate * durationMs / 8000).round();
   }
 
@@ -227,5 +234,61 @@ class VideoCompressorAdapter {
     if (parts.length != 2) return (null, null);
 
     return (int.tryParse(parts[0]), int.tryParse(parts[1]));
+  }
+
+  Future<(int?, int?)> _targetResolution(
+    String inputPath,
+    String? resolution,
+  ) async {
+    final target = _parseResolution(resolution);
+    final (targetWidth, targetHeight) = target;
+    if (targetWidth == null || targetHeight == null) return target;
+
+    try {
+      final info = await _compressor.getMediaInfo(inputPath);
+      return targetResolutionForSource(
+        targetWidth: targetWidth,
+        targetHeight: targetHeight,
+        sourceWidth: info.width,
+        sourceHeight: info.height,
+      );
+    } catch (_) {
+      return target;
+    }
+  }
+
+  static (int, int) targetResolutionForSource({
+    required int targetWidth,
+    required int targetHeight,
+    required int? sourceWidth,
+    required int? sourceHeight,
+  }) {
+    if (sourceWidth == null || sourceHeight == null) {
+      return (targetWidth, targetHeight);
+    }
+
+    final sourcePortrait = sourceHeight > sourceWidth;
+    final targetPortrait = targetHeight > targetWidth;
+    final maxWidth = sourcePortrait == targetPortrait
+        ? targetWidth
+        : targetHeight;
+    final maxHeight = sourcePortrait == targetPortrait
+        ? targetHeight
+        : targetWidth;
+    final scale = [
+      maxWidth / sourceWidth,
+      maxHeight / sourceHeight,
+      1.0,
+    ].reduce((a, b) => a < b ? a : b);
+
+    return (
+      _evenDimension(sourceWidth * scale),
+      _evenDimension(sourceHeight * scale),
+    );
+  }
+
+  static int _evenDimension(double value) {
+    final rounded = value.round();
+    return rounded.isEven ? rounded : rounded - 1;
   }
 }

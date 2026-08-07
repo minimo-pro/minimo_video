@@ -30,6 +30,15 @@ class CompressionSettings {
     }
     return SimpleCompressionQuality.low;
   }
+
+  double get resolutionEstimateScale => switch (resolution) {
+    null => 1,
+    '1920:1080' => 0.925,
+    '1280:720' => 0.806,
+    '854:480' => 0.624,
+    '640:360' => 0.516,
+    _ => 0.806,
+  };
 }
 
 const _unset = Object();

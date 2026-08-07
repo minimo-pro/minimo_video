@@ -8,6 +8,7 @@ class HoldToConfirmButton extends StatefulWidget {
   final String trailing;
   final bool enabled;
   final bool actionStyle;
+  final double? fontSize;
   final VoidCallback onTap;
   final Future<void> Function() onCompleted;
 
@@ -17,6 +18,7 @@ class HoldToConfirmButton extends StatefulWidget {
     this.trailing = '',
     required this.enabled,
     this.actionStyle = false,
+    this.fontSize,
     required this.onTap,
     required this.onCompleted,
   });
@@ -67,7 +69,11 @@ class _HoldToConfirmButtonState extends State<HoldToConfirmButton>
       return Center(
         child: Text(
           widget.label,
-          style: TextStyle(fontSize: 25, height: 1, color: textColor),
+          style: TextStyle(
+            fontSize: widget.fontSize ?? 25,
+            height: 1,
+            color: textColor,
+          ),
         ),
       );
     }
@@ -79,7 +85,10 @@ class _HoldToConfirmButtonState extends State<HoldToConfirmButton>
           Expanded(
             child: Text(
               widget.label,
-              style: TextStyle(fontSize: 16, color: textColor),
+              style: TextStyle(
+                fontSize: widget.fontSize ?? 16,
+                color: textColor,
+              ),
             ),
           ),
           Text(widget.trailing, style: TextStyle(color: trailingColor)),

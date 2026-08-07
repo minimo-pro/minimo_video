@@ -73,11 +73,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 18, 24, 22),
-          child: Column(
-            children: [
-              Align(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 18, 24, 0),
+              child: Align(
                 alignment: Alignment.centerRight,
                 child: AppActionButton(
                   variant: AppActionButtonVariant.text,
@@ -89,17 +89,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   foregroundColor: theme.secondaryTextColor,
                 ),
               ),
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: pages.length,
-                  onPageChanged: (page) => setState(() => _currentPage = page),
-                  itemBuilder: (context, index) {
-                    return _OnboardingPage(data: pages[index]);
-                  },
-                ),
+            ),
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: pages.length,
+                onPageChanged: (page) => setState(() => _currentPage = page),
+                itemBuilder: (context, index) {
+                  return _OnboardingPage(data: pages[index]);
+                },
               ),
-              Row(
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 22),
+              child: Row(
                 children: [
                   Expanded(
                     child: Row(
@@ -135,8 +138,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

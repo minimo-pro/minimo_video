@@ -28,7 +28,6 @@ class InfoScreen extends StatelessWidget {
   );
   static final _links = <String, Uri>{
     'project': Uri.parse('https://github.com/minimo-pro'),
-    'telegram': Uri.parse('https://t.me/khlebobul_dev'),
     'github': Uri.parse('https://github.com/minimo-pro/minimo_video'),
     'x': Uri.parse('https://x.com/khlebobul'),
   };
@@ -67,6 +66,7 @@ class InfoScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
+        top: false,
         bottom: false,
         child: Column(
           children: [
@@ -116,7 +116,6 @@ class InfoScreen extends StatelessWidget {
                     const SizedBox(height: 24),
                     _CompressionExplanation(strings: strings),
                     const SizedBox(height: 18),
-                    // TODO: Restore rating and sharing after the official store release.
                     _InfoLink(
                       title: strings.myOtherApps,
                       onTap: _openOtherApps,

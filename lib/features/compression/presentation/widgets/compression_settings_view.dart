@@ -26,12 +26,12 @@ import 'simple_quality_card.dart';
 
 class CompressionSettingsView extends StatefulWidget {
   final CompressState state;
-  final VoidCallback onBack;
+  final VoidCallback onAddVideos;
 
   const CompressionSettingsView({
     super.key,
     required this.state,
-    required this.onBack,
+    required this.onAddVideos,
   });
 
   @override
@@ -108,7 +108,7 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
                     onNotification: _onScroll,
                     child: FadedScrollView(
                       fadeExtent: 0.08,
-                      padding: EdgeInsets.symmetric(vertical: compact ? 4 : 10),
+                      padding: EdgeInsets.symmetric(vertical: compact ? 4 : 6),
                       child: Column(
                         children: [
                           SelectedVideosSummary(
@@ -123,8 +123,7 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
                           SizedBox(height: compact ? 14 : 22),
                           CompressionModeSwitch(
                             value: _mode,
-                            onChanged: (value) =>
-                                _changeMode(context, state.settings, value),
+                            onChanged: (value) => setState(() => _mode = value),
                           ),
                           SizedBox(height: compact ? 14 : 24),
                           SpringTabContent(
@@ -179,23 +178,12 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
         ),
         const SizedBox(height: 12),
         CompressionBottomActions(
-          onBack: widget.onBack,
-          onCompress: () =>
-              context.read<CompressBloc>().add(const CompressStarted()),
+          onAdd: widget.onAddVideos,
+          onCompress: savingsPercent == 0
+              ? null
+              : () => context.read<CompressBloc>().add(const CompressStarted()),
         ),
       ],
-    );
-  }
-
-  void _changeMode(
-    BuildContext context,
-    CompressionSettings settings,
-    CompressionOptionsMode value,
-  ) {
-    setState(() => _mode = value);
-    if (value != CompressionOptionsMode.advanced) return;
-    context.read<CompressBloc>().add(
-      CompressSettingsChanged(settings.copyWith(resolution: null)),
     );
   }
 }
@@ -213,6 +201,8 @@ class _PinnedSizeSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = S.of(context);
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(18),
       child: BackdropFilter(
@@ -279,24 +269,38 @@ class _PinnedSizeSummary extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: CompressionUiColors.red.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 7,
+                Flexible(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: CompressionUiColors.red.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(999),
                     ),
-                    child: RollingCounterText(
-                      value: savingsPercent,
-                      formatter: (value) => '${value.toInt()}%',
-                      style: const TextStyle(
-                        color: CompressionUiColors.red,
-                        fontSize: 17,
-                        height: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 7,
                       ),
+                      child: savingsPercent == 0
+                          ? Text(
+                              strings.noSavingsHint,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: CompressionUiColors.red,
+                                fontSize: 13,
+                                height: 1.15,
+                              ),
+                            )
+                          : RollingCounterText(
+                              value: savingsPercent,
+                              formatter: (value) => '${value.toInt()}%',
+                              style: const TextStyle(
+                                color: CompressionUiColors.red,
+                                fontSize: 17,
+                                height: 1,
+                              ),
+                            ),
                     ),
                   ),
                 ),

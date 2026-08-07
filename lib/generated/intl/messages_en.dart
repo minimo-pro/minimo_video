@@ -61,7 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("about"),
     "aboutStory": MessageLookupByLibrary.simpleMessage(
-      "minimo (video) was born from a simple frustration. i love sports and often watch short match clips shared by clubs and telegram channels. even a few seconds of video can take up far more space than they should.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.",
+      "minimo (video) was born from a simple frustration.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.",
     ),
     "addPrefix": m0,
     "addPrefixDescription": m1,
@@ -90,11 +90,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
       "removes temporary app files. videos saved to your gallery remain untouched",
     ),
+    "compareVideos": MessageLookupByLibrary.simpleMessage("compare"),
     "compress": MessageLookupByLibrary.simpleMessage("compress"),
-    "compressOtherVideos": MessageLookupByLibrary.simpleMessage(
-      "compress other videos",
-    ),
     "compressed": MessageLookupByLibrary.simpleMessage("compressed"),
+    "compressedVideo": MessageLookupByLibrary.simpleMessage("after"),
     "compressing": MessageLookupByLibrary.simpleMessage("compressing..."),
     "compressionCancelled": MessageLookupByLibrary.simpleMessage(
       "compression cancelled",
@@ -116,12 +115,22 @@ class MessageLookup extends MessageLookupByLibrary {
       "use the dark appearance",
     ),
     "deleteOriginal": MessageLookupByLibrary.simpleMessage("delete original"),
+    "deleteOriginalsAfterSaving": MessageLookupByLibrary.simpleMessage(
+      "delete originals after saving",
+    ),
+    "deleteOriginalsAfterSavingDescription":
+        MessageLookupByLibrary.simpleMessage(
+          "deletes selected originals only after compressed videos are saved",
+        ),
     "emailCopied": MessageLookupByLibrary.simpleMessage("email copied"),
     "english": MessageLookupByLibrary.simpleMessage("english"),
     "estimatingTimeRemaining": MessageLookupByLibrary.simpleMessage(
       "estimating time remaining...",
     ),
     "failed": MessageLookupByLibrary.simpleMessage("failed"),
+    "failedToPickVideos": MessageLookupByLibrary.simpleMessage(
+      "choose a video file",
+    ),
     "failedToSave": m2,
     "failedToShare": m3,
     "getStarted": MessageLookupByLibrary.simpleMessage("get started"),
@@ -164,6 +173,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "myWebsite": MessageLookupByLibrary.simpleMessage("my website"),
     "next": MessageLookupByLibrary.simpleMessage("next"),
     "noAudio": MessageLookupByLibrary.simpleMessage("no audio"),
+    "noSavingsHint": MessageLookupByLibrary.simpleMessage(
+      "try another mode — this won\'t make it smaller",
+    ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "choose one or several videos. minimo works with local files and keeps the originals untouched",
     ),
@@ -184,9 +196,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "minimo (video) is open source. explore the code, follow the project or get in touch",
     ),
     "original": MessageLookupByLibrary.simpleMessage("original"),
+    "originalVideo": MessageLookupByLibrary.simpleMessage("before"),
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "compression can slow down if your device gets hot",
     ),
+    "pickFromFiles": MessageLookupByLibrary.simpleMessage("from files"),
+    "pickFromGallery": MessageLookupByLibrary.simpleMessage("from gallery"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage(
       "keep screen awake",
     ),
@@ -195,7 +210,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("project website"),
     "quality": MessageLookupByLibrary.simpleMessage("quality"),
-    "rateTheApp": MessageLookupByLibrary.simpleMessage("rate the app"),
     "resolution": MessageLookupByLibrary.simpleMessage("resolution"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "reduce dimensions for the biggest size savings",
@@ -219,9 +233,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "secondsRemaining": m10,
     "settings": MessageLookupByLibrary.simpleMessage("settings"),
     "share": MessageLookupByLibrary.simpleMessage("share"),
-    "shareWithFriends": MessageLookupByLibrary.simpleMessage(
-      "share with friends",
-    ),
     "showOverheatWarning": MessageLookupByLibrary.simpleMessage(
       "show overheat warning",
     ),
@@ -234,9 +245,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "smaller": MessageLookupByLibrary.simpleMessage("smaller"),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "system": MessageLookupByLibrary.simpleMessage("system"),
-    "telegram": MessageLookupByLibrary.simpleMessage("telegram"),
     "todo": MessageLookupByLibrary.simpleMessage("TODO"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("try again"),
+    "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
+      "preview unavailable",
+    ),
     "videoProgress": m11,
     "videosCompressed": m12,
     "waiting": MessageLookupByLibrary.simpleMessage("waiting"),

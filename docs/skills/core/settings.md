@@ -7,6 +7,7 @@ Settings use `shared_preferences` through `AppSettingsService`.
 | `add_kompresso_prefix` | `bool` | `true` | Prefix output filenames with `minimo_` |
 | `show_overheat_warning` | `bool` | `true` | Show thermal warning during compression |
 | `save_videos_to_album` | `bool` | `false` | Save into gallery album `Minimo` |
+| `delete_originals_after_saving` | `bool` | `false` | Preselect deletable originals in the save sheet |
 | `prevent_screen_sleep` | `bool` | `true` | Keep the screen awake during compression |
 | `language_code` | `String?` | system | Override locale with `en` or `ru` |
 | `dark_theme` | `bool?` | system | Override system theme after user selection |

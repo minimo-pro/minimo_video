@@ -55,10 +55,11 @@ class AppActionButton extends StatelessWidget {
             : variant == AppActionButtonVariant.outlined
             ? Theme.of(context).colorScheme.surfaceContainerHighest
             : Colors.transparent);
+    final effectivePadding = label == null ? EdgeInsets.zero : padding;
     final shape = RoundedRectangleBorder(borderRadius: borderRadius);
     final baseStyle = ButtonStyle(
       minimumSize: WidgetStatePropertyAll(Size(0, height)),
-      padding: WidgetStatePropertyAll(padding),
+      padding: WidgetStatePropertyAll(effectivePadding),
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
           return Theme.of(context).colorScheme.surfaceContainerHighest;
@@ -84,11 +85,14 @@ class AppActionButton extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (icon != null)
-          SvgPicture.asset(
-            icon!,
+          SizedBox(
             width: iconWidth,
             height: iconHeight,
-            colorFilter: ColorFilter.mode(foreground, BlendMode.srcIn),
+            child: SvgPicture.asset(
+              icon!,
+              fit: BoxFit.contain,
+              colorFilter: ColorFilter.mode(foreground, BlendMode.srcIn),
+            ),
           ),
         if (icon != null && label != null) const SizedBox(width: 10),
         if (label != null)

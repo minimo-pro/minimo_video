@@ -34,7 +34,7 @@ CompressScreen
         → native Android/iOS codecs
 ```
 
-`CompressBloc` owns settings, estimates, batch order, status per video, progress, cancellation, results, saving, and deletion. Videos are compressed sequentially. Overall progress is weighted by input file size.
+`CompressBloc` owns the selected batch, settings, estimates, status per video, progress, cancellation, results, saving, and deletion. `CompressVideosAdded` appends newly picked files only while the Bloc is `ready`, extends the aligned thumbnail/status lists, and schedules fresh thumbnails and an estimate without resetting settings. `CompressResultsSaved` receives selected source identifiers from the save sheet and deletes them only after all outputs save. Videos are compressed sequentially. Overall progress is weighted by input file size.
 
 ## Platform Channel
 
@@ -42,7 +42,7 @@ Channel: `minimo_video/videos`
 
 | Method | Purpose |
 |---|---|
-| `pickVideos` | Open native privacy-preserving picker and copy selected videos to cache |
+| `pickVideos` | Open gallery or files picker (`source`) and copy selected videos to cache |
 | `deleteOriginals` | Request explicit system deletion of source assets |
 | `videoInfo` | Read duration for size estimates |
 | `createThumbnail` | Generate cached JPEG preview |
@@ -51,11 +51,12 @@ Channel `minimo_video/thermal` exposes `currentState` for overheating warnings.
 
 ## File Lifecycle
 
-1. Picker copies selected files into temporary `picked_videos` storage.
-2. Compressor writes MP4 output into temporary `minimo_video` storage.
-3. Output saving uses `gal`; sharing uses `share_plus`.
-4. Outputs saving less than 10% are deleted and marked skipped.
-5. App and compressor temporary files are cleared on every cold start.
+1. The start screen or the compression screen's `ready` state opens the same source sheet and native picker.
+2. Picker copies selected files into temporary `picked_videos` storage. Picks made during configuration are appended to the current batch.
+3. Compressor writes MP4 output into temporary `minimo_video` storage.
+4. Output saving uses `gal`; sharing uses `share_plus`.
+5. Outputs saving less than 10% are deleted and marked skipped.
+6. App and compressor temporary files are cleared on every cold start.
 
 ## Generated Files
 

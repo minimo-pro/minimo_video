@@ -1,4 +1,5 @@
 import '../domain/compression_settings.dart';
+import '../domain/picked_video.dart';
 
 abstract class CompressEvent {
   const CompressEvent();
@@ -16,6 +17,12 @@ class CompressThumbnailsRequested extends CompressEvent {
 
 class CompressEstimateRequested extends CompressEvent {
   const CompressEstimateRequested();
+}
+
+class CompressVideosAdded extends CompressEvent {
+  final List<PickedVideo> videos;
+
+  const CompressVideosAdded(this.videos);
 }
 
 class CompressResolutionChanged extends CompressEvent {
@@ -62,8 +69,12 @@ class CompressForegroundResumed extends CompressEvent {
 
 class CompressResultsSaved extends CompressEvent {
   final bool deleteOriginals;
+  final Set<String>? deleteSourceIdentifiers;
 
-  const CompressResultsSaved({required this.deleteOriginals});
+  const CompressResultsSaved({
+    required this.deleteOriginals,
+    this.deleteSourceIdentifiers,
+  });
 }
 
 class CompressMessagesCleared extends CompressEvent {

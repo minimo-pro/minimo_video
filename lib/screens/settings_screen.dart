@@ -27,6 +27,7 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
+        top: false,
         bottom: false,
         child: AnimatedBuilder(
           animation: settings,
@@ -64,6 +65,13 @@ class SettingsScreen extends StatelessWidget {
                         ),
                         value: settings.saveVideosToAlbum,
                         onChanged: settings.setSaveVideosToAlbum,
+                      ),
+                      _ToggleRow(
+                        title: strings.deleteOriginalsAfterSaving,
+                        description:
+                            strings.deleteOriginalsAfterSavingDescription,
+                        value: settings.deleteOriginalsAfterSaving,
+                        onChanged: settings.setDeleteOriginalsAfterSaving,
                       ),
                       _ToggleRow(
                         title: strings.preventScreenSleep,

@@ -5,35 +5,11 @@ import '../constants/app_icons.dart';
 import '../screens/info_screen.dart';
 import '../screens/settings_screen.dart';
 import '../theme/app_theme.dart';
+import 'app_sheet.dart';
 import 'pressable.dart';
 
 void _showFullScreenSheet(BuildContext context, Widget child) {
-  showModalBottomSheet<void>(
-    context: context,
-    isScrollControlled: true,
-    enableDrag: true,
-    constraints: BoxConstraints(
-      maxHeight: MediaQuery.sizeOf(context).height * 0.90,
-    ),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    ),
-    clipBehavior: Clip.antiAlias,
-    builder: (context) => Column(
-      children: [
-        Container(
-          width: 36,
-          height: 4,
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        Expanded(child: child),
-      ],
-    ),
-  );
+  showAppSheet(context: context, child: child);
 }
 
 class BottomFrame extends StatelessWidget {

@@ -38,6 +38,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
        super(CompressState.initial(initialVideos)) {
     on<CompressThumbnailsRequested>(_onThumbnailsRequested);
     on<CompressEstimateRequested>(_onEstimateRequested);
+    on<CompressVideosAdded>(_onVideosAdded);
     on<CompressSimpleQualityChanged>(_onSimpleQualityChanged);
     on<CompressResolutionChanged>(_onResolutionChanged);
     on<CompressSettingsChanged>(_onSettingsChanged);
@@ -56,7 +57,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     _estimateRunId++;
     _estimateDebounce?.cancel();
     _estimateDebounce = Timer(
-      const Duration(milliseconds: 200),
+      const Duration(milliseconds: 100),
       () => add(const CompressEstimateRequested()),
     );
   }
@@ -80,17 +81,65 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     CompressThumbnailsRequested event,
     Emitter<CompressState> emit,
   ) async {
-    final thumbnails = List<String?>.of(state.thumbnailPaths);
     final count = state.videos.length < 3 ? state.videos.length : 3;
 
     for (var i = 0; i < count; i++) {
       if (state.status != CompressStatus.ready) return;
+      if (i < state.thumbnailPaths.length && state.thumbnailPaths[i] != null) {
+        continue;
+      }
       final path = await _videoCompressorAdapter.createThumbnail(
         state.videos[i].path,
       );
+      if (state.status != CompressStatus.ready ||
+          i >= state.thumbnailPaths.length) {
+        return;
+      }
+      final thumbnails = List<String?>.of(state.thumbnailPaths);
       thumbnails[i] = path;
       emit(state.copyWith(thumbnailPaths: thumbnails));
     }
+  }
+
+  void _onVideosAdded(CompressVideosAdded event, Emitter<CompressState> emit) {
+    if (state.status != CompressStatus.ready || event.videos.isEmpty) return;
+
+    final identities = state.videos.map(_videoIdentity).toSet();
+    final addedVideos = <PickedVideo>[];
+    for (final video in event.videos) {
+      if (identities.add(_videoIdentity(video))) {
+        addedVideos.add(video);
+      }
+    }
+    if (addedVideos.isEmpty) return;
+
+    emit(
+      state.copyWith(
+        videos: [...state.videos, ...addedVideos],
+        thumbnailPaths: [
+          ...state.thumbnailPaths,
+          ...List<String?>.filled(addedVideos.length, null),
+        ],
+        videoStatuses: [
+          ...state.videoStatuses,
+          ...List<VideoCompressionStatus>.filled(
+            addedVideos.length,
+            VideoCompressionStatus.waiting,
+          ),
+        ],
+        clearEstimatedSize: true,
+      ),
+    );
+    add(const CompressThumbnailsRequested());
+    _requestEstimate();
+  }
+
+  String _videoIdentity(PickedVideo video) {
+    final sourceIdentifier = video.sourceIdentifier;
+    if (sourceIdentifier != null && sourceIdentifier.isNotEmpty) {
+      return 'source:$sourceIdentifier';
+    }
+    return 'file:${video.name}\u0000${video.size}';
   }
 
   void _onSimpleQualityChanged(
@@ -102,6 +151,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         emit(
           state.copyWith(
             settings: const CompressionSettings(crf: 22, resolution: null),
+            clearEstimatedSize: true,
           ),
         );
       case SimpleCompressionQuality.medium:
@@ -111,12 +161,14 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
               crf: 28,
               resolution: '1280:720',
             ),
+            clearEstimatedSize: true,
           ),
         );
       case SimpleCompressionQuality.low:
         emit(
           state.copyWith(
             settings: const CompressionSettings(crf: 34, resolution: '854:480'),
+            clearEstimatedSize: true,
           ),
         );
     }
@@ -130,6 +182,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     emit(
       state.copyWith(
         settings: state.settings.copyWith(resolution: event.resolution),
+        clearEstimatedSize: true,
       ),
     );
     _requestEstimate();
@@ -139,7 +192,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     CompressSettingsChanged event,
     Emitter<CompressState> emit,
   ) {
-    emit(state.copyWith(settings: event.settings));
+    emit(state.copyWith(settings: event.settings, clearEstimatedSize: true));
     _requestEstimate();
   }
 
@@ -396,11 +449,14 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
 
       var deletedOriginalCount = 0;
       try {
-        final identifiers = state.successResults
-            .where((item) => item.source.path != item.result.outputPath)
-            .map((item) => item.source.sourceIdentifier)
-            .whereType<String>()
-            .toSet();
+        final identifiers =
+            event.deleteSourceIdentifiers ??
+            state.successResults
+                .where((item) => item.source.path != item.result.outputPath)
+                .where((item) => item.source.canDeleteOriginal)
+                .map((item) => item.source.sourceIdentifier)
+                .whereType<String>()
+                .toSet();
         if (identifiers.isEmpty) {
           throw StateError(
             'original videos cannot be deleted by this provider',

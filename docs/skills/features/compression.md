@@ -15,11 +15,19 @@ Advanced mode allows:
 - Original, 1080p, 720p, 480p, or 360p resolution
 - Stereo audio or no audio
 
+Reduced-resolution presets preserve the source orientation. Before passing a
+custom `videoWidth`/`videoHeight` to `light_compressor_v2`,
+`VideoCompressorAdapter` reads `LightCompressor.getMediaInfo()` and fits the
+target inside the raw encoded `width`/`height` while preserving the source
+aspect ratio. The plugin applies rotation metadata itself, so passing display
+dimensions would rotate the target twice. Original resolution does not pass
+custom dimensions and relies on the package's `keepOriginalResolution` path.
+
 Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough: `light_compressor_v2 1.8.1` can crash inside `AVAssetWriter.addInput` when the source audio format is incompatible with MP4.
 
 ## Pipeline
 
-1. Native picker copies selected video to app cache.
+1. Native picker copies selected videos to app cache.
 2. `VideoCompressorAdapter` maps settings to `light_compressor_v2`.
 3. Plugin compresses with native Android/iOS codecs.
 4. Progress stream is normalized from `0–100` to `0–1`.
@@ -30,15 +38,27 @@ Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough:
 
 On iOS the compression screen warns the user to keep the app open. If the app is backgrounded during compression, the active native job is cancelled immediately; returning restarts only the current video and keeps completed batch items.
 
+## Adding Videos During Configuration
+
+The plus action beside the bottom compress button is available only in `CompressStatus.ready`. It uses the same gallery/files source sheet and `VideoFileAdapter.pickVideos` path as the start screen. While native files are copied, the settings content is replaced by the shared `VideoLoadingView`, picker progress is shown when available, and route popping is blocked.
+
+Picked videos are appended through `CompressVideosAdded`; existing compression settings remain unchanged. Videos already in the batch are ignored: provider `sourceIdentifier` is the primary identity, with original filename plus file size as the fallback for providers that do not expose an identifier. The same filtering also removes duplicates returned in one additional pick.
+
+The Bloc keeps `videos`, `thumbnailPaths`, and `videoStatuses` aligned, requests thumbnails for the first three items, invalidates any stale asynchronous estimate, and computes a new estimate for the expanded batch. Empty, cancelled, or duplicate-only picker results leave the batch unchanged. Adding files is not available during processing or on the result screen.
+
 ## Estimates
 
 Estimate formula:
 
 ```text
-(video bitrate + optional 128 kbps audio) × duration / 8
+(video bitrate × resolution scale + optional 128 kbps audio) × duration / 8
 ```
 
-Each estimate is capped at original file size. Duration comes from native `videoInfo`.
+Lower target resolutions use progressively smaller estimate scales. Each
+estimate is capped at original file size. Duration comes from native
+`videoInfo`. Changing settings immediately clears the previous asynchronous
+estimate so the UI shows the local fallback until fresh metadata-based output
+arrives.
 
 ## Batch and Progress
 

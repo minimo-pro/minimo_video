@@ -4,11 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../constants/app_icons.dart';
 import '../features/compression/data/video_file_adapter.dart';
+import '../features/compression/presentation/widgets/video_loading_view.dart';
+import '../features/compression/presentation/widgets/video_pick_source_sheet.dart';
 import '../generated/l10n.dart';
 import '../router/app_router.gr.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bottom_frame.dart';
-import '../widgets/minimo_loader.dart';
+import '../widgets/app_snack_bar.dart';
 import '../widgets/pressable.dart';
 
 @RoutePage()
@@ -25,16 +27,28 @@ class _StartPageState extends State<StartPage> {
   (int, int)? _loadingProgress;
 
   Future<void> _pickAndGo() async {
+    final source = await showVideoPickSourceSheet(context);
+    if (source == null || !mounted) return;
+
     setState(() => _loading = true);
 
     try {
       final videos = await _videoFileAdapter.pickVideos(
+        source: source,
         onProgress: (processed, total) {
           if (mounted) setState(() => _loadingProgress = (processed, total));
         },
       );
       if (videos.isNotEmpty && mounted) {
         context.pushRoute(CompressRoute(initialVideos: videos));
+      }
+    } catch (_) {
+      if (mounted) {
+        AppSnackBar.show(
+          context,
+          message: S.of(context).failedToPickVideos,
+          type: AppSnackBarType.error,
+        );
       }
     } finally {
       if (mounted) {
@@ -83,45 +97,7 @@ class _StartPageState extends State<StartPage> {
                 ),
                 Expanded(
                   child: _loading
-                      ? Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 32),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                MinimoLoader(
-                                  size: 58,
-                                  semanticsLabel: S.of(context).loadingVideos,
-                                ),
-                                const SizedBox(height: 18),
-                                Text(
-                                  S.of(context).loadingVideos,
-                                  textAlign: TextAlign.center,
-                                  style: materialTheme.textTheme.titleMedium
-                                      ?.copyWith(color: theme.textColor),
-                                ),
-                                if (_loadingProgress case (
-                                  final done,
-                                  final total,
-                                )) ...[
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    '$done / $total',
-                                    style: materialTheme.textTheme.titleLarge
-                                        ?.copyWith(color: theme.textColor),
-                                  ),
-                                ],
-                                const SizedBox(height: 8),
-                                Text(
-                                  S.of(context).loadingManyVideosHint,
-                                  textAlign: TextAlign.center,
-                                  style: materialTheme.textTheme.bodyMedium
-                                      ?.copyWith(color: theme.textColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
+                      ? VideoLoadingView(progress: _loadingProgress)
                       : Center(
                           child: Pressable(
                             child: GestureDetector(

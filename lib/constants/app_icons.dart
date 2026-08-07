@@ -6,10 +6,11 @@ abstract final class AppIcons {
   static const checkboxFull = 'assets/icons/checkbox_full.svg';
   static const close = 'assets/icons/close.svg';
   static const info = 'assets/icons/info.svg';
+  static const pause = 'assets/icons/pause.svg';
+  static const play = 'assets/icons/play.svg';
   static const plus = 'assets/icons/plus.svg';
-  static const download = 'assets/icons/download.svg';
-  static const settings = 'assets/icons/settings.svg';
   static const share = 'assets/icons/share.svg';
+  static const settings = 'assets/icons/settings.svg';
   static const video = 'assets/icons/video.svg';
   static const x = 'assets/icons/x.svg';
   static const website = 'assets/icons/website.svg';

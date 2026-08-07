@@ -61,7 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("о приложении"),
     "aboutStory": MessageLookupByLibrary.simpleMessage(
-      "minimo (video) появился из простой проблемы. я люблю спорт и часто смотрю короткие фрагменты матчей, которыми делятся клубы и telegram-каналы. даже несколько секунд видео иногда занимают неоправданно много места.\n\nэтот проект даёт каждому удобную и бесплатную возможность сжимать видео прямо на мобильном устройстве, экономить память и сохранять важные моменты.",
+      "minimo (video) появился из простой проблемы.\n\nэтот проект даёт каждому удобную и бесплатную возможность сжимать видео прямо на мобильном устройстве, экономить память и сохранять важные моменты.",
     ),
     "addPrefix": m0,
     "addPrefixDescription": m1,
@@ -90,11 +90,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
       "удаляет временные файлы приложения. видео в галерее останутся",
     ),
+    "compareVideos": MessageLookupByLibrary.simpleMessage("сравнить"),
     "compress": MessageLookupByLibrary.simpleMessage("сжать"),
-    "compressOtherVideos": MessageLookupByLibrary.simpleMessage(
-      "сжать другие видео",
-    ),
     "compressed": MessageLookupByLibrary.simpleMessage("сжатое"),
+    "compressedVideo": MessageLookupByLibrary.simpleMessage("стало"),
     "compressing": MessageLookupByLibrary.simpleMessage("сжатие..."),
     "compressionCancelled": MessageLookupByLibrary.simpleMessage(
       "сжатие отменено",
@@ -116,12 +115,22 @@ class MessageLookup extends MessageLookupByLibrary {
       "использовать темное оформление",
     ),
     "deleteOriginal": MessageLookupByLibrary.simpleMessage("удалить оригинал"),
+    "deleteOriginalsAfterSaving": MessageLookupByLibrary.simpleMessage(
+      "удалять оригиналы после сохранения",
+    ),
+    "deleteOriginalsAfterSavingDescription":
+        MessageLookupByLibrary.simpleMessage(
+          "удаляет выбранные оригиналы только после сохранения сжатых видео",
+        ),
     "emailCopied": MessageLookupByLibrary.simpleMessage("почта скопирована"),
     "english": MessageLookupByLibrary.simpleMessage("english"),
     "estimatingTimeRemaining": MessageLookupByLibrary.simpleMessage(
       "оцениваем оставшееся время...",
     ),
     "failed": MessageLookupByLibrary.simpleMessage("ошибка"),
+    "failedToPickVideos": MessageLookupByLibrary.simpleMessage(
+      "выберите видеофайл",
+    ),
     "failedToSave": m2,
     "failedToShare": m3,
     "getStarted": MessageLookupByLibrary.simpleMessage("начать"),
@@ -166,6 +175,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "myWebsite": MessageLookupByLibrary.simpleMessage("мой сайт"),
     "next": MessageLookupByLibrary.simpleMessage("далее"),
     "noAudio": MessageLookupByLibrary.simpleMessage("без звука"),
+    "noSavingsHint": MessageLookupByLibrary.simpleMessage(
+      "попробуйте другой режим — размер почти не изменится",
+    ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "выберите одно или несколько видео. minimo работает с локальными файлами и не трогает оригиналы",
     ),
@@ -188,9 +200,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "minimo (video) — проект с открытым исходным кодом. посмотрите код, следите за проектом или свяжитесь со мной",
     ),
     "original": MessageLookupByLibrary.simpleMessage("оригинал"),
+    "originalVideo": MessageLookupByLibrary.simpleMessage("было"),
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "сжатие может замедлиться, если устройство нагреется",
     ),
+    "pickFromFiles": MessageLookupByLibrary.simpleMessage("из файлов"),
+    "pickFromGallery": MessageLookupByLibrary.simpleMessage("из галереи"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage(
       "не выключать экран",
     ),
@@ -199,7 +214,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("сайт проекта"),
     "quality": MessageLookupByLibrary.simpleMessage("качество"),
-    "rateTheApp": MessageLookupByLibrary.simpleMessage("оценить приложение"),
     "resolution": MessageLookupByLibrary.simpleMessage("разрешение"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "уменьшение разрешения сильнее всего сокращает размер",
@@ -223,9 +237,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "secondsRemaining": m10,
     "settings": MessageLookupByLibrary.simpleMessage("настройки"),
     "share": MessageLookupByLibrary.simpleMessage("поделиться"),
-    "shareWithFriends": MessageLookupByLibrary.simpleMessage(
-      "поделиться с друзьями",
-    ),
     "showOverheatWarning": MessageLookupByLibrary.simpleMessage(
       "показывать предупреждение о перегреве",
     ),
@@ -238,9 +249,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "smaller": MessageLookupByLibrary.simpleMessage("меньше"),
     "stereo": MessageLookupByLibrary.simpleMessage("стерео"),
     "system": MessageLookupByLibrary.simpleMessage("система"),
-    "telegram": MessageLookupByLibrary.simpleMessage("telegram"),
     "todo": MessageLookupByLibrary.simpleMessage("В разработке"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("попробовать снова"),
+    "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
+      "предпросмотр недоступен",
+    ),
     "videoProgress": m11,
     "videosCompressed": m12,
     "waiting": MessageLookupByLibrary.simpleMessage("ожидает"),

@@ -154,10 +154,10 @@ class S {
     return Intl.message('about', name: 'about', desc: '', args: []);
   }
 
-  /// `minimo (video) was born from a simple frustration. i love sports and often watch short match clips shared by clubs and telegram channels. even a few seconds of video can take up far more space than they should.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.`
+  /// `minimo (video) was born from a simple frustration.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.`
   String get aboutStory {
     return Intl.message(
-      'minimo (video) was born from a simple frustration. i love sports and often watch short match clips shared by clubs and telegram channels. even a few seconds of video can take up far more space than they should.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.',
+      'minimo (video) was born from a simple frustration.\n\nthis project gives everyone a convenient and free way to compress videos directly on a mobile device, save storage and keep the moments that matter.',
       name: 'aboutStory',
       desc: '',
       args: [],
@@ -194,21 +194,6 @@ class S {
     );
   }
 
-  /// `rate the app`
-  String get rateTheApp {
-    return Intl.message('rate the app', name: 'rateTheApp', desc: '', args: []);
-  }
-
-  /// `share with friends`
-  String get shareWithFriends {
-    return Intl.message(
-      'share with friends',
-      name: 'shareWithFriends',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `project website`
   String get projectWebsite {
     return Intl.message(
@@ -217,11 +202,6 @@ class S {
       desc: '',
       args: [],
     );
-  }
-
-  /// `telegram`
-  String get telegram {
-    return Intl.message('telegram', name: 'telegram', desc: '', args: []);
   }
 
   /// `github repository`
@@ -326,6 +306,26 @@ class S {
       name: 'saveVideosToAlbumDescription',
       desc: '',
       args: [album],
+    );
+  }
+
+  /// `delete originals after saving`
+  String get deleteOriginalsAfterSaving {
+    return Intl.message(
+      'delete originals after saving',
+      name: 'deleteOriginalsAfterSaving',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `deletes selected originals only after compressed videos are saved`
+  String get deleteOriginalsAfterSavingDescription {
+    return Intl.message(
+      'deletes selected originals only after compressed videos are saved',
+      name: 'deleteOriginalsAfterSavingDescription',
+      desc: '',
+      args: [],
     );
   }
 
@@ -594,6 +594,16 @@ class S {
     return Intl.message('smaller', name: 'smaller', desc: '', args: []);
   }
 
+  /// `try another mode — this won't make it smaller`
+  String get noSavingsHint {
+    return Intl.message(
+      'try another mode — this won\'t make it smaller',
+      name: 'noSavingsHint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `compress`
   String get compress {
     return Intl.message('compress', name: 'compress', desc: '', args: []);
@@ -668,6 +678,26 @@ class S {
     );
   }
 
+  /// `from gallery`
+  String get pickFromGallery {
+    return Intl.message(
+      'from gallery',
+      name: 'pickFromGallery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `from files`
+  String get pickFromFiles {
+    return Intl.message(
+      'from files',
+      name: 'pickFromFiles',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `loading videos...`
   String get loadingVideos {
     return Intl.message(
@@ -683,6 +713,16 @@ class S {
     return Intl.message(
       'large or numerous files may take longer to load',
       name: 'loadingManyVideosHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `choose a video file`
+  String get failedToPickVideos {
+    return Intl.message(
+      'choose a video file',
+      name: 'failedToPickVideos',
       desc: '',
       args: [],
     );
@@ -768,6 +808,31 @@ class S {
     return Intl.message('share', name: 'share', desc: '', args: []);
   }
 
+  /// `compare`
+  String get compareVideos {
+    return Intl.message('compare', name: 'compareVideos', desc: '', args: []);
+  }
+
+  /// `before`
+  String get originalVideo {
+    return Intl.message('before', name: 'originalVideo', desc: '', args: []);
+  }
+
+  /// `after`
+  String get compressedVideo {
+    return Intl.message('after', name: 'compressedVideo', desc: '', args: []);
+  }
+
+  /// `preview unavailable`
+  String get videoPreviewUnavailable {
+    return Intl.message(
+      'preview unavailable',
+      name: 'videoPreviewUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `save`
   String get save {
     return Intl.message('save', name: 'save', desc: '', args: []);
@@ -820,16 +885,6 @@ class S {
       name: 'savedButOriginalsNotDeleted',
       desc: '',
       args: [error],
-    );
-  }
-
-  /// `compress other videos`
-  String get compressOtherVideos {
-    return Intl.message(
-      'compress other videos',
-      name: 'compressOtherVideos',
-      desc: '',
-      args: [],
     );
   }
 
