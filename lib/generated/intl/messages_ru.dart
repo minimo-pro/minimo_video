@@ -49,18 +49,20 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m10(count) =>
       "${Intl.plural(count, one: '1 видео сохранено в галерею', few: '${count} видео сохранено в галерею', many: '${count} видео сохранено в галерею', other: '${count} видео сохранено в галерею')}";
 
-  static String m11(count) =>
+  static String m11(error) => "видео сохранены с замечаниями: ${error}";
+
+  static String m12(count) =>
       "${Intl.plural(count, one: 'осталась примерно 1 секунда', few: 'осталось примерно ${count} секунды', many: 'осталось примерно ${count} секунд', other: 'осталось примерно ${count} секунды')}";
 
-  static String m12(url) =>
+  static String m13(url) =>
       "попробуй minimo (video) — простое приложение, чтобы сжимать видео прямо на телефоне: ${url}";
 
-  static String m13(current, total) => "видео ${current} из ${total}";
+  static String m14(current, total) => "видео ${current} из ${total}";
 
-  static String m14(completed, total) =>
+  static String m15(completed, total) =>
       "сжато видео: ${completed} из ${total}";
 
-  static String m15(size) => "экономия ${size}";
+  static String m16(size) => "экономия ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -190,6 +192,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "low": MessageLookupByLibrary.simpleMessage("низкое"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("среднее"),
+    "metadataPreservationIncomplete": MessageLookupByLibrary.simpleMessage(
+      "некоторые метаданные галереи перенести не удалось",
+    ),
     "minutesRemaining": m5,
     "myOtherApps": MessageLookupByLibrary.simpleMessage(
       "другие мои приложения",
@@ -257,10 +262,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "savedButOriginalsNotDeleted": m8,
     "savedVideosAndDeletedOriginals": m9,
     "savedVideosToGallery": m10,
-    "secondsRemaining": m11,
+    "savedWithWarnings": m11,
+    "secondsRemaining": m12,
     "settings": MessageLookupByLibrary.simpleMessage("настройки"),
     "share": MessageLookupByLibrary.simpleMessage("поделиться"),
-    "shareAppText": m12,
+    "shareAppText": m13,
     "shareWithFriends": MessageLookupByLibrary.simpleMessage(
       "поделиться с друзьями",
     ),
@@ -285,10 +291,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "предпросмотр недоступен",
     ),
-    "videoProgress": m13,
-    "videosCompressed": m14,
+    "videoProgress": m14,
+    "videosCompressed": m15,
     "waiting": MessageLookupByLibrary.simpleMessage("ожидает"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m15,
+    "youSavedSize": m16,
   };
 }

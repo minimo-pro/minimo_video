@@ -420,26 +420,53 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     Emitter<CompressState> emit,
   ) async {
     if (state.isSaving) return;
-    final outputPaths = state.successfulOutputPaths;
-    if (outputPaths.isEmpty) return;
+    final successfulResults = state.successResults
+        .where((item) => item.result.outputPath != null)
+        .toList();
+    if (successfulResults.isEmpty) return;
 
     emit(state.copyWith(isSaving: true, clearSaveNotification: true));
 
     try {
-      for (final outputPath in outputPaths) {
-        await _videoFileAdapter.saveToGallery(
-          outputPath,
-          album: _appSettings.saveVideosToAlbum
-              ? AppSettingsService.albumName
-              : null,
-        );
+      final identifiers = event.deleteOriginals
+          ? event.deleteSourceIdentifiers ??
+                successfulResults
+                    .where((item) => item.source.path != item.result.outputPath)
+                    .where((item) => item.source.canDeleteOriginal)
+                    .map((item) => item.source.sourceIdentifier)
+                    .whereType<String>()
+                    .toSet()
+          : const <String>{};
+      final album = _appSettings.saveVideosToAlbum
+          ? AppSettingsService.albumName
+          : null;
+      final metadataWarnings = <String>[];
+
+      for (final item in successfulResults) {
+        final outputPath = item.result.outputPath;
+        if (outputPath == null) continue;
+        final sourceIdentifier = item.source.sourceIdentifier;
+        if (sourceIdentifier != null &&
+            identifiers.contains(sourceIdentifier)) {
+          final save = await _videoFileAdapter.saveReplacement(
+            outputPath,
+            sourceIdentifier,
+            album: album,
+          );
+          metadataWarnings.addAll(save.warnings);
+        } else {
+          await _videoFileAdapter.saveToGallery(outputPath, album: album);
+        }
       }
 
       if (!event.deleteOriginals) {
         emit(
           state.copyWith(
-            savedVideoCount: outputPaths.length,
+            savedVideoCount: successfulResults.length,
             deletedOriginalCount: 0,
+            metadataError: metadataWarnings.isEmpty
+                ? null
+                : metadataWarnings.join('; '),
             isSaving: false,
             clearSaveNotification: true,
           ),
@@ -449,14 +476,6 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
 
       var deletedOriginalCount = 0;
       try {
-        final identifiers =
-            event.deleteSourceIdentifiers ??
-            state.successResults
-                .where((item) => item.source.path != item.result.outputPath)
-                .where((item) => item.source.canDeleteOriginal)
-                .map((item) => item.source.sourceIdentifier)
-                .whereType<String>()
-                .toSet();
         if (identifiers.isEmpty) {
           throw StateError(
             'original videos cannot be deleted by this provider',
@@ -468,8 +487,11 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
 
         emit(
           state.copyWith(
-            savedVideoCount: outputPaths.length,
+            savedVideoCount: successfulResults.length,
             deletedOriginalCount: deletedOriginalCount,
+            metadataError: metadataWarnings.isEmpty
+                ? null
+                : metadataWarnings.join('; '),
             isSaving: false,
             clearSaveNotification: true,
           ),
@@ -477,9 +499,12 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       } catch (error) {
         emit(
           state.copyWith(
-            savedVideoCount: outputPaths.length,
+            savedVideoCount: successfulResults.length,
             deletedOriginalCount: deletedOriginalCount,
             deleteError: error,
+            metadataError: metadataWarnings.isEmpty
+                ? null
+                : metadataWarnings.join('; '),
             isSaving: false,
             clearSaveNotification: true,
           ),

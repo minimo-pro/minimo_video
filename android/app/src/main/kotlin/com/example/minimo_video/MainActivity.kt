@@ -2,6 +2,7 @@ package com.khlebobul.minimo_video
 
 import android.content.Context
 import android.content.ContentUris
+import android.content.ContentValues
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
@@ -43,6 +44,7 @@ class MainActivity : FlutterActivity() {
             when (call.method) {
                 "pickVideos" -> pickVideos(call.arguments, result)
                 "deleteOriginals" -> deleteOriginals(call.arguments as? List<*>, result)
+                "saveReplacement" -> saveReplacement(call.arguments as? Map<*, *>, result)
                 "videoInfo" -> videoInfo(call.arguments as? String, result)
                 "createThumbnail" -> createThumbnail(call.arguments as? String, result)
                 else -> result.notImplemented()
@@ -211,6 +213,108 @@ class MainActivity : FlutterActivity() {
         )
     }
 
+    private fun saveReplacement(arguments: Map<*, *>?, result: MethodChannel.Result) {
+        val path = arguments?.get("path") as? String
+        val sourceIdentifier = arguments?.get("sourceIdentifier") as? String
+        val album = arguments?.get("album") as? String
+        if (path == null || sourceIdentifier == null || !File(path).isFile) {
+            result.error("save_failed", "replacement video is unavailable", null)
+            return
+        }
+        val sourceUri = mediaStoreUri(sourceIdentifier)
+        if (sourceUri == null) {
+            result.error("save_failed", "original MediaStore video is unavailable", null)
+            return
+        }
+
+        Thread {
+            var outputUri: Uri? = null
+            try {
+                val metadata = queryReplacementMetadata(sourceUri)
+                val warnings = mutableListOf<String>()
+                val baseValues = ContentValues().apply {
+                    put(MediaStore.Video.Media.DISPLAY_NAME, File(path).name)
+                    put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
+                    put(MediaStore.Video.Media.IS_PENDING, 1)
+                    if (metadata.dateTaken > 0) {
+                        put(MediaStore.Video.Media.DATE_TAKEN, metadata.dateTaken)
+                    }
+                    put(
+                        MediaStore.Video.Media.RELATIVE_PATH,
+                        metadata.relativePath
+                            ?: album?.takeIf { it.isNotBlank() }?.let { "Movies/$it" }
+                            ?: "Movies"
+                    )
+                }
+                val allValues = ContentValues(baseValues).apply {
+                    metadata.favorite?.let { put("is_favorite", it) }
+                    metadata.latitude?.let { put("latitude", it) }
+                    metadata.longitude?.let { put("longitude", it) }
+                }
+                outputUri = try {
+                    contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, allValues)
+                } catch (_: Exception) {
+                    warnings.add("optional_metadata_unavailable")
+                    contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, baseValues)
+                } ?: error("replacement MediaStore item was not created")
+
+                File(path).inputStream().use { input ->
+                    contentResolver.openOutputStream(outputUri!!, "w").use { output ->
+                        requireNotNull(output) { "replacement MediaStore item could not be opened" }
+                        input.copyTo(output, 1024 * 1024)
+                    }
+                }
+                val published = ContentValues().apply { put(MediaStore.Video.Media.IS_PENDING, 0) }
+                contentResolver.update(outputUri!!, published, null, null)
+                val size = contentResolver.query(
+                    outputUri!!,
+                    arrayOf(MediaStore.Video.Media.SIZE),
+                    null,
+                    null,
+                    null
+                )?.use { cursor ->
+                    if (cursor.moveToFirst()) cursor.getLong(0) else 0L
+                } ?: 0L
+                check(size > 0) { "replacement video could not be verified" }
+
+                runOnUiThread { result.success(mapOf("saved" to true, "warnings" to warnings)) }
+            } catch (error: Exception) {
+                outputUri?.let { runCatching { contentResolver.delete(it, null, null) } }
+                runOnUiThread { result.error("save_failed", error.message, null) }
+            }
+        }.start()
+    }
+
+    private fun queryReplacementMetadata(uri: Uri): ReplacementMetadata {
+        return contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            check(cursor.moveToFirst()) { "original MediaStore video is unavailable" }
+            fun long(column: String): Long? = cursor.getColumnIndex(column)
+                .takeIf { it >= 0 && !cursor.isNull(it) }
+                ?.let(cursor::getLong)
+            fun int(column: String): Int? = cursor.getColumnIndex(column)
+                .takeIf { it >= 0 && !cursor.isNull(it) }
+                ?.let(cursor::getInt)
+            fun double(column: String): Double? = cursor.getColumnIndex(column)
+                .takeIf { it >= 0 && !cursor.isNull(it) }
+                ?.let(cursor::getDouble)
+            fun string(column: String): String? = cursor.getColumnIndex(column)
+                .takeIf { it >= 0 && !cursor.isNull(it) }
+                ?.let(cursor::getString)
+
+            ReplacementMetadata(
+                dateTaken = long(MediaStore.Video.Media.DATE_TAKEN)
+                    ?.takeIf { it > 0 }
+                    ?: long(MediaStore.Video.Media.DATE_ADDED)?.times(1000)
+                    ?: long(MediaStore.Video.Media.DATE_MODIFIED)?.times(1000)
+                    ?: 0L,
+                relativePath = string(MediaStore.Video.Media.RELATIVE_PATH),
+                favorite = int("is_favorite"),
+                latitude = double("latitude"),
+                longitude = double("longitude")
+            )
+        } ?: error("original MediaStore video is unavailable")
+    }
+
     private fun mediaStoreUri(value: String): Uri? {
         val uri = Uri.parse(value)
         if (uri.authority == "media") {
@@ -326,4 +430,12 @@ class MainActivity : FlutterActivity() {
         private const val PICK_VIDEOS_REQUEST = 4207
         private const val DELETE_VIDEOS_REQUEST = 4208
     }
+
+    private data class ReplacementMetadata(
+        val dateTaken: Long,
+        val relativePath: String?,
+        val favorite: Int?,
+        val latitude: Double?,
+        val longitude: Double?
+    )
 }

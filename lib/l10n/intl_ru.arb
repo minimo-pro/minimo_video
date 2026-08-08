@@ -196,6 +196,15 @@
       }
     }
   },
+  "savedWithWarnings": "видео сохранены с замечаниями: {error}",
+  "@savedWithWarnings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "metadataPreservationIncomplete": "некоторые метаданные галереи перенести не удалось",
   "waiting": "ожидает",
   "failed": "ошибка",
   "videoProgress": "видео {current} из {total}",

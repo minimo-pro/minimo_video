@@ -196,6 +196,15 @@
       }
     }
   },
+  "savedWithWarnings": "videos saved with some issues: {error}",
+  "@savedWithWarnings": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "metadataPreservationIncomplete": "some gallery metadata could not be copied",
   "waiting": "waiting",
   "failed": "failed",
   "videoProgress": "video {current} of {total}",

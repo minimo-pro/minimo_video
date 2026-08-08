@@ -23,15 +23,20 @@ Only `state.successResults` are previewable. Skipped and failed items stay in th
 
 ## Save
 
-Filled primary save opens the per-video save sheet. It preselects deletable originals from `delete_originals_after_saving`; the user can keep or unselect each original. Confirming dispatches `CompressResultsSaved` with selected source identifiers and saves each successful output through `gal`. If album saving is enabled, album name is `Minimo`.
+Filled primary save opens the per-video save sheet. It preselects deletable originals from `delete_originals_after_saving`; the user can keep or unselect each original. Confirming dispatches `CompressResultsSaved` with selected source identifiers. Ordinary outputs save through `gal`; selected replacements use the native create-and-verify path with source metadata. If album saving is enabled, album name is `Minimo`.
 
 Saving is guarded by `state.isSaving` to prevent duplicate actions. A failure stops the operation and stores `saveError` for UI notification.
 
 ## Save and Delete Originals
 
-The save sheet is the only deletion path. Deletion runs only after every output saves successfully, then requests source deletion using unique non-null `sourceIdentifier` values whose source is marked deletable.
+The save sheet is the only deletion path. For selected originals, the app first
+creates and verifies a new gallery asset carrying supported source metadata.
+Only after every output is saved does it request deletion using unique non-null
+`sourceIdentifier` values whose source is marked deletable. This preserves the
+chronological gallery position without risky in-place writes.
 
 - Save success remains valid if original deletion fails.
+- Metadata transfer failures use `metadataError` and are reported as partial success.
 - Deletion failures use `deleteError`, separate from `saveError`.
 - Sources without a platform identifier cannot be deleted.
 - Sources without delete capability remain visible but disabled in the manage sheet.
@@ -56,6 +61,7 @@ The save sheet is the only deletion path. Deletion runs only after every output 
 - Codec output and compression ratio can differ between Android and iOS.
 - Original deletion depends on picker/provider identifiers and OS support.
 - Android original deletion requires Android 11 or newer.
+- Gallery ordering in system-specific "Recently Added" views cannot be preserved.
 - Flutter tests cannot validate real native video frames or audio synchronization.
 
 ---

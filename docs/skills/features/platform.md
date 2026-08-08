@@ -22,11 +22,21 @@ Both platforms report `pickProgress` (`processed`/`total`) over the videos metho
 
 ## Gallery and Deletion
 
-- Saving uses `gal` and may request add-only gallery permission.
+- Normal saving uses `gal` and may request add-only gallery permission.
+- Outputs selected to replace deletable originals use native `saveReplacement`.
+  The replacement is created and verified before source deletion begins.
+- iOS copies the Photos capture date, location, writable user-album membership,
+  and favorite state. The new asset always receives a new local identifier.
+- Android copies `DATE_TAKEN`, location and favorite values when MediaStore
+  accepts them, plus the source `RELATIVE_PATH` so the replacement stays in the
+  same folder. Unsupported optional columns produce a warning and retry with
+  safe base metadata.
 - iOS original deletion requests Photos read/write authorization only when deletion is confirmed.
 - Android 11+ uses `MediaStore.createDeleteRequest` only for picks marked deletable, which shows the system confirmation UI.
 - Android versions below 11 report original deletion as unsupported.
 - Flutter carries both `sourceIdentifier` and `canDeleteOriginal`; UI must not infer delete capability from identifier presence alone.
+- Metadata-copy and deletion failures are reported as partial success; a save
+  failure leaves the original untouched.
 
 ## Native Metadata
 

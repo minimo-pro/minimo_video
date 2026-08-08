@@ -49,18 +49,20 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m10(count) =>
       "${Intl.plural(count, one: 'saved 1 video to gallery', other: 'saved ${count} videos to gallery')}";
 
-  static String m11(count) =>
+  static String m11(error) => "videos saved with some issues: ${error}";
+
+  static String m12(count) =>
       "${Intl.plural(count, one: 'about 1 second left', other: 'about ${count} seconds left')}";
 
-  static String m12(url) =>
+  static String m13(url) =>
       "try minimo (video) — a simple app for making videos smaller on your phone: ${url}";
 
-  static String m13(current, total) => "video ${current} of ${total}";
+  static String m14(current, total) => "video ${current} of ${total}";
 
-  static String m14(completed, total) =>
+  static String m15(completed, total) =>
       "${completed} of ${total} videos compressed";
 
-  static String m15(size) => "you saved ${size}";
+  static String m16(size) => "you saved ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -190,6 +192,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "low": MessageLookupByLibrary.simpleMessage("low"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("medium"),
+    "metadataPreservationIncomplete": MessageLookupByLibrary.simpleMessage(
+      "some gallery metadata could not be copied",
+    ),
     "minutesRemaining": m5,
     "myOtherApps": MessageLookupByLibrary.simpleMessage("my other apps"),
     "myWebsite": MessageLookupByLibrary.simpleMessage("my website"),
@@ -253,10 +258,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "savedButOriginalsNotDeleted": m8,
     "savedVideosAndDeletedOriginals": m9,
     "savedVideosToGallery": m10,
-    "secondsRemaining": m11,
+    "savedWithWarnings": m11,
+    "secondsRemaining": m12,
     "settings": MessageLookupByLibrary.simpleMessage("settings"),
     "share": MessageLookupByLibrary.simpleMessage("share"),
-    "shareAppText": m12,
+    "shareAppText": m13,
     "shareWithFriends": MessageLookupByLibrary.simpleMessage(
       "share with friends",
     ),
@@ -281,10 +287,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "preview unavailable",
     ),
-    "videoProgress": m13,
-    "videosCompressed": m14,
+    "videoProgress": m14,
+    "videosCompressed": m15,
     "waiting": MessageLookupByLibrary.simpleMessage("waiting"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m15,
+    "youSavedSize": m16,
   };
 }

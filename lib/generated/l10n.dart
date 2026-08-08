@@ -1003,6 +1003,26 @@ class S {
     );
   }
 
+  /// `videos saved with some issues: {error}`
+  String savedWithWarnings(String error) {
+    return Intl.message(
+      'videos saved with some issues: $error',
+      name: 'savedWithWarnings',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `some gallery metadata could not be copied`
+  String get metadataPreservationIncomplete {
+    return Intl.message(
+      'some gallery metadata could not be copied',
+      name: 'metadataPreservationIncomplete',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `waiting`
   String get waiting {
     return Intl.message('waiting', name: 'waiting', desc: '', args: []);

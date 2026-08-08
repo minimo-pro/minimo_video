@@ -183,21 +183,51 @@ class _IosRecoveryCompressor extends VideoCompressorAdapter {
 
 class _SavingFileAdapter extends VideoFileAdapter {
   List<String> deletedIdentifiers = const [];
+  final calls = <String>[];
 
   @override
-  Future<void> saveToGallery(String filePath, {String? album}) async {}
+  Future<void> saveToGallery(String filePath, {String? album}) async {
+    calls.add('save:$filePath');
+  }
+
+  @override
+  Future<GallerySaveResult> saveReplacement(
+    String filePath,
+    String sourceIdentifier, {
+    String? album,
+  }) async {
+    calls.add('replace:$sourceIdentifier');
+    return const GallerySaveResult();
+  }
 
   @override
   Future<int> deleteOriginals(Iterable<String> sourceIdentifiers) async {
     deletedIdentifiers = sourceIdentifiers.toList();
+    calls.add('delete:${deletedIdentifiers.join(',')}');
     return deletedIdentifiers.length;
   }
 }
 
 class _FailingSaveFileAdapter extends _SavingFileAdapter {
   @override
-  Future<void> saveToGallery(String filePath, {String? album}) async {
+  Future<GallerySaveResult> saveReplacement(
+    String filePath,
+    String sourceIdentifier, {
+    String? album,
+  }) async {
     throw StateError('gallery unavailable');
+  }
+}
+
+class _WarningSaveFileAdapter extends _SavingFileAdapter {
+  @override
+  Future<GallerySaveResult> saveReplacement(
+    String filePath,
+    String sourceIdentifier, {
+    String? album,
+  }) async {
+    calls.add('replace:$sourceIdentifier');
+    return const GallerySaveResult(warnings: ['favorite_unavailable']);
   }
 }
 
@@ -408,6 +438,7 @@ void main() {
     await bloc.stream.firstWhere((state) => state.deletedOriginalCount == 1);
 
     expect(files.deletedIdentifiers, ['photos-id']);
+    expect(files.calls, ['replace:photos-id', 'delete:photos-id']);
     await bloc.close();
   });
 
@@ -437,6 +468,37 @@ void main() {
     expect(files.deletedIdentifiers, isEmpty);
     await bloc.close();
   });
+
+  test(
+    'reports metadata warning after verified replacement and deletion',
+    () async {
+      final files = _WarningSaveFileAdapter();
+      final bloc = CompressBloc(
+        initialVideos: const [
+          PickedVideo(
+            path: '/ok.mp4',
+            name: 'video.mp4',
+            size: 100,
+            sourceIdentifier: 'photos-id',
+            canDeleteOriginal: true,
+          ),
+        ],
+        videoFileAdapter: files,
+        videoCompressorAdapter: _MixedCompressor(),
+      );
+
+      bloc.add(const CompressStarted());
+      await bloc.stream.firstWhere(
+        (state) => state.status == CompressStatus.done,
+      );
+      bloc.add(const CompressResultsSaved(deleteOriginals: true));
+      await bloc.stream.firstWhere((state) => state.deletedOriginalCount == 1);
+
+      expect(bloc.state.metadataError, 'favorite_unavailable');
+      expect(files.calls, ['replace:photos-id', 'delete:photos-id']);
+      await bloc.close();
+    },
+  );
 
   test('does not delete originals without delete capability', () async {
     final files = _SavingFileAdapter();
@@ -500,6 +562,11 @@ void main() {
     await bloc.stream.firstWhere((state) => state.deletedOriginalCount == 1);
 
     expect(files.deletedIdentifiers, ['two-id']);
+    expect(files.calls, [
+      'save:/ok-small.mp4',
+      'replace:two-id',
+      'delete:two-id',
+    ]);
     await bloc.close();
   });
 

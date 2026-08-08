@@ -31,6 +31,7 @@ class CompressState {
   final int? deletedOriginalCount;
   final Object? saveError;
   final Object? deleteError;
+  final Object? metadataError;
   final Object? compressionError;
 
   const CompressState({
@@ -51,6 +52,7 @@ class CompressState {
     this.deletedOriginalCount,
     this.saveError,
     this.deleteError,
+    this.metadataError,
     this.compressionError,
   }) : _currentVideoProgress = currentVideoProgress;
 
@@ -150,6 +152,7 @@ class CompressState {
     int? deletedOriginalCount,
     Object? saveError,
     Object? deleteError,
+    Object? metadataError,
     Object? compressionError,
     bool clearSaveNotification = false,
     bool clearCompressionError = false,
@@ -187,6 +190,9 @@ class CompressState {
       deleteError: clearSaveNotification
           ? deleteError
           : deleteError ?? this.deleteError,
+      metadataError: clearSaveNotification
+          ? metadataError
+          : metadataError ?? this.metadataError,
       compressionError: clearCompressionError
           ? compressionError
           : compressionError ?? this.compressionError,
