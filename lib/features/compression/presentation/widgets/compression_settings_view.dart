@@ -47,6 +47,8 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
     '854:480',
     '640:360',
   ];
+  static const _bitrates = <int?>[null, 1, 2, 4, 6, 8];
+  static const _frameRates = <int?>[null, 60, 30, 24, 15];
 
   CompressionOptionsMode _mode = CompressionOptionsMode.simple;
   final _sizeRowKey = GlobalKey();
@@ -405,6 +407,60 @@ class _AdvancedCompressionOptions extends StatelessWidget {
             onChanged: (value) => context.read<CompressBloc>().add(
               CompressResolutionChanged(value),
             ),
+          ),
+        ),
+        SizedBox(height: compact ? 18 : 28),
+        AppSettingsSection(
+          title: strings.videoBitrate,
+          description: strings.videoBitrateDescription,
+          child: AppOptionPicker<int?>(
+            value: settings.videoBitrateMbps,
+            options: _CompressionSettingsViewState._bitrates
+                .map(
+                  (bitrate) => AppOption(
+                    value: bitrate,
+                    label: bitrate == null
+                        ? strings.automatic
+                        : '$bitrate Mbps',
+                  ),
+                )
+                .toList(),
+            onChanged: (value) => _changeSettings(
+              context,
+              settings.copyWith(videoBitrateMbps: value),
+            ),
+          ),
+        ),
+        SizedBox(height: compact ? 18 : 28),
+        AppSettingsSection(
+          title: strings.frameRate,
+          description: strings.frameRateDescription,
+          child: AppOptionPicker<int?>(
+            value: settings.frameRate,
+            options: _CompressionSettingsViewState._frameRates
+                .map(
+                  (fps) => AppOption(
+                    value: fps,
+                    label: fps == null ? strings.original : '$fps FPS',
+                  ),
+                )
+                .toList(),
+            onChanged: (value) =>
+                _changeSettings(context, settings.copyWith(frameRate: value)),
+          ),
+        ),
+        SizedBox(height: compact ? 18 : 28),
+        AppSettingsSection(
+          title: strings.codec,
+          description: strings.codecDescription,
+          child: AppOptionPicker<CompressionCodec>(
+            value: settings.codec,
+            options: const [
+              AppOption(value: CompressionCodec.h264, label: 'H.264'),
+              AppOption(value: CompressionCodec.hevc, label: 'HEVC'),
+            ],
+            onChanged: (value) =>
+                _changeSettings(context, settings.copyWith(codec: value)),
           ),
         ),
         SizedBox(height: compact ? 18 : 28),

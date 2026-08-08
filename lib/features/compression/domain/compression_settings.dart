@@ -2,17 +2,26 @@ class CompressionSettings {
   final double crf;
   final String? resolution;
   final CompressionAudioMode audioMode;
+  final int? videoBitrateMbps;
+  final int? frameRate;
+  final CompressionCodec codec;
 
   const CompressionSettings({
     this.crf = 28,
     this.resolution = '1280:720',
     this.audioMode = CompressionAudioMode.stereo,
+    this.videoBitrateMbps,
+    this.frameRate,
+    this.codec = CompressionCodec.h264,
   });
 
   CompressionSettings copyWith({
     double? crf,
     Object? resolution = _unset,
     CompressionAudioMode? audioMode,
+    Object? videoBitrateMbps = _unset,
+    Object? frameRate = _unset,
+    CompressionCodec? codec,
   }) {
     return CompressionSettings(
       crf: crf ?? this.crf,
@@ -20,6 +29,11 @@ class CompressionSettings {
           ? this.resolution
           : resolution as String?,
       audioMode: audioMode ?? this.audioMode,
+      videoBitrateMbps: videoBitrateMbps == _unset
+          ? this.videoBitrateMbps
+          : videoBitrateMbps as int?,
+      frameRate: frameRate == _unset ? this.frameRate : frameRate as int?,
+      codec: codec ?? this.codec,
     );
   }
 
@@ -46,3 +60,5 @@ const _unset = Object();
 enum SimpleCompressionQuality { high, medium, low }
 
 enum CompressionAudioMode { stereo, remove }
+
+enum CompressionCodec { h264, hevc }

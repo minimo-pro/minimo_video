@@ -82,6 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "audioDescription": MessageLookupByLibrary.simpleMessage(
       "keep the original audio or remove it to save more space",
     ),
+    "automatic": MessageLookupByLibrary.simpleMessage("auto"),
     "better": MessageLookupByLibrary.simpleMessage("better"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "bitrate will be reduced to save space",
@@ -99,6 +100,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "clearCache": MessageLookupByLibrary.simpleMessage("clear cache"),
     "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
       "removes temporary app files. videos saved to your gallery remain untouched",
+    ),
+    "codec": MessageLookupByLibrary.simpleMessage("codec"),
+    "codecDescription": MessageLookupByLibrary.simpleMessage(
+      "H.264 works everywhere; HEVC can be smaller but may fall back to H.264",
     ),
     "compareVideos": MessageLookupByLibrary.simpleMessage("compare"),
     "compress": MessageLookupByLibrary.simpleMessage("compress"),
@@ -143,11 +148,18 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "failedToSave": m3,
     "failedToShare": m4,
+    "frameRate": MessageLookupByLibrary.simpleMessage("frame rate"),
+    "frameRateDescription": MessageLookupByLibrary.simpleMessage(
+      "limit output frames per second; higher source rates are left unchanged",
+    ),
     "getStarted": MessageLookupByLibrary.simpleMessage("get started"),
     "githubRepository": MessageLookupByLibrary.simpleMessage(
       "github repository",
     ),
     "good": MessageLookupByLibrary.simpleMessage("good"),
+    "hevcFallbackNotice": MessageLookupByLibrary.simpleMessage(
+      "HEVC wasn\'t available, so this video was saved as H.264",
+    ),
     "high": MessageLookupByLibrary.simpleMessage("high"),
     "holdToCancelCompression": MessageLookupByLibrary.simpleMessage(
       "hold the button to cancel compression",
@@ -262,6 +274,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("system"),
     "todo": MessageLookupByLibrary.simpleMessage("TODO"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("try again"),
+    "videoBitrate": MessageLookupByLibrary.simpleMessage("video bitrate"),
+    "videoBitrateDescription": MessageLookupByLibrary.simpleMessage(
+      "set a target bitrate or let the quality preset choose it",
+    ),
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "preview unavailable",
     ),

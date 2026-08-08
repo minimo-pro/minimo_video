@@ -2,49 +2,55 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/features/compression/domain/compression_settings.dart';
 import 'package:minimo_video/features/compression/data/video_compressor_adapter.dart';
 import 'package:minimo_video/features/compression/presentation/utils/compression_estimate.dart';
+import 'package:light_compressor_v2/light_compressor_v2.dart' as light;
 
 void main() {
-  test('bitrate estimate includes video and audio', () {
-    final estimate = VideoCompressorAdapter.estimateBytes(
-      durationMs: 24000,
-      videoBitrateMbps: 2,
-      includeAudio: true,
+  test('custom bitrate overrides preset estimate', () {
+    final automatic = CompressionEstimate.compressedSize(
+      originalSize: 100000000,
+      settings: const CompressionSettings(crf: 28),
+    );
+    final custom = CompressionEstimate.compressedSize(
+      originalSize: 100000000,
+      settings: const CompressionSettings(crf: 28, videoBitrateMbps: 1),
     );
 
-    expect(estimate / 1024 / 1024, closeTo(6.1, 0.1));
+    expect(custom, lessThan(automatic));
   });
 
-  test('audio removal lowers bitrate estimate', () {
-    final withAudio = VideoCompressorAdapter.estimateBytes(
-      durationMs: 24000,
-      videoBitrateMbps: 2,
-      includeAudio: true,
-    );
-    final withoutAudio = VideoCompressorAdapter.estimateBytes(
-      durationMs: 24000,
-      videoBitrateMbps: 2,
-      includeAudio: false,
-    );
+  test('advanced codec and frame rate survive other setting changes', () {
+    final settings = const CompressionSettings(
+      frameRate: 24,
+      codec: CompressionCodec.hevc,
+    ).copyWith(audioMode: CompressionAudioMode.remove);
 
-    expect(withoutAudio, lessThan(withAudio));
+    expect(settings.frameRate, 24);
+    expect(settings.codec, CompressionCodec.hevc);
   });
 
-  test('lower resolution lowers bitrate estimate', () {
-    final originalResolution = VideoCompressorAdapter.estimateBytes(
-      durationMs: 24000,
-      videoBitrateMbps: 2,
-      includeAudio: true,
-    );
-    final reducedResolution = VideoCompressorAdapter.estimateBytes(
-      durationMs: 24000,
-      videoBitrateMbps: 2,
-      includeAudio: true,
-      resolutionScale: const CompressionSettings(
-        resolution: '854:480',
-      ).resolutionEstimateScale,
+  test('encode plan forwards bitrate, frame rate, and HEVC', () {
+    final plan = VideoCompressorAdapter.encodePlan(
+      const CompressionSettings(
+        crf: 22,
+        videoBitrateMbps: 6,
+        frameRate: 24,
+        codec: CompressionCodec.hevc,
+      ),
     );
 
-    expect(reducedResolution, lessThan(originalResolution));
+    expect(plan.quality, light.VideoQuality.very_high);
+    expect(plan.bitrateMbps, 6);
+    expect(plan.frameRate, 24);
+    expect(plan.format, light.VideoFormat.h265);
+  });
+
+  test('encode plan maps automatic bitrate from simple quality', () {
+    final plan = VideoCompressorAdapter.encodePlan(
+      const CompressionSettings(crf: 28),
+    );
+
+    expect(plan.bitrateMbps, 2);
+    expect(plan.format, light.VideoFormat.h264);
   });
 
   test('compressed output needs at least ten percent savings', () {

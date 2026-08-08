@@ -12,7 +12,11 @@ Accepted trade-off: output may differ across platforms, and uncommon formats or 
 
 ## Small User-facing Settings Surface
 
-Simple presets cover the primary use case. Advanced settings were reduced to resolution and audio. CRF, speed preset, frame rate, codec, two-pass mode, noise reduction, streaming optimization, metadata preservation, and hardware-acceleration switches were removed from UI/state.
+Simple presets cover the primary use case. Advanced settings expose controls
+supported consistently by `light_compressor_v2`: resolution, video bitrate,
+frame rate, H.264/HEVC codec, and audio. CRF, speed preset, two-pass mode, noise
+reduction, streaming optimization, metadata preservation, and hardware-
+acceleration switches remain outside UI/state.
 
 Reason: the replacement package does not expose all controls consistently, and most users need predictable basic compression rather than encoder tuning.
 

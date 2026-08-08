@@ -40,7 +40,8 @@ Failed compression replaces save with retry and disables `VS`. Already-optimized
 
 `CompressionBottomActions` places an outlined icon-only plus button and the filled compress button in the same bottom row. The plus button opens the same gallery/files source sheet as `StartRoute`, appends selected videos, and refreshes thumbnails and the size estimate without resetting compression settings. Back remains in the shared top chrome.
 
-Simple presets are the primary UX. Advanced mode currently exposes only resolution and audio.
+Simple presets are the primary UX. Advanced mode exposes resolution, video
+bitrate, frame rate, H.264/HEVC codec, and audio controls.
 
 ## Hold-to-confirm Actions
 

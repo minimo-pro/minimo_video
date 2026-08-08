@@ -125,6 +125,13 @@ class CompressState {
         .toList();
   }
 
+  bool get usedCodecFallback {
+    return settings.codec == CompressionCodec.hevc &&
+        successResults.any(
+          (item) => item.result.usedCodec == CompressionCodec.h264,
+        );
+  }
+
   CompressState copyWith({
     CompressStatus? status,
     List<PickedVideo>? videos,

@@ -14,7 +14,8 @@ Current tests cover:
 
 - Quality preset mapping to internal tier and resolution
 - Appending only new picked videos while preserving settings and aligned batch state
-- Compression estimate formula and audio contribution
+- Custom bitrate estimate fallback and exact bitrate/FPS/codec encode-plan mapping
+- HEVC-to-H.264 fallback notice on the result screen
 - Minimum 10% output-savings policy
 - Batch status transitions and mixed success/skipped results
 - Cancellation state reset and compressor cancellation call

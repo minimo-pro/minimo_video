@@ -104,6 +104,18 @@ class CompressionResultView extends StatelessWidget {
                       height: compact ? 1.1 : 1,
                     ),
                   ),
+                  if (!allFailed && state.usedCodecFallback) ...[
+                    SizedBox(height: compact ? 4 : 6),
+                    Text(
+                      strings.hevcFallbackNotice,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: compact ? 13 : 15,
+                        height: 1.1,
+                      ),
+                    ),
+                  ],
                   SizedBox(height: compact ? 8 : 12),
                   Flexible(
                     fit: FlexFit.loose,

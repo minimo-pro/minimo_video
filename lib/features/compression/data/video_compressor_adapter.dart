@@ -52,6 +52,7 @@ class VideoCompressorAdapter {
       inputPath,
       settings.resolution,
     );
+    final plan = encodePlan(settings);
     final progress = onProgress == null
         ? null
         : _compressor.onProgressUpdated.listen(
@@ -61,7 +62,8 @@ class VideoCompressorAdapter {
     try {
       final result = await _compressor.compressVideo(
         path: inputPath,
-        videoQuality: _quality(settings.crf),
+        videoQuality: plan.quality,
+        videoFormat: plan.format,
         isMinBitrateCheckEnabled: false,
         disableAudio: settings.audioMode == CompressionAudioMode.remove,
         audio: settings.audioMode == CompressionAudioMode.stereo
@@ -70,7 +72,8 @@ class VideoCompressorAdapter {
         video: light.Video(
           videoName: path.basenameWithoutExtension(outputPath),
           keepOriginalResolution: settings.resolution == null,
-          videoBitrateInMbps: _bitrateMbps(settings.crf),
+          videoBitrateInMbps: plan.bitrateMbps,
+          videoFps: plan.frameRate,
           videoWidth: width,
           videoHeight: height,
         ),
@@ -102,6 +105,9 @@ class VideoCompressorAdapter {
         outputSize: outputSize,
         outputPath: savedFile?.path,
         durationMs: stopwatch.elapsedMilliseconds,
+        usedCodec: result.usedFormat == light.VideoFormat.h265
+            ? CompressionCodec.hevc
+            : CompressionCodec.h264,
       );
     } finally {
       await progress?.cancel();
@@ -116,20 +122,23 @@ class VideoCompressorAdapter {
       try {
         var total = 0;
         for (final inputPath in inputPaths) {
-          final info = await _channel.invokeMapMethod<String, dynamic>(
-            'videoInfo',
+          final plan = encodePlan(settings);
+          final (width, height) = await _targetResolution(
             inputPath,
+            settings.resolution,
           );
-          final durationMs = info?['durationMs'] as int?;
-          if (durationMs == null) return null;
+          final estimate = await _compressor.getCompressionEstimate(
+            inputPath,
+            videoQuality: plan.quality,
+            videoFormat: plan.format,
+            keepOriginalResolution: settings.resolution == null,
+            videoWidth: width,
+            videoHeight: height,
+            videoBitrateInMbps: plan.bitrateMbps,
+            disableAudio: settings.audioMode == CompressionAudioMode.remove,
+          );
           final originalSize = await File(inputPath).length();
-          final estimate = estimateBytes(
-            durationMs: durationMs,
-            videoBitrateMbps: _bitrateMbps(settings.crf),
-            includeAudio: settings.audioMode != CompressionAudioMode.remove,
-            resolutionScale: settings.resolutionEstimateScale,
-          );
-          total += estimate.clamp(0, originalSize);
+          total += estimate.estimatedSizeBytes.clamp(0, originalSize);
         }
         return total;
       } catch (_) {
@@ -138,20 +147,25 @@ class VideoCompressorAdapter {
     });
   }
 
-  static int estimateBytes({
-    required int durationMs,
-    required int videoBitrateMbps,
-    required bool includeAudio,
-    double resolutionScale = 1,
-  }) {
-    final bitrate =
-        videoBitrateMbps * 1000000 * resolutionScale +
-        (includeAudio ? 128000 : 0);
-    return (bitrate * durationMs / 8000).round();
-  }
-
   static bool isUsefulCompression(int originalSize, int outputSize) {
     return outputSize * 10 <= originalSize * 9;
+  }
+
+  static ({
+    light.VideoQuality quality,
+    light.VideoFormat format,
+    int bitrateMbps,
+    int? frameRate,
+  })
+  encodePlan(CompressionSettings settings) {
+    return (
+      quality: _quality(settings.crf),
+      format: settings.codec == CompressionCodec.hevc
+          ? light.VideoFormat.h265
+          : light.VideoFormat.h264,
+      bitrateMbps: settings.videoBitrateMbps ?? _bitrateMbps(settings.crf),
+      frameRate: settings.frameRate,
+    );
   }
 
   Future<String?> createThumbnail(String inputPath) {

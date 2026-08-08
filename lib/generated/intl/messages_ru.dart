@@ -82,6 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "audioDescription": MessageLookupByLibrary.simpleMessage(
       "сохраните исходный звук или удалите его для меньшего размера",
     ),
+    "automatic": MessageLookupByLibrary.simpleMessage("авто"),
     "better": MessageLookupByLibrary.simpleMessage("лучше"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "битрейт будет уменьшен для экономии места",
@@ -99,6 +100,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "clearCache": MessageLookupByLibrary.simpleMessage("очистка кеша"),
     "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
       "удаляет временные файлы приложения. видео в галерее останутся",
+    ),
+    "codec": MessageLookupByLibrary.simpleMessage("кодек"),
+    "codecDescription": MessageLookupByLibrary.simpleMessage(
+      "H.264 совместим везде; HEVC может быть компактнее, но иногда заменяется на H.264",
     ),
     "compareVideos": MessageLookupByLibrary.simpleMessage("сравнить"),
     "compress": MessageLookupByLibrary.simpleMessage("сжать"),
@@ -143,11 +148,18 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "failedToSave": m3,
     "failedToShare": m4,
+    "frameRate": MessageLookupByLibrary.simpleMessage("частота кадров"),
+    "frameRateDescription": MessageLookupByLibrary.simpleMessage(
+      "ограничивает число кадров в секунду; меньшая частота источника не повышается",
+    ),
     "getStarted": MessageLookupByLibrary.simpleMessage("начать"),
     "githubRepository": MessageLookupByLibrary.simpleMessage(
       "репозиторий github",
     ),
     "good": MessageLookupByLibrary.simpleMessage("хорошее"),
+    "hevcFallbackNotice": MessageLookupByLibrary.simpleMessage(
+      "HEVC недоступен — видео сохранено в H.264",
+    ),
     "high": MessageLookupByLibrary.simpleMessage("высокое"),
     "holdToCancelCompression": MessageLookupByLibrary.simpleMessage(
       "удерживайте кнопку, чтобы отменить сжатие",
@@ -266,6 +278,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("система"),
     "todo": MessageLookupByLibrary.simpleMessage("В разработке"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("попробовать снова"),
+    "videoBitrate": MessageLookupByLibrary.simpleMessage("битрейт видео"),
+    "videoBitrateDescription": MessageLookupByLibrary.simpleMessage(
+      "задайте целевой битрейт или доверьте выбор профилю качества",
+    ),
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "предпросмотр недоступен",
     ),

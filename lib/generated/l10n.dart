@@ -554,6 +554,61 @@ class S {
     );
   }
 
+  /// `video bitrate`
+  String get videoBitrate {
+    return Intl.message(
+      'video bitrate',
+      name: 'videoBitrate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `set a target bitrate or let the quality preset choose it`
+  String get videoBitrateDescription {
+    return Intl.message(
+      'set a target bitrate or let the quality preset choose it',
+      name: 'videoBitrateDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `auto`
+  String get automatic {
+    return Intl.message('auto', name: 'automatic', desc: '', args: []);
+  }
+
+  /// `frame rate`
+  String get frameRate {
+    return Intl.message('frame rate', name: 'frameRate', desc: '', args: []);
+  }
+
+  /// `limit output frames per second; higher source rates are left unchanged`
+  String get frameRateDescription {
+    return Intl.message(
+      'limit output frames per second; higher source rates are left unchanged',
+      name: 'frameRateDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `codec`
+  String get codec {
+    return Intl.message('codec', name: 'codec', desc: '', args: []);
+  }
+
+  /// `H.264 works everywhere; HEVC can be smaller but may fall back to H.264`
+  String get codecDescription {
+    return Intl.message(
+      'H.264 works everywhere; HEVC can be smaller but may fall back to H.264',
+      name: 'codecDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `audio`
   String get audio {
     return Intl.message('audio', name: 'audio', desc: '', args: []);
@@ -871,6 +926,16 @@ class S {
   /// `after`
   String get compressedVideo {
     return Intl.message('after', name: 'compressedVideo', desc: '', args: []);
+  }
+
+  /// `HEVC wasn't available, so this video was saved as H.264`
+  String get hevcFallbackNotice {
+    return Intl.message(
+      'HEVC wasn\'t available, so this video was saved as H.264',
+      name: 'hevcFallbackNotice',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `preview unavailable`

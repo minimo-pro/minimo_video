@@ -13,7 +13,14 @@ CRF is retained internally to map existing UI state to `light_compressor_v2`; us
 Advanced mode allows:
 
 - Original, 1080p, 720p, 480p, or 360p resolution
+- Automatic or 1, 2, 4, 6, or 8 Mbps video bitrate
+- Original, 60, 30, 24, or 15 FPS output; the package only downsamples
+- H.264 or HEVC output; unsupported HEVC hardware falls back to H.264
 - Stereo audio or no audio
+
+`light_compressor_v2 1.9.0` does not expose encoder speed presets or video
+container metadata copying. Do not add UI switches for either until the native
+pipeline can honor them on both Android and iOS.
 
 Reduced-resolution presets preserve the source orientation. Before passing a
 custom `videoWidth`/`videoHeight` to `light_compressor_v2`,
@@ -34,6 +41,10 @@ Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough:
 5. Output is moved to app temporary storage only when it saves at least 10%.
 6. Smaller savings are treated as already optimized: output is deleted, original remains.
 
+The plugin-reported `usedFormat` is stored with each successful result. If
+HEVC was requested but hardware fallback produced H.264, the result screen
+shows a localized notice.
+
 `BackgroundConfig` keeps compression running through an Android foreground service when the app is minimized or the screen is off. iOS does not support continuous background transcoding; the native job can remain stuck after the OS suspends the app.
 
 On iOS the compression screen warns the user to keep the app open. If the app is backgrounded during compression, the active native job is cancelled immediately; returning restarts only the current video and keeps completed batch items.
@@ -48,17 +59,11 @@ The Bloc keeps `videos`, `thumbnailPaths`, and `videoStatuses` aligned, requests
 
 ## Estimates
 
-Estimate formula:
-
-```text
-(video bitrate × resolution scale + optional 128 kbps audio) × duration / 8
-```
-
-Lower target resolutions use progressively smaller estimate scales. Each
-estimate is capped at original file size. Duration comes from native
-`videoInfo`. Changing settings immediately clears the previous asynchronous
-estimate so the UI shows the local fallback until fresh metadata-based output
-arrives.
+`VideoCompressorAdapter` calls `LightCompressor.getCompressionEstimate()` with
+the same quality, codec, dimensions, bitrate, and audio-removal settings used
+for compression. Each estimate is capped at original file size. Changing
+settings immediately clears the previous asynchronous estimate so the UI shows
+the local fallback until the native estimate arrives.
 
 ## Batch and Progress
 
