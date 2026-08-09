@@ -62,8 +62,11 @@ The Bloc keeps `videos`, `thumbnailPaths`, and `videoStatuses` aligned, requests
 `VideoCompressorAdapter` calls `LightCompressor.getCompressionEstimate()` with
 the same quality, codec, dimensions, bitrate, and audio-removal settings used
 for compression. Each estimate is capped at original file size. Changing
-settings immediately clears the previous asynchronous estimate so the UI shows
-the local fallback until the native estimate arrives.
+settings keeps the previous asynchronous estimate visible until the refreshed
+native estimate arrives; this avoids a transient local-fallback `0%` state.
+Adding videos still clears the old estimate because it belongs to a different
+batch. A genuine `0%` estimate disables compression, while the adapter's 10%
+acceptance threshold remains authoritative for completed output.
 
 ## Batch and Progress
 

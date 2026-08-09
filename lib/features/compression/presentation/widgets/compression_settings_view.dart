@@ -105,6 +105,7 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
             builder: (context, constraints) {
               final compact = constraints.maxHeight < 640;
               return Stack(
+                clipBehavior: Clip.none,
                 children: [
                   NotificationListener<ScrollNotification>(
                     onNotification: _onScroll,
@@ -140,14 +141,17 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
                                     compact: compact,
                                   ),
                           ),
+                          if (_mode == CompressionOptionsMode.advanced)
+                            const SizedBox(height: 50),
                         ],
                       ),
                     ),
                   ),
                   Positioned(
-                    top: 4,
-                    left: 8,
+                    top: -55,
+                    left: 55,
                     right: 8,
+                    height: 47,
                     child: IgnorePointer(
                       child: AnimatedOpacity(
                         opacity: _showPinnedSummary ? 1 : 0,
@@ -223,7 +227,7 @@ class _PinnedSizeSummary extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 14),
             child: Row(
               children: [
                 Expanded(
@@ -271,23 +275,15 @@ class _PinnedSizeSummary extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Flexible(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: CompressionUiColors.red.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 7,
-                      ),
+                  Flexible(
+                    child: Align(
+                      alignment: Alignment.centerRight,
                       child: savingsPercent == 0
                           ? Text(
                               strings.noSavingsHint,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.right,
                               style: const TextStyle(
                                 color: CompressionUiColors.red,
                                 fontSize: 13,
@@ -305,7 +301,6 @@ class _PinnedSizeSummary extends StatelessWidget {
                             ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
