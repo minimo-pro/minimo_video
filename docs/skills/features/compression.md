@@ -8,7 +8,7 @@
 | Medium | 28 | 2 Mbps | 1280×720 |
 | Low | 34 | 1 Mbps | 854×480 |
 
-CRF is retained internally to map existing UI state to `light_compressor_v2`; users do not edit it directly.
+Preset bitrates are nominal for 30 FPS H.264 input. CRF is retained internally to map existing UI state to `light_compressor_v2`; users do not edit it directly.
 
 Advanced mode allows:
 
@@ -17,6 +17,8 @@ Advanced mode allows:
 - Original, 60, 30, 24, or 15 FPS output; the package only downsamples
 - H.264 or HEVC output; unsupported HEVC hardware falls back to H.264
 - Stereo audio or no audio
+
+With automatic bitrate, `CompressionSettings.effectiveBitrateMbps()` derives the encoder target from the fitted output pixel count, effective output FPS, quality tier, and codec efficiency. Original resolution uses source dimensions for bitrate calculation without passing them as resize dimensions. Requested FPS is capped at the source FPS because the package only downsamples. HEVC targets fewer bits than H.264 for comparable quality. `light_compressor_v2` currently accepts only whole Mbps, so automatic targets are rounded and clamped to `1–8 Mbps`. A manually selected bitrate is absolute and is not modified by resolution, FPS, or codec.
 
 `light_compressor_v2 1.9.0` does not expose encoder speed presets or video
 container metadata copying. Do not add UI switches for either until the native
@@ -61,7 +63,9 @@ The Bloc keeps `videos`, `thumbnailPaths`, and `videoStatuses` aligned, requests
 
 `VideoCompressorAdapter` calls `LightCompressor.getCompressionEstimate()` with
 the same quality, codec, dimensions, bitrate, and audio-removal settings used
-for compression. Each estimate is capped at original file size. Changing
+for compression. Frame rate affects the automatic bitrate before that call,
+because the plugin estimate API has no separate FPS argument. Each estimate is
+capped at original file size. Changing
 settings keeps the previous asynchronous estimate visible until the refreshed
 native estimate arrives; this avoids a transient local-fallback `0%` state.
 Adding videos still clears the old estimate because it belongs to a different
