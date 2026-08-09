@@ -95,6 +95,31 @@ void main() {
     expect(original4k.bitrateMbps, 8);
   });
 
+  test('rejects invalid configured frame rate', () {
+    expect(
+      () => CompressionSettings(
+        frameRate: 0,
+        videoBitrateMbps: 2,
+      ).effectiveBitrateMbps(),
+      throwsArgumentError,
+    );
+  });
+
+  test('ignores invalid source frame rate', () {
+    final baseline = VideoCompressorAdapter.encodePlan(
+      const CompressionSettings(),
+    );
+
+    for (final sourceFrameRate in [0.0, -30.0]) {
+      final plan = VideoCompressorAdapter.encodePlan(
+        const CompressionSettings(),
+        sourceFrameRate: sourceFrameRate,
+      );
+      expect(plan.bitrateMbps, baseline.bitrateMbps);
+      expect(plan.frameRate, isNull);
+    }
+  });
+
   test('compressed output needs at least ten percent savings', () {
     expect(VideoCompressorAdapter.isUsefulCompression(1000, 900), isTrue);
     expect(VideoCompressorAdapter.isUsefulCompression(1000, 901), isFalse);

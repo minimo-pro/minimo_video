@@ -167,6 +167,7 @@ class VideoCompressorAdapter {
     int? outputHeight,
     double? sourceFrameRate,
   }) {
+    final frameRate = settings.validatedFrameRate;
     return (
       quality: _quality(settings.crf),
       format: settings.codec == CompressionCodec.hevc
@@ -177,7 +178,7 @@ class VideoCompressorAdapter {
         outputHeight: outputHeight,
         sourceFrameRate: sourceFrameRate,
       ),
-      frameRate: settings.frameRate,
+      frameRate: frameRate,
     );
   }
 

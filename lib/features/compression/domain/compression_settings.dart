@@ -45,18 +45,33 @@ class CompressionSettings {
     return SimpleCompressionQuality.low;
   }
 
+  int? get validatedFrameRate {
+    if (frameRate case final value? when value <= 0) {
+      throw ArgumentError.value(
+        value,
+        'frameRate',
+        'Must be greater than zero',
+      );
+    }
+    return frameRate;
+  }
+
   int effectiveBitrateMbps({
     int? outputWidth,
     int? outputHeight,
     double? sourceFrameRate,
   }) {
+    final configuredFrameRate = validatedFrameRate;
     if (videoBitrateMbps case final bitrate?) return bitrate;
 
-    final outputFps = frameRate == null
-        ? sourceFrameRate ?? 30
-        : sourceFrameRate == null
-        ? frameRate!.toDouble()
-        : frameRate!.clamp(1, sourceFrameRate);
+    final validSourceFrameRate = sourceFrameRate != null && sourceFrameRate > 0
+        ? sourceFrameRate
+        : null;
+    final outputFps = configuredFrameRate == null
+        ? validSourceFrameRate ?? 30
+        : validSourceFrameRate == null
+        ? configuredFrameRate.toDouble()
+        : configuredFrameRate.clamp(1, validSourceFrameRate);
     final resolutionParts = resolution?.split(':');
     final width =
         outputWidth ??

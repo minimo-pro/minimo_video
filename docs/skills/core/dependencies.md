@@ -40,7 +40,7 @@ The iOS project uses Flutter's Swift Package Manager integration. Do not add Coc
 
 ## Platform Requirements
 
-- Dart: `^3.9.2`
+- Dart: `^3.12.0`
 - Android min SDK: 24
 - iOS deployment target: 15.0
 

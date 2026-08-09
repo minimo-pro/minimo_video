@@ -11,7 +11,7 @@ abstract final class CompressionEstimate {
       ratio *= bitrate / _presetBitrate(settings.crf);
     } else {
       ratio *= settings.resolutionEstimateScale;
-      ratio *= (settings.frameRate ?? 30) / 30;
+      ratio *= (settings.validatedFrameRate ?? 30) / 30;
       if (settings.codec == CompressionCodec.hevc) ratio *= 0.72;
     }
     if (settings.audioMode == CompressionAudioMode.remove) ratio *= 0.9;
