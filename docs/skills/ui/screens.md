@@ -25,6 +25,8 @@ The screen renders from `CompressStatus`:
 
 `CompressScreen` owns the top-left icon-only back button for `ready` and `done`. It uses the `AppActionButton` text variant (no border or fill). Navigation chrome is hidden during `processing` and while picked videos are copied into cache.
 
+In `ready`, scrolling the main size row out of view pins a compact size summary beside the back button. The summary matches the button's `47`-pixel height and keeps the savings percentage right-aligned without a separate frame or fill. Settings changes keep the previous estimate visible until the refreshed native estimate arrives, preventing a transient no-savings hint and compress-button flicker. A genuine `0%` estimate still shows the no-savings hint and disables compression.
+
 During `processing` and add-more file copying, `PopScope(canPop: false)` blocks route pops, including Android system back and the iOS edge-swipe gesture. Hold-to-cancel is the only exit from processing back to settings; copying must finish or fail before navigation resumes.
 
 ### Done-screen actions
@@ -42,6 +44,7 @@ Failed compression replaces save with retry and disables `VS`. Already-optimized
 
 Simple presets are the primary UX. Advanced mode exposes resolution, video
 bitrate, frame rate, H.264/HEVC codec, and audio controls.
+The advanced list leaves extra scroll space after the final audio control.
 
 ## Hold-to-confirm Actions
 

@@ -24,6 +24,7 @@ Current tests cover:
 - Compression failure state
 - Cache size and full cleanup
 - Preview styling, status percentage, press motion, and hold-button background
+- Previous estimate retained while a settings estimate refreshes
 - Add-more and compress actions sharing the settings bottom row
 - Compact icon-only `AppActionButton` layout for wide SVG assets (`arrow_back`, `share`, `more`)
 
