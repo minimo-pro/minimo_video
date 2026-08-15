@@ -53,6 +53,73 @@ void main() {
     expect(plan.format, light.VideoFormat.h264);
   });
 
+  test('automatic bitrate follows resolution, frame rate, and codec', () {
+    int bitrate(CompressionSettings settings) =>
+        VideoCompressorAdapter.encodePlan(settings).bitrateMbps;
+
+    const h264720 = CompressionSettings(resolution: '1280:720', frameRate: 30);
+
+    expect(
+      bitrate(
+        const CompressionSettings(resolution: '1920:1080', frameRate: 30),
+      ),
+      greaterThan(bitrate(h264720)),
+    );
+    expect(
+      bitrate(const CompressionSettings(resolution: '1280:720', frameRate: 60)),
+      greaterThan(bitrate(h264720)),
+    );
+    expect(
+      bitrate(
+        const CompressionSettings(
+          resolution: '1280:720',
+          frameRate: 30,
+          codec: CompressionCodec.hevc,
+        ),
+      ),
+      lessThan(bitrate(h264720)),
+    );
+
+    final source30 = VideoCompressorAdapter.encodePlan(
+      const CompressionSettings(resolution: '1280:720', frameRate: 60),
+      sourceFrameRate: 30,
+    );
+    expect(source30.bitrateMbps, bitrate(h264720));
+
+    final original4k = VideoCompressorAdapter.encodePlan(
+      const CompressionSettings(resolution: null),
+      outputWidth: 3840,
+      outputHeight: 2160,
+      sourceFrameRate: 30,
+    );
+    expect(original4k.bitrateMbps, 8);
+  });
+
+  test('rejects invalid configured frame rate', () {
+    expect(
+      () => CompressionSettings(
+        frameRate: 0,
+        videoBitrateMbps: 2,
+      ).effectiveBitrateMbps(),
+      throwsArgumentError,
+    );
+  });
+
+  test('ignores invalid source frame rate', () {
+    final baseline = VideoCompressorAdapter.encodePlan(
+      const CompressionSettings(),
+    );
+
+    for (final sourceFrameRate in [0.0, -30.0]) {
+      final plan = VideoCompressorAdapter.encodePlan(
+        const CompressionSettings(),
+        sourceFrameRate: sourceFrameRate,
+      );
+      expect(plan.bitrateMbps, baseline.bitrateMbps);
+      expect(plan.frameRate, isNull);
+    }
+  });
+
   test('compressed output needs at least ten percent savings', () {
     expect(VideoCompressorAdapter.isUsefulCompression(1000, 900), isTrue);
     expect(VideoCompressorAdapter.isUsefulCompression(1000, 901), isFalse);

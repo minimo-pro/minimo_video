@@ -45,6 +45,7 @@ Failed compression replaces save with retry and disables `VS`. Already-optimized
 Simple presets are the primary UX. Advanced mode exposes resolution, video
 bitrate, frame rate, H.264/HEVC codec, and audio controls.
 The advanced list leaves extra scroll space after the final audio control.
+The selected-video count badge stays inside the preview bounds so the scroll viewport never clips its circular top edge.
 
 ## Hold-to-confirm Actions
 

@@ -18,23 +18,49 @@ class RollingCounterText extends StatefulWidget {
 }
 
 class _RollingCounterTextState extends State<RollingCounterText> {
-  num? _previousValue;
+  static const _upOptions = ReelTextOptions(
+    direction: ReelTextDirection.up,
+    duration: Duration(milliseconds: 220),
+    stagger: Duration(milliseconds: 18),
+    exitOffset: Duration(milliseconds: 24),
+    curve: Cubic(0.22, 1, 0.36, 1),
+    bounce: 0.08,
+  );
+  static const _downOptions = ReelTextOptions(
+    direction: ReelTextDirection.down,
+    duration: Duration(milliseconds: 220),
+    stagger: Duration(milliseconds: 18),
+    exitOffset: Duration(milliseconds: 24),
+    curve: Cubic(0.22, 1, 0.36, 1),
+    bounce: 0.08,
+  );
+
+  late String _text;
+  late num _displayedValue;
+  var _direction = ReelTextDirection.up;
+
+  @override
+  void initState() {
+    super.initState();
+    _text = widget.formatter(widget.value);
+    _displayedValue = widget.value;
+  }
 
   @override
   void didUpdateWidget(covariant RollingCounterText oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.value != widget.value) {
-      _previousValue = oldWidget.value;
-    }
+    final nextText = widget.formatter(widget.value);
+    if (nextText == _text) return;
+
+    _direction = widget.value >= _displayedValue
+        ? ReelTextDirection.up
+        : ReelTextDirection.down;
+    _displayedValue = widget.value;
+    _text = nextText;
   }
 
   @override
   Widget build(BuildContext context) {
-    _previousValue ??= widget.value;
-
-    final up = widget.value >= _previousValue!;
-    _previousValue = widget.value;
-
     final fontSize = widget.style.fontSize ?? 14;
     final height = fontSize * 1.8;
 
@@ -43,10 +69,10 @@ class _RollingCounterTextState extends State<RollingCounterText> {
         height: height,
         child: Center(
           child: ReelText(
-            widget.formatter(widget.value),
-            options: ReelTextOptions(
-              direction: up ? ReelTextDirection.up : ReelTextDirection.down,
-            ),
+            _text,
+            options: _direction == ReelTextDirection.up
+                ? _upOptions
+                : _downOptions,
             style: widget.style,
           ),
         ),

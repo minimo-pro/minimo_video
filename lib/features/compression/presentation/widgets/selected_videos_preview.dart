@@ -42,7 +42,7 @@ class SelectedVideosPreview extends StatelessWidget {
           if (selectedCount > 1)
             Positioned(
               left: (positions.last.dx + 43) * scale,
-              top: (positions.last.dy - 24) * scale,
+              top: (positions.last.dy - 24).clamp(0, double.infinity) * scale,
               child: _SelectedCountBadge(count: selectedCount, scale: scale),
             ),
         ],

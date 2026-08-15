@@ -21,4 +21,22 @@ void main() {
     final decoration = container.foregroundDecoration! as BoxDecoration;
     expect((decoration.border! as Border).top.color, Colors.white);
   });
+
+  testWidgets('selected count badge stays inside preview top edge', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: SelectedVideosPreview(
+          selectedCount: 2,
+          thumbnailPaths: [null, null],
+        ),
+      ),
+    );
+
+    final previewTop = tester.getTopLeft(find.byType(SelectedVideosPreview)).dy;
+    final badgeTop = tester.getTopLeft(find.widgetWithText(Container, '2')).dy;
+
+    expect(badgeTop, greaterThanOrEqualTo(previewTop));
+  });
 }

@@ -1,10 +1,10 @@
 name: minimo_video
 description: "minimo (video) - video compression app."
 publish_to: 'none'
-version: 1.0.0+15
+version: 1.0.0+16
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.12.0
 
 dependencies:
   flutter:
@@ -13,11 +13,11 @@ dependencies:
     sdk: flutter
   intl: ^0.20.2
   shared_preferences: ^2.5.3
-  share_plus: ^12.0.1
+  share_plus: ^13.3.0
   url_launcher: ^6.3.2
   light_compressor_v2: 1.9.0
   flutter_bloc: ^9.1.1
-  gal: ^2.3.2
+  gal: ^2.3.3
   flutter_svg: ^2.3.0
   flutter_launcher_icons: ^0.14.4
   auto_route: ^11.1.0
@@ -26,14 +26,14 @@ dependencies:
   intl_utils: ^2.8.11
   path_provider: ^2.1.5
   path: ^1.9.1
-  reel_text: ^0.4.0
+  reel_text: ^0.4.3
   motor: ^1.1.0
-  package_info_plus: ^9.0.1
-  wakelock_plus: ^1.5.2
+  package_info_plus: ^10.2.1
+  wakelock_plus: ^1.7.0
   in_app_review: ^2.0.12
-  upgrader: ^13.5.0
+  upgrader: ^13.6.0
   pub_semver: ^2.2.0
-  video_player: 2.10.0
+  video_player: 2.13.0
   stupid_simple_sheet: ^0.9.1+1
 
 dev_dependencies:
