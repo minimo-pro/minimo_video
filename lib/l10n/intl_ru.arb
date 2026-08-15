@@ -71,8 +71,13 @@
       }
     }
   },
-  "deleteOriginalsAfterSaving": "удалять оригиналы после сохранения",
-  "deleteOriginalsAfterSavingDescription": "удаляет выбранные оригиналы только после сохранения сжатых видео",
+  "saveOptionsTitle": "как сохранить",
+  "saveAsNew": "сохранить как новое",
+  "saveAsNewDescription": "оставить оригинал и сохранить новое видео в галерею",
+  "saveBesideOriginal": "сохранить рядом с оригиналом",
+  "saveBesideOriginalDescription": "оставить оригинал и перенести его дату и метаданные",
+  "replaceOriginal": "заменить оригинал",
+  "replaceOriginalDescription": "сохранить с метаданными, затем запросить удаление оригинала",
   "preventScreenSleep": "не выключать экран",
   "preventScreenSleepDescription": "не даёт экрану уснуть, пока видео сжимаются",
   "clearCache": "очистка кеша",
@@ -167,16 +172,8 @@
   "hevcFallbackNotice": "HEVC недоступен — видео сохранено в H.264",
   "videoPreviewUnavailable": "предпросмотр недоступен",
   "save": "сохранить",
-  "deleteOriginal": "удалить оригинал",
   "holdToDeleteOriginals": "удерживайте кнопку, чтобы удалить оригиналы",
-  "failedToShare": "не удалось поделиться: {error}",
-  "@failedToShare": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
+  "failedToShare": "не удалось поделиться видео. попробуйте ещё раз",
   "savedVideosAndDeletedOriginals": "сохранено видео: {saved}, удалено оригиналов: {deleted}",
   "@savedVideosAndDeletedOriginals": {
     "placeholders": {
@@ -205,6 +202,7 @@
     }
   },
   "metadataPreservationIncomplete": "некоторые метаданные галереи перенести не удалось",
+  "originalDeletionFailed": "некоторые оригиналы удалить не удалось",
   "waiting": "ожидает",
   "failed": "ошибка",
   "videoProgress": "видео {current} из {total}",
@@ -245,12 +243,5 @@
       }
     }
   },
-  "failedToSave": "не удалось сохранить: {error}",
-  "@failedToSave": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  }
+  "failedToSave": "не удалось сохранить видео. попробуйте ещё раз"
 }

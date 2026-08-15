@@ -43,7 +43,7 @@ class CompressState {
     required this.compressionRunId,
     required this.processingIndex,
     required this.progress,
-    double currentVideoProgress = 0,
+    this._currentVideoProgress = 0,
     required this.elapsed,
     required this.settings,
     this.estimatedSize,
@@ -54,7 +54,7 @@ class CompressState {
     this.deleteError,
     this.metadataError,
     this.compressionError,
-  }) : _currentVideoProgress = currentVideoProgress;
+  });
 
   factory CompressState.initial(List<PickedVideo> videos) {
     return CompressState(

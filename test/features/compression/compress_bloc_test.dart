@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/features/compression/bloc/compress_bloc.dart';
 import 'package:minimo_video/features/compression/bloc/compress_event.dart';
@@ -231,6 +232,23 @@ class _WarningSaveFileAdapter extends _SavingFileAdapter {
   }
 }
 
+class _UnavailableAfterDeleteFileAdapter extends _SavingFileAdapter {
+  @override
+  Future<GallerySaveResult> saveReplacement(
+    String filePath,
+    String sourceIdentifier, {
+    String? album,
+  }) async {
+    if (calls.any((call) => call.startsWith('replace:'))) {
+      throw PlatformException(
+        code: 'save_failed',
+        message: 'original Photos asset is unavailable',
+      );
+    }
+    return super.saveReplacement(filePath, sourceIdentifier, album: album);
+  }
+}
+
 class _FakeScreenAwakeService extends ScreenAwakeService {
   final calls = <bool>[];
 
@@ -434,11 +452,93 @@ void main() {
     await bloc.stream.firstWhere(
       (state) => state.status == CompressStatus.done,
     );
-    bloc.add(const CompressResultsSaved(deleteOriginals: true));
+    bloc.add(
+      const CompressResultsSaved(
+        preserveMetadataSourceIdentifiers: {'photos-id'},
+        deleteSourceIdentifiers: {'photos-id'},
+      ),
+    );
     await bloc.stream.firstWhere((state) => state.deletedOriginalCount == 1);
 
     expect(files.deletedIdentifiers, ['photos-id']);
     expect(files.calls, ['replace:photos-id', 'delete:photos-id']);
+    await bloc.close();
+  });
+
+  test('preserves metadata without deleting the original', () async {
+    final files = _SavingFileAdapter();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(
+          path: '/ok.mp4',
+          name: 'video.mp4',
+          size: 100,
+          sourceIdentifier: 'photos-id',
+          canDeleteOriginal: true,
+        ),
+      ],
+      videoFileAdapter: files,
+      videoCompressorAdapter: _MixedCompressor(),
+    );
+
+    bloc.add(const CompressStarted());
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+    bloc.add(
+      const CompressResultsSaved(
+        preserveMetadataSourceIdentifiers: {'photos-id'},
+      ),
+    );
+    await bloc.stream.firstWhere((state) => state.savedVideoCount == 1);
+
+    expect(files.calls, ['replace:photos-id']);
+    await bloc.close();
+  });
+
+  test('does not save or delete the same replacement twice', () async {
+    final files = _UnavailableAfterDeleteFileAdapter();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(
+          path: '/ok.mp4',
+          name: 'video.mp4',
+          size: 100,
+          sourceIdentifier: 'photos-id',
+          canDeleteOriginal: true,
+        ),
+      ],
+      videoFileAdapter: files,
+      videoCompressorAdapter: _MixedCompressor(),
+    );
+
+    bloc.add(const CompressStarted());
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+    bloc.add(
+      const CompressResultsSaved(
+        preserveMetadataSourceIdentifiers: {'photos-id'},
+        deleteSourceIdentifiers: {'photos-id'},
+      ),
+    );
+    await bloc.stream.firstWhere((state) => state.deletedOriginalCount == 1);
+    bloc.add(const CompressMessagesCleared());
+    await bloc.stream.firstWhere((state) => state.savedVideoCount == null);
+
+    final repeatedSaveFinished = bloc.stream.firstWhere(
+      (state) => !state.isSaving && state.saveError == null,
+    );
+    bloc.add(
+      const CompressResultsSaved(
+        preserveMetadataSourceIdentifiers: {'photos-id'},
+        deleteSourceIdentifiers: {'photos-id'},
+      ),
+    );
+    await repeatedSaveFinished;
+
+    expect(files.calls, ['replace:photos-id', 'delete:photos-id']);
+    expect(bloc.state.saveError, isNull);
     await bloc.close();
   });
 
@@ -462,7 +562,12 @@ void main() {
     await bloc.stream.firstWhere(
       (state) => state.status == CompressStatus.done,
     );
-    bloc.add(const CompressResultsSaved(deleteOriginals: true));
+    bloc.add(
+      const CompressResultsSaved(
+        preserveMetadataSourceIdentifiers: {'photos-id'},
+        deleteSourceIdentifiers: {'photos-id'},
+      ),
+    );
     await bloc.stream.firstWhere((state) => state.saveError != null);
 
     expect(files.deletedIdentifiers, isEmpty);
@@ -491,7 +596,12 @@ void main() {
       await bloc.stream.firstWhere(
         (state) => state.status == CompressStatus.done,
       );
-      bloc.add(const CompressResultsSaved(deleteOriginals: true));
+      bloc.add(
+        const CompressResultsSaved(
+          preserveMetadataSourceIdentifiers: {'photos-id'},
+          deleteSourceIdentifiers: {'photos-id'},
+        ),
+      );
       await bloc.stream.firstWhere((state) => state.deletedOriginalCount == 1);
 
       expect(bloc.state.metadataError, 'favorite_unavailable');
@@ -500,7 +610,7 @@ void main() {
     },
   );
 
-  test('does not delete originals without delete capability', () async {
+  test('saves a copy when original replacement is unavailable', () async {
     final files = _SavingFileAdapter();
     final bloc = CompressBloc(
       initialVideos: const [
@@ -519,10 +629,11 @@ void main() {
     await bloc.stream.firstWhere(
       (state) => state.status == CompressStatus.done,
     );
-    bloc.add(const CompressResultsSaved(deleteOriginals: true));
-    await bloc.stream.firstWhere((state) => state.deleteError != null);
+    bloc.add(const CompressResultsSaved());
+    await bloc.stream.firstWhere((state) => state.savedVideoCount == 1);
 
     expect(files.deletedIdentifiers, isEmpty);
+    expect(files.calls, ['save:/ok-small.mp4']);
     await bloc.close();
   });
 
@@ -555,7 +666,7 @@ void main() {
     );
     bloc.add(
       const CompressResultsSaved(
-        deleteOriginals: true,
+        preserveMetadataSourceIdentifiers: {'two-id'},
         deleteSourceIdentifiers: {'two-id'},
       ),
     );

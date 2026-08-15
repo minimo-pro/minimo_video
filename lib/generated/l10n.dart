@@ -359,21 +359,66 @@ class S {
     );
   }
 
-  /// `delete originals after saving`
-  String get deleteOriginalsAfterSaving {
+  /// `how to save`
+  String get saveOptionsTitle {
     return Intl.message(
-      'delete originals after saving',
-      name: 'deleteOriginalsAfterSaving',
+      'how to save',
+      name: 'saveOptionsTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `deletes selected originals only after compressed videos are saved`
-  String get deleteOriginalsAfterSavingDescription {
+  /// `save as new`
+  String get saveAsNew {
+    return Intl.message('save as new', name: 'saveAsNew', desc: '', args: []);
+  }
+
+  /// `keep the original and save a new gallery video`
+  String get saveAsNewDescription {
     return Intl.message(
-      'deletes selected originals only after compressed videos are saved',
-      name: 'deleteOriginalsAfterSavingDescription',
+      'keep the original and save a new gallery video',
+      name: 'saveAsNewDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `save beside original`
+  String get saveBesideOriginal {
+    return Intl.message(
+      'save beside original',
+      name: 'saveBesideOriginal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `keep the original and copy its gallery date and metadata`
+  String get saveBesideOriginalDescription {
+    return Intl.message(
+      'keep the original and copy its gallery date and metadata',
+      name: 'saveBesideOriginalDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `replace original`
+  String get replaceOriginal {
+    return Intl.message(
+      'replace original',
+      name: 'replaceOriginal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `save with original metadata, then ask to delete the original`
+  String get replaceOriginalDescription {
+    return Intl.message(
+      'save with original metadata, then ask to delete the original',
+      name: 'replaceOriginalDescription',
       desc: '',
       args: [],
     );
@@ -953,16 +998,6 @@ class S {
     return Intl.message('save', name: 'save', desc: '', args: []);
   }
 
-  /// `delete original`
-  String get deleteOriginal {
-    return Intl.message(
-      'delete original',
-      name: 'deleteOriginal',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `hold the button to delete originals`
   String get holdToDeleteOriginals {
     return Intl.message(
@@ -973,13 +1008,13 @@ class S {
     );
   }
 
-  /// `failed to share: {error}`
-  String failedToShare(String error) {
+  /// `couldn't share the videos. try again`
+  String get failedToShare {
     return Intl.message(
-      'failed to share: $error',
+      'couldn\'t share the videos. try again',
       name: 'failedToShare',
       desc: '',
-      args: [error],
+      args: [],
     );
   }
 
@@ -1018,6 +1053,16 @@ class S {
     return Intl.message(
       'some gallery metadata could not be copied',
       name: 'metadataPreservationIncomplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `some originals could not be deleted`
+  String get originalDeletionFailed {
+    return Intl.message(
+      'some originals could not be deleted',
+      name: 'originalDeletionFailed',
       desc: '',
       args: [],
     );
@@ -1077,13 +1122,13 @@ class S {
     );
   }
 
-  /// `failed to save: {error}`
-  String failedToSave(String error) {
+  /// `couldn't save the videos. try again`
+  String get failedToSave {
     return Intl.message(
-      'failed to save: $error',
+      'couldn\'t save the videos. try again',
       name: 'failedToSave',
       desc: '',
-      args: [error],
+      args: [],
     );
   }
 }

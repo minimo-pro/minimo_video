@@ -68,12 +68,12 @@ class CompressForegroundResumed extends CompressEvent {
 }
 
 class CompressResultsSaved extends CompressEvent {
-  final bool deleteOriginals;
-  final Set<String>? deleteSourceIdentifiers;
+  final Set<String> preserveMetadataSourceIdentifiers;
+  final Set<String> deleteSourceIdentifiers;
 
   const CompressResultsSaved({
-    required this.deleteOriginals,
-    this.deleteSourceIdentifiers,
+    this.preserveMetadataSourceIdentifiers = const {},
+    this.deleteSourceIdentifiers = const {},
   });
 }
 

@@ -71,8 +71,13 @@
       }
     }
   },
-  "deleteOriginalsAfterSaving": "delete originals after saving",
-  "deleteOriginalsAfterSavingDescription": "deletes selected originals only after compressed videos are saved",
+  "saveOptionsTitle": "how to save",
+  "saveAsNew": "save as new",
+  "saveAsNewDescription": "keep the original and save a new gallery video",
+  "saveBesideOriginal": "save beside original",
+  "saveBesideOriginalDescription": "keep the original and copy its gallery date and metadata",
+  "replaceOriginal": "replace original",
+  "replaceOriginalDescription": "save with original metadata, then ask to delete the original",
   "preventScreenSleep": "keep screen awake",
   "preventScreenSleepDescription": "prevents the screen from sleeping while videos are compressing",
   "clearCache": "clear cache",
@@ -167,16 +172,8 @@
   "hevcFallbackNotice": "HEVC wasn't available, so this video was saved as H.264",
   "videoPreviewUnavailable": "preview unavailable",
   "save": "save",
-  "deleteOriginal": "delete original",
   "holdToDeleteOriginals": "hold the button to delete originals",
-  "failedToShare": "failed to share: {error}",
-  "@failedToShare": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
+  "failedToShare": "couldn't share the videos. try again",
   "savedVideosAndDeletedOriginals": "saved {saved} video(s) and deleted {deleted} original(s)",
   "@savedVideosAndDeletedOriginals": {
     "placeholders": {
@@ -205,6 +202,7 @@
     }
   },
   "metadataPreservationIncomplete": "some gallery metadata could not be copied",
+  "originalDeletionFailed": "some originals could not be deleted",
   "waiting": "waiting",
   "failed": "failed",
   "videoProgress": "video {current} of {total}",
@@ -245,12 +243,5 @@
       }
     }
   },
-  "failedToSave": "failed to save: {error}",
-  "@failedToSave": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  }
+  "failedToSave": "couldn't save the videos. try again"
 }

@@ -235,7 +235,7 @@ class _CompressViewState extends State<_CompressView>
     final strings = S.of(context);
     final partialErrors = [
       if (state.metadataError != null) strings.metadataPreservationIncomplete,
-      if (state.deleteError != null) state.deleteError.toString(),
+      if (state.deleteError != null) strings.originalDeletionFailed,
     ];
     final message = partialErrors.isNotEmpty
         ? strings.savedWithWarnings(partialErrors.join('; '))
@@ -247,7 +247,7 @@ class _CompressViewState extends State<_CompressView>
         : state.savedVideoCount != null
         ? strings.savedVideosToGallery(state.savedVideoCount!)
         : state.saveError != null
-        ? strings.failedToSave(state.saveError.toString())
+        ? strings.failedToSave
         : null;
     if (message == null) return;
 

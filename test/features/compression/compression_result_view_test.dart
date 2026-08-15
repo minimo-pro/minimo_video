@@ -8,6 +8,7 @@ import 'package:minimo_video/features/compression/domain/compression_settings.da
 import 'package:minimo_video/features/compression/domain/picked_video.dart';
 import 'package:minimo_video/features/compression/presentation/widgets/compression_result_view.dart';
 import 'package:minimo_video/generated/l10n.dart';
+import 'package:minimo_video/widgets/animated_asset_checkbox.dart';
 import 'package:minimo_video/widgets/app_action_button.dart';
 
 void main() {
@@ -116,6 +117,64 @@ void main() {
       find.text("HEVC wasn't available, so this video was saved as H.264"),
       findsOneWidget,
     );
+  });
+
+  testWidgets('save sheet offers copy, beside, and replace modes', (
+    tester,
+  ) async {
+    const source = PickedVideo(
+      path: '/video.mp4',
+      name: 'video.mp4',
+      size: 100,
+      sourceIdentifier: 'photos-id',
+      canDeleteOriginal: true,
+    );
+    const state = CompressState(
+      status: CompressStatus.done,
+      videos: [source],
+      thumbnailPaths: [null],
+      videoStatuses: [VideoCompressionStatus.compressed],
+      results: [
+        CompressedVideo(
+          source: source,
+          result: CompressionResult(
+            success: true,
+            originalSize: 100,
+            outputSize: 40,
+            outputPath: '/small.mp4',
+          ),
+        ),
+      ],
+      compressionRunId: 1,
+      processingIndex: 0,
+      progress: 1,
+      elapsed: Duration.zero,
+      settings: CompressionSettings(),
+      isSaving: false,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        home: const Scaffold(
+          body: CompressionResultView(state: state, onTryAgain: _noop),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('save'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('save as new'), findsOneWidget);
+    expect(find.text('save beside original'), findsOneWidget);
+    expect(find.text('replace original'), findsOneWidget);
+    expect(find.byType(AnimatedAssetCheckbox), findsNWidgets(3));
+    expect(find.byType(RadioListTile), findsNothing);
   });
 }
 

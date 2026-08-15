@@ -23,6 +23,9 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
   int _compressionRunId = 0;
   int _estimateRunId = 0;
   Timer? _estimateDebounce;
+  final _savedOutputPaths = <String>{};
+  final _replacementSourceIdentifiers = <String>{};
+  final _deletedSourceIdentifiers = <String>{};
 
   CompressBloc({
     List<PickedVideo> initialVideos = const [],
@@ -199,8 +202,12 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     return super.close();
   }
 
-  Future<void> _onStarted(CompressStarted event, Emitter<CompressState> emit) =>
-      _runCompression(emit);
+  Future<void> _onStarted(CompressStarted event, Emitter<CompressState> emit) {
+    _savedOutputPaths.clear();
+    _replacementSourceIdentifiers.clear();
+    _deletedSourceIdentifiers.clear();
+    return _runCompression(emit);
+  }
 
   Future<void> _runCompression(
     Emitter<CompressState> emit, {
@@ -424,38 +431,45 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     emit(state.copyWith(isSaving: true, clearSaveNotification: true));
 
     try {
-      final identifiers = event.deleteOriginals
-          ? event.deleteSourceIdentifiers ??
-                successfulResults
-                    .where((item) => item.source.path != item.result.outputPath)
-                    .where((item) => item.source.canDeleteOriginal)
-                    .map((item) => item.source.sourceIdentifier)
-                    .whereType<String>()
-                    .toSet()
-          : const <String>{};
+      final metadataIdentifiers = event.preserveMetadataSourceIdentifiers;
+      final deleteIdentifiers = event.deleteSourceIdentifiers;
       final album = _appSettings.saveVideosToAlbum
           ? AppSettingsService.albumName
           : null;
       final metadataWarnings = <String>[];
+      var savedAnyVideo = false;
 
       for (final item in successfulResults) {
         final outputPath = item.result.outputPath;
         if (outputPath == null) continue;
         final sourceIdentifier = item.source.sourceIdentifier;
         if (sourceIdentifier != null &&
-            identifiers.contains(sourceIdentifier)) {
+            metadataIdentifiers.contains(sourceIdentifier)) {
+          if (_replacementSourceIdentifiers.contains(sourceIdentifier)) {
+            continue;
+          }
           final save = await _videoFileAdapter.saveReplacement(
             outputPath,
             sourceIdentifier,
             album: album,
           );
+          _replacementSourceIdentifiers.add(sourceIdentifier);
+          _savedOutputPaths.add(outputPath);
+          savedAnyVideo = true;
           metadataWarnings.addAll(save.warnings);
         } else {
+          if (_savedOutputPaths.contains(outputPath)) continue;
           await _videoFileAdapter.saveToGallery(outputPath, album: album);
+          _savedOutputPaths.add(outputPath);
+          savedAnyVideo = true;
         }
       }
 
-      if (!event.deleteOriginals) {
+      if (deleteIdentifiers.isEmpty) {
+        if (!savedAnyVideo) {
+          emit(state.copyWith(isSaving: false, clearSaveNotification: true));
+          return;
+        }
         emit(
           state.copyWith(
             savedVideoCount: successfulResults.length,
@@ -472,14 +486,19 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
 
       var deletedOriginalCount = 0;
       try {
-        if (identifiers.isEmpty) {
-          throw StateError(
-            'original videos cannot be deleted by this provider',
-          );
+        final pendingIdentifiers = deleteIdentifiers.difference(
+          _deletedSourceIdentifiers,
+        );
+        if (pendingIdentifiers.isEmpty) {
+          emit(state.copyWith(isSaving: false, clearSaveNotification: true));
+          return;
         }
         deletedOriginalCount = await _videoFileAdapter.deleteOriginals(
-          identifiers,
+          pendingIdentifiers,
         );
+        if (deletedOriginalCount == pendingIdentifiers.length) {
+          _deletedSourceIdentifiers.addAll(pendingIdentifiers);
+        }
 
         emit(
           state.copyWith(

@@ -23,8 +23,9 @@ Both platforms report `pickProgress` (`processed`/`total`) over the videos metho
 ## Gallery and Deletion
 
 - Normal saving uses `gal` and may request add-only gallery permission.
-- Outputs selected to replace deletable originals use native `saveReplacement`.
-  The replacement is created and verified before source deletion begins.
+- Beside-original and replace-original modes use native `saveReplacement`.
+  Both preserve supported metadata; only replace requests source deletion after
+  the new asset is created and verified.
 - iOS copies the Photos capture date, location, writable user-album membership,
   and favorite state. The new asset always receives a new local identifier.
 - Android copies `DATE_TAKEN`, location and favorite values when MediaStore

@@ -23,9 +23,16 @@ Only `state.successResults` are previewable. Skipped and failed items stay in th
 
 ## Save
 
-Filled primary save opens the per-video save sheet. It preselects deletable originals from `delete_originals_after_saving`; the user can keep or unselect each original. Confirming dispatches `CompressResultsSaved` with selected source identifiers. Ordinary outputs save through `gal`; selected replacements use the native create-and-verify path with source metadata. If album saving is enabled, album name is `Minimo`.
+Filled primary save opens a sheet with three explicit modes: save as new, save
+beside the original, or replace the original. Save as new uses `gal`. Beside and
+replace use the native create-and-verify path with source metadata; replace then
+requests original deletion. Sources without gallery replacement support fall
+back to ordinary saving. If album saving is enabled, album name is `Minimo`.
 
-Saving is guarded by `state.isSaving` to prevent duplicate actions. A failure stops the operation and stores `saveError` for UI notification.
+Saving is guarded by `state.isSaving` against concurrent actions. Successfully
+saved outputs, replacements, and deletions are remembered for the current Bloc
+run, so retries skip completed work instead of duplicating assets or requesting
+an already deleted Photos asset.
 
 ## Save and Delete Originals
 
@@ -39,13 +46,14 @@ chronological gallery position without risky in-place writes.
 - Metadata transfer failures use `metadataError` and are reported as partial success.
 - Deletion failures use `deleteError`, separate from `saveError`.
 - Sources without a platform identifier cannot be deleted.
-- Sources without delete capability remain visible but disabled in the manage sheet.
+- Beside and replace modes are disabled when no source supports gallery replacement.
 - Output paths equal to source paths are excluded defensively.
 - System confirmation remains authoritative; cancellation is not deletion success.
 
 ## Compression Errors
 
 - Picker errors, including providers returning non-video files, show an error snackbar and do not add files to the batch.
+- User-facing save, delete, and share errors are localized messages; raw platform exceptions remain internal.
 - Plugin failure/cancel variants become `StateError` in the adapter.
 - Normal encoder errors mark that item failed; remaining batch items continue.
 - User cancellation exits the active run and ignores later callbacks.
