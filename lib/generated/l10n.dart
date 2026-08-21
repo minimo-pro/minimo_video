@@ -958,6 +958,16 @@ class S {
     return Intl.message('share', name: 'share', desc: '', args: []);
   }
 
+  /// `share or save to…`
+  String get shareOrSave {
+    return Intl.message(
+      'share or save to…',
+      name: 'shareOrSave',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `compare`
   String get compareVideos {
     return Intl.message('compare', name: 'compareVideos', desc: '', args: []);

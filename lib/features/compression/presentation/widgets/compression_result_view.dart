@@ -166,7 +166,7 @@ class CompressionResultView extends StatelessWidget {
                     if (!allFailed) ...[
                       SizedBox(width: buttonGap),
                       Tooltip(
-                        message: strings.share,
+                        message: strings.shareOrSave,
                         child: AppActionButton(
                           width: 47,
                           icon: AppIcons.share,

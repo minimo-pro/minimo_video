@@ -273,6 +273,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "settings": MessageLookupByLibrary.simpleMessage("settings"),
     "share": MessageLookupByLibrary.simpleMessage("share"),
     "shareAppText": m11,
+    "shareOrSave": MessageLookupByLibrary.simpleMessage("share or save to…"),
     "shareWithFriends": MessageLookupByLibrary.simpleMessage(
       "share with friends",
     ),

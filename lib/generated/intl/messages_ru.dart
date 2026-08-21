@@ -279,6 +279,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "settings": MessageLookupByLibrary.simpleMessage("настройки"),
     "share": MessageLookupByLibrary.simpleMessage("поделиться"),
     "shareAppText": m11,
+    "shareOrSave": MessageLookupByLibrary.simpleMessage(
+      "поделиться или сохранить в…",
+    ),
     "shareWithFriends": MessageLookupByLibrary.simpleMessage(
       "поделиться с друзьями",
     ),

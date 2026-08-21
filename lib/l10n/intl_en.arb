@@ -166,6 +166,7 @@
     }
   },
   "share": "share",
+  "shareOrSave": "share or save to…",
   "compareVideos": "compare",
   "originalVideo": "before",
   "compressedVideo": "after",

@@ -64,6 +64,12 @@ void main() {
 
     expect(tester.getCenter(vs).dx, lessThan(tester.getCenter(save).dx));
     expect(tester.getCenter(save).dx, lessThan(tester.getCenter(share).dx));
+    expect(
+      find.byWidgetPredicate(
+        (widget) => widget is Tooltip && widget.message == 'share or save to…',
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('shows notice when requested HEVC falls back to H.264', (
