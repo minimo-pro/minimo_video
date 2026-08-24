@@ -8,6 +8,7 @@
 * Added a review prompt after successful conversions with cooldown tracking.
 * Added store update prompts and an in-app changelog after updates.
 * Added before/after compressed video preview with split-screen playback.
+* Refreshed the app icons for light, dark, and Android themed variants.
 
 ### Fixed
 
