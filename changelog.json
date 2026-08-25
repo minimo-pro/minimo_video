@@ -4,13 +4,27 @@
       "share minimo with friends.",
       "rate the app from the about screen.",
       "get a gentle review prompt after successful conversions.",
-      "see update prompts when a new store version is available."
+      "see update prompts when a new store version is available.",
+      "fine-tune bitrate, frame rate, and H.264 or HEVC codec.",
+      "preview original and compressed videos side by side.",
+      "get more accurate size estimates and smoother preview scrubbing.",
+      "compress portrait Android screen recordings without squeezing.",
+      "choose how saved videos handle originals while preserving gallery metadata where supported.",
+      "avoid replacing or deleting the same gallery video twice.",
+      "see clear messages when saving, deleting, or sharing fails."
     ],
     "ru": [
       "можно поделиться minimo с друзьями.",
       "можно оценить приложение из экрана о приложении.",
       "после успешных конвертаций появляется аккуратный запрос оценки.",
-      "приложение подсказывает, когда в магазине доступно обновление."
+      "приложение подсказывает, когда в магазине доступно обновление.",
+      "можно настроить битрейт, частоту кадров и кодек H.264 или HEVC.",
+      "можно сравнить исходное и сжатое видео рядом.",
+      "оценка размера стала точнее, а перемотка предпросмотра — плавнее.",
+      "портретные записи экрана Android больше не сжимаются по ширине.",
+      "можно выбрать способ сохранения оригинала с переносом метаданных галереи, где это поддерживается.",
+      "приложение больше не заменяет и не удаляет одно видео повторно.",
+      "ошибки сохранения, удаления и отправки теперь описаны понятнее."
     ]
   }
 }

@@ -22,7 +22,7 @@ class CompressState {
   final int compressionRunId;
   final int processingIndex;
   final double progress;
-  final double? _currentVideoProgress;
+  final double currentVideoProgress;
   final Duration elapsed;
   final CompressionSettings settings;
   final int? estimatedSize;
@@ -43,7 +43,7 @@ class CompressState {
     required this.compressionRunId,
     required this.processingIndex,
     required this.progress,
-    this._currentVideoProgress = 0,
+    this.currentVideoProgress = 0,
     required this.elapsed,
     required this.settings,
     this.estimatedSize,
@@ -82,8 +82,6 @@ class CompressState {
   }
 
   bool get showSettings => videos.isNotEmpty && status == CompressStatus.ready;
-
-  double get currentVideoProgress => _currentVideoProgress ?? 0;
 
   double get displayProgress {
     if (status == CompressStatus.processing &&
