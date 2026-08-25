@@ -23,11 +23,12 @@ Only `state.successResults` are previewable. Skipped and failed items stay in th
 
 ## Save
 
-Filled primary save opens a sheet with three explicit modes: save as new, save
-beside the original, or replace the original. Save as new uses `gal`. Beside and
-replace use the native create-and-verify path with source metadata; replace then
-requests original deletion. Sources without gallery replacement support fall
-back to ordinary saving. If album saving is enabled, album name is `Minimo`.
+On iOS, filled primary save opens a sheet with three explicit modes: save as new,
+save beside the original, or replace the original. Save as new uses `gal`.
+Beside and replace use the native create-and-verify path with source metadata;
+replace then requests original deletion. On Android, the button saves as new
+immediately without opening the sheet. If album saving is enabled, album name is
+`Minimo`.
 
 Saving is guarded by `state.isSaving` against concurrent actions. Successfully
 saved outputs, replacements, and deletions are remembered for the current Bloc
@@ -67,8 +68,9 @@ chronological gallery position without risky in-place writes.
 - Already compressed inputs are re-encoded before the 10% policy decides whether to keep output.
 - Estimates are bitrate-based approximations, not guarantees.
 - Codec output and compression ratio can differ between Android and iOS.
-- Original deletion depends on picker/provider identifiers and OS support.
-- Android original deletion requires Android 11 or newer.
+- Original deletion depends on picker/provider identifiers and is iOS-only.
+- Android save is always save-as-new and skips the options sheet because protected
+  Photo Picker items do not reliably expose replacement/deletion metadata.
 - Gallery ordering in system-specific "Recently Added" views cannot be preserved.
 - Flutter tests cannot validate real native video frames or audio synchronization.
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:minimo_video/constants/app_icons.dart';
+import 'package:minimo_video/features/compression/bloc/compress_bloc.dart';
 import 'package:minimo_video/features/compression/bloc/compress_state.dart';
+import 'package:minimo_video/features/compression/data/video_compressor_adapter.dart';
 import 'package:minimo_video/features/compression/domain/compression_result.dart';
 import 'package:minimo_video/features/compression/domain/compression_settings.dart';
 import 'package:minimo_video/features/compression/domain/picked_video.dart';
@@ -125,9 +128,7 @@ void main() {
     );
   });
 
-  testWidgets('save sheet offers copy, beside, and replace modes', (
-    tester,
-  ) async {
+  testWidgets('save skips the options sheet on Android', (tester) async {
     const source = PickedVideo(
       path: '/video.mp4',
       name: 'video.mp4',
@@ -159,16 +160,22 @@ void main() {
       isSaving: false,
     );
 
+    final bloc = CompressBloc(videoCompressorAdapter: _NoopCompressor());
+    addTearDown(bloc.close);
     await tester.pumpWidget(
       MaterialApp(
+        theme: ThemeData(platform: TargetPlatform.android),
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
-        home: const Scaffold(
-          body: CompressionResultView(state: state, onTryAgain: _noop),
+        home: BlocProvider.value(
+          value: bloc,
+          child: const Scaffold(
+            body: CompressionResultView(state: state, onTryAgain: _noop),
+          ),
         ),
       ),
     );
@@ -176,12 +183,20 @@ void main() {
     await tester.tap(find.text('save'));
     await tester.pumpAndSettle();
 
-    expect(find.text('save as new'), findsOneWidget);
-    expect(find.text('save beside original'), findsOneWidget);
-    expect(find.text('replace original'), findsOneWidget);
-    expect(find.byType(AnimatedAssetCheckbox), findsNWidgets(3));
-    expect(find.byType(RadioListTile), findsNothing);
+    expect(find.text('save as new'), findsNothing);
+    expect(find.byType(AnimatedAssetCheckbox), findsNothing);
   });
 }
 
 void _noop() {}
+
+class _NoopCompressor extends VideoCompressorAdapter {
+  @override
+  Future<int?> estimateCompressedSize(
+    Iterable<String> inputPaths,
+    CompressionSettings settings,
+  ) async => 0;
+
+  @override
+  Future<String?> createThumbnail(String inputPath) async => null;
+}

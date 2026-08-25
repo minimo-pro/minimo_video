@@ -13,7 +13,7 @@ Selected files are imported sequentially to avoid parallel disk/memory pressure.
 
 ### Android
 
-- **Gallery:** system photo picker (`MediaStore.ACTION_PICK_IMAGES`, `video/*`) on Android 13+; `ACTION_GET_CONTENT` + `video/*` on older versions. Android maps picker/document URIs to MediaStore video URIs when possible so originals can be selected for deletion. Providers that cannot be mapped remain non-deletable.
+- **Gallery:** system photo picker (`MediaStore.ACTION_PICK_IMAGES`, `video/*`) on Android 13+; `ACTION_GET_CONTENT` + `video/*` on older versions. Selected URIs are imported only; Android does not retain identifiers for replacement or deletion.
 - **Files:** `ACTION_OPEN_DOCUMENT`, `video/*`, multi-selection. Document picks are non-deletable.
 
 Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer. After copying, native code verifies that the cached file contains a video track; invalid files are deleted and the pick fails so Flutter shows an error snackbar instead of opening compression. A later add-more pick must not clear `picked_videos`, because the existing batch still references those cached copies; cold-start cleanup owns removal of the directory.
@@ -23,19 +23,16 @@ Both platforms report `pickProgress` (`processed`/`total`) over the videos metho
 ## Gallery and Deletion
 
 - Normal saving uses `gal` and may request add-only gallery permission.
-- Beside-original and replace-original modes use native `saveReplacement`.
+- On iOS, beside-original and replace-original use native `saveReplacement`.
   Both preserve supported metadata; only replace requests source deletion after
   the new asset is created and verified.
 - iOS copies the Photos capture date, location, writable user-album membership,
   and favorite state. The new asset always receives a new local identifier.
-- Android copies `DATE_TAKEN`, location and favorite values when MediaStore
-  accepts them, plus the source `RELATIVE_PATH` so the replacement stays in the
-  same folder. Unsupported optional columns produce a warning and retry with
-  safe base metadata.
 - iOS original deletion requests Photos read/write authorization only when deletion is confirmed.
-- Android 11+ uses `MediaStore.createDeleteRequest` only for picks marked deletable, which shows the system confirmation UI.
-- Android versions below 11 report original deletion as unsupported.
 - Flutter carries both `sourceIdentifier` and `canDeleteOriginal`; UI must not infer delete capability from identifier presence alone.
+- Android always reports picks as non-deletable, does not register native
+  replacement/deletion methods, and saves directly through `gal` when the user
+  taps save. The beside/replace sheet remains iOS-only.
 - Metadata-copy and deletion failures are reported as partial success; a save
   failure leaves the original untouched.
 

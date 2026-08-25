@@ -223,11 +223,16 @@ class CompressionResultView extends StatelessWidget {
   }
 
   Future<void> _showSaveOptions(BuildContext context) async {
+    if (Theme.of(context).platform == TargetPlatform.android) {
+      context.read<CompressBloc>().add(const CompressResultsSaved());
+      return;
+    }
     final metadataIdentifiers = state.successResults
         .where((item) => item.source.canDeleteOriginal)
         .map((item) => item.source.sourceIdentifier)
         .whereType<String>()
         .toSet();
+    final metadataAvailable = metadataIdentifiers.isNotEmpty;
     var selectedMode = _GallerySaveMode.copy;
     final mode = await showAppSheet<_GallerySaveMode>(
       context: context,
@@ -236,7 +241,6 @@ class CompressionResultView extends StatelessWidget {
       child: StatefulBuilder(
         builder: (sheetContext, setSheetState) {
           final strings = S.of(sheetContext);
-          final metadataAvailable = metadataIdentifiers.isNotEmpty;
           Widget option(
             _GallerySaveMode mode,
             String title,
