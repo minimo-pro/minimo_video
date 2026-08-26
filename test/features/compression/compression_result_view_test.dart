@@ -64,6 +64,59 @@ void main() {
     expect(tester.getCenter(vs).dx, lessThan(tester.getCenter(save).dx));
     expect(tester.getCenter(save).dx, lessThan(tester.getCenter(share).dx));
   });
+
+  testWidgets('shows notice when requested HEVC falls back to H.264', (
+    tester,
+  ) async {
+    const source = PickedVideo(
+      path: '/video.mp4',
+      name: 'video.mp4',
+      size: 100,
+    );
+    const state = CompressState(
+      status: CompressStatus.done,
+      videos: [source],
+      thumbnailPaths: [null],
+      videoStatuses: [VideoCompressionStatus.compressed],
+      results: [
+        CompressedVideo(
+          source: source,
+          result: CompressionResult(
+            success: true,
+            originalSize: 100,
+            outputSize: 40,
+            outputPath: '/small.mp4',
+            usedCodec: CompressionCodec.h264,
+          ),
+        ),
+      ],
+      compressionRunId: 1,
+      processingIndex: 0,
+      progress: 1,
+      elapsed: Duration.zero,
+      settings: CompressionSettings(codec: CompressionCodec.hevc),
+      isSaving: false,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        home: const Scaffold(
+          body: CompressionResultView(state: state, onTryAgain: _noop),
+        ),
+      ),
+    );
+
+    expect(
+      find.text("HEVC wasn't available, so this video was saved as H.264"),
+      findsOneWidget,
+    );
+  });
 }
 
 void _noop() {}

@@ -194,6 +194,56 @@ class S {
     );
   }
 
+  /// `rate the app`
+  String get rateTheApp {
+    return Intl.message('rate the app', name: 'rateTheApp', desc: '', args: []);
+  }
+
+  /// `share with friends`
+  String get shareWithFriends {
+    return Intl.message(
+      'share with friends',
+      name: 'shareWithFriends',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `try minimo (video) — a simple app for making videos smaller on your phone: {url}`
+  String shareAppText(String url) {
+    return Intl.message(
+      'try minimo (video) — a simple app for making videos smaller on your phone: $url',
+      name: 'shareAppText',
+      desc: '',
+      args: [url],
+    );
+  }
+
+  /// `what's new in {version}`
+  String changelogTitle(String version) {
+    return Intl.message(
+      'what\'s new in $version',
+      name: 'changelogTitle',
+      desc: '',
+      args: [version],
+    );
+  }
+
+  /// `changes from updates you have not seen yet`
+  String get changelogSubtitle {
+    return Intl.message(
+      'changes from updates you have not seen yet',
+      name: 'changelogSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `got it`
+  String get changelogDone {
+    return Intl.message('got it', name: 'changelogDone', desc: '', args: []);
+  }
+
   /// `project website`
   String get projectWebsite {
     return Intl.message(
@@ -499,6 +549,61 @@ class S {
     return Intl.message(
       'reduce dimensions for the biggest size savings',
       name: 'resolutionDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `video bitrate`
+  String get videoBitrate {
+    return Intl.message(
+      'video bitrate',
+      name: 'videoBitrate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `set a target bitrate or let the quality preset choose it`
+  String get videoBitrateDescription {
+    return Intl.message(
+      'set a target bitrate or let the quality preset choose it',
+      name: 'videoBitrateDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `auto`
+  String get automatic {
+    return Intl.message('auto', name: 'automatic', desc: '', args: []);
+  }
+
+  /// `frame rate`
+  String get frameRate {
+    return Intl.message('frame rate', name: 'frameRate', desc: '', args: []);
+  }
+
+  /// `limit output frames per second; higher source rates are left unchanged`
+  String get frameRateDescription {
+    return Intl.message(
+      'limit output frames per second; higher source rates are left unchanged',
+      name: 'frameRateDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `codec`
+  String get codec {
+    return Intl.message('codec', name: 'codec', desc: '', args: []);
+  }
+
+  /// `H.264 works everywhere; HEVC can be smaller but may fall back to H.264`
+  String get codecDescription {
+    return Intl.message(
+      'H.264 works everywhere; HEVC can be smaller but may fall back to H.264',
+      name: 'codecDescription',
       desc: '',
       args: [],
     );
@@ -821,6 +926,16 @@ class S {
   /// `after`
   String get compressedVideo {
     return Intl.message('after', name: 'compressedVideo', desc: '', args: []);
+  }
+
+  /// `HEVC wasn't available, so this video was saved as H.264`
+  String get hevcFallbackNotice {
+    return Intl.message(
+      'HEVC wasn\'t available, so this video was saved as H.264',
+      name: 'hevcFallbackNotice',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `preview unavailable`

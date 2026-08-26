@@ -25,37 +25,42 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(prefix) =>
       "adds \"${prefix}\" before the original file name. disabling keeps the original file name";
 
-  static String m2(error) => "failed to save: ${error}";
+  static String m2(version) => "what\'s new in ${version}";
 
-  static String m3(error) => "failed to share: ${error}";
+  static String m3(error) => "failed to save: ${error}";
 
-  static String m4(count) =>
-      "${Intl.plural(count, one: 'about 1 minute left', other: 'about ${count} minutes left')}";
+  static String m4(error) => "failed to share: ${error}";
 
   static String m5(count) =>
+      "${Intl.plural(count, one: 'about 1 minute left', other: 'about ${count} minutes left')}";
+
+  static String m6(count) =>
       "${Intl.plural(count, one: 'save 1 video', other: 'save ${count} videos')}";
 
-  static String m6(album) =>
+  static String m7(album) =>
       "saves compressed videos to the ${album} album instead of recently saved";
 
-  static String m7(error) =>
+  static String m8(error) =>
       "videos saved, but some originals could not be deleted: ${error}";
 
-  static String m8(saved, deleted) =>
+  static String m9(saved, deleted) =>
       "saved ${saved} video(s) and deleted ${deleted} original(s)";
 
-  static String m9(count) =>
+  static String m10(count) =>
       "${Intl.plural(count, one: 'saved 1 video to gallery', other: 'saved ${count} videos to gallery')}";
 
-  static String m10(count) =>
+  static String m11(count) =>
       "${Intl.plural(count, one: 'about 1 second left', other: 'about ${count} seconds left')}";
 
-  static String m11(current, total) => "video ${current} of ${total}";
+  static String m12(url) =>
+      "try minimo (video) — a simple app for making videos smaller on your phone: ${url}";
 
-  static String m12(completed, total) =>
+  static String m13(current, total) => "video ${current} of ${total}";
+
+  static String m14(completed, total) =>
       "${completed} of ${total} videos compressed";
 
-  static String m13(size) => "you saved ${size}";
+  static String m15(size) => "you saved ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -77,6 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "audioDescription": MessageLookupByLibrary.simpleMessage(
       "keep the original audio or remove it to save more space",
     ),
+    "automatic": MessageLookupByLibrary.simpleMessage("auto"),
     "better": MessageLookupByLibrary.simpleMessage("better"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "bitrate will be reduced to save space",
@@ -86,9 +92,18 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cacheCleared": MessageLookupByLibrary.simpleMessage("cache cleared"),
     "cancel": MessageLookupByLibrary.simpleMessage("cancel"),
+    "changelogDone": MessageLookupByLibrary.simpleMessage("got it"),
+    "changelogSubtitle": MessageLookupByLibrary.simpleMessage(
+      "changes from updates you have not seen yet",
+    ),
+    "changelogTitle": m2,
     "clearCache": MessageLookupByLibrary.simpleMessage("clear cache"),
     "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
       "removes temporary app files. videos saved to your gallery remain untouched",
+    ),
+    "codec": MessageLookupByLibrary.simpleMessage("codec"),
+    "codecDescription": MessageLookupByLibrary.simpleMessage(
+      "H.264 works everywhere; HEVC can be smaller but may fall back to H.264",
     ),
     "compareVideos": MessageLookupByLibrary.simpleMessage("compare"),
     "compress": MessageLookupByLibrary.simpleMessage("compress"),
@@ -131,13 +146,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToPickVideos": MessageLookupByLibrary.simpleMessage(
       "choose a video file",
     ),
-    "failedToSave": m2,
-    "failedToShare": m3,
+    "failedToSave": m3,
+    "failedToShare": m4,
+    "frameRate": MessageLookupByLibrary.simpleMessage("frame rate"),
+    "frameRateDescription": MessageLookupByLibrary.simpleMessage(
+      "limit output frames per second; higher source rates are left unchanged",
+    ),
     "getStarted": MessageLookupByLibrary.simpleMessage("get started"),
     "githubRepository": MessageLookupByLibrary.simpleMessage(
       "github repository",
     ),
     "good": MessageLookupByLibrary.simpleMessage("good"),
+    "hevcFallbackNotice": MessageLookupByLibrary.simpleMessage(
+      "HEVC wasn\'t available, so this video was saved as H.264",
+    ),
     "high": MessageLookupByLibrary.simpleMessage("high"),
     "holdToCancelCompression": MessageLookupByLibrary.simpleMessage(
       "hold the button to cancel compression",
@@ -168,7 +190,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "low": MessageLookupByLibrary.simpleMessage("low"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("medium"),
-    "minutesRemaining": m4,
+    "minutesRemaining": m5,
     "myOtherApps": MessageLookupByLibrary.simpleMessage("my other apps"),
     "myWebsite": MessageLookupByLibrary.simpleMessage("my website"),
     "next": MessageLookupByLibrary.simpleMessage("next"),
@@ -210,6 +232,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("project website"),
     "quality": MessageLookupByLibrary.simpleMessage("quality"),
+    "rateTheApp": MessageLookupByLibrary.simpleMessage("rate the app"),
     "resolution": MessageLookupByLibrary.simpleMessage("resolution"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "reduce dimensions for the biggest size savings",
@@ -222,17 +245,21 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "russian": MessageLookupByLibrary.simpleMessage("русский"),
     "save": MessageLookupByLibrary.simpleMessage("save"),
-    "saveVideos": m5,
+    "saveVideos": m6,
     "saveVideosToAlbum": MessageLookupByLibrary.simpleMessage(
       "save videos to album",
     ),
-    "saveVideosToAlbumDescription": m6,
-    "savedButOriginalsNotDeleted": m7,
-    "savedVideosAndDeletedOriginals": m8,
-    "savedVideosToGallery": m9,
-    "secondsRemaining": m10,
+    "saveVideosToAlbumDescription": m7,
+    "savedButOriginalsNotDeleted": m8,
+    "savedVideosAndDeletedOriginals": m9,
+    "savedVideosToGallery": m10,
+    "secondsRemaining": m11,
     "settings": MessageLookupByLibrary.simpleMessage("settings"),
     "share": MessageLookupByLibrary.simpleMessage("share"),
+    "shareAppText": m12,
+    "shareWithFriends": MessageLookupByLibrary.simpleMessage(
+      "share with friends",
+    ),
     "showOverheatWarning": MessageLookupByLibrary.simpleMessage(
       "show overheat warning",
     ),
@@ -247,13 +274,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "system": MessageLookupByLibrary.simpleMessage("system"),
     "todo": MessageLookupByLibrary.simpleMessage("TODO"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("try again"),
+    "videoBitrate": MessageLookupByLibrary.simpleMessage("video bitrate"),
+    "videoBitrateDescription": MessageLookupByLibrary.simpleMessage(
+      "set a target bitrate or let the quality preset choose it",
+    ),
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "preview unavailable",
     ),
-    "videoProgress": m11,
-    "videosCompressed": m12,
+    "videoProgress": m13,
+    "videosCompressed": m14,
     "waiting": MessageLookupByLibrary.simpleMessage("waiting"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m13,
+    "youSavedSize": m15,
   };
 }

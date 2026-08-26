@@ -11,9 +11,12 @@
 | `gal` | Save videos to gallery |
 | `share_plus` | Share output files |
 | `video_player` | Local before/after playback on the result screen |
+| `in_app_review` | Request or open app review |
+| `upgrader` | Prompt when a store update is available |
+| `pub_semver` | Compare changelog versions |
 | `path_provider`, `path` | Temporary file management |
 | `intl`, `intl_utils` | Localization |
-| `package_info_plus` | App version on the about screen |
+| `package_info_plus` | App version for changelog and about screen |
 | `motor` | Press interaction motion |
 | `stupid_simple_sheet` | Modal sheets with scroll-to-drag dismissal |
 | `flutter_svg` | SVG icons |
@@ -37,7 +40,7 @@ The iOS project uses Flutter's Swift Package Manager integration. Do not add Coc
 
 ## Platform Requirements
 
-- Dart: `^3.9.2`
+- Dart: `^3.12.0`
 - Android min SDK: 24
 - iOS deployment target: 15.0
 

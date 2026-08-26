@@ -48,9 +48,12 @@ class VideoCompressorAdapter {
     void Function(double progress)? onProgress,
   }) async {
     final stopwatch = Stopwatch()..start();
-    final (width, height) = await _targetResolution(
-      inputPath,
-      settings.resolution,
+    final media = await _targetMedia(inputPath, settings.resolution);
+    final plan = encodePlan(
+      settings,
+      outputWidth: media.outputWidth,
+      outputHeight: media.outputHeight,
+      sourceFrameRate: media.sourceFrameRate,
     );
     final progress = onProgress == null
         ? null
@@ -61,7 +64,8 @@ class VideoCompressorAdapter {
     try {
       final result = await _compressor.compressVideo(
         path: inputPath,
-        videoQuality: _quality(settings.crf),
+        videoQuality: plan.quality,
+        videoFormat: plan.format,
         isMinBitrateCheckEnabled: false,
         disableAudio: settings.audioMode == CompressionAudioMode.remove,
         audio: settings.audioMode == CompressionAudioMode.stereo
@@ -70,9 +74,10 @@ class VideoCompressorAdapter {
         video: light.Video(
           videoName: path.basenameWithoutExtension(outputPath),
           keepOriginalResolution: settings.resolution == null,
-          videoBitrateInMbps: _bitrateMbps(settings.crf),
-          videoWidth: width,
-          videoHeight: height,
+          videoBitrateInMbps: plan.bitrateMbps,
+          videoFps: plan.frameRate,
+          videoWidth: media.videoWidth,
+          videoHeight: media.videoHeight,
         ),
         android: light.AndroidConfig(isSharedStorage: false),
         ios: light.IOSConfig(saveInGallery: false),
@@ -102,6 +107,9 @@ class VideoCompressorAdapter {
         outputSize: outputSize,
         outputPath: savedFile?.path,
         durationMs: stopwatch.elapsedMilliseconds,
+        usedCodec: result.usedFormat == light.VideoFormat.h265
+            ? CompressionCodec.hevc
+            : CompressionCodec.h264,
       );
     } finally {
       await progress?.cancel();
@@ -116,20 +124,25 @@ class VideoCompressorAdapter {
       try {
         var total = 0;
         for (final inputPath in inputPaths) {
-          final info = await _channel.invokeMapMethod<String, dynamic>(
-            'videoInfo',
+          final media = await _targetMedia(inputPath, settings.resolution);
+          final plan = encodePlan(
+            settings,
+            outputWidth: media.outputWidth,
+            outputHeight: media.outputHeight,
+            sourceFrameRate: media.sourceFrameRate,
+          );
+          final estimate = await _compressor.getCompressionEstimate(
             inputPath,
+            videoQuality: plan.quality,
+            videoFormat: plan.format,
+            keepOriginalResolution: settings.resolution == null,
+            videoWidth: media.videoWidth,
+            videoHeight: media.videoHeight,
+            videoBitrateInMbps: plan.bitrateMbps,
+            disableAudio: settings.audioMode == CompressionAudioMode.remove,
           );
-          final durationMs = info?['durationMs'] as int?;
-          if (durationMs == null) return null;
           final originalSize = await File(inputPath).length();
-          final estimate = estimateBytes(
-            durationMs: durationMs,
-            videoBitrateMbps: _bitrateMbps(settings.crf),
-            includeAudio: settings.audioMode != CompressionAudioMode.remove,
-            resolutionScale: settings.resolutionEstimateScale,
-          );
-          total += estimate.clamp(0, originalSize);
+          total += estimate.estimatedSizeBytes.clamp(0, originalSize);
         }
         return total;
       } catch (_) {
@@ -138,20 +151,35 @@ class VideoCompressorAdapter {
     });
   }
 
-  static int estimateBytes({
-    required int durationMs,
-    required int videoBitrateMbps,
-    required bool includeAudio,
-    double resolutionScale = 1,
-  }) {
-    final bitrate =
-        videoBitrateMbps * 1000000 * resolutionScale +
-        (includeAudio ? 128000 : 0);
-    return (bitrate * durationMs / 8000).round();
-  }
-
   static bool isUsefulCompression(int originalSize, int outputSize) {
     return outputSize * 10 <= originalSize * 9;
+  }
+
+  static ({
+    light.VideoQuality quality,
+    light.VideoFormat format,
+    int bitrateMbps,
+    int? frameRate,
+  })
+  encodePlan(
+    CompressionSettings settings, {
+    int? outputWidth,
+    int? outputHeight,
+    double? sourceFrameRate,
+  }) {
+    final frameRate = settings.validatedFrameRate;
+    return (
+      quality: _quality(settings.crf),
+      format: settings.codec == CompressionCodec.hevc
+          ? light.VideoFormat.h265
+          : light.VideoFormat.h264,
+      bitrateMbps: settings.effectiveBitrateMbps(
+        outputWidth: outputWidth,
+        outputHeight: outputHeight,
+        sourceFrameRate: sourceFrameRate,
+      ),
+      frameRate: frameRate,
+    );
   }
 
   Future<String?> createThumbnail(String inputPath) {
@@ -221,12 +249,6 @@ class VideoCompressorAdapter {
     return light.VideoQuality.very_low;
   }
 
-  static int _bitrateMbps(double crf) {
-    if (crf <= 22) return 4;
-    if (crf <= 28) return 2;
-    return 1;
-  }
-
   static (int?, int?) _parseResolution(String? resolution) {
     if (resolution == null) return (null, null);
 
@@ -236,24 +258,51 @@ class VideoCompressorAdapter {
     return (int.tryParse(parts[0]), int.tryParse(parts[1]));
   }
 
-  Future<(int?, int?)> _targetResolution(
-    String inputPath,
-    String? resolution,
-  ) async {
+  Future<
+    ({
+      int? videoWidth,
+      int? videoHeight,
+      int? outputWidth,
+      int? outputHeight,
+      double? sourceFrameRate,
+    })
+  >
+  _targetMedia(String inputPath, String? resolution) async {
     final target = _parseResolution(resolution);
     final (targetWidth, targetHeight) = target;
-    if (targetWidth == null || targetHeight == null) return target;
 
     try {
       final info = await _compressor.getMediaInfo(inputPath);
-      return targetResolutionForSource(
+      if (targetWidth == null || targetHeight == null) {
+        return (
+          videoWidth: null,
+          videoHeight: null,
+          outputWidth: info.width,
+          outputHeight: info.height,
+          sourceFrameRate: info.frameRate,
+        );
+      }
+      final (width, height) = targetResolutionForSource(
         targetWidth: targetWidth,
         targetHeight: targetHeight,
         sourceWidth: info.width,
         sourceHeight: info.height,
       );
+      return (
+        videoWidth: width,
+        videoHeight: height,
+        outputWidth: width,
+        outputHeight: height,
+        sourceFrameRate: info.frameRate,
+      );
     } catch (_) {
-      return target;
+      return (
+        videoWidth: targetWidth,
+        videoHeight: targetHeight,
+        outputWidth: targetWidth,
+        outputHeight: targetHeight,
+        sourceFrameRate: null,
+      );
     }
   }
 

@@ -8,12 +8,21 @@
 | Medium | 28 | 2 Mbps | 1280×720 |
 | Low | 34 | 1 Mbps | 854×480 |
 
-CRF is retained internally to map existing UI state to `light_compressor_v2`; users do not edit it directly.
+Preset bitrates are nominal for 30 FPS H.264 input. CRF is retained internally to map existing UI state to `light_compressor_v2`; users do not edit it directly.
 
 Advanced mode allows:
 
 - Original, 1080p, 720p, 480p, or 360p resolution
+- Automatic or 1, 2, 4, 6, or 8 Mbps video bitrate
+- Original, 60, 30, 24, or 15 FPS output; the package only downsamples
+- H.264 or HEVC output; unsupported HEVC hardware falls back to H.264
 - Stereo audio or no audio
+
+With automatic bitrate, `CompressionSettings.effectiveBitrateMbps()` derives the encoder target from the fitted output pixel count, effective output FPS, quality tier, and codec efficiency. Original resolution uses source dimensions for bitrate calculation without passing them as resize dimensions. Requested FPS is capped at the source FPS because the package only downsamples. HEVC targets fewer bits than H.264 for comparable quality. `light_compressor_v2` currently accepts only whole Mbps, so automatic targets are rounded and clamped to `1–8 Mbps`. A manually selected bitrate is absolute and is not modified by resolution, FPS, or codec.
+
+`light_compressor_v2 1.9.0` does not expose encoder speed presets or video
+container metadata copying. Do not add UI switches for either until the native
+pipeline can honor them on both Android and iOS.
 
 Reduced-resolution presets preserve the source orientation. Before passing a
 custom `videoWidth`/`videoHeight` to `light_compressor_v2`,
@@ -34,6 +43,10 @@ Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough:
 5. Output is moved to app temporary storage only when it saves at least 10%.
 6. Smaller savings are treated as already optimized: output is deleted, original remains.
 
+The plugin-reported `usedFormat` is stored with each successful result. If
+HEVC was requested but hardware fallback produced H.264, the result screen
+shows a localized notice.
+
 `BackgroundConfig` keeps compression running through an Android foreground service when the app is minimized or the screen is off. iOS does not support continuous background transcoding; the native job can remain stuck after the OS suspends the app.
 
 On iOS the compression screen warns the user to keep the app open. If the app is backgrounded during compression, the active native job is cancelled immediately; returning restarts only the current video and keeps completed batch items.
@@ -48,17 +61,16 @@ The Bloc keeps `videos`, `thumbnailPaths`, and `videoStatuses` aligned, requests
 
 ## Estimates
 
-Estimate formula:
-
-```text
-(video bitrate × resolution scale + optional 128 kbps audio) × duration / 8
-```
-
-Lower target resolutions use progressively smaller estimate scales. Each
-estimate is capped at original file size. Duration comes from native
-`videoInfo`. Changing settings immediately clears the previous asynchronous
-estimate so the UI shows the local fallback until fresh metadata-based output
-arrives.
+`VideoCompressorAdapter` calls `LightCompressor.getCompressionEstimate()` with
+the same quality, codec, dimensions, bitrate, and audio-removal settings used
+for compression. Frame rate affects the automatic bitrate before that call,
+because the plugin estimate API has no separate FPS argument. Each estimate is
+capped at original file size. Changing
+settings keeps the previous asynchronous estimate visible until the refreshed
+native estimate arrives; this avoids a transient local-fallback `0%` state.
+Adding videos still clears the old estimate because it belongs to a different
+batch. A genuine `0%` estimate disables compression, while the adapter's 10%
+acceptance threshold remains authoritative for completed output.
 
 ## Batch and Progress
 

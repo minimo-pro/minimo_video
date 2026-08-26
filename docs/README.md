@@ -6,7 +6,7 @@ Modular documentation for **minimo (video)**. It is written for developers and A
 
 - `skills/core/` — overview, architecture, settings, dependencies, testing, decisions, conventions
 - `skills/ui/` — screens and design system
-- `skills/features/` — compression, localization, platform integration, results and errors
+- `skills/features/` — compression, changelog, localization, platform integration, results and errors
 
 Start with [SKILLS.md](SKILLS.md). Each module is independent and links back to the index.
 

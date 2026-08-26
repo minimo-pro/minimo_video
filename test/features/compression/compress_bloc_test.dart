@@ -520,6 +520,26 @@ void main() {
     await bloc.close();
   });
 
+  test('keeps previous estimate while settings estimate refreshes', () async {
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/video.mp4', name: 'video.mp4', size: 17),
+      ],
+      videoCompressorAdapter: _EstimatingCompressor(),
+    );
+
+    await bloc.stream.firstWhere((state) => state.estimatedSize == 15);
+    bloc.add(
+      const CompressSettingsChanged(CompressionSettings(crf: 34)),
+    );
+    final changed = await bloc.stream.firstWhere(
+      (state) => state.settings.crf == 34,
+    );
+
+    expect(changed.estimatedSize, 15);
+    await bloc.close();
+  });
+
   test('keeps screen awake while compression is active', () async {
     final settings = AppSettingsService.instance;
     final previous = settings.preventScreenSleep;

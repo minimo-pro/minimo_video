@@ -6,7 +6,7 @@
 
 - Select one or multiple local videos and append more while configuring compression
 - High, medium, and low quality presets
-- Manual resolution and audio controls
+- Manual resolution, bitrate, frame-rate, codec, and audio controls
 - Sequential batch compression with overall and per-video progress
 - Hold-to-confirm cancellation and original deletion
 - Save to the gallery, optionally into the `Minimo` album
@@ -20,7 +20,7 @@
 - Native codecs through `light_compressor_v2`; no FFmpeg runtime
 - Output is kept only when it is at least 10% smaller than the input
 - Original files are untouched unless deletion is explicitly confirmed
-- Advanced bitrate, frame-rate, codec, speed-preset, and metadata controls are not implemented
+- Encoder speed presets and container metadata preservation require compressor support and are not implemented
 
 ## Entry Points
 

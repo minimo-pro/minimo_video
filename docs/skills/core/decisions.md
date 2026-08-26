@@ -12,7 +12,11 @@ Accepted trade-off: output may differ across platforms, and uncommon formats or 
 
 ## Small User-facing Settings Surface
 
-Simple presets cover the primary use case. Advanced settings were reduced to resolution and audio. CRF, speed preset, frame rate, codec, two-pass mode, noise reduction, streaming optimization, metadata preservation, and hardware-acceleration switches were removed from UI/state.
+Simple presets cover the primary use case. Advanced settings expose controls
+supported consistently by `light_compressor_v2`: resolution, video bitrate,
+frame rate, H.264/HEVC codec, and audio. CRF, speed preset, two-pass mode, noise
+reduction, streaming optimization, metadata preservation, and hardware-
+acceleration switches remain outside UI/state.
 
 Reason: the replacement package does not expose all controls consistently, and most users need predictable basic compression rather than encoder tuning.
 
@@ -40,7 +44,7 @@ Picked and compressed files live in app cache until saved/shared. Originals are 
 
 ## Sheets via `stupid_simple_sheet`
 
-Settings, info, and comparison use `StupidSimpleSheetRoute` (through `showAppSheet` / `showAppContentSheet`) instead of `showModalBottomSheet`. Material's modal sheet does not hand a downward swipe from a list at its top edge over to sheet dismissal; users expect that native behavior. Small pickers without nested scrolling (e.g. language) may still use `showModalBottomSheet`.
+Settings, info, changelog, and comparison use `StupidSimpleSheetRoute` (through `showAppSheet` / `showAppContentSheet`) instead of `showModalBottomSheet`. Material's modal sheet does not hand a downward swipe from a list at its top edge over to sheet dismissal; users expect that native behavior. Small pickers without nested scrolling (e.g. language) may still use `showModalBottomSheet`.
 
 ---
 

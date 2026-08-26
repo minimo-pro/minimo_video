@@ -15,30 +15,15 @@ No cloud upload. No subscription. Your videos stay yours.
 ## Features
 
 - Simple quality presets: high, medium, low
-- Advanced controls: resolution and audio
+- Advanced controls: resolution, bitrate, frame rate, codec, and audio
 - Batch compression
-- Progress screen with time estimate
 - Save and share compressed videos
-- Optional album saving
-- English and Russian localization
-
-## Roadmap
-
-- [x] Simple quality presets
-- [x] Batch compression
-- [x] Resolution and audio controls
-- [x] Compression progress, cancellation, saving, and sharing
-- [ ] Custom bitrate
-- [ ] Frame rate control
-- [ ] H.264 and HEVC codec selection
-- [ ] Compression speed presets
-- [ ] Metadata preservation
 
 ## Native compression pipeline
 
 ```mermaid
 flowchart TD
-    A[CompressBloc<br/>processes videos sequentially] --> B[VideoCompressorAdapter<br/>builds bitrate, resolution and audio config]
+    A[CompressBloc<br/>processes videos sequentially] --> B[VideoCompressorAdapter<br/>builds bitrate, resolution, frame rate, codec and audio config]
     B --> C[light_compressor_v2]
     C --> D{Native platform plugin}
 

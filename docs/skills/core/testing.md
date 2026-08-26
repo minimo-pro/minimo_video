@@ -14,7 +14,10 @@ Current tests cover:
 
 - Quality preset mapping to internal tier and resolution
 - Appending only new picked videos while preserving settings and aligned batch state
-- Compression estimate formula and audio contribution
+- Custom bitrate estimate fallback and exact bitrate/FPS/codec encode-plan mapping
+- Automatic bitrate response to resolution, effective FPS, and codec
+- Invalid configured/source frame-rate handling
+- HEVC-to-H.264 fallback notice on the result screen
 - Minimum 10% output-savings policy
 - Batch status transitions and mixed success/skipped results
 - Cancellation state reset and compressor cancellation call
@@ -22,7 +25,9 @@ Current tests cover:
 - Saving and original deletion through source identifiers
 - Compression failure state
 - Cache size and full cleanup
-- Preview styling, status percentage, press motion, and hold-button background
+- Preview styling and count-badge bounds, status percentage, press motion, and hold-button background
+- Rolling counters ignore unchanged formatted values and use calm motion
+- Previous estimate retained while a settings estimate refreshes
 - Add-more and compress actions sharing the settings bottom row
 - Compact icon-only `AppActionButton` layout for wide SVG assets (`arrow_back`, `share`, `more`)
 
