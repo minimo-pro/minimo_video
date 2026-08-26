@@ -8,7 +8,11 @@
       "fine-tune bitrate, frame rate, and H.264 or HEVC codec.",
       "preview original and compressed videos side by side.",
       "get more accurate size estimates and smoother preview scrubbing.",
-      "compress portrait Android screen recordings without squeezing."
+      "compress portrait Android screen recordings without squeezing.",
+      "on iOS, choose how saved videos handle originals while preserving gallery metadata where supported.",
+      "on Android, save compressed videos directly as new gallery items.",
+      "on iOS, avoid replacing or deleting the same gallery video twice.",
+      "see clear messages when saving, deleting, or sharing fails."
     ],
     "ru": [
       "можно поделиться minimo с друзьями.",
@@ -18,7 +22,11 @@
       "можно настроить битрейт, частоту кадров и кодек H.264 или HEVC.",
       "можно сравнить исходное и сжатое видео рядом.",
       "оценка размера стала точнее, а перемотка предпросмотра — плавнее.",
-      "портретные записи экрана Android больше не сжимаются по ширине."
+      "портретные записи экрана Android больше не сжимаются по ширине.",
+      "на iOS можно выбрать способ сохранения оригинала с переносом метаданных галереи, где это поддерживается.",
+      "на Android сжатые видео сразу сохраняются как новые элементы галереи.",
+      "на iOS приложение больше не заменяет и не удаляет одно видео повторно.",
+      "ошибки сохранения, удаления и отправки теперь описаны понятнее."
     ]
   }
 }

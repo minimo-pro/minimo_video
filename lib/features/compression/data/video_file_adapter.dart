@@ -44,6 +44,25 @@ class VideoFileAdapter {
     await Gal.putVideo(filePath, album: album);
   }
 
+  Future<GallerySaveResult> saveReplacement(
+    String filePath,
+    String sourceIdentifier, {
+    String? album,
+  }) async {
+    final result = await _channel.invokeMapMethod<String, dynamic>(
+      'saveReplacement',
+      {'path': filePath, 'sourceIdentifier': sourceIdentifier, 'album': album},
+    );
+    if (result == null || result['saved'] != true) {
+      throw StateError('replacement video was not saved');
+    }
+    return GallerySaveResult(
+      warnings: (result['warnings'] as List<dynamic>? ?? const [])
+          .whereType<String>()
+          .toList(),
+    );
+  }
+
   Future<int> deleteOriginals(Iterable<String> sourceIdentifiers) async {
     return await _channel.invokeMethod<int>(
           'deleteOriginals',
@@ -51,4 +70,10 @@ class VideoFileAdapter {
         ) ??
         0;
   }
+}
+
+class GallerySaveResult {
+  final List<String> warnings;
+
+  const GallerySaveResult({this.warnings = const []});
 }

@@ -233,8 +233,12 @@ class _CompressViewState extends State<_CompressView>
 
   void _showSaveMessage(BuildContext context, CompressState state) {
     final strings = S.of(context);
-    final message = state.deleteError != null
-        ? strings.savedButOriginalsNotDeleted(state.deleteError.toString())
+    final partialErrors = [
+      if (state.metadataError != null) strings.metadataPreservationIncomplete,
+      if (state.deleteError != null) strings.originalDeletionFailed,
+    ];
+    final message = partialErrors.isNotEmpty
+        ? strings.savedWithWarnings(partialErrors.join('; '))
         : state.savedVideoCount != null && (state.deletedOriginalCount ?? 0) > 0
         ? strings.savedVideosAndDeletedOriginals(
             state.savedVideoCount!,
@@ -243,14 +247,17 @@ class _CompressViewState extends State<_CompressView>
         : state.savedVideoCount != null
         ? strings.savedVideosToGallery(state.savedVideoCount!)
         : state.saveError != null
-        ? strings.failedToSave(state.saveError.toString())
+        ? strings.failedToSave
         : null;
     if (message == null) return;
 
     AppSnackBar.show(
       context,
       message: message,
-      type: state.deleteError != null || state.saveError != null
+      type:
+          state.deleteError != null ||
+              state.metadataError != null ||
+              state.saveError != null
           ? AppSnackBarType.error
           : AppSnackBarType.success,
     );

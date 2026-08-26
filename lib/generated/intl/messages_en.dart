@@ -27,40 +27,38 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(version) => "what\'s new in ${version}";
 
-  static String m3(error) => "failed to save: ${error}";
-
-  static String m4(error) => "failed to share: ${error}";
-
-  static String m5(count) =>
+  static String m3(count) =>
       "${Intl.plural(count, one: 'about 1 minute left', other: 'about ${count} minutes left')}";
 
-  static String m6(count) =>
+  static String m4(count) =>
       "${Intl.plural(count, one: 'save 1 video', other: 'save ${count} videos')}";
 
-  static String m7(album) =>
+  static String m5(album) =>
       "saves compressed videos to the ${album} album instead of recently saved";
 
-  static String m8(error) =>
+  static String m6(error) =>
       "videos saved, but some originals could not be deleted: ${error}";
 
-  static String m9(saved, deleted) =>
+  static String m7(saved, deleted) =>
       "saved ${saved} video(s) and deleted ${deleted} original(s)";
 
-  static String m10(count) =>
+  static String m8(count) =>
       "${Intl.plural(count, one: 'saved 1 video to gallery', other: 'saved ${count} videos to gallery')}";
 
-  static String m11(count) =>
+  static String m9(error) => "videos saved with some issues: ${error}";
+
+  static String m10(count) =>
       "${Intl.plural(count, one: 'about 1 second left', other: 'about ${count} seconds left')}";
 
-  static String m12(url) =>
+  static String m11(url) =>
       "try minimo (video) — a simple app for making videos smaller on your phone: ${url}";
 
-  static String m13(current, total) => "video ${current} of ${total}";
+  static String m12(current, total) => "video ${current} of ${total}";
 
-  static String m14(completed, total) =>
+  static String m13(completed, total) =>
       "${completed} of ${total} videos compressed";
 
-  static String m15(size) => "you saved ${size}";
+  static String m14(size) => "you saved ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -129,14 +127,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "darkThemeDescription": MessageLookupByLibrary.simpleMessage(
       "use the dark appearance",
     ),
-    "deleteOriginal": MessageLookupByLibrary.simpleMessage("delete original"),
-    "deleteOriginalsAfterSaving": MessageLookupByLibrary.simpleMessage(
-      "delete originals after saving",
-    ),
-    "deleteOriginalsAfterSavingDescription":
-        MessageLookupByLibrary.simpleMessage(
-          "deletes selected originals only after compressed videos are saved",
-        ),
     "emailCopied": MessageLookupByLibrary.simpleMessage("email copied"),
     "english": MessageLookupByLibrary.simpleMessage("english"),
     "estimatingTimeRemaining": MessageLookupByLibrary.simpleMessage(
@@ -146,8 +136,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToPickVideos": MessageLookupByLibrary.simpleMessage(
       "choose a video file",
     ),
-    "failedToSave": m3,
-    "failedToShare": m4,
+    "failedToSave": MessageLookupByLibrary.simpleMessage(
+      "couldn\'t save the videos. try again",
+    ),
+    "failedToShare": MessageLookupByLibrary.simpleMessage(
+      "couldn\'t share the videos. try again",
+    ),
     "frameRate": MessageLookupByLibrary.simpleMessage("frame rate"),
     "frameRateDescription": MessageLookupByLibrary.simpleMessage(
       "limit output frames per second; higher source rates are left unchanged",
@@ -190,7 +184,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "low": MessageLookupByLibrary.simpleMessage("low"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("medium"),
-    "minutesRemaining": m5,
+    "metadataPreservationIncomplete": MessageLookupByLibrary.simpleMessage(
+      "some gallery metadata could not be copied",
+    ),
+    "minutesRemaining": m3,
     "myOtherApps": MessageLookupByLibrary.simpleMessage("my other apps"),
     "myWebsite": MessageLookupByLibrary.simpleMessage("my website"),
     "next": MessageLookupByLibrary.simpleMessage("next"),
@@ -218,6 +215,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "minimo (video) is open source. explore the code, follow the project or get in touch",
     ),
     "original": MessageLookupByLibrary.simpleMessage("original"),
+    "originalDeletionFailed": MessageLookupByLibrary.simpleMessage(
+      "some originals could not be deleted",
+    ),
     "originalVideo": MessageLookupByLibrary.simpleMessage("before"),
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "compression can slow down if your device gets hot",
@@ -233,6 +233,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "projectWebsite": MessageLookupByLibrary.simpleMessage("project website"),
     "quality": MessageLookupByLibrary.simpleMessage("quality"),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("rate the app"),
+    "replaceOriginal": MessageLookupByLibrary.simpleMessage("replace original"),
+    "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
+      "save with original metadata, then ask to delete the original",
+    ),
     "resolution": MessageLookupByLibrary.simpleMessage("resolution"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "reduce dimensions for the biggest size savings",
@@ -245,18 +249,31 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "russian": MessageLookupByLibrary.simpleMessage("русский"),
     "save": MessageLookupByLibrary.simpleMessage("save"),
-    "saveVideos": m6,
+    "saveAsNew": MessageLookupByLibrary.simpleMessage("save as new"),
+    "saveAsNewDescription": MessageLookupByLibrary.simpleMessage(
+      "keep the original and save a new gallery video",
+    ),
+    "saveBesideOriginal": MessageLookupByLibrary.simpleMessage(
+      "save beside original",
+    ),
+    "saveBesideOriginalDescription": MessageLookupByLibrary.simpleMessage(
+      "keep the original and copy its gallery date and metadata",
+    ),
+    "saveOptionsTitle": MessageLookupByLibrary.simpleMessage("how to save"),
+    "saveVideos": m4,
     "saveVideosToAlbum": MessageLookupByLibrary.simpleMessage(
       "save videos to album",
     ),
-    "saveVideosToAlbumDescription": m7,
-    "savedButOriginalsNotDeleted": m8,
-    "savedVideosAndDeletedOriginals": m9,
-    "savedVideosToGallery": m10,
-    "secondsRemaining": m11,
+    "saveVideosToAlbumDescription": m5,
+    "savedButOriginalsNotDeleted": m6,
+    "savedVideosAndDeletedOriginals": m7,
+    "savedVideosToGallery": m8,
+    "savedWithWarnings": m9,
+    "secondsRemaining": m10,
     "settings": MessageLookupByLibrary.simpleMessage("settings"),
     "share": MessageLookupByLibrary.simpleMessage("share"),
-    "shareAppText": m12,
+    "shareAppText": m11,
+    "shareOrSave": MessageLookupByLibrary.simpleMessage("share or save to…"),
     "shareWithFriends": MessageLookupByLibrary.simpleMessage(
       "share with friends",
     ),
@@ -281,10 +298,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "preview unavailable",
     ),
-    "videoProgress": m13,
-    "videosCompressed": m14,
+    "videoProgress": m12,
+    "videosCompressed": m13,
     "waiting": MessageLookupByLibrary.simpleMessage("waiting"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m15,
+    "youSavedSize": m14,
   };
 }

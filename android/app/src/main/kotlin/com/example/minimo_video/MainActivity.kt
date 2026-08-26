@@ -1,14 +1,12 @@
 package com.khlebobul.minimo_video
 
 import android.content.Context
-import android.content.ContentUris
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.OpenableColumns
-import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.media.MediaMetadataRetriever
 import android.util.Log
@@ -20,9 +18,6 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterActivity() {
     private lateinit var videosChannel: MethodChannel
     private var pendingPickResult: MethodChannel.Result? = null
-    private var pendingPickSource = "gallery"
-    private var pendingDeleteResult: MethodChannel.Result? = null
-    private var pendingDeleteCount = 0
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -42,7 +37,6 @@ class MainActivity : FlutterActivity() {
         videosChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "pickVideos" -> pickVideos(call.arguments, result)
-                "deleteOriginals" -> deleteOriginals(call.arguments as? List<*>, result)
                 "videoInfo" -> videoInfo(call.arguments as? String, result)
                 "createThumbnail" -> createThumbnail(call.arguments as? String, result)
                 else -> result.notImplemented()
@@ -53,18 +47,9 @@ class MainActivity : FlutterActivity() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == DELETE_VIDEOS_REQUEST) {
-            val result = pendingDeleteResult ?: return
-            pendingDeleteResult = null
-            if (resultCode == RESULT_OK) result.success(pendingDeleteCount)
-            else result.error("delete_cancelled", "original video deletion was cancelled", null)
-            pendingDeleteCount = 0
-            return
-        }
         if (requestCode != PICK_VIDEOS_REQUEST) return
 
         val result = pendingPickResult ?: return
-        val source = pendingPickSource
         if (resultCode != RESULT_OK || data == null) {
             pendingPickResult = null
             result.success(emptyList<Map<String, Any>>())
@@ -72,7 +57,7 @@ class MainActivity : FlutterActivity() {
         }
 
         Thread {
-            runCatching { readPickedVideos(data, source) }
+            runCatching { readPickedVideos(data) }
                 .onSuccess { videos ->
                     runOnUiThread {
                         pendingPickResult = null
@@ -152,7 +137,6 @@ class MainActivity : FlutterActivity() {
 
         pendingPickResult = result
         val source = (arguments as? Map<*, *>)?.get("source") as? String ?: "gallery"
-        pendingPickSource = source
         val intent = if (source == "files") {
             openDocumentIntent()
         } else {
@@ -184,48 +168,7 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    private fun deleteOriginals(arguments: List<*>?, result: MethodChannel.Result) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            result.error("delete_unsupported", "deleting originals requires Android 11 or newer", null)
-            return
-        }
-        if (pendingDeleteResult != null) {
-            result.error("delete_in_progress", "video deletion is already open", null)
-            return
-        }
-        val uris = arguments.orEmpty().filterIsInstance<String>().mapNotNull(::mediaStoreUri).distinct()
-        if (uris.isEmpty()) {
-            result.error("delete_unavailable", "no MediaStore videos to delete", null)
-            return
-        }
-        pendingDeleteResult = result
-        pendingDeleteCount = uris.size
-        val request = MediaStore.createDeleteRequest(contentResolver, uris)
-        startIntentSenderForResult(
-            request.intentSender,
-            DELETE_VIDEOS_REQUEST,
-            null,
-            0,
-            0,
-            0
-        )
-    }
-
-    private fun mediaStoreUri(value: String): Uri? {
-        val uri = Uri.parse(value)
-        if (uri.authority == "media") {
-            if (uri.pathSegments.contains("picker")) {
-                val id = uri.lastPathSegment?.toLongOrNull() ?: return null
-                return ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id)
-            }
-            return uri
-        }
-        if (uri.authority != "com.android.providers.media.documents") return null
-        val id = DocumentsContract.getDocumentId(uri).substringAfter(':').toLongOrNull() ?: return null
-        return ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id)
-    }
-
-    private fun readPickedVideos(data: Intent, source: String): List<Map<String, Any>> {
+    private fun readPickedVideos(data: Intent): List<Map<String, Any>> {
         val uris = mutableListOf<Uri>()
         data.clipData?.let { clip ->
             for (index in 0 until clip.itemCount) {
@@ -236,7 +179,7 @@ class MainActivity : FlutterActivity() {
         Log.i(TAG, "Importing ${uris.size} videos sequentially")
         sendPickProgress(0, uris.size)
         return uris.mapIndexed { index, uri ->
-            copyPickedVideo(uri, source).also {
+            copyPickedVideo(uri).also {
                 Log.i(TAG, "Imported ${index + 1}/${uris.size} videos")
                 sendPickProgress(index + 1, uris.size)
             }
@@ -250,11 +193,10 @@ class MainActivity : FlutterActivity() {
         )
     }
 
-    private fun copyPickedVideo(uri: Uri, source: String): Map<String, Any> {
+    private fun copyPickedVideo(uri: Uri): Map<String, Any> {
         val metadata = queryMetadata(uri)
         val name = sanitizeFileName(metadata.first)
         val outputFile = uniqueCacheFile(name)
-        val deleteUri = if (source == "gallery") mediaStoreUri(uri.toString()) else null
 
         contentResolver.openInputStream(uri).use { input ->
             requireNotNull(input) { "unable to open selected video" }
@@ -271,8 +213,7 @@ class MainActivity : FlutterActivity() {
             "path" to outputFile.absolutePath,
             "name" to name,
             "size" to outputFile.length(),
-            "sourceIdentifier" to (deleteUri?.toString() ?: uri.toString()),
-            "canDeleteOriginal" to (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && deleteUri != null)
+            "canDeleteOriginal" to false
         )
     }
 
@@ -324,6 +265,5 @@ class MainActivity : FlutterActivity() {
     companion object {
         private const val TAG = "VideoPicker"
         private const val PICK_VIDEOS_REQUEST = 4207
-        private const val DELETE_VIDEOS_REQUEST = 4208
     }
 }

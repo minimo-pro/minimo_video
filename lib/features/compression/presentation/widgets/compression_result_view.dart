@@ -4,14 +4,12 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../constants/app_icons.dart';
 import '../../../../generated/l10n.dart';
-import '../../../../services/app_settings_service.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../widgets/animated_asset_checkbox.dart';
 import '../../../../widgets/app_action_button.dart';
 import '../../../../widgets/app_sheet.dart';
 import '../../../../widgets/app_snack_bar.dart';
-import '../../../../widgets/faded_scroll_view.dart';
 import '../../bloc/compress_bloc.dart';
 import '../../bloc/compress_event.dart';
 import '../../bloc/compress_state.dart';
@@ -168,7 +166,7 @@ class CompressionResultView extends StatelessWidget {
                     if (!allFailed) ...[
                       SizedBox(width: buttonGap),
                       Tooltip(
-                        message: strings.share,
+                        message: strings.shareOrSave,
                         child: AppActionButton(
                           width: 47,
                           icon: AppIcons.share,
@@ -205,11 +203,11 @@ class CompressionResultView extends StatelessWidget {
           sharePositionOrigin: origin,
         ),
       );
-    } catch (error) {
+    } catch (_) {
       if (!context.mounted) return;
       AppSnackBar.show(
         context,
-        message: strings.failedToShare(error.toString()),
+        message: strings.failedToShare,
         type: AppSnackBarType.error,
       );
     }
@@ -225,129 +223,140 @@ class CompressionResultView extends StatelessWidget {
   }
 
   Future<void> _showSaveOptions(BuildContext context) async {
-    final deleteByDefault =
-        AppSettingsService.instance.deleteOriginalsAfterSaving;
-    final selected = deleteByDefault
-        ? state.successResults
-              .where((item) => item.source.canDeleteOriginal)
-              .map((item) => item.source.sourceIdentifier)
-              .whereType<String>()
-              .toSet()
-        : <String>{};
-    final identifiers = await showAppSheet<Set<String>>(
+    if (Theme.of(context).platform == TargetPlatform.android) {
+      context.read<CompressBloc>().add(const CompressResultsSaved());
+      return;
+    }
+    final metadataIdentifiers = state.successResults
+        .where((item) => item.source.canDeleteOriginal)
+        .map((item) => item.source.sourceIdentifier)
+        .whereType<String>()
+        .toSet();
+    final metadataAvailable = metadataIdentifiers.isNotEmpty;
+    var selectedMode = _GallerySaveMode.copy;
+    final mode = await showAppSheet<_GallerySaveMode>(
       context: context,
-      heightFraction: 0.72,
+      heightFraction: 0.62,
       backgroundColor: Theme.of(context).colorScheme.surface,
       child: StatefulBuilder(
-        builder: (sheetContext, setSheetState) => SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(22, 20, 22, 14),
-            child: Column(
-              children: [
-                Text(
-                  S.of(context).deleteOriginalsAfterSaving,
-                  style: Theme.of(context).textTheme.titleMedium,
+        builder: (sheetContext, setSheetState) {
+          final strings = S.of(sheetContext);
+          Widget option(
+            _GallerySaveMode mode,
+            String title,
+            String description, {
+            bool enabled = true,
+          }) {
+            final selected = selectedMode == mode;
+            return Opacity(
+              opacity: enabled ? 1 : 0.38,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: enabled
+                    ? () => setSheetState(() => selectedMode = mode)
+                    : null,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IgnorePointer(
+                        child: AnimatedAssetCheckbox(
+                          value: selected,
+                          onChanged: (_) {},
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              description,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 14),
-                Expanded(
-                  child: FadedScrollView(
-                    fadeExtent: 0.08,
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Column(
+              ),
+            );
+          }
+
+          return SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(22, 20, 22, 14),
+              child: Column(
+                children: [
+                  Text(
+                    strings.saveOptionsTitle,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 14),
+                  Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.zero,
                       children: [
-                        for (
-                          var index = 0;
-                          index < state.successResults.length;
-                          index++
-                        ) ...[
-                          if (index > 0) const SizedBox(height: 10),
-                          Builder(
-                            builder: (context) {
-                              final source = state.successResults[index].source;
-                              final identifier = source.sourceIdentifier;
-                              final canDelete =
-                                  source.canDeleteOriginal &&
-                                  identifier != null;
-                              final checked =
-                                  canDelete && selected.contains(identifier);
-                              final rowColor = Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withValues(alpha: canDelete ? 1 : 0.38);
-                              final metaColor = Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant
-                                  .withValues(alpha: canDelete ? 1 : 0.5);
-                              return Row(
-                                children: [
-                                  Opacity(
-                                    opacity: canDelete ? 1 : 0.35,
-                                    child: AnimatedAssetCheckbox(
-                                      value: checked,
-                                      onChanged: canDelete
-                                          ? (value) => setSheetState(() {
-                                              if (value) {
-                                                selected.add(identifier);
-                                              } else {
-                                                selected.remove(identifier);
-                                              }
-                                            })
-                                          : (_) {},
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      source.name,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(color: rowColor),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Text(
-                                    canDelete
-                                        ? S.of(context).deleteOriginal
-                                        : S.of(context).original,
-                                    style: Theme.of(context).textTheme.bodySmall
-                                        ?.copyWith(color: metaColor),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
+                        option(
+                          _GallerySaveMode.copy,
+                          strings.saveAsNew,
+                          strings.saveAsNewDescription,
+                        ),
+                        option(
+                          _GallerySaveMode.besideOriginal,
+                          strings.saveBesideOriginal,
+                          strings.saveBesideOriginalDescription,
+                          enabled: metadataAvailable,
+                        ),
+                        option(
+                          _GallerySaveMode.replaceOriginal,
+                          strings.replaceOriginal,
+                          strings.replaceOriginalDescription,
+                          enabled: metadataAvailable,
+                        ),
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(height: 14),
-                AppActionButton(
-                  width: double.infinity,
-                  label: S.of(context).save,
-                  variant: AppActionButtonVariant.filled,
-                  fontSize: 20,
-                  onPressed: state.isSaving
-                      ? null
-                      : () => Navigator.of(sheetContext).pop(Set.of(selected)),
-                ),
-              ],
+                  const SizedBox(height: 14),
+                  AppActionButton(
+                    width: double.infinity,
+                    label: strings.save,
+                    variant: AppActionButtonVariant.filled,
+                    fontSize: 20,
+                    onPressed: state.isSaving
+                        ? null
+                        : () => Navigator.of(sheetContext).pop(selectedMode),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
 
-    if (!context.mounted || identifiers == null) return;
+    if (!context.mounted || mode == null) return;
+    final preserveMetadata = mode == _GallerySaveMode.copy
+        ? const <String>{}
+        : metadataIdentifiers;
+    final deleteOriginals = mode == _GallerySaveMode.replaceOriginal
+        ? metadataIdentifiers
+        : const <String>{};
     context.read<CompressBloc>().add(
       CompressResultsSaved(
-        deleteOriginals: identifiers.isNotEmpty,
-        deleteSourceIdentifiers: identifiers,
+        preserveMetadataSourceIdentifiers: preserveMetadata,
+        deleteSourceIdentifiers: deleteOriginals,
       ),
     );
   }
 }
+
+enum _GallerySaveMode { copy, besideOriginal, replaceOriginal }

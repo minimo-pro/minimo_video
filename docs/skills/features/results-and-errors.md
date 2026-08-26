@@ -23,24 +23,38 @@ Only `state.successResults` are previewable. Skipped and failed items stay in th
 
 ## Save
 
-Filled primary save opens the per-video save sheet. It preselects deletable originals from `delete_originals_after_saving`; the user can keep or unselect each original. Confirming dispatches `CompressResultsSaved` with selected source identifiers and saves each successful output through `gal`. If album saving is enabled, album name is `Minimo`.
+On iOS, filled primary save opens a sheet with three explicit modes: save as new,
+save beside the original, or replace the original. Save as new uses `gal`.
+Beside and replace use the native create-and-verify path with source metadata;
+replace then requests original deletion. On Android, the button saves as new
+immediately without opening the sheet. If album saving is enabled, album name is
+`Minimo`.
 
-Saving is guarded by `state.isSaving` to prevent duplicate actions. A failure stops the operation and stores `saveError` for UI notification.
+Saving is guarded by `state.isSaving` against concurrent actions. Successfully
+saved outputs, replacements, and deletions are remembered for the current Bloc
+run, so retries skip completed work instead of duplicating assets or requesting
+an already deleted Photos asset.
 
 ## Save and Delete Originals
 
-The save sheet is the only deletion path. Deletion runs only after every output saves successfully, then requests source deletion using unique non-null `sourceIdentifier` values whose source is marked deletable.
+The save sheet is the only deletion path. For selected originals, the app first
+creates and verifies a new gallery asset carrying supported source metadata.
+Only after every output is saved does it request deletion using unique non-null
+`sourceIdentifier` values whose source is marked deletable. This preserves the
+chronological gallery position without risky in-place writes.
 
 - Save success remains valid if original deletion fails.
+- Metadata transfer failures use `metadataError` and are reported as partial success.
 - Deletion failures use `deleteError`, separate from `saveError`.
 - Sources without a platform identifier cannot be deleted.
-- Sources without delete capability remain visible but disabled in the manage sheet.
+- Beside and replace modes are disabled when no source supports gallery replacement.
 - Output paths equal to source paths are excluded defensively.
 - System confirmation remains authoritative; cancellation is not deletion success.
 
 ## Compression Errors
 
 - Picker errors, including providers returning non-video files, show an error snackbar and do not add files to the batch.
+- User-facing save, delete, and share errors are localized messages; raw platform exceptions remain internal.
 - Plugin failure/cancel variants become `StateError` in the adapter.
 - Normal encoder errors mark that item failed; remaining batch items continue.
 - User cancellation exits the active run and ignores later callbacks.
@@ -54,8 +68,10 @@ The save sheet is the only deletion path. Deletion runs only after every output 
 - Already compressed inputs are re-encoded before the 10% policy decides whether to keep output.
 - Estimates are bitrate-based approximations, not guarantees.
 - Codec output and compression ratio can differ between Android and iOS.
-- Original deletion depends on picker/provider identifiers and OS support.
-- Android original deletion requires Android 11 or newer.
+- Original deletion depends on picker/provider identifiers and is iOS-only.
+- Android save is always save-as-new and skips the options sheet because protected
+  Photo Picker items do not reliably expose replacement/deletion metadata.
+- Gallery ordering in system-specific "Recently Added" views cannot be preserved.
 - Flutter tests cannot validate real native video frames or audio synchronization.
 
 ---

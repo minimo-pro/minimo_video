@@ -1,5 +1,6 @@
 import Flutter
 import AVFoundation
+import CoreLocation
 import Photos
 import PhotosUI
 import UIKit
@@ -39,6 +40,8 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
         self.pickVideos(source: source, result: result)
       case "deleteOriginals":
         self.deleteOriginals(call.arguments as? [String] ?? [], result: result)
+      case "saveReplacement":
+        self.saveReplacement(call.arguments as? [String: Any], result: result)
       case "videoInfo":
         self.videoInfo(call.arguments as? String, result: result)
       case "createThumbnail":
@@ -350,6 +353,155 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
             ))
           }
         }
+      }
+    }
+  }
+
+  private func saveReplacement(
+    _ arguments: [String: Any]?,
+    result: @escaping FlutterResult
+  ) {
+    guard
+      let path = arguments?["path"] as? String,
+      let sourceIdentifier = arguments?["sourceIdentifier"] as? String,
+      FileManager.default.fileExists(atPath: path)
+    else {
+      result(FlutterError(code: "save_failed", message: "replacement video is unavailable", details: nil))
+      return
+    }
+
+    PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+      guard status == .authorized || status == .limited else {
+        DispatchQueue.main.async {
+          result(FlutterError(code: "save_denied", message: "Photos access was denied", details: nil))
+        }
+        return
+      }
+
+      let assets = PHAsset.fetchAssets(withLocalIdentifiers: [sourceIdentifier], options: nil)
+      guard let source = assets.firstObject else {
+        DispatchQueue.main.async {
+          result(FlutterError(code: "save_failed", message: "original Photos asset is unavailable", details: nil))
+        }
+        return
+      }
+
+      let sourceAlbums = PHAssetCollection.fetchAssetCollectionsContaining(
+        source,
+        with: .album,
+        options: nil
+      )
+      var albums: [PHAssetCollection] = []
+      sourceAlbums.enumerateObjects { collection, _, _ in
+        if collection.canPerform(.addContent) { albums.append(collection) }
+      }
+      let skippedSourceAlbum = albums.count < sourceAlbums.count
+
+      let requestedAlbum = (arguments?["album"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
+      self.ensureAlbum(named: requestedAlbum) { album, albumWarning in
+        if let album, !albums.contains(where: { $0.localIdentifier == album.localIdentifier }) {
+          albums.append(album)
+        }
+        self.createReplacement(
+          at: URL(fileURLWithPath: path),
+          source: source,
+          albums: albums,
+          initialWarnings: albumWarning || skippedSourceAlbum ? ["album_unavailable"] : [],
+          result: result
+        )
+      }
+    }
+  }
+
+  private func ensureAlbum(
+    named name: String?,
+    completion: @escaping (PHAssetCollection?, Bool) -> Void
+  ) {
+    guard let name, !name.isEmpty else {
+      completion(nil, false)
+      return
+    }
+    let collections = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: nil)
+    var existing: PHAssetCollection?
+    collections.enumerateObjects { collection, _, stop in
+      if collection.localizedTitle == name {
+        existing = collection
+        stop.pointee = true
+      }
+    }
+    if let existing {
+      completion(existing, false)
+      return
+    }
+
+    var identifier: String?
+    PHPhotoLibrary.shared().performChanges({
+      identifier = PHAssetCollectionChangeRequest
+        .creationRequestForAssetCollection(withTitle: name)
+        .placeholderForCreatedAssetCollection
+        .localIdentifier
+    }) { success, _ in
+      guard success, let identifier else {
+        completion(nil, true)
+        return
+      }
+      completion(
+        PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [identifier], options: nil).firstObject,
+        false
+      )
+    }
+  }
+
+  private func createReplacement(
+    at url: URL,
+    source: PHAsset,
+    albums: [PHAssetCollection],
+    initialWarnings: [String],
+    result: @escaping FlutterResult
+  ) {
+    var identifier: String?
+    PHPhotoLibrary.shared().performChanges({
+      let request = PHAssetCreationRequest.forAsset()
+      request.addResource(with: .video, fileURL: url, options: nil)
+      request.creationDate = source.creationDate
+      request.location = source.location
+      let placeholder = request.placeholderForCreatedAsset
+      identifier = placeholder?.localIdentifier
+      if let placeholder {
+        for album in albums {
+          PHAssetCollectionChangeRequest(for: album)?.addAssets([placeholder] as NSArray)
+        }
+      }
+    }) { success, error in
+      guard success, let identifier else {
+        DispatchQueue.main.async {
+          result(FlutterError(
+            code: "save_failed",
+            message: error?.localizedDescription ?? "replacement video was not saved",
+            details: nil
+          ))
+        }
+        return
+      }
+
+      let created = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil)
+      guard let replacement = created.firstObject else {
+        DispatchQueue.main.async {
+          result(FlutterError(code: "save_failed", message: "replacement video could not be verified", details: nil))
+        }
+        return
+      }
+
+      guard source.isFavorite else {
+        DispatchQueue.main.async { result(["saved": true, "warnings": initialWarnings]) }
+        return
+      }
+      PHPhotoLibrary.shared().performChanges({
+        PHAssetChangeRequest(for: replacement).isFavorite = true
+      }) { favoriteSaved, _ in
+        var warnings = initialWarnings
+        if !favoriteSaved { warnings.append("favorite_unavailable") }
+        DispatchQueue.main.async { result(["saved": true, "warnings": warnings]) }
       }
     }
   }

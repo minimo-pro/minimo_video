@@ -67,13 +67,6 @@ class SettingsScreen extends StatelessWidget {
                         onChanged: settings.setSaveVideosToAlbum,
                       ),
                       _ToggleRow(
-                        title: strings.deleteOriginalsAfterSaving,
-                        description:
-                            strings.deleteOriginalsAfterSavingDescription,
-                        value: settings.deleteOriginalsAfterSaving,
-                        onChanged: settings.setDeleteOriginalsAfterSaving,
-                      ),
-                      _ToggleRow(
                         title: strings.preventScreenSleep,
                         description: strings.preventScreenSleepDescription,
                         value: settings.preventScreenSleep,
