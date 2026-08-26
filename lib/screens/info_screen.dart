@@ -22,9 +22,9 @@ class InfoScreen extends StatelessWidget {
   const InfoScreen({super.key});
 
   static const _email = 'khlebobul@gmail.com';
-  // TODO: Replace with real app store links when the app is published
-  static const _appStoreAppId = '0000000000';
-  static const _appStoreAppUrl = 'https://apps.apple.com/app/id0000000000';
+  static const _appStoreAppId = '6787456951';
+  static const _appStoreAppUrl =
+      'https://apps.apple.com/us/app/minimo-video/id6787456951';
   static const _googlePlayAppUrl =
       'https://play.google.com/store/apps/details?id=com.khlebobul.minimo_video';
   static final _appStoreApps = Uri.parse(
