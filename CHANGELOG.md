@@ -1,3 +1,9 @@
+## [Unreleased]
+
+### Changed
+
+* Removed remote changelog loading; update notes now come only from the app bundle.
+
 ## [1.0.1]
 
 ### Added

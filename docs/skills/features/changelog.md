@@ -3,19 +3,7 @@
 ## In-App Changelog
 
 `ChangelogService` stores a local versioned changelog map in Dart. Keys are semantic versions, language keys use the `Language` enum, and version comparisons use `pub_semver`.
-
-The service can fetch root [`changelog.json`](../../../changelog.json) from the repository before falling back to the bundled map. Remote JSON uses this shape:
-
-```json
-{
-  "1.0.0": {
-    "en": ["share minimo with friends."],
-    "ru": ["можно поделиться minimo с друзьями."]
-  }
-}
-```
-
-Remote fetch failures are ignored; the bundled map remains authoritative offline.
+The app never fetches changelog content remotely.
 
 ## Seen Version
 
@@ -41,7 +29,6 @@ the current version as seen.
 
 - Update root `CHANGELOG.md` and group entries under category headings such as `### Added`.
 - Add a local `_changelog` entry for every app version.
-- Publish/update remote `changelog.json` before release.
 - Keep English and Russian copy in sync.
 
 ---
