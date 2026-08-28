@@ -252,6 +252,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         progress: completedWeight / totalWeight,
         currentVideoProgress: 0,
         elapsed: previousElapsed,
+        isSaved: false,
         clearSaveNotification: true,
         clearCompressionError: true,
       ),
@@ -478,6 +479,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
                 ? null
                 : metadataWarnings.join('; '),
             isSaving: false,
+            isSaved: true,
             clearSaveNotification: true,
           ),
         );
@@ -508,6 +510,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
                 ? null
                 : metadataWarnings.join('; '),
             isSaving: false,
+            isSaved: true,
             clearSaveNotification: true,
           ),
         );
@@ -521,6 +524,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
                 ? null
                 : metadataWarnings.join('; '),
             isSaving: false,
+            isSaved: true,
             clearSaveNotification: true,
           ),
         );

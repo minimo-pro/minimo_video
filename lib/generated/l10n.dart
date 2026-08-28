@@ -1008,6 +1008,11 @@ class S {
     return Intl.message('save', name: 'save', desc: '', args: []);
   }
 
+  /// `saved`
+  String get saved {
+    return Intl.message('saved', name: 'saved', desc: '', args: []);
+  }
+
   /// `hold the button to delete originals`
   String get holdToDeleteOriginals {
     return Intl.message(

@@ -173,6 +173,7 @@
   "hevcFallbackNotice": "HEVC недоступен — видео сохранено в H.264",
   "videoPreviewUnavailable": "предпросмотр недоступен",
   "save": "сохранить",
+  "saved": "сохранено",
   "holdToDeleteOriginals": "удерживайте кнопку, чтобы удалить оригиналы",
   "failedToShare": "не удалось поделиться видео. попробуйте ещё раз",
   "savedVideosAndDeletedOriginals": "сохранено видео: {saved}, удалено оригиналов: {deleted}",

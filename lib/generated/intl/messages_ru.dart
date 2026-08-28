@@ -271,6 +271,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "сохранять видео в альбом",
     ),
     "saveVideosToAlbumDescription": m5,
+    "saved": MessageLookupByLibrary.simpleMessage("сохранено"),
     "savedButOriginalsNotDeleted": m6,
     "savedVideosAndDeletedOriginals": m7,
     "savedVideosToGallery": m8,

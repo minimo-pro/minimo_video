@@ -173,6 +173,7 @@
   "hevcFallbackNotice": "HEVC wasn't available, so this video was saved as H.264",
   "videoPreviewUnavailable": "preview unavailable",
   "save": "save",
+  "saved": "saved",
   "holdToDeleteOriginals": "hold the button to delete originals",
   "failedToShare": "couldn't share the videos. try again",
   "savedVideosAndDeletedOriginals": "saved {saved} video(s) and deleted {deleted} original(s)",

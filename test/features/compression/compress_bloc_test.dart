@@ -493,6 +493,10 @@ void main() {
     await bloc.stream.firstWhere((state) => state.savedVideoCount == 1);
 
     expect(files.calls, ['replace:photos-id']);
+    expect(bloc.state.isSaved, isTrue);
+    bloc.add(const CompressMessagesCleared());
+    await bloc.stream.firstWhere((state) => state.savedVideoCount == null);
+    expect(bloc.state.isSaved, isTrue);
     await bloc.close();
   });
 
@@ -571,6 +575,7 @@ void main() {
     await bloc.stream.firstWhere((state) => state.saveError != null);
 
     expect(files.deletedIdentifiers, isEmpty);
+    expect(bloc.state.isSaved, isFalse);
     await bloc.close();
   });
 
@@ -707,9 +712,7 @@ void main() {
     );
 
     await bloc.stream.firstWhere((state) => state.estimatedSize == 15);
-    bloc.add(
-      const CompressSettingsChanged(CompressionSettings(crf: 34)),
-    );
+    bloc.add(const CompressSettingsChanged(CompressionSettings(crf: 34)));
     final changed = await bloc.stream.firstWhere(
       (state) => state.settings.crf == 34,
     );

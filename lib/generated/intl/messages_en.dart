@@ -265,6 +265,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "save videos to album",
     ),
     "saveVideosToAlbumDescription": m5,
+    "saved": MessageLookupByLibrary.simpleMessage("saved"),
     "savedButOriginalsNotDeleted": m6,
     "savedVideosAndDeletedOriginals": m7,
     "savedVideosToGallery": m8,
