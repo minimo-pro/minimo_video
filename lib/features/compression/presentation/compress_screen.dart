@@ -17,6 +17,7 @@ import '../bloc/compress_event.dart';
 import '../bloc/compress_state.dart';
 import '../data/video_file_adapter.dart';
 import '../domain/picked_video.dart';
+import '../domain/video_pick_source.dart';
 import 'widgets/compression_progress_view.dart';
 import 'widgets/compression_result_view.dart';
 import 'widgets/compression_settings_view.dart';
@@ -26,18 +27,23 @@ import 'widgets/video_pick_source_sheet.dart';
 @RoutePage()
 class CompressScreen extends StatelessWidget {
   final List<PickedVideo> initialVideos;
+  final VideoPickSource? initialPickSource;
 
-  const CompressScreen({super.key, this.initialVideos = const []});
+  const CompressScreen({
+    super.key,
+    this.initialVideos = const [],
+    this.initialPickSource,
+  });
 
   @override
   Widget build(BuildContext context) {
-    if (initialVideos.isEmpty) {
+    if (initialVideos.isEmpty && initialPickSource == null) {
       return const _StartRedirect();
     }
 
     return BlocProvider(
       create: (_) => CompressBloc(initialVideos: initialVideos),
-      child: const _CompressView(),
+      child: _CompressView(initialPickSource: initialPickSource),
     );
   }
 }
@@ -69,7 +75,9 @@ class _StartRedirectState extends State<_StartRedirect> {
 }
 
 class _CompressView extends StatefulWidget {
-  const _CompressView();
+  final VideoPickSource? initialPickSource;
+
+  const _CompressView({this.initialPickSource});
 
   @override
   State<_CompressView> createState() => _CompressViewState();
@@ -87,6 +95,12 @@ class _CompressViewState extends State<_CompressView>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _loadingVideos = widget.initialPickSource != null;
+    if (widget.initialPickSource case final source?) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => unawaited(_importVideos(source, initial: true)),
+      );
+    }
   }
 
   @override
@@ -121,6 +135,11 @@ class _CompressViewState extends State<_CompressView>
         _requestReviewAfterSuccessfulCompression(state);
       },
       builder: (context, state) {
+        final waitingForInitialSelection =
+            _loadingVideos &&
+            state.videos.isEmpty &&
+            widget.initialPickSource != null &&
+            _loadingProgress == null;
         return PopScope(
           canPop: state.status != CompressStatus.processing && !_loadingVideos,
           child: Scaffold(
@@ -130,10 +149,8 @@ class _CompressViewState extends State<_CompressView>
                 padding: const EdgeInsets.fromLTRB(22, 18, 22, 14),
                 child: Column(
                   children: [
-                    if (_loadingVideos)
-                      Expanded(
-                        child: VideoLoadingView(progress: _loadingProgress),
-                      )
+                    if (waitingForInitialSelection)
+                      const Expanded(child: VideoLoadingView())
                     else ...[
                       if (state.status != CompressStatus.processing) ...[
                         Align(
@@ -144,7 +161,9 @@ class _CompressViewState extends State<_CompressView>
                             iconWidth: 22,
                             iconHeight: 22,
                             variant: AppActionButtonVariant.text,
-                            onPressed: () => _goToStart(context),
+                            onPressed: _loadingVideos
+                                ? null
+                                : () => _goToStart(context),
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -153,7 +172,11 @@ class _CompressViewState extends State<_CompressView>
                         child: switch (state.status) {
                           CompressStatus.ready => CompressionSettingsView(
                             state: state,
-                            onAddVideos: () => unawaited(_pickMoreVideos()),
+                            isImporting: _loadingVideos,
+                            importProgress: _loadingProgress,
+                            onAddVideos: _loadingVideos
+                                ? null
+                                : () => unawaited(_pickMoreVideos()),
                           ),
                           CompressStatus.processing => CompressionProgressView(
                             key: ValueKey(state.compressionRunId),
@@ -182,6 +205,13 @@ class _CompressViewState extends State<_CompressView>
     final source = await showVideoPickSourceSheet(context);
     if (source == null || !mounted) return;
 
+    await _importVideos(source);
+  }
+
+  Future<void> _importVideos(
+    VideoPickSource source, {
+    bool initial = false,
+  }) async {
     setState(() {
       _loadingVideos = true;
       _loadingProgress = null;
@@ -198,6 +228,8 @@ class _CompressViewState extends State<_CompressView>
       );
       if (videos.isNotEmpty && mounted) {
         context.read<CompressBloc>().add(CompressVideosAdded(videos));
+      } else if (initial && mounted) {
+        await context.router.maybePop();
       }
     } catch (_) {
       if (mounted) {

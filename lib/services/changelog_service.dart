@@ -27,6 +27,20 @@ const _remoteChangelogUrl =
     'https://raw.githubusercontent.com/minimo-pro/minimo_video/main/changelog.json';
 
 const Changelog _changelog = {
+  '1.0.2': {
+    Language.en: [
+      'adjust compression settings while cloud-backed or large videos import; the Compress button shows progress until they are ready.',
+      'see a loading screen instead of empty settings until video selection is confirmed.',
+      'see when compressed videos are saved and avoid saving them twice.',
+      'read long update notes with clear fading at the scroll edges.',
+    ],
+    Language.ru: [
+      'можно менять настройки, пока видео загружается из облака или копируется; кнопка сжатия показывает прогресс до готовности.',
+      'до подтверждения выбора видео показывается загрузка, а не пустой экран настроек.',
+      'после сохранения сжатого видео кнопка показывает результат и не сохраняет его повторно.',
+      'у длинного списка изменений теперь видны плавные края прокрутки.',
+    ],
+  },
   '1.0.1': {
     Language.en: [
       'share minimo with friends.',

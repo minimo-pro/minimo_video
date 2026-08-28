@@ -848,20 +848,20 @@ class S {
     );
   }
 
-  /// `loading videos...`
+  /// `importing videos...`
   String get loadingVideos {
     return Intl.message(
-      'loading videos...',
+      'importing videos...',
       name: 'loadingVideos',
       desc: '',
       args: [],
     );
   }
 
-  /// `large or numerous files may take longer to load`
+  /// `downloading from cloud storage or copying large files may take longer`
   String get loadingManyVideosHint {
     return Intl.message(
-      'large or numerous files may take longer to load',
+      'downloading from cloud storage or copying large files may take longer',
       name: 'loadingManyVideosHint',
       desc: '',
       args: [],

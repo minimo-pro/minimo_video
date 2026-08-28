@@ -5,6 +5,7 @@
 ## Current Capabilities
 
 - Select one or multiple local videos and append more while configuring compression
+- Adjust compression settings while cloud-backed or large videos import
 - High, medium, and low quality presets
 - Manual resolution, bitrate, frame-rate, codec, and audio controls
 - Sequential batch compression with overall and per-video progress
@@ -30,7 +31,7 @@
 | Routing | `lib/router/app_router.dart` |
 | Main selection screen | `lib/screens/start_page.dart` |
 | Compression feature | `lib/features/compression/` |
-| Shared video loading UI | `lib/features/compression/presentation/widgets/video_loading_view.dart` |
+| Import loading UI | `lib/features/compression/presentation/widgets/video_loading_view.dart`, `compression_bottom_actions.dart` |
 | Persistent settings | `lib/services/app_settings_service.dart` |
 
 ---

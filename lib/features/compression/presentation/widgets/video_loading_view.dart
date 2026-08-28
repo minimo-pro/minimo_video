@@ -5,13 +5,10 @@ import '../../../../theme/app_theme.dart';
 import '../../../../widgets/minimo_loader.dart';
 
 class VideoLoadingView extends StatelessWidget {
-  final (int, int)? progress;
-
-  const VideoLoadingView({super.key, this.progress});
+  const VideoLoadingView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final materialTheme = Theme.of(context);
     final theme = AppTheme.of(context);
     final strings = S.of(context);
 
@@ -26,26 +23,17 @@ class VideoLoadingView extends StatelessWidget {
             Text(
               strings.loadingVideos,
               textAlign: TextAlign.center,
-              style: materialTheme.textTheme.titleMedium?.copyWith(
-                color: theme.textColor,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(color: theme.textColor),
             ),
-            if (progress case (final done, final total)) ...[
-              const SizedBox(height: 8),
-              Text(
-                '$done / $total',
-                style: materialTheme.textTheme.titleLarge?.copyWith(
-                  color: theme.textColor,
-                ),
-              ),
-            ],
             const SizedBox(height: 8),
             Text(
               strings.loadingManyVideosHint,
               textAlign: TextAlign.center,
-              style: materialTheme.textTheme.bodyMedium?.copyWith(
-                color: theme.textColor,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: theme.textColor),
             ),
           ],
         ),

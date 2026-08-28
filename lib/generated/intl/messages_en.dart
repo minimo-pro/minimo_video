@@ -178,9 +178,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "select the language for the app",
     ),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
-      "large or numerous files may take longer to load",
+      "downloading from cloud storage or copying large files may take longer",
     ),
-    "loadingVideos": MessageLookupByLibrary.simpleMessage("loading videos..."),
+    "loadingVideos": MessageLookupByLibrary.simpleMessage(
+      "importing videos...",
+    ),
     "low": MessageLookupByLibrary.simpleMessage("low"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("medium"),

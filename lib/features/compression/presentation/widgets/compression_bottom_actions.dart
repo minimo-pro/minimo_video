@@ -5,13 +5,17 @@ import '../../../../generated/l10n.dart';
 import '../../../../widgets/app_action_button.dart';
 
 class CompressionBottomActions extends StatelessWidget {
-  final VoidCallback onAdd;
+  final VoidCallback? onAdd;
   final VoidCallback? onCompress;
+  final bool isImporting;
+  final (int, int)? importProgress;
 
   const CompressionBottomActions({
     super.key,
     required this.onAdd,
     this.onCompress,
+    this.isImporting = false,
+    this.importProgress,
   });
 
   @override
@@ -29,9 +33,17 @@ class CompressionBottomActions extends StatelessWidget {
         Expanded(
           child: AppActionButton(
             width: double.infinity,
-            label: S.of(context).compress,
+            label: isImporting
+                ? [
+                    S.of(context).loadingVideos,
+                    if (importProgress case (final done, final total))
+                      '$done / $total',
+                  ].join(' ')
+                : S.of(context).compress,
+            loading: isImporting,
+            fontSize: isImporting ? 18 : 25,
             variant: AppActionButtonVariant.filled,
-            onPressed: onCompress,
+            onPressed: isImporting ? null : onCompress,
           ),
         ),
       ],

@@ -10,10 +10,12 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i7;
-import 'package:collection/collection.dart' as _i10;
-import 'package:flutter/material.dart' as _i8;
+import 'package:collection/collection.dart' as _i11;
+import 'package:flutter/foundation.dart' as _i8;
 import 'package:minimo_video/features/compression/domain/picked_video.dart'
     as _i9;
+import 'package:minimo_video/features/compression/domain/video_pick_source.dart'
+    as _i10;
 import 'package:minimo_video/features/compression/presentation/compress_screen.dart'
     as _i1;
 import 'package:minimo_video/screens/info_screen.dart' as _i2;
@@ -28,10 +30,15 @@ class CompressRoute extends _i7.PageRouteInfo<CompressRouteArgs> {
   CompressRoute({
     _i8.Key? key,
     List<_i9.PickedVideo> initialVideos = const [],
+    _i10.VideoPickSource? initialPickSource,
     List<_i7.PageRouteInfo>? children,
   }) : super(
          CompressRoute.name,
-         args: CompressRouteArgs(key: key, initialVideos: initialVideos),
+         args: CompressRouteArgs(
+           key: key,
+           initialVideos: initialVideos,
+           initialPickSource: initialPickSource,
+         ),
          initialChildren: children,
        );
 
@@ -46,21 +53,28 @@ class CompressRoute extends _i7.PageRouteInfo<CompressRouteArgs> {
       return _i1.CompressScreen(
         key: args.key,
         initialVideos: args.initialVideos,
+        initialPickSource: args.initialPickSource,
       );
     },
   );
 }
 
 class CompressRouteArgs {
-  const CompressRouteArgs({this.key, this.initialVideos = const []});
+  const CompressRouteArgs({
+    this.key,
+    this.initialVideos = const [],
+    this.initialPickSource,
+  });
 
   final _i8.Key? key;
 
   final List<_i9.PickedVideo> initialVideos;
 
+  final _i10.VideoPickSource? initialPickSource;
+
   @override
   String toString() {
-    return 'CompressRouteArgs{key: $key, initialVideos: $initialVideos}';
+    return 'CompressRouteArgs{key: $key, initialVideos: $initialVideos, initialPickSource: $initialPickSource}';
   }
 
   @override
@@ -68,16 +82,18 @@ class CompressRouteArgs {
     if (identical(this, other)) return true;
     if (other is! CompressRouteArgs) return false;
     return key == other.key &&
-        const _i10.ListEquality<_i9.PickedVideo>().equals(
+        const _i11.ListEquality<_i9.PickedVideo>().equals(
           initialVideos,
           other.initialVideos,
-        );
+        ) &&
+        initialPickSource == other.initialPickSource;
   }
 
   @override
   int get hashCode =>
       key.hashCode ^
-      const _i10.ListEquality<_i9.PickedVideo>().hash(initialVideos);
+      const _i11.ListEquality<_i9.PickedVideo>().hash(initialVideos) ^
+      initialPickSource.hashCode;
 }
 
 /// generated route for

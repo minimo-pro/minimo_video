@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../theme/app_colors.dart';
+import 'minimo_loader.dart';
 import 'pressable.dart';
 
 enum AppActionButtonVariant { filled, outlined, text }
@@ -21,6 +22,7 @@ class AppActionButton extends StatelessWidget {
   final Color? foregroundColor;
   final BorderSide? side;
   final BorderRadius borderRadius;
+  final bool loading;
 
   const AppActionButton({
     super.key,
@@ -38,6 +40,7 @@ class AppActionButton extends StatelessWidget {
     this.foregroundColor,
     this.side,
     this.borderRadius = const BorderRadius.all(Radius.circular(13)),
+    this.loading = false,
   }) : assert(label != null || icon != null);
 
   @override
@@ -84,7 +87,9 @@ class AppActionButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (icon != null)
+        if (loading)
+          MinimoLoader(size: 20, semanticsLabel: label)
+        else if (icon != null)
           SizedBox(
             width: iconWidth,
             height: iconHeight,
@@ -94,7 +99,8 @@ class AppActionButton extends StatelessWidget {
               colorFilter: ColorFilter.mode(foreground, BlendMode.srcIn),
             ),
           ),
-        if (icon != null && label != null) const SizedBox(width: 10),
+        if ((loading || icon != null) && label != null)
+          const SizedBox(width: 10),
         if (label != null)
           Flexible(
             child: Text(

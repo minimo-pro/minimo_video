@@ -29,6 +29,7 @@ Current tests cover:
 - Rolling counters ignore unchanged formatted values and use calm motion
 - Previous estimate retained while a settings estimate refreshes
 - Add-more and compress actions sharing the settings bottom row
+- Intermediate pre-selection loader, then interactive settings with preview/button loaders and hidden zero-byte estimates during import
 - Compact icon-only `AppActionButton` layout for wide SVG assets (`arrow_back`, `share`, `more`)
 
 ## Test Boundaries

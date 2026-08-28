@@ -65,7 +65,7 @@ chronological gallery position without risky in-place writes.
 
 ## Known Limitations
 
-- `light_compressor_v2` is pinned to `1.9.0`; update it deliberately and repeat physical-device codec checks.
+- `light_compressor_v2` is pinned to `1.9.1`; update it deliberately and repeat physical-device codec checks.
 - Installing/changing a native plugin requires a full rebuild; hot reload cannot register new platform channels.
 - Already compressed inputs are re-encoded before the 10% policy decides whether to keep output.
 - Estimates are bitrate-based approximations, not guarantees.

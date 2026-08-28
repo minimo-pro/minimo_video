@@ -34,7 +34,7 @@ CompressScreen
         → native Android/iOS codecs
 ```
 
-`CompressBloc` owns the selected batch, settings, estimates, status per video, progress, cancellation, results, saving, and deletion. `CompressVideosAdded` appends newly picked files only while the Bloc is `ready`, extends the aligned thumbnail/status lists, and schedules fresh thumbnails and an estimate without resetting settings. `CompressResultsSaved` receives selected source identifiers from the save sheet and deletes them only after all outputs save. Videos are compressed sequentially. Overall progress is weighted by input file size.
+`CompressBloc` owns the selected batch, settings, estimates, status per video, compression progress, cancellation, results, saving, and deletion. `CompressScreen` owns import progress so Bloc settings can change while native picking/copying is still pending. `CompressVideosAdded` appends completed imports only while the Bloc is `ready`, extends the aligned thumbnail/status lists, and schedules fresh thumbnails and an estimate without resetting settings. `CompressResultsSaved` receives selected source identifiers from the save sheet and deletes them only after all outputs save. Videos are compressed sequentially. Overall progress is weighted by input file size.
 
 ## Platform Channel
 
@@ -51,8 +51,8 @@ Channel `minimo_video/thermal` exposes `currentState` for overheating warnings.
 
 ## File Lifecycle
 
-1. The start screen or the compression screen's `ready` state opens the same source sheet and native picker.
-2. Picker copies selected files into temporary `picked_videos` storage. Picks made during configuration are appended to the current batch.
+1. The start screen chooses a source and routes immediately to `CompressScreen`, which opens the native picker. Add-more uses the same picker from `ready`.
+2. Picker copies selected files into temporary `picked_videos` storage while settings remain interactive and the Compress button reports import progress. Completed picks are appended to the current batch.
 3. Compressor writes MP4 output into temporary `minimo_video` storage.
 4. Output saving uses `gal`; sharing uses `share_plus`.
 5. Outputs saving less than 10% are deleted and marked skipped.
