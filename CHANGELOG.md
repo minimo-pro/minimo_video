@@ -1,8 +1,15 @@
-## [Unreleased]
+## [1.0.2]
+
+### Added
+
+* Added import progress to the Compress button while cloud-backed or large videos load.
 
 ### Changed
 
-* Removed remote changelog loading; update notes now come only from the app bundle.
+* Changed the save action to a disabled Saved state with a checkmark after successful saving.
+* Compression settings now stay interactive while selected videos import.
+* Kept the loading screen visible until video selection is confirmed, avoiding empty settings placeholders.
+* Added scroll-edge fading to long in-app update notes.
 
 ## [1.0.1]
 

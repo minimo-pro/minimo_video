@@ -27,6 +27,7 @@ class CompressState {
   final CompressionSettings settings;
   final int? estimatedSize;
   final bool isSaving;
+  final bool isSaved;
   final int? savedVideoCount;
   final int? deletedOriginalCount;
   final Object? saveError;
@@ -48,6 +49,7 @@ class CompressState {
     required this.settings,
     this.estimatedSize,
     required this.isSaving,
+    this.isSaved = false,
     this.savedVideoCount,
     this.deletedOriginalCount,
     this.saveError,
@@ -82,6 +84,9 @@ class CompressState {
   }
 
   bool get showSettings => videos.isNotEmpty && status == CompressStatus.ready;
+
+  bool get hasUnsavedResults =>
+      status == CompressStatus.done && successResults.isNotEmpty && !isSaved;
 
   double get displayProgress {
     if (status == CompressStatus.processing &&
@@ -146,6 +151,7 @@ class CompressState {
     CompressionSettings? settings,
     int? estimatedSize,
     bool? isSaving,
+    bool? isSaved,
     int? savedVideoCount,
     int? deletedOriginalCount,
     Object? saveError,
@@ -176,6 +182,7 @@ class CompressState {
           ? estimatedSize
           : estimatedSize ?? this.estimatedSize,
       isSaving: isSaving ?? this.isSaving,
+      isSaved: isSaved ?? this.isSaved,
       savedVideoCount: clearSaveNotification
           ? savedVideoCount
           : savedVideoCount ?? this.savedVideoCount,

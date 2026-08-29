@@ -11,6 +11,13 @@ PackageInfo _packageInfo(String version) => PackageInfo(
 );
 
 void main() {
+  test('bundled 1.0.2 changelog is shown after 1.0.1', () {
+    expect(
+      unseenChanges(lastSeen: '1.0.1', current: '1.0.2', language: Language.en),
+      hasLength(4),
+    );
+  });
+
   test('unseenChanges returns every version between last seen and current', () {
     final changes = unseenChanges(
       lastSeen: '1.2.0',

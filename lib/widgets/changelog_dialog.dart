@@ -5,6 +5,7 @@ import '../services/changelog_service.dart';
 import '../theme/app_theme.dart';
 import 'app_action_button.dart';
 import 'app_sheet.dart';
+import 'faded_scroll_view.dart';
 
 Future<void> showChangelogDialog(
   BuildContext context,
@@ -59,7 +60,8 @@ class _ChangelogSheet extends StatelessWidget {
               ),
               const SizedBox(height: 18),
               Flexible(
-                child: SingleChildScrollView(
+                child: FadedScrollView(
+                  fadeExtent: 0.08,
                   child: Column(
                     children: [
                       for (final change in update.changes)

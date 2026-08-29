@@ -20,7 +20,7 @@ Advanced mode allows:
 
 With automatic bitrate, `CompressionSettings.effectiveBitrateMbps()` derives the encoder target from the fitted output pixel count, effective output FPS, quality tier, and codec efficiency. Original resolution uses source dimensions for bitrate calculation without passing them as resize dimensions. Requested FPS is capped at the source FPS because the package only downsamples. HEVC targets fewer bits than H.264 for comparable quality. `light_compressor_v2` currently accepts only whole Mbps, so automatic targets are rounded and clamped to `1–8 Mbps`. A manually selected bitrate is absolute and is not modified by resolution, FPS, or codec.
 
-`light_compressor_v2 1.9.0` does not expose encoder speed presets or video
+`light_compressor_v2 1.9.1` does not expose encoder speed presets or video
 container metadata copying. Do not add UI switches for either until the native
 pipeline can honor them on both Android and iOS.
 
@@ -51,9 +51,11 @@ shows a localized notice.
 
 On iOS the compression screen warns the user to keep the app open. If the app is backgrounded during compression, the active native job is cancelled immediately; returning restarts only the current video and keeps completed batch items.
 
-## Adding Videos During Configuration
+## Importing and Adding Videos During Configuration
 
-The plus action beside the bottom compress button is available only in `CompressStatus.ready`. It uses the same gallery/files source sheet and `VideoFileAdapter.pickVideos` path as the start screen. While native files are copied, the settings content is replaced by the shared `VideoLoadingView`, picker progress is shown when available, and route popping is blocked.
+After the start-screen source choice, `CompressScreen` opens the native picker and owns the import. Until native selection is confirmed, it shows the intermediate `VideoLoadingView` instead of an empty settings placeholder. Cancellation or a failed empty initial import returns to the start screen. Once `pickProgress(0, total)` confirms a non-empty selection, simple and advanced settings appear and remain interactive while cloud-backed videos download or files copy into cache. Until the first import completes, the preview area shows `MinimoLoader` plus the cloud/large-file hint; zero-byte estimates and the no-savings message stay hidden. After import, each pending thumbnail keeps a compact `MinimoLoader` until its video frame is ready. The Compress button shows its own compact `MinimoLoader` plus picker batch progress and stays disabled until every selected video is ready. Back and add-more are also disabled during import; an add-more error restores them and shows a localized snackbar.
+
+The plus action beside the bottom Compress button is available only in `CompressStatus.ready`. It uses the same gallery/files source sheet and `VideoFileAdapter.pickVideos` path. Add-more imports use the same non-blocking settings UI and progress state.
 
 Picked videos are appended through `CompressVideosAdded`; existing compression settings remain unchanged. Videos already in the batch are ignored: provider `sourceIdentifier` is the primary identity, with original filename plus file size as the fallback for providers that do not expose an identifier. The same filtering also removes duplicates returned in one additional pick.
 

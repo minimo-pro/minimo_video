@@ -7,8 +7,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../constants/app_icons.dart';
-import '../features/compression/data/video_file_adapter.dart';
-import '../features/compression/presentation/widgets/video_loading_view.dart';
 import '../features/compression/presentation/widgets/video_pick_source_sheet.dart';
 import '../generated/l10n.dart';
 import '../router/app_router.gr.dart';
@@ -17,7 +15,6 @@ import '../services/changelog_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bottom_frame.dart';
 import '../widgets/changelog_dialog.dart';
-import '../widgets/app_snack_bar.dart';
 import '../widgets/pressable.dart';
 
 @RoutePage()
@@ -29,12 +26,9 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  final _videoFileAdapter = VideoFileAdapter();
   final _upgrader = Upgrader();
   final _upgradeFlowDone = Completer<void>();
   var _changelogStarted = false;
-  bool _loading = false;
-  (int, int)? _loadingProgress;
 
   @override
   void initState() {
@@ -99,35 +93,7 @@ class _StartPageState extends State<StartPage> {
   Future<void> _pickAndGo() async {
     final source = await showVideoPickSourceSheet(context);
     if (source == null || !mounted) return;
-
-    setState(() => _loading = true);
-
-    try {
-      final videos = await _videoFileAdapter.pickVideos(
-        source: source,
-        onProgress: (processed, total) {
-          if (mounted) setState(() => _loadingProgress = (processed, total));
-        },
-      );
-      if (videos.isNotEmpty && mounted) {
-        context.pushRoute(CompressRoute(initialVideos: videos));
-      }
-    } catch (_) {
-      if (mounted) {
-        AppSnackBar.show(
-          context,
-          message: S.of(context).failedToPickVideos,
-          type: AppSnackBarType.error,
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _loading = false;
-          _loadingProgress = null;
-        });
-      }
-    }
+    context.pushRoute(CompressRoute(initialPickSource: source));
   }
 
   @override
@@ -176,46 +142,43 @@ class _StartPageState extends State<StartPage> {
                     ),
                   ),
                   Expanded(
-                    child: _loading
-                        ? VideoLoadingView(progress: _loadingProgress)
-                        : Center(
-                            child: Pressable(
-                              child: GestureDetector(
-                                onTap: _pickAndGo,
-                                child: Container(
-                                  width: 300,
-                                  height: 300,
-                                  padding: const EdgeInsets.all(14),
-                                  decoration: BoxDecoration(
-                                    color: theme.frameBackgroundColor
-                                        .withValues(alpha: 0.7),
-                                    borderRadius: BorderRadius.circular(24),
-                                    border: Border.all(
-                                      color: theme.frameBorderColor,
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      Center(
-                                        child: SvgPicture.asset(
-                                          AppIcons.plus,
-                                          width: 56,
-                                          height: 56,
-                                          colorFilter: ColorFilter.mode(
-                                            theme.iconColor.withValues(
-                                              alpha: 0.54,
-                                            ),
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                    child: Center(
+                      child: Pressable(
+                        child: GestureDetector(
+                          onTap: _pickAndGo,
+                          child: Container(
+                            width: 300,
+                            height: 300,
+                            padding: const EdgeInsets.all(14),
+                            decoration: BoxDecoration(
+                              color: theme.frameBackgroundColor.withValues(
+                                alpha: 0.7,
+                              ),
+                              borderRadius: BorderRadius.circular(24),
+                              border: Border.all(
+                                color: theme.frameBorderColor,
+                                width: 2,
                               ),
                             ),
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: SvgPicture.asset(
+                                    AppIcons.plus,
+                                    width: 56,
+                                    height: 56,
+                                    colorFilter: ColorFilter.mode(
+                                      theme.iconColor.withValues(alpha: 0.54),
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+                        ),
+                      ),
+                    ),
                   ),
                   const Padding(
                     padding: EdgeInsets.only(bottom: 12),

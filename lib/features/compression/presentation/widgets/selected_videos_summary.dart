@@ -38,6 +38,7 @@ class SelectedVideosSummary extends StatelessWidget {
           selectedCount: selectedCount,
           thumbnailPaths: thumbnailPaths,
           scale: compact ? 0.82 : 1,
+          loadingThumbnails: true,
         ),
         SizedBox(height: compact ? 0 : 4),
         SizedBox(

@@ -177,10 +177,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "select the language for the app",
     ),
-    "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
-      "large or numerous files may take longer to load",
+    "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage(
+      "leave without saving",
     ),
-    "loadingVideos": MessageLookupByLibrary.simpleMessage("loading videos..."),
+    "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
+      "downloading from cloud storage or copying large files may take longer",
+    ),
+    "loadingVideos": MessageLookupByLibrary.simpleMessage(
+      "importing videos...",
+    ),
     "low": MessageLookupByLibrary.simpleMessage("low"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("medium"),
@@ -265,6 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "save videos to album",
     ),
     "saveVideosToAlbumDescription": m5,
+    "saved": MessageLookupByLibrary.simpleMessage("saved"),
     "savedButOriginalsNotDeleted": m6,
     "savedVideosAndDeletedOriginals": m7,
     "savedVideosToGallery": m8,
@@ -287,10 +293,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("skip"),
     "small": MessageLookupByLibrary.simpleMessage("small"),
     "smaller": MessageLookupByLibrary.simpleMessage("smaller"),
+    "stay": MessageLookupByLibrary.simpleMessage("stay"),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "system": MessageLookupByLibrary.simpleMessage("system"),
     "todo": MessageLookupByLibrary.simpleMessage("TODO"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("try again"),
+    "unsavedResultsMessage": MessageLookupByLibrary.simpleMessage(
+      "leave without saving the compressed videos?",
+    ),
+    "unsavedResultsTitle": MessageLookupByLibrary.simpleMessage(
+      "videos not saved",
+    ),
     "videoBitrate": MessageLookupByLibrary.simpleMessage("video bitrate"),
     "videoBitrateDescription": MessageLookupByLibrary.simpleMessage(
       "set a target bitrate or let the quality preset choose it",

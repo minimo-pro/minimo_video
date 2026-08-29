@@ -794,6 +794,41 @@ class S {
     );
   }
 
+  /// `videos not saved`
+  String get unsavedResultsTitle {
+    return Intl.message(
+      'videos not saved',
+      name: 'unsavedResultsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `leave without saving the compressed videos?`
+  String get unsavedResultsMessage {
+    return Intl.message(
+      'leave without saving the compressed videos?',
+      name: 'unsavedResultsMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `leave without saving`
+  String get leaveWithoutSaving {
+    return Intl.message(
+      'leave without saving',
+      name: 'leaveWithoutSaving',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `stay`
+  String get stay {
+    return Intl.message('stay', name: 'stay', desc: '', args: []);
+  }
+
   /// `estimating time remaining...`
   String get estimatingTimeRemaining {
     return Intl.message(
@@ -848,20 +883,20 @@ class S {
     );
   }
 
-  /// `loading videos...`
+  /// `importing videos...`
   String get loadingVideos {
     return Intl.message(
-      'loading videos...',
+      'importing videos...',
       name: 'loadingVideos',
       desc: '',
       args: [],
     );
   }
 
-  /// `large or numerous files may take longer to load`
+  /// `downloading from cloud storage or copying large files may take longer`
   String get loadingManyVideosHint {
     return Intl.message(
-      'large or numerous files may take longer to load',
+      'downloading from cloud storage or copying large files may take longer',
       name: 'loadingManyVideosHint',
       desc: '',
       args: [],
@@ -1006,6 +1041,11 @@ class S {
   /// `save`
   String get save {
     return Intl.message('save', name: 'save', desc: '', args: []);
+  }
+
+  /// `saved`
+  String get saved {
+    return Intl.message('saved', name: 'saved', desc: '', args: []);
   }
 
   /// `hold the button to delete originals`

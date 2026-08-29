@@ -17,6 +17,7 @@ import '../bloc/compress_event.dart';
 import '../bloc/compress_state.dart';
 import '../data/video_file_adapter.dart';
 import '../domain/picked_video.dart';
+import '../domain/video_pick_source.dart';
 import 'widgets/compression_progress_view.dart';
 import 'widgets/compression_result_view.dart';
 import 'widgets/compression_settings_view.dart';
@@ -26,18 +27,23 @@ import 'widgets/video_pick_source_sheet.dart';
 @RoutePage()
 class CompressScreen extends StatelessWidget {
   final List<PickedVideo> initialVideos;
+  final VideoPickSource? initialPickSource;
 
-  const CompressScreen({super.key, this.initialVideos = const []});
+  const CompressScreen({
+    super.key,
+    this.initialVideos = const [],
+    this.initialPickSource,
+  });
 
   @override
   Widget build(BuildContext context) {
-    if (initialVideos.isEmpty) {
+    if (initialVideos.isEmpty && initialPickSource == null) {
       return const _StartRedirect();
     }
 
     return BlocProvider(
       create: (_) => CompressBloc(initialVideos: initialVideos),
-      child: const _CompressView(),
+      child: _CompressView(initialPickSource: initialPickSource),
     );
   }
 }
@@ -69,7 +75,9 @@ class _StartRedirectState extends State<_StartRedirect> {
 }
 
 class _CompressView extends StatefulWidget {
-  const _CompressView();
+  final VideoPickSource? initialPickSource;
+
+  const _CompressView({this.initialPickSource});
 
   @override
   State<_CompressView> createState() => _CompressViewState();
@@ -82,11 +90,18 @@ class _CompressViewState extends State<_CompressView>
   int? _reviewRequestedForRunId;
   bool _loadingVideos = false;
   (int, int)? _loadingProgress;
+  bool _leaveConfirmationOpen = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _loadingVideos = widget.initialPickSource != null;
+    if (widget.initialPickSource case final source?) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => unawaited(_importVideos(source, initial: true)),
+      );
+    }
   }
 
   @override
@@ -121,8 +136,22 @@ class _CompressViewState extends State<_CompressView>
         _requestReviewAfterSuccessfulCompression(state);
       },
       builder: (context, state) {
+        final waitingForInitialSelection =
+            _loadingVideos &&
+            state.videos.isEmpty &&
+            widget.initialPickSource != null &&
+            _loadingProgress == null;
+        final canLeave =
+            state.status != CompressStatus.processing &&
+            !_loadingVideos &&
+            !state.hasUnsavedResults;
         return PopScope(
-          canPop: state.status != CompressStatus.processing && !_loadingVideos,
+          canPop: canLeave,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop && state.hasUnsavedResults) {
+              unawaited(_confirmUnsavedExit(context));
+            }
+          },
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
@@ -130,10 +159,8 @@ class _CompressViewState extends State<_CompressView>
                 padding: const EdgeInsets.fromLTRB(22, 18, 22, 14),
                 child: Column(
                   children: [
-                    if (_loadingVideos)
-                      Expanded(
-                        child: VideoLoadingView(progress: _loadingProgress),
-                      )
+                    if (waitingForInitialSelection)
+                      const Expanded(child: VideoLoadingView())
                     else ...[
                       if (state.status != CompressStatus.processing) ...[
                         Align(
@@ -143,8 +170,10 @@ class _CompressViewState extends State<_CompressView>
                             icon: AppIcons.arrowBack,
                             iconWidth: 22,
                             iconHeight: 22,
-                            variant: AppActionButtonVariant.text,
-                            onPressed: () => _goToStart(context),
+                            onPressed: _loadingVideos
+                                ? null
+                                : () =>
+                                      unawaited(_requestLeave(context, state)),
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -153,7 +182,11 @@ class _CompressViewState extends State<_CompressView>
                         child: switch (state.status) {
                           CompressStatus.ready => CompressionSettingsView(
                             state: state,
-                            onAddVideos: () => unawaited(_pickMoreVideos()),
+                            isImporting: _loadingVideos,
+                            importProgress: _loadingProgress,
+                            onAddVideos: _loadingVideos
+                                ? null
+                                : () => unawaited(_pickMoreVideos()),
                           ),
                           CompressStatus.processing => CompressionProgressView(
                             key: ValueKey(state.compressionRunId),
@@ -182,6 +215,13 @@ class _CompressViewState extends State<_CompressView>
     final source = await showVideoPickSourceSheet(context);
     if (source == null || !mounted) return;
 
+    await _importVideos(source);
+  }
+
+  Future<void> _importVideos(
+    VideoPickSource source, {
+    bool initial = false,
+  }) async {
     setState(() {
       _loadingVideos = true;
       _loadingProgress = null;
@@ -198,6 +238,8 @@ class _CompressViewState extends State<_CompressView>
       );
       if (videos.isNotEmpty && mounted) {
         context.read<CompressBloc>().add(CompressVideosAdded(videos));
+      } else if (initial && mounted) {
+        Navigator.of(context).pop();
       }
     } catch (_) {
       if (mounted) {
@@ -206,6 +248,7 @@ class _CompressViewState extends State<_CompressView>
           message: S.of(context).failedToPickVideos,
           type: AppSnackBarType.error,
         );
+        if (initial) Navigator.of(context).pop();
       }
     } finally {
       if (mounted) {
@@ -266,5 +309,100 @@ class _CompressViewState extends State<_CompressView>
 
   void _goToStart(BuildContext context) {
     context.router.replaceAll([const StartRoute()]);
+  }
+
+  Future<void> _requestLeave(BuildContext context, CompressState state) async {
+    if (state.hasUnsavedResults) {
+      await _confirmUnsavedExit(context);
+    } else {
+      _goToStart(context);
+    }
+  }
+
+  Future<void> _confirmUnsavedExit(BuildContext context) async {
+    if (_leaveConfirmationOpen) return;
+    _leaveConfirmationOpen = true;
+    final leave = await showDialog<bool>(
+      context: context,
+      builder: (_) => const _UnsavedExitDialog(),
+    );
+    _leaveConfirmationOpen = false;
+    if (leave == true && mounted) _goToStart(this.context);
+  }
+}
+
+class _UnsavedExitDialog extends StatelessWidget {
+  const _UnsavedExitDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = S.of(context);
+    final colors = Theme.of(context).colorScheme;
+
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 26),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 390),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: colors.surface,
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(color: colors.outline),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.18),
+                blurRadius: 32,
+                offset: const Offset(0, 14),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(26, 26, 26, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  strings.unsavedResultsTitle,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: colors.onSurface,
+                    fontSize: 30,
+                    height: 1.05,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  strings.unsavedResultsMessage,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: colors.onSurfaceVariant,
+                    fontSize: 17,
+                    height: 1.3,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                AppActionButton(
+                  width: double.infinity,
+                  height: 54,
+                  label: strings.stay,
+                  fontSize: 22,
+                  variant: AppActionButtonVariant.filled,
+                  onPressed: () => Navigator.of(context).pop(false),
+                ),
+                const SizedBox(height: 10),
+                AppActionButton(
+                  width: double.infinity,
+                  height: 54,
+                  label: strings.leaveWithoutSaving,
+                  fontSize: 18,
+                  onPressed: () => Navigator.of(context).pop(true),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

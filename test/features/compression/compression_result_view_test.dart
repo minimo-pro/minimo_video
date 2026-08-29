@@ -186,6 +186,62 @@ void main() {
     expect(find.text('save as new'), findsNothing);
     expect(find.byType(AnimatedAssetCheckbox), findsNothing);
   });
+
+  testWidgets('saved action shows checkmark and remains available', (
+    tester,
+  ) async {
+    const source = PickedVideo(
+      path: '/video.mp4',
+      name: 'video.mp4',
+      size: 100,
+    );
+    const state = CompressState(
+      status: CompressStatus.done,
+      videos: [source],
+      thumbnailPaths: [null],
+      videoStatuses: [VideoCompressionStatus.compressed],
+      results: [
+        CompressedVideo(
+          source: source,
+          result: CompressionResult(
+            success: true,
+            originalSize: 100,
+            outputSize: 40,
+            outputPath: '/small.mp4',
+          ),
+        ),
+      ],
+      compressionRunId: 1,
+      processingIndex: 0,
+      progress: 1,
+      elapsed: Duration.zero,
+      settings: CompressionSettings(),
+      isSaving: false,
+      isSaved: true,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        home: const Scaffold(
+          body: CompressionResultView(state: state, onTryAgain: _noop),
+        ),
+      ),
+    );
+
+    final action = tester.widget<AppActionButton>(
+      find.byWidgetPredicate(
+        (widget) => widget is AppActionButton && widget.label == 'saved',
+      ),
+    );
+    expect(action.icon, AppIcons.check);
+    expect(action.onPressed, isNotNull);
+  });
 }
 
 void _noop() {}

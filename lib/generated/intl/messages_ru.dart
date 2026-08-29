@@ -177,10 +177,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "выберите язык приложения",
     ),
-    "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
-      "загрузка большого количества или крупных файлов может занять больше времени",
+    "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage(
+      "выйти без сохранения",
     ),
-    "loadingVideos": MessageLookupByLibrary.simpleMessage("загрузка видео..."),
+    "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
+      "загрузка из облака или копирование больших файлов может занять больше времени",
+    ),
+    "loadingVideos": MessageLookupByLibrary.simpleMessage("импорт видео..."),
     "low": MessageLookupByLibrary.simpleMessage("низкое"),
     "madeByKhlebobul": MessageLookupByLibrary.simpleMessage("by khlebobul"),
     "medium": MessageLookupByLibrary.simpleMessage("среднее"),
@@ -271,6 +274,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "сохранять видео в альбом",
     ),
     "saveVideosToAlbumDescription": m5,
+    "saved": MessageLookupByLibrary.simpleMessage("сохранено"),
     "savedButOriginalsNotDeleted": m6,
     "savedVideosAndDeletedOriginals": m7,
     "savedVideosToGallery": m8,
@@ -295,10 +299,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("пропустить"),
     "small": MessageLookupByLibrary.simpleMessage("маленький"),
     "smaller": MessageLookupByLibrary.simpleMessage("меньше"),
+    "stay": MessageLookupByLibrary.simpleMessage("остаться"),
     "stereo": MessageLookupByLibrary.simpleMessage("стерео"),
     "system": MessageLookupByLibrary.simpleMessage("система"),
     "todo": MessageLookupByLibrary.simpleMessage("В разработке"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("попробовать снова"),
+    "unsavedResultsMessage": MessageLookupByLibrary.simpleMessage(
+      "выйти без сохранения сжатых видео?",
+    ),
+    "unsavedResultsTitle": MessageLookupByLibrary.simpleMessage(
+      "видео не сохранены",
+    ),
     "videoBitrate": MessageLookupByLibrary.simpleMessage("битрейт видео"),
     "videoBitrateDescription": MessageLookupByLibrary.simpleMessage(
       "задайте целевой битрейт или доверьте выбор профилю качества",

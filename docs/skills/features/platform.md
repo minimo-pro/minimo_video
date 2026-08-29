@@ -18,7 +18,7 @@ Selected files are imported sequentially to avoid parallel disk/memory pressure.
 
 Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer. After copying, native code verifies that the cached file contains a video track; invalid files are deleted and the pick fails so Flutter shows an error snackbar instead of opening compression. A later add-more pick must not clear `picked_videos`, because the existing batch still references those cached copies; cold-start cleanup owns removal of the directory.
 
-Both platforms report `pickProgress` (`processed`/`total`) over the videos method channel while files are imported.
+Both platforms report `pickProgress` (`processed`/`total`) over the videos method channel while files are imported. `CompressScreen` displays it in the disabled Compress button while the rest of the settings remain interactive.
 
 ## Gallery and Deletion
 
