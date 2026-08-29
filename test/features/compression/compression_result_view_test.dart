@@ -187,7 +187,7 @@ void main() {
     expect(find.byType(AnimatedAssetCheckbox), findsNothing);
   });
 
-  testWidgets('saved action shows checkmark and stays disabled', (
+  testWidgets('saved action shows checkmark and remains available', (
     tester,
   ) async {
     const source = PickedVideo(
@@ -240,7 +240,7 @@ void main() {
       ),
     );
     expect(action.icon, AppIcons.check);
-    expect(action.onPressed, isNull);
+    expect(action.onPressed, isNotNull);
   });
 }
 

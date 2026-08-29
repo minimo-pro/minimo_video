@@ -46,11 +46,14 @@ class AppActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isFilled = variant == AppActionButtonVariant.filled;
-    final foreground =
+    final enabledForeground =
         foregroundColor ??
         (isFilled
             ? CompressionUiColors.white
             : Theme.of(context).colorScheme.onSurface);
+    final foreground = onPressed == null
+        ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.72)
+        : enabledForeground;
     final background =
         backgroundColor ??
         (isFilled

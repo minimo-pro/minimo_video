@@ -615,7 +615,7 @@ void main() {
     },
   );
 
-  test('saves a copy when original replacement is unavailable', () async {
+  test('allows saving another copy after success', () async {
     final files = _SavingFileAdapter();
     final bloc = CompressBloc(
       initialVideos: const [
@@ -636,9 +636,14 @@ void main() {
     );
     bloc.add(const CompressResultsSaved());
     await bloc.stream.firstWhere((state) => state.savedVideoCount == 1);
+    final savedAgain = bloc.stream.firstWhere(
+      (state) => state.savedVideoCount == 1 && !state.isSaving,
+    );
+    bloc.add(const CompressResultsSaved());
+    await savedAgain;
 
     expect(files.deletedIdentifiers, isEmpty);
-    expect(files.calls, ['save:/ok-small.mp4']);
+    expect(files.calls, ['save:/ok-small.mp4', 'save:/ok-small.mp4']);
     await bloc.close();
   });
 

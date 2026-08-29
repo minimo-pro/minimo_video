@@ -51,6 +51,7 @@ When rendering icons inside `AppActionButton`, the SVG is wrapped in a fixed `Si
 - `RollingCounterText` animates only when its formatted text changes. Counter rolls use a short, low-bounce curve; equal rounded values remain static.
 - Current video progress is static red text, not a pulsing indicator.
 - Video import uses the compact `MinimoLoader` inside the disabled Compress button.
+- Disabled `AppActionButton` labels and icons use a high-contrast `onSurface` foreground over the shared gray background.
 - Hold progress fills left-to-right while the whole button uses `Pressable` scaling.
 - Duplicate `AppSnackBar` messages shake the existing snackbar, bring it to the front, and reset its timer instead of adding another copy.
 - Avoid Material splash/highlight fills; the app uses scale feedback instead.

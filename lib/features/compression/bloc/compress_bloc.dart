@@ -99,7 +99,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         return;
       }
       final thumbnails = List<String?>.of(state.thumbnailPaths);
-      thumbnails[i] = path;
+      thumbnails[i] = path ?? '';
       emit(state.copyWith(thumbnailPaths: thumbnails));
     }
   }
@@ -428,6 +428,10 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         .where((item) => item.result.outputPath != null)
         .toList();
     if (successfulResults.isEmpty) return;
+    final allowAdditionalCopy =
+        state.isSaved &&
+        event.preserveMetadataSourceIdentifiers.isEmpty &&
+        event.deleteSourceIdentifiers.isEmpty;
 
     emit(state.copyWith(isSaving: true, clearSaveNotification: true));
 
@@ -459,7 +463,9 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
           savedAnyVideo = true;
           metadataWarnings.addAll(save.warnings);
         } else {
-          if (_savedOutputPaths.contains(outputPath)) continue;
+          if (_savedOutputPaths.contains(outputPath) && !allowAdditionalCopy) {
+            continue;
+          }
           await _videoFileAdapter.saveToGallery(outputPath, album: album);
           _savedOutputPaths.add(outputPath);
           savedAnyVideo = true;

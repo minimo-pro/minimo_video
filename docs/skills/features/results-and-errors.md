@@ -32,10 +32,10 @@ immediately without opening the sheet. If album saving is enabled, album name is
 
 Saving is guarded by `state.isSaving` against concurrent actions. Successfully
 saved outputs, replacements, and deletions are remembered for the current Bloc
-run, so retries skip completed work instead of duplicating assets or requesting
-an already deleted Photos asset. After every output is saved, the primary action
-shows a disabled `Saved` state with a checkmark; save failure restores the ready
-action.
+run, so partial-failure retries skip completed work or an already deleted Photos
+asset. After every output is saved, the primary action shows `Saved` with a
+checkmark but remains available; choosing save as new again creates another copy.
+Save failure restores the ready action.
 
 ## Save and Delete Originals
 

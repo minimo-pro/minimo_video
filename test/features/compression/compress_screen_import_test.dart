@@ -70,12 +70,19 @@ void main() {
         .element(find.byType(CompressionSettingsView))
         .read<CompressBloc>();
     expect(bloc.state.settings.simpleQuality, SimpleCompressionQuality.medium);
+    final scrollGesture = await tester.startGesture(
+      tester.getCenter(find.byType(CompressionModeSwitch)),
+    );
+    await scrollGesture.moveBy(const Offset(0, -80));
+    await tester.pump();
 
     pickedVideos.complete([
       {'path': '/video.mp4', 'name': 'video.mp4', 'size': 1000},
+      {'path': '/video-2.mp4', 'name': 'video-2.mp4', 'size': 1000},
     ]);
     await tester.pump();
     await tester.pump();
+    await scrollGesture.cancel();
 
     final compress = tester.widget<AppActionButton>(
       find.byWidgetPredicate(
@@ -89,6 +96,11 @@ void main() {
       modeSwitchY,
     );
     expect(bloc.state.settings.simpleQuality, SimpleCompressionQuality.medium);
+
+    await tester.ensureVisible(find.text('low'));
+    await tester.tap(find.text('low'));
+    await tester.pump();
+    expect(bloc.state.settings.simpleQuality, SimpleCompressionQuality.low);
   });
 
   testWidgets('failed initial import restores retry without endless loader', (
@@ -104,17 +116,10 @@ void main() {
 
     await _pumpScreen(tester);
     await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
-    expect(find.text('choose a video file'), findsOneWidget);
+    expect(find.text('start screen'), findsOneWidget);
     expect(find.byType(MinimoLoader), findsNothing);
-    final add = tester.widget<AppActionButton>(
-      find
-          .byWidgetPredicate(
-            (widget) => widget is AppActionButton && widget.icon != null,
-          )
-          .last,
-    );
-    expect(add.onPressed, isNotNull);
   });
 }
 
@@ -136,7 +141,12 @@ Future<void> _pumpScreen(WidgetTester tester) {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-      home: const CompressScreen(initialPickSource: VideoPickSource.gallery),
+      initialRoute: '/compress',
+      routes: {
+        '/': (_) => const Scaffold(body: Text('start screen')),
+        '/compress': (_) =>
+            const CompressScreen(initialPickSource: VideoPickSource.gallery),
+      },
     ),
   );
 }

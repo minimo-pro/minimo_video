@@ -229,7 +229,7 @@ class _CompressViewState extends State<_CompressView>
       if (videos.isNotEmpty && mounted) {
         context.read<CompressBloc>().add(CompressVideosAdded(videos));
       } else if (initial && mounted) {
-        await context.router.maybePop();
+        Navigator.of(context).pop();
       }
     } catch (_) {
       if (mounted) {
@@ -238,6 +238,7 @@ class _CompressViewState extends State<_CompressView>
           message: S.of(context).failedToPickVideos,
           type: AppSnackBarType.error,
         );
+        if (initial) Navigator.of(context).pop();
       }
     } finally {
       if (mounted) {

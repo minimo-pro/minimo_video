@@ -58,22 +58,32 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
   CompressionOptionsMode _mode = CompressionOptionsMode.simple;
   final _sizeRowKey = GlobalKey();
   bool _showPinnedSummary = false;
+  bool _pinnedSummaryUpdateScheduled = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updatePinnedSummary());
+    _schedulePinnedSummaryUpdate();
   }
 
   @override
   void didUpdateWidget(covariant CompressionSettingsView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updatePinnedSummary());
+    _schedulePinnedSummaryUpdate();
   }
 
   bool _onScroll(ScrollNotification notification) {
-    _updatePinnedSummary();
+    _schedulePinnedSummaryUpdate();
     return false;
+  }
+
+  void _schedulePinnedSummaryUpdate() {
+    if (_pinnedSummaryUpdateScheduled) return;
+    _pinnedSummaryUpdateScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _pinnedSummaryUpdateScheduled = false;
+      if (mounted) _updatePinnedSummary();
+    });
   }
 
   void _updatePinnedSummary() {

@@ -4,18 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../constants/app_icons.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../widgets/minimo_loader.dart';
 
 class SelectedVideosPreview extends StatelessWidget {
   final int selectedCount;
   final List<String?> thumbnailPaths;
   final double scale;
+  final bool loadingThumbnails;
 
   const SelectedVideosPreview({
     super.key,
     required this.selectedCount,
     required this.thumbnailPaths,
     this.scale = 1,
+    this.loadingThumbnails = false,
   });
 
   @override
@@ -34,6 +38,7 @@ class SelectedVideosPreview extends StatelessWidget {
               top: positions[i].dy * scale,
               child: _VideoThumb(
                 path: _thumbnailAt(i),
+                loading: loadingThumbnails,
                 width: 58 * scale,
                 height: 46 * scale,
                 borderRadius: 9 * scale,
@@ -69,12 +74,14 @@ class SelectedVideosPreview extends StatelessWidget {
 
 class _VideoThumb extends StatelessWidget {
   final String? path;
+  final bool loading;
   final double width;
   final double height;
   final double borderRadius;
 
   const _VideoThumb({
     required this.path,
+    required this.loading,
     required this.width,
     required this.height,
     required this.borderRadius,
@@ -106,17 +113,43 @@ class _VideoThumb extends StatelessWidget {
               width: 2 * (width / 58),
             ),
           ),
-          child: path == null
+          child: path == null && loading
               ? SizedBox(
                   width: width,
                   height: height,
-                  child: SvgPicture.asset(
-                    AppIcons.video,
-                    width: 21,
-                    height: 28,
-                    colorFilter: ColorFilter.mode(
-                      Theme.of(context).colorScheme.onSurface,
-                      BlendMode.srcIn,
+                  child: Center(
+                    child: MinimoLoader(
+                      size: 26 * (width / 58),
+                      semanticsLabel: S.maybeOf(context)?.loadingVideos,
+                    ),
+                  ),
+                )
+              : path == null || path!.isEmpty
+              ? SizedBox(
+                  key: const ValueKey('video-preview-unavailable'),
+                  width: width,
+                  height: height,
+                  child: Center(
+                    child: Container(
+                      width: 29 * (width / 58),
+                      height: 29 * (width / 58),
+                      padding: EdgeInsets.all(8 * (width / 58)),
+                      decoration: BoxDecoration(
+                        color: CompressionUiColors.red.withValues(alpha: 0.12),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: CompressionUiColors.red.withValues(
+                            alpha: 0.28,
+                          ),
+                        ),
+                      ),
+                      child: SvgPicture.asset(
+                        AppIcons.play,
+                        colorFilter: const ColorFilter.mode(
+                          CompressionUiColors.red,
+                          BlendMode.srcIn,
+                        ),
+                      ),
                     ),
                   ),
                 )
