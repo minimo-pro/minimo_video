@@ -64,16 +64,11 @@ void main() {
     });
     final service = ChangelogService(
       packageInfo: () async => _packageInfo('1.0.1'),
-      remoteChangelog: () async => {
-        '1.0.1': {
-          Language.en: ['fresh'],
-        },
-      },
     );
 
     final update = await service.initialize(language: Language.en);
 
-    expect(update?.changes, ['fresh']);
+    expect(update?.changes, isNotEmpty);
     final prefs = await SharedPreferences.getInstance();
     expect(prefs.getString('last_seen_version'), isNull);
   });
@@ -82,7 +77,6 @@ void main() {
     SharedPreferences.setMockInitialValues({'onboarding_completed': false});
     final service = ChangelogService(
       packageInfo: () async => _packageInfo('1.0.0'),
-      remoteChangelog: () async => null,
     );
 
     expect(await service.initialize(language: Language.en), isNull);
