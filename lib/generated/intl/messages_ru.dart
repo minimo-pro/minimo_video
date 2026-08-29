@@ -177,6 +177,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "выберите язык приложения",
     ),
+    "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage(
+      "выйти без сохранения",
+    ),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "загрузка из облака или копирование больших файлов может занять больше времени",
     ),
@@ -296,10 +299,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("пропустить"),
     "small": MessageLookupByLibrary.simpleMessage("маленький"),
     "smaller": MessageLookupByLibrary.simpleMessage("меньше"),
+    "stay": MessageLookupByLibrary.simpleMessage("остаться"),
     "stereo": MessageLookupByLibrary.simpleMessage("стерео"),
     "system": MessageLookupByLibrary.simpleMessage("система"),
     "todo": MessageLookupByLibrary.simpleMessage("В разработке"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("попробовать снова"),
+    "unsavedResultsMessage": MessageLookupByLibrary.simpleMessage(
+      "выйти без сохранения сжатых видео?",
+    ),
+    "unsavedResultsTitle": MessageLookupByLibrary.simpleMessage(
+      "видео не сохранены",
+    ),
     "videoBitrate": MessageLookupByLibrary.simpleMessage("битрейт видео"),
     "videoBitrateDescription": MessageLookupByLibrary.simpleMessage(
       "задайте целевой битрейт или доверьте выбор профилю качества",

@@ -634,8 +634,10 @@ void main() {
     await bloc.stream.firstWhere(
       (state) => state.status == CompressStatus.done,
     );
+    expect(bloc.state.hasUnsavedResults, isTrue);
     bloc.add(const CompressResultsSaved());
     await bloc.stream.firstWhere((state) => state.savedVideoCount == 1);
+    expect(bloc.state.hasUnsavedResults, isFalse);
     final savedAgain = bloc.stream.firstWhere(
       (state) => state.savedVideoCount == 1 && !state.isSaving,
     );

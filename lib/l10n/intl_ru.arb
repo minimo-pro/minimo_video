@@ -128,6 +128,10 @@
   "cancel": "отмена",
   "holdToCancelCompression": "удерживайте кнопку, чтобы отменить сжатие",
   "compressionCancelled": "сжатие отменено",
+  "unsavedResultsTitle": "видео не сохранены",
+  "unsavedResultsMessage": "выйти без сохранения сжатых видео?",
+  "leaveWithoutSaving": "выйти без сохранения",
+  "stay": "остаться",
   "estimatingTimeRemaining": "оцениваем оставшееся время...",
   "secondsRemaining": "{count, plural, =1{осталась примерно 1 секунда} one{осталась примерно {count} секунда} few{осталось примерно {count} секунды} many{осталось примерно {count} секунд} other{осталось примерно {count} секунды}}",
   "@secondsRemaining": {

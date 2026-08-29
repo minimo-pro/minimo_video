@@ -128,6 +128,10 @@
   "cancel": "cancel",
   "holdToCancelCompression": "hold the button to cancel compression",
   "compressionCancelled": "compression cancelled",
+  "unsavedResultsTitle": "videos not saved",
+  "unsavedResultsMessage": "leave without saving the compressed videos?",
+  "leaveWithoutSaving": "leave without saving",
+  "stay": "stay",
   "estimatingTimeRemaining": "estimating time remaining...",
   "secondsRemaining": "{count, plural, =1{about 1 second left} other{about {count} seconds left}}",
   "@secondsRemaining": {

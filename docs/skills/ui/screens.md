@@ -25,7 +25,7 @@ Before the initial picker confirms a non-empty selection, `CompressScreen` shows
 
 ### Navigation chrome
 
-`CompressScreen` owns the top-left icon-only back button for `ready` and `done`. It uses the `AppActionButton` text variant (no border or fill). Navigation chrome is hidden during `processing`; back is disabled while picked videos are copied into cache.
+`CompressScreen` owns the top-left icon-only back button for `ready` and `done`. It matches the outlined `47×47` add-video action. Navigation chrome is hidden during `processing`; back is disabled while picked videos are copied into cache.
 
 In `ready`, scrolling the main size row out of view pins a compact size summary beside the back button. The summary matches the button's `47`-pixel height and keeps the savings percentage right-aligned without a separate frame or fill. Settings changes keep the previous estimate visible until the refreshed native estimate arrives, preventing a transient no-savings hint and compress-button flicker. A genuine `0%` estimate still shows the no-savings hint and disables compression.
 
@@ -41,6 +41,8 @@ On a successful result:
 | Save sheet | Per-video delete selection before saving; unavailable originals are greyed out and long lists fade at scroll edges |
 
 Failed compression replaces save with retry and disables `VS`. Already-optimized results keep `VS` disabled without a primary filled action.
+
+Top and system back actions ask for confirmation when successful outputs have not been saved. Saved and all-failed results leave immediately.
 
 `CompressionBottomActions` places an outlined icon-only plus button and the filled Compress button in the same bottom row. During initial or add-more import, settings remain interactive while add/back are disabled and Compress shows a spinner plus batch progress. When import completes, selected videos, thumbnails, and estimates refresh without resetting settings.
 

@@ -90,6 +90,7 @@ class _CompressViewState extends State<_CompressView>
   int? _reviewRequestedForRunId;
   bool _loadingVideos = false;
   (int, int)? _loadingProgress;
+  bool _leaveConfirmationOpen = false;
 
   @override
   void initState() {
@@ -140,8 +141,17 @@ class _CompressViewState extends State<_CompressView>
             state.videos.isEmpty &&
             widget.initialPickSource != null &&
             _loadingProgress == null;
+        final canLeave =
+            state.status != CompressStatus.processing &&
+            !_loadingVideos &&
+            !state.hasUnsavedResults;
         return PopScope(
-          canPop: state.status != CompressStatus.processing && !_loadingVideos,
+          canPop: canLeave,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop && state.hasUnsavedResults) {
+              unawaited(_confirmUnsavedExit(context));
+            }
+          },
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
@@ -160,10 +170,10 @@ class _CompressViewState extends State<_CompressView>
                             icon: AppIcons.arrowBack,
                             iconWidth: 22,
                             iconHeight: 22,
-                            variant: AppActionButtonVariant.text,
                             onPressed: _loadingVideos
                                 ? null
-                                : () => _goToStart(context),
+                                : () =>
+                                      unawaited(_requestLeave(context, state)),
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -299,5 +309,100 @@ class _CompressViewState extends State<_CompressView>
 
   void _goToStart(BuildContext context) {
     context.router.replaceAll([const StartRoute()]);
+  }
+
+  Future<void> _requestLeave(BuildContext context, CompressState state) async {
+    if (state.hasUnsavedResults) {
+      await _confirmUnsavedExit(context);
+    } else {
+      _goToStart(context);
+    }
+  }
+
+  Future<void> _confirmUnsavedExit(BuildContext context) async {
+    if (_leaveConfirmationOpen) return;
+    _leaveConfirmationOpen = true;
+    final leave = await showDialog<bool>(
+      context: context,
+      builder: (_) => const _UnsavedExitDialog(),
+    );
+    _leaveConfirmationOpen = false;
+    if (leave == true && mounted) _goToStart(this.context);
+  }
+}
+
+class _UnsavedExitDialog extends StatelessWidget {
+  const _UnsavedExitDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = S.of(context);
+    final colors = Theme.of(context).colorScheme;
+
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 26),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 390),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: colors.surface,
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(color: colors.outline),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.18),
+                blurRadius: 32,
+                offset: const Offset(0, 14),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(26, 26, 26, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  strings.unsavedResultsTitle,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: colors.onSurface,
+                    fontSize: 30,
+                    height: 1.05,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  strings.unsavedResultsMessage,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: colors.onSurfaceVariant,
+                    fontSize: 17,
+                    height: 1.3,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                AppActionButton(
+                  width: double.infinity,
+                  height: 54,
+                  label: strings.stay,
+                  fontSize: 22,
+                  variant: AppActionButtonVariant.filled,
+                  onPressed: () => Navigator.of(context).pop(false),
+                ),
+                const SizedBox(height: 10),
+                AppActionButton(
+                  width: double.infinity,
+                  height: 54,
+                  label: strings.leaveWithoutSaving,
+                  fontSize: 18,
+                  onPressed: () => Navigator.of(context).pop(true),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

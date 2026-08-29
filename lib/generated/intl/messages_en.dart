@@ -177,6 +177,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "select the language for the app",
     ),
+    "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage(
+      "leave without saving",
+    ),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "downloading from cloud storage or copying large files may take longer",
     ),
@@ -290,10 +293,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("skip"),
     "small": MessageLookupByLibrary.simpleMessage("small"),
     "smaller": MessageLookupByLibrary.simpleMessage("smaller"),
+    "stay": MessageLookupByLibrary.simpleMessage("stay"),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "system": MessageLookupByLibrary.simpleMessage("system"),
     "todo": MessageLookupByLibrary.simpleMessage("TODO"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("try again"),
+    "unsavedResultsMessage": MessageLookupByLibrary.simpleMessage(
+      "leave without saving the compressed videos?",
+    ),
+    "unsavedResultsTitle": MessageLookupByLibrary.simpleMessage(
+      "videos not saved",
+    ),
     "videoBitrate": MessageLookupByLibrary.simpleMessage("video bitrate"),
     "videoBitrateDescription": MessageLookupByLibrary.simpleMessage(
       "set a target bitrate or let the quality preset choose it",

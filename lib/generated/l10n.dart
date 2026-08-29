@@ -794,6 +794,41 @@ class S {
     );
   }
 
+  /// `videos not saved`
+  String get unsavedResultsTitle {
+    return Intl.message(
+      'videos not saved',
+      name: 'unsavedResultsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `leave without saving the compressed videos?`
+  String get unsavedResultsMessage {
+    return Intl.message(
+      'leave without saving the compressed videos?',
+      name: 'unsavedResultsMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `leave without saving`
+  String get leaveWithoutSaving {
+    return Intl.message(
+      'leave without saving',
+      name: 'leaveWithoutSaving',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `stay`
+  String get stay {
+    return Intl.message('stay', name: 'stay', desc: '', args: []);
+  }
+
   /// `estimating time remaining...`
   String get estimatingTimeRemaining {
     return Intl.message(

@@ -43,7 +43,7 @@ When rendering icons inside `AppActionButton`, the SVG is wrapped in a fixed `Si
 | `AppOptionPicker` | Compact option selection |
 | `AnimatedAssetCheckbox` | Custom settings checkbox |
 
-`AppActionButton` text variant is for chrome icons without border or fill (compression back). Compact icon-only buttons are typically `47×47`.
+`AppActionButton` text variant is for chrome icons without border or fill. Compact icon-only buttons are typically `47×47`; compression back and add-video use the same outlined variant.
 
 ## Motion Rules
 

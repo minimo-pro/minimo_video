@@ -85,6 +85,9 @@ class CompressState {
 
   bool get showSettings => videos.isNotEmpty && status == CompressStatus.ready;
 
+  bool get hasUnsavedResults =>
+      status == CompressStatus.done && successResults.isNotEmpty && !isSaved;
+
   double get displayProgress {
     if (status == CompressStatus.processing &&
         results.isEmpty &&
