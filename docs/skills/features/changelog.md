@@ -30,7 +30,7 @@ marks the current version as seen.
 
 - Update root `CHANGELOG.md` and group entries under category headings such as `### Added`.
 - Add a local `_changelog` entry for every app version.
-- Keep English and Russian copy in sync.
+- Add release notes for every supported language. Historical missing translations fall back to English.
 
 ---
 

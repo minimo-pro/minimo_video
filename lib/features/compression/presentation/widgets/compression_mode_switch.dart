@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
 import '../../../../generated/l10n.dart';
+import '../../../../theme/app_colors.dart';
 import '../../../../widgets/pressable.dart';
 
 enum CompressionOptionsMode { simple, advanced }
@@ -43,6 +44,10 @@ class _CompressionModeSwitchState extends State<CompressionModeSwitch>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value == widget.value) return;
 
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _controller.value = _target;
+      return;
+    }
     _controller.animateWith(
       SpringSimulation(
         _spring,
@@ -64,12 +69,15 @@ class _CompressionModeSwitchState extends State<CompressionModeSwitch>
     final strings = S.of(context);
 
     return Container(
-      height: 45,
+      height: 49,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
+        ),
       ),
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(4),
       child: LayoutBuilder(
         builder: (context, constraints) {
           final segmentWidth = constraints.maxWidth / 2;
@@ -79,9 +87,10 @@ class _CompressionModeSwitchState extends State<CompressionModeSwitch>
               AnimatedBuilder(
                 animation: _controller,
                 builder: (context, child) {
+                  final bounce = (_controller.value - _target).clamp(-0.1, 0.1);
                   return Transform.translate(
                     offset: Offset(segmentWidth * _controller.value, 0),
-                    child: child,
+                    child: Transform.rotate(angle: bounce * 0.18, child: child),
                   );
                 },
                 child: SizedBox(
@@ -89,8 +98,8 @@ class _CompressionModeSwitchState extends State<CompressionModeSwitch>
                   height: double.infinity,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(20),
+                      color: CompressionUiColors.red,
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
@@ -134,21 +143,36 @@ class _ModeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final animationDuration = MediaQuery.disableAnimationsOf(context)
+        ? Duration.zero
+        : const Duration(milliseconds: 160);
+
     return Expanded(
-      child: Pressable(
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () => onTap(mode),
-          child: Center(
-            child: AnimatedDefaultTextStyle(
-              duration: const Duration(milliseconds: 160),
-              curve: Curves.easeOut,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: selected ? 14.5 : 14,
-                height: 1,
+      child: Semantics(
+        button: true,
+        selected: selected,
+        child: Pressable(
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => onTap(mode),
+            child: Center(
+              child: AnimatedScale(
+                scale: selected ? 1.04 : 1,
+                duration: animationDuration,
+                curve: Curves.easeOut,
+                child: AnimatedDefaultTextStyle(
+                  duration: animationDuration,
+                  curve: Curves.easeOut,
+                  style: TextStyle(
+                    color: selected
+                        ? CompressionUiColors.white
+                        : Theme.of(context).colorScheme.onSurface,
+                    fontSize: 15,
+                    height: 1,
+                  ),
+                  child: Text(label),
+                ),
               ),
-              child: Text(label),
             ),
           ),
         ),

@@ -11,6 +11,25 @@ PackageInfo _packageInfo(String version) => PackageInfo(
 );
 
 void main() {
+  test('bundled 1.0.3 changelog is localized for every language', () {
+    final changes = {
+      for (final language in Language.values)
+        unseenChanges(
+          lastSeen: '1.0.2',
+          current: '1.0.3',
+          language: language,
+        ).join('\n'),
+    };
+
+    expect(changes, hasLength(Language.values.length));
+  });
+
+  test('every language code resolves to its language', () {
+    for (final language in Language.values) {
+      expect(Language.fromCode(language.code), language);
+    }
+  });
+
   test('bundled 1.0.2 changelog is shown after 1.0.1', () {
     expect(
       unseenChanges(lastSeen: '1.0.1', current: '1.0.2', language: Language.en),
