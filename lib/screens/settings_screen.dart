@@ -246,6 +246,21 @@ class _ToggleRow extends StatelessWidget {
 }
 
 class _LanguageRow extends StatelessWidget {
+  static const languages = {
+    'en': 'english',
+    'ru': 'русский',
+    'es': 'español',
+    'pt': 'português (Brasil)',
+    'de': 'deutsch',
+    'fr': 'français',
+    'zh': '简体中文',
+    'hi': 'हिन्दी',
+    'nl': 'nederlands',
+    'ko': '한국어',
+    'ja': '日本語',
+    'it': 'italiano',
+  };
+
   final AppSettingsService settings;
 
   const _LanguageRow({required this.settings});
@@ -253,11 +268,7 @@ class _LanguageRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
-    final language = switch (settings.languageCode) {
-      'en' => strings.english,
-      'ru' => strings.russian,
-      _ => strings.system,
-    };
+    final language = languages[settings.languageCode] ?? strings.system;
 
     return _SettingBlock(
       description: strings.languageDescription,
@@ -317,25 +328,23 @@ class _LanguageSheet extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _LanguageOption(
-                  value: 'system',
-                  title: strings.system,
-                  selected: selected == null,
-                ),
-                _LanguageOption(
-                  value: 'en',
-                  title: strings.english,
-                  selected: selected == 'en',
-                ),
-                _LanguageOption(
-                  value: 'ru',
-                  title: strings.russian,
-                  selected: selected == 'ru',
-                ),
-              ],
+            child: FadedScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _LanguageOption(
+                    value: 'system',
+                    title: strings.system,
+                    selected: selected == null,
+                  ),
+                  for (final language in _LanguageRow.languages.entries)
+                    _LanguageOption(
+                      value: language.key,
+                      title: language.value,
+                      selected: selected == language.key,
+                    ),
+                ],
+              ),
             ),
           ),
         ),
