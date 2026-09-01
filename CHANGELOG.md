@@ -2,7 +2,7 @@
 
 ### Added
 
-* Added Spanish, Brazilian Portuguese, German, French, Simplified Chinese, Hindi, Dutch, Korean, Japanese, and Italian translations.
+* Added Spanish, Brazilian Portuguese, German, French, Simplified Chinese, Hindi, Dutch, Korean, Japanese, Italian, and Turkish translations.
 
 ### Changed
 

@@ -259,6 +259,7 @@ class _LanguageRow extends StatelessWidget {
     'ko': '한국어',
     'ja': '日本語',
     'it': 'italiano',
+    'tr': 'türkçe',
   };
 
   final AppSettingsService settings;

@@ -16,6 +16,7 @@
 | `ko` | Korean | `lib/l10n/intl_ko.arb` |
 | `ja` | Japanese | `lib/l10n/intl_ja.arb` |
 | `it` | Italian | `lib/l10n/intl_it.arb` |
+| `tr` | Turkish | `lib/l10n/intl_tr.arb` |
 
 The default follows the system locale. Users can select any supported language or the system language in Settings.
 
