@@ -1,3 +1,14 @@
+## [1.0.3]
+
+### Added
+
+* Added Spanish, Brazilian Portuguese, German, French, Simplified Chinese, Hindi, Dutch, Korean, Japanese, Italian, and Turkish translations.
+
+### Changed
+
+* Made the language picker scrollable and showed every language by its native name.
+* Redesigned the Simple/Advanced compression switch with clearer selection, spring feedback, accessibility semantics, and reduced-motion support.
+
 ## [1.0.2]
 
 ### Added

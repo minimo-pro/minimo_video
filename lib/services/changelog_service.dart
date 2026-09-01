@@ -6,7 +6,18 @@ import 'first_launch_service.dart';
 
 enum Language {
   en('en'),
-  ru('ru');
+  ru('ru'),
+  es('es'),
+  pt('pt'),
+  de('de'),
+  fr('fr'),
+  zh('zh'),
+  hi('hi'),
+  nl('nl'),
+  ko('ko'),
+  ja('ja'),
+  it('it'),
+  tr('tr');
 
   final String code;
 
@@ -14,6 +25,17 @@ enum Language {
 
   static Language fromCode(String? code) => switch (code) {
     'ru' => Language.ru,
+    'es' => Language.es,
+    'pt' => Language.pt,
+    'de' => Language.de,
+    'fr' => Language.fr,
+    'zh' => Language.zh,
+    'hi' => Language.hi,
+    'nl' => Language.nl,
+    'ko' => Language.ko,
+    'ja' => Language.ja,
+    'it' => Language.it,
+    'tr' => Language.tr,
     _ => Language.en,
   };
 }
@@ -21,6 +43,60 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.3': {
+    Language.en: [
+      'use minimo in Spanish, Brazilian Portuguese, German, French, Simplified Chinese, Hindi, Dutch, Korean, Japanese, Italian, and Turkish.',
+      'switch between Simple and Advanced compression with a clearer, more accessible control and reduced-motion support.',
+    ],
+    Language.ru: [
+      'можно пользоваться minimo на испанском, бразильском португальском, немецком, французском, упрощённом китайском, хинди, нидерландском, корейском, японском, итальянском и турецком.',
+      'переключатель простого и расширенного режимов стал понятнее, доступнее и учитывает настройку уменьшения движения.',
+    ],
+    Language.es: [
+      'usa minimo en español, portugués de Brasil, alemán, francés, chino simplificado, hindi, neerlandés, coreano, japonés, italiano y turco.',
+      'cambia entre la compresión simple y avanzada con un control más claro, accesible y compatible con movimiento reducido.',
+    ],
+    Language.pt: [
+      'use o minimo em espanhol, português do Brasil, alemão, francês, chinês simplificado, hindi, neerlandês, coreano, japonês, italiano e turco.',
+      'alterne entre compressão simples e avançada com um controle mais claro, acessível e compatível com movimento reduzido.',
+    ],
+    Language.de: [
+      'nutze minimo auf Spanisch, brasilianischem Portugiesisch, Deutsch, Französisch, vereinfachtem Chinesisch, Hindi, Niederländisch, Koreanisch, Japanisch, Italienisch und Türkisch.',
+      'wechsle mit einer klareren, barrierefreien Steuerung und Unterstützung für reduzierte Bewegung zwischen einfacher und erweiterter Komprimierung.',
+    ],
+    Language.fr: [
+      'utilisez minimo en espagnol, portugais brésilien, allemand, français, chinois simplifié, hindi, néerlandais, coréen, japonais, italien et turc.',
+      'basculez entre la compression simple et avancée avec une commande plus claire, accessible et compatible avec la réduction des animations.',
+    ],
+    Language.zh: [
+      '现可使用西班牙语、巴西葡萄牙语、德语、法语、简体中文、印地语、荷兰语、韩语、日语、意大利语和土耳其语使用 minimo。',
+      '使用更清晰、更无障碍且支持减少动效的控件，在简单和高级压缩之间切换。',
+    ],
+    Language.hi: [
+      'अब minimo का इस्तेमाल स्पेनिश, ब्राज़ीलियाई पुर्तगाली, जर्मन, फ़्रेंच, सरलीकृत चीनी, हिंदी, डच, कोरियाई, जापानी, इतालवी और तुर्की में करें।',
+      'सरल और उन्नत कंप्रेशन के बीच अब एक साफ़, सुलभ और कम मोशन का समर्थन करने वाले कंट्रोल से बदलें।',
+    ],
+    Language.nl: [
+      'gebruik minimo in het Spaans, Braziliaans Portugees, Duits, Frans, vereenvoudigd Chinees, Hindi, Nederlands, Koreaans, Japans, Italiaans en Turks.',
+      'wissel tussen eenvoudige en geavanceerde compressie met een duidelijkere, toegankelijke bediening en ondersteuning voor minder beweging.',
+    ],
+    Language.ko: [
+      'minimo를 스페인어, 브라질 포르투갈어, 독일어, 프랑스어, 중국어 간체, 힌디어, 네덜란드어, 한국어, 일본어, 이탈리아어, 튀르키예어로 사용하세요.',
+      '더 명확하고 접근성이 높으며 모션 줄이기를 지원하는 컨트롤로 간단 압축과 고급 압축을 전환하세요.',
+    ],
+    Language.ja: [
+      'minimoをスペイン語、ブラジルポルトガル語、ドイツ語、フランス語、簡体中国語、ヒンディー語、オランダ語、韓国語、日本語、イタリア語、トルコ語で利用できます。',
+      'より分かりやすくアクセシブで、動きを減らす設定にも対応したコントロールで、シンプル圧縮と詳細圧縮を切り替えられます。',
+    ],
+    Language.it: [
+      'usa minimo in spagnolo, portoghese brasiliano, tedesco, francese, cinese semplificato, hindi, olandese, coreano, giapponese, italiano e turco.',
+      'passa dalla compressione semplice a quella avanzata con un controllo più chiaro, accessibile e compatibile con la riduzione del movimento.',
+    ],
+    Language.tr: [
+      "minimo'yu İspanyolca, Brezilya Portekizcesi, Almanca, Fransızca, Basitleştirilmiş Çince, Hintçe, Felemenkçe, Korece, Japonca, İtalyanca ve Türkçe kullanın.",
+      'daha net, erişilebilir ve azaltılmış hareket desteği sunan denetimle basit ve gelişmiş sıkıştırma arasında geçiş yapın.',
+    ],
+  },
   '1.0.2': {
     Language.en: [
       'adjust compression settings while cloud-backed or large videos import; the Compress button shows progress until they are ready.',
