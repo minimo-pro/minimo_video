@@ -244,7 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "заменить оригинал",
     ),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "сохранить с метаданными, затем запросить удаление оригинала",
+      "сжатое видео сохранится, затем Фото попросит подтвердить удаление оригинала",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("разрешение"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

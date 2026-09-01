@@ -186,7 +186,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateTheApp": MessageLookupByLibrary.simpleMessage("为应用评分"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("替换原视频"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "使用原元数据保存，然后请求删除原视频",
+      "压缩后的视频将先保存，然后图库会要求确认删除原视频",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("分辨率"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

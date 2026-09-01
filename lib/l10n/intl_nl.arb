@@ -47,7 +47,7 @@
   "saveBesideOriginal": "naast origineel opslaan",
   "saveBesideOriginalDescription": "behoud het origineel en kopieer de datum en metadata",
   "replaceOriginal": "origineel vervangen",
-  "replaceOriginalDescription": "sla op met de oorspronkelijke metadata en vraag daarna om het origineel te verwijderen",
+  "replaceOriginalDescription": "de gecomprimeerde video wordt opgeslagen; daarna vraagt Foto's om verwijdering van het origineel te bevestigen",
   "preventScreenSleep": "scherm ingeschakeld houden",
   "preventScreenSleepDescription": "voorkomt dat het scherm in slaapstand gaat terwijl video's worden gecomprimeerd",
   "clearCache": "cache wissen",

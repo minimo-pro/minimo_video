@@ -414,10 +414,10 @@ class S {
     );
   }
 
-  /// `save with original metadata, then ask to delete the original`
+  /// `the compressed video will be saved, then Photos will ask to confirm deleting the original`
   String get replaceOriginalDescription {
     return Intl.message(
-      'save with original metadata, then ask to delete the original',
+      'the compressed video will be saved, then Photos will ask to confirm deleting the original',
       name: 'replaceOriginalDescription',
       desc: '',
       args: [],

@@ -47,7 +47,7 @@
   "saveBesideOriginal": "salvar ao lado do original",
   "saveBesideOriginalDescription": "manter o original e copiar a data e os metadados dele",
   "replaceOriginal": "substituir o original",
-  "replaceOriginalDescription": "salvar com os metadados originais e depois pedir para excluir o original",
+  "replaceOriginalDescription": "o vídeo comprimido será salvo; depois, o Fotos pedirá para confirmar a exclusão do original",
   "preventScreenSleep": "manter a tela ligada",
   "preventScreenSleepDescription": "impede que a tela desligue enquanto os vídeos são comprimidos",
   "clearCache": "limpar cache",

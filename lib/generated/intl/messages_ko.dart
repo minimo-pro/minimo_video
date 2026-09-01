@@ -211,7 +211,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateTheApp": MessageLookupByLibrary.simpleMessage("앱 평가하기"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("원본 교체"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "원본 메타데이터로 저장한 다음 원본 삭제를 요청합니다",
+      "압축된 동영상을 저장한 다음 사진 앱에서 원본 삭제 확인을 요청합니다",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("해상도"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

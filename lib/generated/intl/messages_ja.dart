@@ -206,7 +206,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateTheApp": MessageLookupByLibrary.simpleMessage("アプリを評価"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("元の動画を置き換え"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "元のメタデータで保存後、元の動画の削除を確認します",
+      "圧縮済み動画を保存した後、写真アプリが元の動画の削除確認を求めます",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("解像度"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

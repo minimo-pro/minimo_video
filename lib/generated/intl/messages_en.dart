@@ -240,7 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateTheApp": MessageLookupByLibrary.simpleMessage("rate the app"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("replace original"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "save with original metadata, then ask to delete the original",
+      "the compressed video will be saved, then Photos will ask to confirm deleting the original",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("resolution"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

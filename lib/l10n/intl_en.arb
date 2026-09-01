@@ -77,7 +77,7 @@
   "saveBesideOriginal": "save beside original",
   "saveBesideOriginalDescription": "keep the original and copy its gallery date and metadata",
   "replaceOriginal": "replace original",
-  "replaceOriginalDescription": "save with original metadata, then ask to delete the original",
+  "replaceOriginalDescription": "the compressed video will be saved, then Photos will ask to confirm deleting the original",
   "preventScreenSleep": "keep screen awake",
   "preventScreenSleepDescription": "prevents the screen from sleeping while videos are compressing",
   "clearCache": "clear cache",

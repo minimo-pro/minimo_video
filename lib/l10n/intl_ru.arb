@@ -77,7 +77,7 @@
   "saveBesideOriginal": "сохранить рядом с оригиналом",
   "saveBesideOriginalDescription": "оставить оригинал и перенести его дату и метаданные",
   "replaceOriginal": "заменить оригинал",
-  "replaceOriginalDescription": "сохранить с метаданными, затем запросить удаление оригинала",
+  "replaceOriginalDescription": "сжатое видео сохранится, затем Фото попросит подтвердить удаление оригинала",
   "preventScreenSleep": "не выключать экран",
   "preventScreenSleepDescription": "не даёт экрану уснуть, пока видео сжимаются",
   "clearCache": "очистка кеша",

@@ -235,7 +235,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateTheApp": MessageLookupByLibrary.simpleMessage("ऐप को रेट करें"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("मूल बदलें"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "मूल मेटाडेटा के साथ सेव करके मूल हटाने को पूछें",
+      "कंप्रेस्ड वीडियो सेव होगा, फिर फ़ोटो मूल वीडियो हटाने की पुष्टि मांगेगा",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("रिज़ॉल्यूशन"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

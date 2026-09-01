@@ -245,7 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "original ersetzen",
     ),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "mit originalmetadaten speichern und danach um löschung des originals bitten",
+      "das komprimierte video wird gespeichert; danach bittet Fotos um bestätigung zum löschen des originals",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("auflösung"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

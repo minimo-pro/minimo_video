@@ -246,7 +246,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "orijinali değiştir",
     ),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "orijinal meta verilerle kaydet, ardından orijinali silmek için izin iste",
+      "sıkıştırılmış video kaydedilir, ardından Fotoğraflar orijinalin silinmesini onaylamanızı ister",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("çözünürlük"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
