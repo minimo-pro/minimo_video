@@ -5,6 +5,7 @@ import '../../../../constants/app_icons.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../widgets/minimo_loader.dart';
 import '../../../../widgets/rolling_counter_text.dart';
 import 'selected_videos_preview.dart';
 
@@ -14,6 +15,7 @@ class SelectedVideosSummary extends StatelessWidget {
   final int originalSize;
   final int estimatedSize;
   final int savingsPercent;
+  final bool isEstimating;
   final Key? sizeRowKey;
   final bool compact;
 
@@ -24,6 +26,7 @@ class SelectedVideosSummary extends StatelessWidget {
     required this.originalSize,
     required this.estimatedSize,
     required this.savingsPercent,
+    required this.isEstimating,
     this.sizeRowKey,
     this.compact = false,
   });
@@ -83,15 +86,24 @@ class SelectedVideosSummary extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: RollingCounterText(
-                      value: estimatedSize,
-                      formatter: (value) =>
-                          Utils.formatSize(value.toInt()).toLowerCase(),
-                      style: TextStyle(
-                        color: CompressionUiColors.red,
-                        fontSize: compact ? 23 : 28,
-                        height: 1,
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        RollingCounterText(
+                          value: estimatedSize,
+                          formatter: (value) =>
+                              Utils.formatSize(value.toInt()).toLowerCase(),
+                          style: TextStyle(
+                            color: CompressionUiColors.red,
+                            fontSize: compact ? 23 : 28,
+                            height: 1,
+                          ),
+                        ),
+                        if (isEstimating) ...[
+                          const SizedBox(width: 6),
+                          MinimoLoader(size: compact ? 17 : 20),
+                        ],
+                      ],
                     ),
                   ),
                 ),

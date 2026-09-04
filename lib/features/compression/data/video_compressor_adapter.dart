@@ -118,13 +118,16 @@ class VideoCompressorAdapter {
 
   Future<int?> estimateCompressedSize(
     Iterable<String> inputPaths,
-    CompressionSettings settings,
-  ) {
+    CompressionSettings settings, {
+    bool Function()? isCancelled,
+  }) {
     return _prepare(() async {
       try {
         var total = 0;
         for (final inputPath in inputPaths) {
+          if (isCancelled?.call() == true) return null;
           final media = await _targetMedia(inputPath, settings.resolution);
+          if (isCancelled?.call() == true) return null;
           final plan = encodePlan(
             settings,
             outputWidth: media.outputWidth,
@@ -141,6 +144,7 @@ class VideoCompressorAdapter {
             videoBitrateInMbps: plan.bitrateMbps,
             disableAudio: settings.audioMode == CompressionAudioMode.remove,
           );
+          if (isCancelled?.call() == true) return null;
           final originalSize = await File(inputPath).length();
           total += estimate.estimatedSizeBytes.clamp(0, originalSize);
         }

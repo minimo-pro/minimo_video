@@ -36,8 +36,44 @@ class _EstimatingCompressor extends VideoCompressorAdapter {
   @override
   Future<int?> estimateCompressedSize(
     Iterable<String> inputPaths,
-    CompressionSettings settings,
-  ) async => 15;
+    CompressionSettings settings, {
+    bool Function()? isCancelled,
+  }) async => 15;
+}
+
+class _QueuedEstimatingCompressor extends VideoCompressorAdapter {
+  final firstStarted = Completer<void>();
+  final releaseFirst = Completer<void>();
+  final releaseUncancelled = Completer<void>();
+  Future<void> _tail = Future.value();
+  var calls = 0;
+
+  @override
+  Future<int?> estimateCompressedSize(
+    Iterable<String> inputPaths,
+    CompressionSettings settings, {
+    bool Function()? isCancelled,
+  }) async {
+    final previous = _tail;
+    final done = Completer<void>();
+    _tail = done.future;
+    await previous;
+    try {
+      calls++;
+      if (calls == 1) {
+        firstStarted.complete();
+        await releaseFirst.future;
+        if (isCancelled?.call() != true) await releaseUncancelled.future;
+      }
+      return settings.crf.round();
+    } finally {
+      done.complete();
+    }
+  }
+
+  void unblock() {
+    if (!releaseUncancelled.isCompleted) releaseUncancelled.complete();
+  }
 }
 
 class _MixedCompressor extends VideoCompressorAdapter {
@@ -727,6 +763,43 @@ void main() {
     expect(changed.estimatedSize, 15);
     await bloc.close();
   });
+
+  test(
+    'latest estimate skips stale work for a batch over 100 videos',
+    () async {
+      final compressor = _QueuedEstimatingCompressor();
+      final bloc = CompressBloc(
+        initialVideos: List.generate(
+          101,
+          (index) => PickedVideo(
+            path: '/video-$index.mp4',
+            name: 'video-$index.mp4',
+            size: 100,
+          ),
+        ),
+        videoCompressorAdapter: compressor,
+      );
+      addTearDown(() async {
+        compressor.unblock();
+        await bloc.close();
+      });
+
+      await compressor.firstStarted.future;
+      bloc.add(const CompressSettingsChanged(CompressionSettings(crf: 34)));
+      final changed = await bloc.stream.firstWhere(
+        (state) => state.settings.crf == 34,
+      );
+      expect(changed.isEstimating, isTrue);
+      await Future<void>.delayed(const Duration(milliseconds: 150));
+      compressor.releaseFirst.complete();
+
+      final estimated = await bloc.stream
+          .firstWhere((state) => state.estimatedSize == 34)
+          .timeout(const Duration(milliseconds: 500));
+      expect(estimated.isEstimating, isFalse);
+      expect(compressor.calls, 2);
+    },
+  );
 
   test('keeps screen awake while compression is active', () async {
     final settings = AppSettingsService.instance;

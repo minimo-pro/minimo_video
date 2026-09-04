@@ -101,12 +101,13 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
   @override
   Widget build(BuildContext context) {
     final state = widget.state;
-    final estimatedSize =
-        state.estimatedSize ??
-        CompressionEstimate.compressedSize(
-          originalSize: state.totalOriginalSize,
-          settings: state.settings,
-        );
+    final localEstimate = CompressionEstimate.compressedSize(
+      originalSize: state.totalOriginalSize,
+      settings: state.settings,
+    );
+    final estimatedSize = state.isEstimating
+        ? localEstimate
+        : state.estimatedSize ?? localEstimate;
     final savingsPercent = state.totalOriginalSize == 0
         ? 0
         : ((1 - estimatedSize / state.totalOriginalSize) * 100)
@@ -169,6 +170,7 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
                                     originalSize: state.totalOriginalSize,
                                     estimatedSize: estimatedSize,
                                     savingsPercent: savingsPercent,
+                                    isEstimating: state.isEstimating,
                                     compact: compact,
                                   ),
                           ),
@@ -221,6 +223,7 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
                                 originalSize: state.totalOriginalSize,
                                 estimatedSize: estimatedSize,
                                 savingsPercent: savingsPercent,
+                                isEstimating: state.isEstimating,
                               ),
                             ),
                           ),
@@ -250,11 +253,13 @@ class _PinnedSizeSummary extends StatelessWidget {
   final int originalSize;
   final int estimatedSize;
   final int savingsPercent;
+  final bool isEstimating;
 
   const _PinnedSizeSummary({
     required this.originalSize,
     required this.estimatedSize,
     required this.savingsPercent,
+    required this.isEstimating,
   });
 
   @override
@@ -321,6 +326,10 @@ class _PinnedSizeSummary extends StatelessWidget {
                               height: 1,
                             ),
                           ),
+                          if (isEstimating) ...[
+                            const SizedBox(width: 6),
+                            const MinimoLoader(size: 16),
+                          ],
                         ],
                       ),
                     ),
