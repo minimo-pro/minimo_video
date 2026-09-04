@@ -43,6 +43,73 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.4': {
+    Language.en: [
+      'keep compression size estimates updating for batches over 100 videos, with a loading indicator while recalculating.',
+      'see a clearer explanation before Photos asks to delete original videos during replacement.',
+      'leave an active video import after confirmation, without flashing empty settings when the picker is cancelled.',
+    ],
+    Language.ru: [
+      'оценка размера теперь обновляется и для пакетов больше 100 видео, а во время пересчёта показывается индикатор загрузки.',
+      'перед запросом Фото на удаление оригиналов теперь яснее указано, что удаляются именно исходные видео.',
+      'из активной загрузки видео теперь можно выйти после подтверждения, а отмена выбора больше не показывает пустые настройки.',
+    ],
+    Language.es: [
+      'la estimación de tamaño sigue actualizándose en lotes de más de 100 videos y muestra un indicador durante el recálculo.',
+      'se muestra una explicación más clara antes de que Fotos pida eliminar los videos originales al reemplazarlos.',
+      'sal de una importación activa tras confirmarlo, sin que aparezcan ajustes vacíos al cancelar el selector.',
+    ],
+    Language.pt: [
+      'a estimativa de tamanho continua atualizando em lotes com mais de 100 vídeos e mostra um indicador durante o recálculo.',
+      'veja uma explicação mais clara antes que o Fotos peça para excluir os vídeos originais durante a substituição.',
+      'saia de uma importação ativa após confirmar, sem mostrar configurações vazias ao cancelar o seletor.',
+    ],
+    Language.de: [
+      'die geschätzte Größe wird auch bei Stapeln mit über 100 Videos aktualisiert; während der Neuberechnung erscheint eine Ladeanzeige.',
+      'vor der Löschabfrage von Fotos wird klarer erklärt, dass beim Ersetzen die Originalvideos gelöscht werden.',
+      'verlasse einen laufenden Videoimport nach Bestätigung, ohne dass beim Abbrechen des Pickers leere Einstellungen aufblitzen.',
+    ],
+    Language.fr: [
+      'l’estimation de la taille continue de se mettre à jour pour les lots de plus de 100 vidéos, avec un indicateur pendant le recalcul.',
+      'une explication plus claire apparaît avant que Photos demande de supprimer les vidéos originales lors du remplacement.',
+      'quittez un import vidéo actif après confirmation, sans afficher brièvement des réglages vides si le sélecteur est annulé.',
+    ],
+    Language.zh: [
+      '超过 100 个视频的批量任务也会持续更新预计大小，重新计算时会显示加载指示。',
+      '替换视频时，在图库请求删除原视频前会显示更清晰的说明。',
+      '确认后可退出正在进行的视频导入，取消选择器时也不会短暂显示空设置。',
+    ],
+    Language.hi: [
+      '100 से अधिक वीडियो वाले बैच में भी अनुमानित आकार अपडेट होता है और दोबारा गणना के दौरान लोडिंग संकेत दिखता है।',
+      'बदलने के दौरान फ़ोटो द्वारा मूल वीडियो हटाने की पुष्टि मांगने से पहले अब साफ़ जानकारी दिखती है।',
+      'पुष्टि के बाद चल रहे वीडियो इंपोर्ट से बाहर निकलें; पिकर रद्द करने पर खाली सेटिंग्स नहीं दिखेंगी।',
+    ],
+    Language.nl: [
+      "de geschatte grootte blijft ook bij batches van meer dan 100 video's bijgewerkt, met een laadindicator tijdens het herberekenen.",
+      "voor Foto's vraagt om de originele video's te verwijderen, verschijnt een duidelijkere uitleg.",
+      "verlaat na bevestiging een actieve video-import, zonder dat lege instellingen opflitsen wanneer de picker wordt geannuleerd.",
+    ],
+    Language.ko: [
+      '100개가 넘는 동영상 묶음에서도 예상 크기가 계속 업데이트되며 다시 계산하는 동안 로딩 표시가 나타납니다.',
+      '교체할 때 사진 앱이 원본 동영상 삭제를 요청하기 전에 더 명확한 설명이 표시됩니다.',
+      '확인 후 진행 중인 동영상 가져오기를 나갈 수 있으며 선택기를 취소해도 빈 설정이 잠깐 표시되지 않습니다.',
+    ],
+    Language.ja: [
+      '100本を超える動画の一括処理でも推定サイズが更新され、再計算中は読み込み表示が出ます。',
+      '置き換え時に写真アプリが元の動画の削除を求める前に、より分かりやすい説明が表示されます。',
+      '確認後に進行中の動画読み込みを終了でき、選択をキャンセルしても空の設定画面が一瞬表示されません。',
+    ],
+    Language.it: [
+      'la stima delle dimensioni continua ad aggiornarsi anche per gruppi di oltre 100 video, con un indicatore durante il ricalcolo.',
+      'prima che Foto chieda di eliminare i video originali durante la sostituzione viene mostrata una spiegazione più chiara.',
+      'esci da un’importazione video attiva dopo la conferma, senza mostrare impostazioni vuote quando annulli il selettore.',
+    ],
+    Language.tr: [
+      "100'den fazla videolu gruplarda da tahmini boyut güncellenir ve yeniden hesaplama sırasında yükleme göstergesi görünür.",
+      'değiştirme sırasında Fotoğraflar orijinal videoları silmek için izin istemeden önce daha açık bir açıklama gösterilir.',
+      'onaydan sonra etkin video içe aktarımından çıkın; seçici iptal edildiğinde boş ayarlar kısa süreliğine görünmez.',
+    ],
+  },
   '1.0.3': {
     Language.en: [
       'use minimo in Spanish, Brazilian Portuguese, German, French, Simplified Chinese, Hindi, Dutch, Korean, Japanese, Italian, and Turkish.',

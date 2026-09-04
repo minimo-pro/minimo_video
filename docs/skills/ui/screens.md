@@ -21,15 +21,15 @@ The screen renders from `CompressStatus`:
 - `processing` → size estimate, overall progress, current-file percentage, status list, hold-to-cancel
 - `done` → results, saved space, and compact post-compression actions
 
-Before the initial picker confirms a non-empty selection, `CompressScreen` shows `VideoLoadingView` rather than empty video/settings placeholders. Picker cancellation returns to `StartRoute`; the settings UI appears on the initial `pickProgress` event and stays interactive for the remaining import.
+Before the initial picker confirms a non-empty selection, `CompressScreen` shows `VideoLoadingView` rather than empty video/settings placeholders. Empty `(0, 0)` picker progress keeps this loading view visible, so cancellation returns to `StartRoute` without flashing empty settings. The settings UI appears once progress reports a positive total and stays interactive for the remaining import.
 
 ### Navigation chrome
 
-`CompressScreen` owns the top-left icon-only back button for `ready` and `done`. It matches the outlined `47×47` add-video action. Navigation chrome is hidden during `processing`; back is disabled while picked videos are copied into cache.
+`CompressScreen` owns the top-left icon-only back button for `ready`, initial loading, and `done`. It matches the outlined `47×47` add-video action. Navigation chrome is hidden during `processing`. During import, top and system back show a confirmation dialog before returning to `StartRoute`.
 
 In `ready`, scrolling the main size row out of view pins a compact size summary beside the back button. The summary matches the button's `47`-pixel height and keeps the savings percentage right-aligned without a separate frame or fill. Settings changes keep the previous estimate visible until the refreshed native estimate arrives, preventing a transient no-savings hint and compress-button flicker. A genuine `0%` estimate still shows the no-savings hint and disables compression.
 
-During `processing` and file copying, `PopScope(canPop: false)` blocks route pops, including Android system back and the iOS edge-swipe gesture. Hold-to-cancel is the only exit from processing back to settings; copying must finish or fail before navigation resumes.
+During `processing`, `PopScope(canPop: false)` blocks route pops, including Android system back and the iOS edge-swipe gesture. Hold-to-cancel is the only exit from processing back to settings. During file copying, route pops are intercepted by the import-exit confirmation instead.
 
 ### Done-screen actions
 
@@ -44,7 +44,7 @@ Failed compression replaces save with retry and disables `VS`. Already-optimized
 
 Top and system back actions ask for confirmation when successful outputs have not been saved. Saved and all-failed results leave immediately.
 
-`CompressionBottomActions` places an outlined icon-only plus button and the filled Compress button in the same bottom row. During initial or add-more import, settings remain interactive while add/back are disabled and Compress shows a spinner plus batch progress. When import completes, selected videos, thumbnails, and estimates refresh without resetting settings.
+`CompressionBottomActions` places an outlined icon-only plus button and the filled Compress button in the same bottom row. During initial or add-more import, settings remain interactive while add is disabled, back requires confirmation, and Compress shows a spinner plus batch progress. When import completes, selected videos, thumbnails, and estimates refresh without resetting settings.
 
 Simple presets are the primary UX. Advanced mode exposes resolution, video
 bitrate, frame rate, H.264/HEVC codec, and audio controls.

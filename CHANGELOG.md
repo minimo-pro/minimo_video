@@ -1,3 +1,16 @@
+## [1.0.4]
+
+### Changed
+
+* Clarified that replacing an original saves the compressed video before Photos asks to delete the original.
+* Allowed leaving while selected videos are importing after a confirmation.
+
+### Fixed
+
+* Kept compression size estimates responsive for batches over 100 videos by cancelling stale estimate work and showing recalculation progress.
+* Prevented empty compression settings from flashing after cancelling the file picker.
+* Fixed iOS temporary video copies accumulating outside the in-app cache counter and cleanup paths.
+
 ## [1.0.3]
 
 ### Added

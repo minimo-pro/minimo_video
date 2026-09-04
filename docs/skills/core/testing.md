@@ -29,7 +29,7 @@ Current tests cover:
 - Rolling counters ignore unchanged formatted values and use calm motion
 - Previous estimate retained while a settings estimate refreshes
 - Add-more and compress actions sharing the settings bottom row
-- Intermediate pre-selection loader, then interactive settings with preview/button loaders, hidden zero-byte estimates, and safe completion during active scrolling
+- Intermediate pre-selection loader, confirmed exit during import, no empty-settings flash after picker cancellation, then interactive settings with preview/button loaders, hidden zero-byte estimates, and safe completion during active scrolling
 - Compact icon-only `AppActionButton` layout for wide SVG assets (`arrow_back`, `share`, `more`)
 
 ## Test Boundaries
