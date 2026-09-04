@@ -15,12 +15,18 @@ Settings use `shared_preferences` through `AppSettingsService`.
 
 ## Cache
 
-`AppCacheService` manages two temporary directories:
+`AppCacheService` manages three temporary directories:
 
 - `picked_videos` — picker copies
 - `minimo_video` — compressed outputs waiting for save/share
+- `minimo_thumbnails` — generated video previews
 
-The settings screen clears both directories and the compressor plugin cache. `main()` performs the same full cleanup on every cold start because compression sessions are not restored after relaunch.
+On iOS these directories live under `Library/Caches`. The service also measures
+and clears the native `tmp` directory so legacy picker copies and partial
+compressor outputs are included. The settings screen clears all managed
+directories and the compressor plugin cache. `main()` performs the same full
+cleanup on every cold start because compression sessions are not restored after
+relaunch.
 
 ## Compression Settings
 
