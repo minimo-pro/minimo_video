@@ -5,12 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:minimo_video/constants/app_icons.dart';
 import 'package:minimo_video/features/compression/bloc/compress_bloc.dart';
 import 'package:minimo_video/features/compression/domain/compression_settings.dart';
 import 'package:minimo_video/features/compression/domain/video_pick_source.dart';
 import 'package:minimo_video/features/compression/presentation/compress_screen.dart';
 import 'package:minimo_video/features/compression/presentation/widgets/compression_settings_view.dart';
 import 'package:minimo_video/features/compression/presentation/widgets/compression_mode_switch.dart';
+import 'package:minimo_video/features/compression/presentation/widgets/video_loading_view.dart';
 import 'package:minimo_video/generated/l10n.dart';
 import 'package:minimo_video/theme/app_theme.dart';
 import 'package:minimo_video/widgets/app_action_button.dart';
@@ -121,6 +123,87 @@ void main() {
     expect(find.text('start screen'), findsOneWidget);
     expect(find.byType(MinimoLoader), findsNothing);
   });
+
+  testWidgets('initial loading exit requires confirmation', (tester) async {
+    final pickedVideos = Completer<List<Map<String, Object>>>();
+    addTearDown(() {
+      if (!pickedVideos.isCompleted) pickedVideos.complete(const []);
+    });
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) {
+          if (call.method == 'pickVideos') return pickedVideos.future;
+          return null;
+        });
+
+    await _pumpScreen(tester);
+    await tester.pump();
+
+    final backButton = find.byWidgetPredicate(
+      (widget) =>
+          widget is AppActionButton && widget.icon == AppIcons.arrowBack,
+    );
+    expect(backButton, findsOneWidget);
+
+    await tester.tap(backButton);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.text('videos are still loading'), findsOneWidget);
+    expect(find.text('start screen'), findsNothing);
+
+    await tester.tap(find.text('stay'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.byType(VideoLoadingView), findsOneWidget);
+    expect(find.text('start screen'), findsNothing);
+  });
+
+  testWidgets('empty picker progress does not reveal empty settings', (
+    tester,
+  ) async {
+    final pickedVideos = Completer<List<Map<String, Object>>>();
+    addTearDown(() {
+      if (!pickedVideos.isCompleted) pickedVideos.complete(const []);
+    });
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) {
+          if (call.method == 'pickVideos') return pickedVideos.future;
+          return null;
+        });
+
+    await _pumpScreen(tester);
+    await tester.pump();
+    await _sendPickProgress(processed: 0, total: 0);
+    await tester.pump();
+
+    expect(find.byType(VideoLoadingView), findsOneWidget);
+    expect(find.byType(CompressionSettingsView), findsNothing);
+  });
+
+  testWidgets(
+    'cancelled initial picker does not flash settings while exiting',
+    (tester) async {
+      final pickedVideos = Completer<List<Map<String, Object>>>();
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) {
+            if (call.method == 'pickVideos') return pickedVideos.future;
+            return null;
+          });
+
+      await _pumpScreen(tester);
+      await tester.pump();
+      pickedVideos.complete(const []);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 50));
+
+      expect(find.byType(VideoLoadingView), findsOneWidget);
+      expect(find.byType(CompressionSettingsView), findsNothing);
+
+      await tester.pumpAndSettle();
+      expect(find.text('start screen'), findsOneWidget);
+    },
+  );
 }
 
 Future<void> _sendPickProgress({required int processed, required int total}) {

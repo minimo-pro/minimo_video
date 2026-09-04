@@ -53,7 +53,7 @@ On iOS the compression screen warns the user to keep the app open. If the app is
 
 ## Importing and Adding Videos During Configuration
 
-After the start-screen source choice, `CompressScreen` opens the native picker and owns the import. Until native selection is confirmed, it shows the intermediate `VideoLoadingView` instead of an empty settings placeholder. Cancellation or a failed empty initial import returns to the start screen. Once `pickProgress(0, total)` confirms a non-empty selection, simple and advanced settings appear and remain interactive while cloud-backed videos download or files copy into cache. Until the first import completes, the preview area shows `MinimoLoader` plus the cloud/large-file hint; zero-byte estimates and the no-savings message stay hidden. After import, each pending thumbnail keeps a compact `MinimoLoader` until its video frame is ready. The Compress button shows its own compact `MinimoLoader` plus picker batch progress and stays disabled until every selected video is ready. Back and add-more are also disabled during import; an add-more error restores them and shows a localized snackbar.
+After the start-screen source choice, `CompressScreen` opens the native picker and owns the import. Until native selection is confirmed, it shows the intermediate `VideoLoadingView` instead of an empty settings placeholder; empty `(0, 0)` progress does not reveal settings. Cancellation or a failed empty initial import returns to the start screen. Once `pickProgress(0, total)` confirms a non-empty selection, simple and advanced settings appear and remain interactive while cloud-backed videos download or files copy into cache. Until the first import completes, the preview area shows `MinimoLoader` plus the cloud/large-file hint; zero-byte estimates and the no-savings message stay hidden. After import, each pending thumbnail keeps a compact `MinimoLoader` until its video frame is ready. The Compress button shows its own compact `MinimoLoader` plus picker batch progress and stays disabled until every selected video is ready. Add-more is disabled during import. Top and system back remain available through a confirmation dialog; accepting returns to the start screen while late picker results are ignored. An add-more error restores the actions and shows a localized snackbar.
 
 The plus action beside the bottom Compress button is available only in `CompressStatus.ready`. It uses the same gallery/files source sheet and `VideoFileAdapter.pickVideos` path. Add-more imports use the same non-blocking settings UI and progress state.
 
@@ -67,12 +67,13 @@ The Bloc keeps `videos`, `thumbnailPaths`, and `videoStatuses` aligned, requests
 the same quality, codec, dimensions, bitrate, and audio-removal settings used
 for compression. Frame rate affects the automatic bitrate before that call,
 because the plugin estimate API has no separate FPS argument. Each estimate is
-capped at original file size. Changing
-settings keeps the previous asynchronous estimate visible until the refreshed
-native estimate arrives; this avoids a transient local-fallback `0%` state.
-Adding videos still clears the old estimate because it belongs to a different
-batch. A genuine `0%` estimate disables compression, while the adapter's 10%
-acceptance threshold remains authoritative for completed output.
+capped at original file size. Superseded native estimates stop between videos
+so a stale large batch cannot block the latest settings request. While native
+work is pending, the UI shows the fast local estimate with a loader instead of
+a frozen previous result. Adding videos clears the old native estimate because
+it belongs to a different batch. A genuine completed `0%` estimate disables
+compression, while the adapter's 10% acceptance threshold remains
+authoritative for completed output.
 
 ## Batch and Progress
 

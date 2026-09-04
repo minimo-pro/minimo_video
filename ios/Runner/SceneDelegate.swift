@@ -46,6 +46,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
         self.videoInfo(call.arguments as? String, result: result)
       case "createThumbnail":
         self.createThumbnail(call.arguments as? String, result: result)
+      case "temporaryCacheSize":
+        self.temporaryCacheSize(result: result)
+      case "clearTemporaryCache":
+        self.clearTemporaryCache(result: result)
       default:
         result(FlutterMethodNotImplemented)
       }
@@ -272,8 +276,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
         guard let data = UIImage(cgImage: image).jpegData(compressionQuality: 0.82) else {
           throw NSError(domain: "minimo_video", code: 1)
         }
-        let url = FileManager.default.temporaryDirectory
-          .appendingPathComponent("thumbnail_\(UUID().uuidString).jpg")
+        let directory = try self.cacheDirectory(named: "minimo_thumbnails")
+        let url = directory.appendingPathComponent(
+          "thumbnail_\(UUID().uuidString).jpg"
+        )
         try data.write(to: url)
         DispatchQueue.main.async { result(url.path) }
       } catch {
@@ -519,12 +525,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
   }
 
   private func copyPickedVideo(from sourceURL: URL, filename: String) throws -> URL {
-    let directory = FileManager.default.temporaryDirectory
-      .appendingPathComponent("picked_videos", isDirectory: true)
-    try FileManager.default.createDirectory(
-      at: directory,
-      withIntermediateDirectories: true
-    )
+    let directory = try cacheDirectory(named: "picked_videos")
 
     let safeFilename = sanitizeFilename(filename)
     var outputURL = directory.appendingPathComponent(safeFilename)
@@ -547,6 +548,68 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       )
     }
     return outputURL
+  }
+
+  private func cacheDirectory(named name: String) throws -> URL {
+    guard let cacheRoot = FileManager.default.urls(
+      for: .cachesDirectory,
+      in: .userDomainMask
+    ).first else {
+      throw NSError(
+        domain: "minimo_video",
+        code: 2,
+        userInfo: [NSLocalizedDescriptionKey: "cache directory is unavailable"]
+      )
+    }
+    let directory = cacheRoot.appendingPathComponent(name, isDirectory: true)
+    try FileManager.default.createDirectory(
+      at: directory,
+      withIntermediateDirectories: true
+    )
+    return directory
+  }
+
+  private func temporaryCacheSize(result: @escaping FlutterResult) {
+    DispatchQueue.global(qos: .utility).async {
+      let root = FileManager.default.temporaryDirectory
+      let keys: [URLResourceKey] = [.isRegularFileKey, .fileSizeKey]
+      let enumerator = FileManager.default.enumerator(
+        at: root,
+        includingPropertiesForKeys: keys
+      )
+      var bytes = 0
+      while let url = enumerator?.nextObject() as? URL {
+        guard
+          let values = try? url.resourceValues(forKeys: Set(keys)),
+          values.isRegularFile == true
+        else { continue }
+        bytes += values.fileSize ?? 0
+      }
+      DispatchQueue.main.async { result(bytes) }
+    }
+  }
+
+  private func clearTemporaryCache(result: @escaping FlutterResult) {
+    DispatchQueue.global(qos: .utility).async {
+      do {
+        let root = FileManager.default.temporaryDirectory
+        for url in try FileManager.default.contentsOfDirectory(
+          at: root,
+          includingPropertiesForKeys: nil
+        ) {
+          try FileManager.default.removeItem(at: url)
+        }
+        DispatchQueue.main.async { result(nil) }
+      } catch {
+        DispatchQueue.main.async {
+          result(FlutterError(
+            code: "cache_clear_failed",
+            message: error.localizedDescription,
+            details: nil
+          ))
+        }
+      }
+    }
   }
 
   private func isVideoFile(_ url: URL) -> Bool {

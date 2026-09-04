@@ -9,7 +9,13 @@ The start screen and the compression screen's add-more action show the same sour
 - **Gallery:** `PHPickerViewController` filtered to videos with unlimited multi-selection. Preserves Photos `assetIdentifier` and marks the pick deletable.
 - **Files:** `UIDocumentPickerViewController` for `UTType.movie`, multi-selection, `asCopy: true`. No Photos identifier — original deletion is unavailable for these picks.
 
-Selected files are imported sequentially to avoid parallel disk/memory pressure. Neither path requests broad library permission.
+Selected files are imported sequentially into
+`Library/Caches/picked_videos` to avoid parallel disk/memory pressure and to
+keep native writes aligned with Flutter cache accounting. Generated previews
+use `Library/Caches/minimo_thumbnails`. Cold-start and manual cleanup also scan
+the native `tmp` directory for files left by older app versions or an
+interrupted compressor run. Neither picker path requests broad library
+permission.
 
 ### Android
 

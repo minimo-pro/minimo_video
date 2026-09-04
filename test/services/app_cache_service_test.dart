@@ -8,12 +8,19 @@ void main() {
     final root = await Directory.systemTemp.createTemp('minimo_cache_test');
     addTearDown(() => root.delete(recursive: true));
     final picked = await Directory('${root.path}/picked_videos').create();
+    final thumbnails = await Directory(
+      '${root.path}/minimo_thumbnails',
+    ).create();
     final first = await File('${picked.path}/first.mp4').writeAsBytes([1, 2]);
     final second = await File('${picked.path}/second.mp4').writeAsBytes([3]);
+    final thumbnail = await File(
+      '${thumbnails.path}/preview.jpg',
+    ).writeAsBytes([4, 5]);
 
-    expect(await AppCacheService.size(root: root), 3);
+    expect(await AppCacheService.size(root: root), 5);
     await AppCacheService.clear(root: root);
     expect(await first.exists(), isFalse);
     expect(await second.exists(), isFalse);
+    expect(await thumbnail.exists(), isFalse);
   });
 }

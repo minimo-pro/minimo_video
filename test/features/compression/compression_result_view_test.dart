@@ -250,8 +250,9 @@ class _NoopCompressor extends VideoCompressorAdapter {
   @override
   Future<int?> estimateCompressedSize(
     Iterable<String> inputPaths,
-    CompressionSettings settings,
-  ) async => 0;
+    CompressionSettings settings, {
+    bool Function()? isCancelled,
+  }) async => 0;
 
   @override
   Future<String?> createThumbnail(String inputPath) async => null;

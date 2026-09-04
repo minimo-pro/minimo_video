@@ -77,7 +77,7 @@
   "saveBesideOriginal": "save beside original",
   "saveBesideOriginalDescription": "keep the original and copy its gallery date and metadata",
   "replaceOriginal": "replace original",
-  "replaceOriginalDescription": "save with original metadata, then ask to delete the original",
+  "replaceOriginalDescription": "the compressed video will be saved, then Photos will ask to confirm deleting the original",
   "preventScreenSleep": "keep screen awake",
   "preventScreenSleepDescription": "prevents the screen from sleeping while videos are compressing",
   "clearCache": "clear cache",
@@ -132,6 +132,9 @@
   "unsavedResultsMessage": "leave without saving the compressed videos?",
   "leaveWithoutSaving": "leave without saving",
   "stay": "stay",
+  "loadingExitTitle": "videos are still loading",
+  "loadingExitMessage": "leave while the selected videos are still loading?",
+  "leave": "leave",
   "estimatingTimeRemaining": "estimating time remaining...",
   "secondsRemaining": "{count, plural, =1{about 1 second left} other{about {count} seconds left}}",
   "@secondsRemaining": {

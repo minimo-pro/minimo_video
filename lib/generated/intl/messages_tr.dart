@@ -175,8 +175,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "uygulamanın dilini seç",
     ),
+    "leave": MessageLookupByLibrary.simpleMessage("çık"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage(
       "kaydetmeden çık",
+    ),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "seçilen videolar hâlâ yüklenirken çıkılsın mı?",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage(
+      "videolar hâlâ yükleniyor",
     ),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "bulut depolamadan indirme veya büyük dosyaları kopyalama daha uzun sürebilir",
@@ -246,7 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "orijinali değiştir",
     ),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "orijinal meta verilerle kaydet, ardından orijinali silmek için izin iste",
+      "sıkıştırılmış video kaydedilir, ardından Fotoğraflar orijinalin silinmesini onaylamanızı ister",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("çözünürlük"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

@@ -174,7 +174,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "ऐप की भाषा चुनें",
     ),
+    "leave": MessageLookupByLibrary.simpleMessage("बाहर निकलें"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage("बिना सेव जाएँ"),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "चुने गए वीडियो लोड होते समय बाहर निकलें?",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage(
+      "वीडियो अभी लोड हो रहे हैं",
+    ),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "क्लाउड से डाउनलोड या बड़ी फ़ाइल कॉपी होने में समय लग सकता है",
     ),
@@ -235,7 +242,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateTheApp": MessageLookupByLibrary.simpleMessage("ऐप को रेट करें"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("मूल बदलें"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "मूल मेटाडेटा के साथ सेव करके मूल हटाने को पूछें",
+      "कंप्रेस्ड वीडियो सेव होगा, फिर फ़ोटो मूल वीडियो हटाने की पुष्टि मांगेगा",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("रिज़ॉल्यूशन"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

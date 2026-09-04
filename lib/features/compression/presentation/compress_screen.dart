@@ -90,6 +90,7 @@ class _CompressViewState extends State<_CompressView>
   int? _reviewRequestedForRunId;
   bool _loadingVideos = false;
   (int, int)? _loadingProgress;
+  bool _initialSelectionConfirmed = false;
   bool _leaveConfirmationOpen = false;
 
   @override
@@ -137,18 +138,27 @@ class _CompressViewState extends State<_CompressView>
       },
       builder: (context, state) {
         final waitingForInitialSelection =
-            _loadingVideos &&
             state.videos.isEmpty &&
             widget.initialPickSource != null &&
-            _loadingProgress == null;
+            !_initialSelectionConfirmed;
         final canLeave =
             state.status != CompressStatus.processing &&
             !_loadingVideos &&
             !state.hasUnsavedResults;
+        final backButton = AppActionButton(
+          width: 47,
+          icon: AppIcons.arrowBack,
+          iconWidth: 22,
+          iconHeight: 22,
+          onPressed: () => unawaited(_requestLeave(context, state)),
+        );
         return PopScope(
           canPop: canLeave,
           onPopInvokedWithResult: (didPop, _) {
-            if (!didPop && state.hasUnsavedResults) {
+            if (didPop) return;
+            if (_loadingVideos) {
+              unawaited(_confirmLoadingExit(context));
+            } else if (state.hasUnsavedResults) {
               unawaited(_confirmUnsavedExit(context));
             }
           },
@@ -160,21 +170,22 @@ class _CompressViewState extends State<_CompressView>
                 child: Column(
                   children: [
                     if (waitingForInitialSelection)
-                      const Expanded(child: VideoLoadingView())
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            const Positioned.fill(child: VideoLoadingView()),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: backButton,
+                            ),
+                          ],
+                        ),
+                      )
                     else ...[
                       if (state.status != CompressStatus.processing) ...[
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: AppActionButton(
-                            width: 47,
-                            icon: AppIcons.arrowBack,
-                            iconWidth: 22,
-                            iconHeight: 22,
-                            onPressed: _loadingVideos
-                                ? null
-                                : () =>
-                                      unawaited(_requestLeave(context, state)),
-                          ),
+                          child: backButton,
                         ),
                         const SizedBox(height: 8),
                       ],
@@ -232,7 +243,10 @@ class _CompressViewState extends State<_CompressView>
         source: source,
         onProgress: (processed, total) {
           if (mounted) {
-            setState(() => _loadingProgress = (processed, total));
+            setState(() {
+              _loadingProgress = (processed, total);
+              if (initial && total > 0) _initialSelectionConfirmed = true;
+            });
           }
         },
       );
@@ -248,7 +262,9 @@ class _CompressViewState extends State<_CompressView>
           message: S.of(context).failedToPickVideos,
           type: AppSnackBarType.error,
         );
-        if (initial) Navigator.of(context).pop();
+        if (initial) {
+          Navigator.of(context).pop();
+        }
       }
     } finally {
       if (mounted) {
@@ -312,7 +328,9 @@ class _CompressViewState extends State<_CompressView>
   }
 
   Future<void> _requestLeave(BuildContext context, CompressState state) async {
-    if (state.hasUnsavedResults) {
+    if (_loadingVideos) {
+      await _confirmLoadingExit(context);
+    } else if (state.hasUnsavedResults) {
       await _confirmUnsavedExit(context);
     } else {
       _goToStart(context);
@@ -320,19 +338,56 @@ class _CompressViewState extends State<_CompressView>
   }
 
   Future<void> _confirmUnsavedExit(BuildContext context) async {
+    final strings = S.of(context);
+    await _confirmExit(
+      context,
+      title: strings.unsavedResultsTitle,
+      message: strings.unsavedResultsMessage,
+      leaveLabel: strings.leaveWithoutSaving,
+    );
+  }
+
+  Future<void> _confirmLoadingExit(BuildContext context) async {
+    final strings = S.of(context);
+    await _confirmExit(
+      context,
+      title: strings.loadingExitTitle,
+      message: strings.loadingExitMessage,
+      leaveLabel: strings.leave,
+    );
+  }
+
+  Future<void> _confirmExit(
+    BuildContext context, {
+    required String title,
+    required String message,
+    required String leaveLabel,
+  }) async {
     if (_leaveConfirmationOpen) return;
     _leaveConfirmationOpen = true;
     final leave = await showDialog<bool>(
       context: context,
-      builder: (_) => const _UnsavedExitDialog(),
+      builder: (_) => _ExitConfirmationDialog(
+        title: title,
+        message: message,
+        leaveLabel: leaveLabel,
+      ),
     );
     _leaveConfirmationOpen = false;
     if (leave == true && mounted) _goToStart(this.context);
   }
 }
 
-class _UnsavedExitDialog extends StatelessWidget {
-  const _UnsavedExitDialog();
+class _ExitConfirmationDialog extends StatelessWidget {
+  final String title;
+  final String message;
+  final String leaveLabel;
+
+  const _ExitConfirmationDialog({
+    required this.title,
+    required this.message,
+    required this.leaveLabel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -363,7 +418,7 @@ class _UnsavedExitDialog extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  strings.unsavedResultsTitle,
+                  title,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     color: colors.onSurface,
@@ -373,7 +428,7 @@ class _UnsavedExitDialog extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  strings.unsavedResultsMessage,
+                  message,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: colors.onSurfaceVariant,
@@ -394,7 +449,7 @@ class _UnsavedExitDialog extends StatelessWidget {
                 AppActionButton(
                   width: double.infinity,
                   height: 54,
-                  label: strings.leaveWithoutSaving,
+                  label: leaveLabel,
                   fontSize: 18,
                   onPressed: () => Navigator.of(context).pop(true),
                 ),

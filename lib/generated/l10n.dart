@@ -414,10 +414,10 @@ class S {
     );
   }
 
-  /// `save with original metadata, then ask to delete the original`
+  /// `the compressed video will be saved, then Photos will ask to confirm deleting the original`
   String get replaceOriginalDescription {
     return Intl.message(
-      'save with original metadata, then ask to delete the original',
+      'the compressed video will be saved, then Photos will ask to confirm deleting the original',
       name: 'replaceOriginalDescription',
       desc: '',
       args: [],
@@ -827,6 +827,31 @@ class S {
   /// `stay`
   String get stay {
     return Intl.message('stay', name: 'stay', desc: '', args: []);
+  }
+
+  /// `videos are still loading`
+  String get loadingExitTitle {
+    return Intl.message(
+      'videos are still loading',
+      name: 'loadingExitTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `leave while the selected videos are still loading?`
+  String get loadingExitMessage {
+    return Intl.message(
+      'leave while the selected videos are still loading?',
+      name: 'loadingExitMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `leave`
+  String get leave {
+    return Intl.message('leave', name: 'leave', desc: '', args: []);
   }
 
   /// `estimating time remaining...`

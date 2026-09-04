@@ -137,7 +137,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("语言"),
     "languageDescription": MessageLookupByLibrary.simpleMessage("选择应用语言"),
+    "leave": MessageLookupByLibrary.simpleMessage("退出"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage("不保存并离开"),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "要在所选视频仍在加载时退出吗？",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage("视频仍在加载"),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "从云存储下载或复制大文件可能需要更长时间",
     ),
@@ -186,7 +191,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateTheApp": MessageLookupByLibrary.simpleMessage("为应用评分"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("替换原视频"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "使用原元数据保存，然后请求删除原视频",
+      "压缩后的视频将先保存，然后图库会要求确认删除原视频",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("分辨率"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

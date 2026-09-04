@@ -177,8 +177,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "выберите язык приложения",
     ),
+    "leave": MessageLookupByLibrary.simpleMessage("выйти"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage(
       "выйти без сохранения",
+    ),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "выйти, пока выбранные видео ещё загружаются?",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage(
+      "видео ещё загружаются",
     ),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "загрузка из облака или копирование больших файлов может занять больше времени",
@@ -244,7 +251,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "заменить оригинал",
     ),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "сохранить с метаданными, затем запросить удаление оригинала",
+      "сжатое видео сохранится, затем Фото попросит подтвердить удаление оригинала",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("разрешение"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

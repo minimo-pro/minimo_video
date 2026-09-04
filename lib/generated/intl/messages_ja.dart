@@ -153,7 +153,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("言語"),
     "languageDescription": MessageLookupByLibrary.simpleMessage("アプリの言語を選択"),
+    "leave": MessageLookupByLibrary.simpleMessage("終了"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage("保存せずに終了"),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "選択した動画の読み込み中に終了しますか？",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage("動画を読み込み中です"),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "クラウドからのダウンロードや大きなファイルのコピーには時間がかかる場合があります",
     ),
@@ -206,7 +211,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateTheApp": MessageLookupByLibrary.simpleMessage("アプリを評価"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("元の動画を置き換え"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "元のメタデータで保存後、元の動画の削除を確認します",
+      "圧縮済み動画を保存した後、写真アプリが元の動画の削除確認を求めます",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("解像度"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(

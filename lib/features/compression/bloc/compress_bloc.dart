@@ -72,12 +72,20 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     if (state.status != CompressStatus.ready) return;
     final runId = ++_estimateRunId;
     final settings = state.settings;
+    emit(state.copyWith(isEstimating: true));
     final estimate = await _videoCompressorAdapter.estimateCompressedSize(
       state.videos.map((video) => video.path),
       settings,
+      isCancelled: () => runId != _estimateRunId,
     );
     if (runId != _estimateRunId) return;
-    emit(state.copyWith(estimatedSize: estimate, clearEstimatedSize: true));
+    emit(
+      state.copyWith(
+        estimatedSize: estimate,
+        clearEstimatedSize: true,
+        isEstimating: false,
+      ),
+    );
   }
 
   Future<void> _onThumbnailsRequested(
@@ -131,6 +139,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
           ),
         ],
         clearEstimatedSize: true,
+        isEstimating: true,
       ),
     );
     add(const CompressThumbnailsRequested());
@@ -154,6 +163,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         emit(
           state.copyWith(
             settings: const CompressionSettings(crf: 22, resolution: null),
+            isEstimating: true,
           ),
         );
       case SimpleCompressionQuality.medium:
@@ -163,12 +173,14 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
               crf: 28,
               resolution: '1280:720',
             ),
+            isEstimating: true,
           ),
         );
       case SimpleCompressionQuality.low:
         emit(
           state.copyWith(
             settings: const CompressionSettings(crf: 34, resolution: '854:480'),
+            isEstimating: true,
           ),
         );
     }
@@ -182,6 +194,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     emit(
       state.copyWith(
         settings: state.settings.copyWith(resolution: event.resolution),
+        isEstimating: true,
       ),
     );
     _requestEstimate();
@@ -191,13 +204,14 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     CompressSettingsChanged event,
     Emitter<CompressState> emit,
   ) {
-    emit(state.copyWith(settings: event.settings));
+    emit(state.copyWith(settings: event.settings, isEstimating: true));
     _requestEstimate();
   }
 
   @override
   Future<void> close() async {
     _estimateDebounce?.cancel();
+    _estimateRunId++;
     await _setScreenAwake(false);
     return super.close();
   }
@@ -253,6 +267,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         currentVideoProgress: 0,
         elapsed: previousElapsed,
         isSaved: false,
+        isEstimating: false,
         clearSaveNotification: true,
         clearCompressionError: true,
       ),

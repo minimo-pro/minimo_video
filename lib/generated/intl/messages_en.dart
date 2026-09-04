@@ -177,8 +177,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "select the language for the app",
     ),
+    "leave": MessageLookupByLibrary.simpleMessage("leave"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage(
       "leave without saving",
+    ),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "leave while the selected videos are still loading?",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage(
+      "videos are still loading",
     ),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "downloading from cloud storage or copying large files may take longer",
@@ -240,7 +247,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "rateTheApp": MessageLookupByLibrary.simpleMessage("rate the app"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("replace original"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
-      "save with original metadata, then ask to delete the original",
+      "the compressed video will be saved, then Photos will ask to confirm deleting the original",
     ),
     "resolution": MessageLookupByLibrary.simpleMessage("resolution"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
