@@ -175,8 +175,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "uygulamanın dilini seç",
     ),
+    "leave": MessageLookupByLibrary.simpleMessage("çık"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage(
       "kaydetmeden çık",
+    ),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "seçilen videolar hâlâ yüklenirken çıkılsın mı?",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage(
+      "videolar hâlâ yükleniyor",
     ),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "bulut depolamadan indirme veya büyük dosyaları kopyalama daha uzun sürebilir",

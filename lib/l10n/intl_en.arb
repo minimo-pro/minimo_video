@@ -132,6 +132,9 @@
   "unsavedResultsMessage": "leave without saving the compressed videos?",
   "leaveWithoutSaving": "leave without saving",
   "stay": "stay",
+  "loadingExitTitle": "videos are still loading",
+  "loadingExitMessage": "leave while the selected videos are still loading?",
+  "leave": "leave",
   "estimatingTimeRemaining": "estimating time remaining...",
   "secondsRemaining": "{count, plural, =1{about 1 second left} other{about {count} seconds left}}",
   "@secondsRemaining": {

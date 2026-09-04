@@ -174,7 +174,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "ऐप की भाषा चुनें",
     ),
+    "leave": MessageLookupByLibrary.simpleMessage("बाहर निकलें"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage("बिना सेव जाएँ"),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "चुने गए वीडियो लोड होते समय बाहर निकलें?",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage(
+      "वीडियो अभी लोड हो रहे हैं",
+    ),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "क्लाउड से डाउनलोड या बड़ी फ़ाइल कॉपी होने में समय लग सकता है",
     ),

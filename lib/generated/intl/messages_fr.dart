@@ -174,8 +174,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "choisissez la langue de l\'app",
     ),
+    "leave": MessageLookupByLibrary.simpleMessage("quitter"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage(
       "quitter sans enregistrer",
+    ),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "quitter pendant le chargement des vidéos sélectionnées ?",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage(
+      "les vidéos sont encore en cours de chargement",
     ),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "le téléchargement depuis le cloud ou la copie de gros fichiers peut prendre plus de temps",

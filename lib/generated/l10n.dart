@@ -829,6 +829,31 @@ class S {
     return Intl.message('stay', name: 'stay', desc: '', args: []);
   }
 
+  /// `videos are still loading`
+  String get loadingExitTitle {
+    return Intl.message(
+      'videos are still loading',
+      name: 'loadingExitTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `leave while the selected videos are still loading?`
+  String get loadingExitMessage {
+    return Intl.message(
+      'leave while the selected videos are still loading?',
+      name: 'loadingExitMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `leave`
+  String get leave {
+    return Intl.message('leave', name: 'leave', desc: '', args: []);
+  }
+
   /// `estimating time remaining...`
   String get estimatingTimeRemaining {
     return Intl.message(

@@ -153,7 +153,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("言語"),
     "languageDescription": MessageLookupByLibrary.simpleMessage("アプリの言語を選択"),
+    "leave": MessageLookupByLibrary.simpleMessage("終了"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage("保存せずに終了"),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "選択した動画の読み込み中に終了しますか？",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage("動画を読み込み中です"),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "クラウドからのダウンロードや大きなファイルのコピーには時間がかかる場合があります",
     ),

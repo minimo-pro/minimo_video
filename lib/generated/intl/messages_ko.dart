@@ -156,7 +156,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("언어"),
     "languageDescription": MessageLookupByLibrary.simpleMessage("앱 언어를 선택하세요"),
+    "leave": MessageLookupByLibrary.simpleMessage("나가기"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage("저장하지 않고 나가기"),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "선택한 동영상을 불러오는 동안 나갈까요?",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage(
+      "동영상을 아직 불러오는 중입니다",
+    ),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "클라우드에서 다운로드하거나 큰 파일을 복사하는 데 시간이 더 걸릴 수 있습니다",
     ),

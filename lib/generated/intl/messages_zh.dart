@@ -137,7 +137,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("语言"),
     "languageDescription": MessageLookupByLibrary.simpleMessage("选择应用语言"),
+    "leave": MessageLookupByLibrary.simpleMessage("退出"),
     "leaveWithoutSaving": MessageLookupByLibrary.simpleMessage("不保存并离开"),
+    "loadingExitMessage": MessageLookupByLibrary.simpleMessage(
+      "要在所选视频仍在加载时退出吗？",
+    ),
+    "loadingExitTitle": MessageLookupByLibrary.simpleMessage("视频仍在加载"),
     "loadingManyVideosHint": MessageLookupByLibrary.simpleMessage(
       "从云存储下载或复制大文件可能需要更长时间",
     ),

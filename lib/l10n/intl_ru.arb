@@ -132,6 +132,9 @@
   "unsavedResultsMessage": "выйти без сохранения сжатых видео?",
   "leaveWithoutSaving": "выйти без сохранения",
   "stay": "остаться",
+  "loadingExitTitle": "видео ещё загружаются",
+  "loadingExitMessage": "выйти, пока выбранные видео ещё загружаются?",
+  "leave": "выйти",
   "estimatingTimeRemaining": "оцениваем оставшееся время...",
   "secondsRemaining": "{count, plural, =1{осталась примерно 1 секунда} one{осталась примерно {count} секунда} few{осталось примерно {count} секунды} many{осталось примерно {count} секунд} other{осталось примерно {count} секунды}}",
   "@secondsRemaining": {
