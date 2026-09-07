@@ -37,6 +37,50 @@ void main() {
     await tester.pumpAndSettle();
   });
 
+  testWidgets('different snackbars form a vertical stack', (tester) async {
+    late BuildContext context;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (builderContext) {
+            context = builderContext;
+            return const SizedBox();
+          },
+        ),
+      ),
+    );
+
+    AppSnackBar.show(
+      context,
+      message: 'first',
+      animationDuration: animationDuration,
+    );
+    AppSnackBar.show(
+      context,
+      message: 'second',
+      animationDuration: animationDuration,
+    );
+    await tester.pump(const Duration(milliseconds: 2));
+
+    expect(find.text('first'), findsOneWidget);
+    expect(find.text('second'), findsOneWidget);
+
+    final firstCard = find.ancestor(
+      of: find.text('first'),
+      matching: find.byType(Ink),
+    );
+    final secondCard = find.ancestor(
+      of: find.text('second'),
+      matching: find.byType(Ink),
+    );
+
+    expect(
+      tester.getTopLeft(secondCard).dy,
+      greaterThan(tester.getBottomLeft(firstCard).dy),
+    );
+  });
+
   testWidgets('duplicate snackbar reuses the visible entry', (tester) async {
     late BuildContext context;
 

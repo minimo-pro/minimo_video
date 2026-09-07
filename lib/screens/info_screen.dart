@@ -12,8 +12,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/app_icons.dart';
 import '../generated/l10n.dart';
+import '../services/changelog_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_snack_bar.dart';
+import '../widgets/changelog_dialog.dart';
 import '../widgets/faded_scroll_view.dart';
 import '../widgets/pressable.dart';
 
@@ -143,6 +145,7 @@ class InfoScreen extends StatelessWidget {
                     const SizedBox(height: 24),
                     _CompressionExplanation(strings: strings),
                     const SizedBox(height: 18),
+                    const _WhatsNewLink(),
                     _InfoLink(title: strings.rateTheApp, onTap: _rateApp),
                     _InfoLink(
                       title: strings.shareWithFriends,
@@ -188,6 +191,47 @@ class InfoScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _WhatsNewLink extends StatefulWidget {
+  const _WhatsNewLink();
+
+  @override
+  State<_WhatsNewLink> createState() => _WhatsNewLinkState();
+}
+
+class _WhatsNewLinkState extends State<_WhatsNewLink> {
+  ChangelogUpdate? _update;
+  String? _languageCode;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final languageCode = Localizations.localeOf(context).languageCode;
+    if (_languageCode == languageCode) return;
+    _languageCode = languageCode;
+    _load(languageCode);
+  }
+
+  Future<void> _load(String languageCode) async {
+    final update = await ChangelogService.instance.currentUpdate(
+      language: Language.fromCode(languageCode),
+    );
+    if (mounted && _languageCode == languageCode) {
+      setState(() => _update = update);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final update = _update;
+    if (update == null) return const SizedBox.shrink();
+
+    return _InfoLink(
+      title: S.of(context).changelogTitle(update.version),
+      onTap: () => showChangelogDialog(context, update),
     );
   }
 }

@@ -11,12 +11,12 @@ PackageInfo _packageInfo(String version) => PackageInfo(
 );
 
 void main() {
-  test('bundled 1.0.4 changelog is localized for every language', () {
+  test('bundled 1.0.5 changelog is localized for every language', () {
     final changes = {
       for (final language in Language.values)
         unseenChanges(
-          lastSeen: '1.0.3',
-          current: '1.0.4',
+          lastSeen: '1.0.4',
+          current: '1.0.5',
           language: language,
         ).join('\n'),
     };
@@ -30,6 +30,21 @@ void main() {
       expect(Language.fromCode(language.code), language);
     }
   });
+
+  test(
+    'currentUpdate returns current release after it was already seen',
+    () async {
+      SharedPreferences.setMockInitialValues({'last_seen_version': '1.0.5'});
+      final service = ChangelogService(
+        packageInfo: () async => _packageInfo('1.0.5'),
+      );
+
+      final update = await service.currentUpdate(language: Language.ru);
+
+      expect(update?.version, '1.0.5');
+      expect(update?.changes, hasLength(3));
+    },
+  );
 
   test('bundled 1.0.2 changelog is shown after 1.0.1', () {
     expect(

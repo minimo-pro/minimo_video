@@ -43,6 +43,73 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.5': {
+    Language.en: [
+      'reopen What’s New from the About screen.',
+      'hold actions that require confirmation longer, with progress that slows near completion.',
+      'see multiple notifications in a clear vertical stack instead of overlapping.',
+    ],
+    Language.ru: [
+      'раздел «Что нового» теперь можно снова открыть с экрана «О приложении».',
+      'действия с подтверждением теперь требуют более долгого удержания, а прогресс замедляется ближе к завершению.',
+      'несколько уведомлений теперь складываются в аккуратный вертикальный стек и не перекрывают друг друга.',
+    ],
+    Language.es: [
+      'vuelve a abrir Novedades desde la pantalla Acerca de.',
+      'mantén pulsadas durante más tiempo las acciones que requieren confirmación, con un progreso que se ralentiza al final.',
+      'consulta varias notificaciones en una pila vertical clara en lugar de superpuestas.',
+    ],
+    Language.pt: [
+      'abra novamente as Novidades pela tela Sobre.',
+      'mantenha pressionadas por mais tempo as ações que exigem confirmação, com o progresso desacelerando perto do fim.',
+      'veja várias notificações em uma pilha vertical organizada, sem sobreposição.',
+    ],
+    Language.de: [
+      'öffne „Neuigkeiten“ erneut über den Info-Bildschirm.',
+      'halte Aktionen mit Bestätigung länger gedrückt; der Fortschritt wird zum Ende hin langsamer.',
+      'mehrere Benachrichtigungen erscheinen übersichtlich untereinander statt übereinander.',
+    ],
+    Language.fr: [
+      'rouvrez les nouveautés depuis l’écran À propos.',
+      'maintenez plus longtemps les actions nécessitant une confirmation, avec une progression qui ralentit vers la fin.',
+      'consultez plusieurs notifications dans une pile verticale claire, sans chevauchement.',
+    ],
+    Language.zh: [
+      '可从“关于”页面重新打开“更新内容”。',
+      '需要确认的操作要按住更长时间，进度在接近完成时会逐渐减慢。',
+      '多条通知会整齐地纵向排列，不再相互重叠。',
+    ],
+    Language.hi: [
+      'अब परिचय स्क्रीन से नया क्या है फिर से खोलें।',
+      'पुष्टि वाली कार्रवाइयों को अधिक देर तक दबाएँ; पूरा होने के पास प्रगति धीमी हो जाती है।',
+      'कई सूचनाएँ अब एक-दूसरे पर चढ़ने के बजाय साफ़ लंबवत क्रम में दिखती हैं।',
+    ],
+    Language.nl: [
+      'open Wat is er nieuw opnieuw vanuit het infoscherm.',
+      'houd acties met bevestiging langer ingedrukt; de voortgang vertraagt tegen het einde.',
+      'meerdere meldingen staan overzichtelijk onder elkaar in plaats van over elkaar.',
+    ],
+    Language.ko: [
+      '정보 화면에서 새로운 기능을 다시 열 수 있습니다.',
+      '확인이 필요한 작업은 더 오래 눌러야 하며 완료에 가까워질수록 진행 속도가 느려집니다.',
+      '여러 알림이 겹치지 않고 깔끔한 세로 스택으로 표시됩니다.',
+    ],
+    Language.ja: [
+      '情報画面から「新機能」をもう一度開けるようになりました。',
+      '確認が必要な操作はより長く押し続ける必要があり、完了に近づくほど進行がゆっくりになります。',
+      '複数の通知が重ならず、見やすく縦に並ぶようになりました。',
+    ],
+    Language.it: [
+      'riapri le novità dalla schermata Informazioni.',
+      'tieni premute più a lungo le azioni che richiedono conferma, con un avanzamento che rallenta verso la fine.',
+      'visualizza più notifiche in una pila verticale ordinata, senza sovrapposizioni.',
+    ],
+    Language.tr: [
+      'Hakkında ekranından Yenilikler bölümünü yeniden açın.',
+      'onay gerektiren işlemleri daha uzun basılı tutun; ilerleme tamamlanmaya yakın yavaşlar.',
+      'birden fazla bildirimi üst üste binmek yerine düzenli bir dikey yığında görün.',
+    ],
+  },
   '1.0.4': {
     Language.en: [
       'keep compression size estimates updating for batches over 100 videos, with a loading indicator while recalculating.',
@@ -267,6 +334,17 @@ class ChangelogService {
     Future<SharedPreferences> Function()? preferences,
   }) : _packageInfo = packageInfo ?? PackageInfo.fromPlatform,
        _preferences = preferences ?? SharedPreferences.getInstance;
+
+  Future<ChangelogUpdate?> currentUpdate({required Language language}) async {
+    final current = (await _packageInfo()).version;
+    _currentVersion = current;
+    final texts = _changelog[current];
+    if (texts == null) return null;
+
+    final changes = texts[language] ?? texts[Language.en] ?? const [];
+    if (changes.isEmpty) return null;
+    return ChangelogUpdate(version: current, changes: changes);
+  }
 
   Future<ChangelogUpdate?> initialize({required Language language}) async {
     final current = (await _packageInfo()).version;

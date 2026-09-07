@@ -26,6 +26,9 @@ If unseen changes exist, `showChangelogDialog()` presents a content-sized
 shared `FadedScrollView` to show scroll-edge fading. Dismissing the sheet
 marks the current version as seen.
 
+`InfoScreen` also links to the bundled notes for the current app version, so
+users can reopen “What’s new” after the automatic sheet has been dismissed.
+
 ## Release Checklist
 
 - Update root `CHANGELOG.md` and group entries under category headings such as `### Added`.

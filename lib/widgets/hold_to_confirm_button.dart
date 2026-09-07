@@ -30,6 +30,7 @@ class HoldToConfirmButton extends StatefulWidget {
 class _HoldToConfirmButtonState extends State<HoldToConfirmButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
+  late final CurvedAnimation _progressAnimation;
   bool _completedHold = false;
 
   @override
@@ -38,14 +39,19 @@ class _HoldToConfirmButtonState extends State<HoldToConfirmButton>
     _controller =
         AnimationController(
           vsync: this,
-          duration: const Duration(milliseconds: 1500),
+          duration: const Duration(milliseconds: 2500),
         )..addStatusListener((status) {
           if (status == AnimationStatus.completed) _complete();
         });
+    _progressAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutCubic,
+    );
   }
 
   @override
   void dispose() {
+    _progressAnimation.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -143,9 +149,11 @@ class _HoldToConfirmButtonState extends State<HoldToConfirmButton>
                   ),
                 ),
                 AnimatedBuilder(
-                  animation: _controller,
+                  animation: _progressAnimation,
                   builder: (context, _) => ClipRect(
-                    clipper: _HorizontalProgressClipper(_controller.value),
+                    clipper: _HorizontalProgressClipper(
+                      _progressAnimation.value,
+                    ),
                     child: ColoredBox(
                       color: theme.accentColor,
                       child: _content(theme.onAccentColor, theme.onAccentColor),

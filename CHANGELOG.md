@@ -1,3 +1,14 @@
+## [1.0.5]
+
+### Added
+
+* Added a What’s New link to the About screen for reopening the current release notes.
+
+### Changed
+
+* Increased hold time for actions that require confirmation to 2.5 seconds and slowed their progress near completion.
+* Stacked simultaneous notifications vertically instead of overlapping them.
+
 ## [1.0.4]
 
 ### Changed
