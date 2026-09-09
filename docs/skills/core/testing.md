@@ -30,6 +30,7 @@ Current tests cover:
 - Previous estimate retained while a settings estimate refreshes
 - Add-more and compress actions sharing the settings bottom row
 - Intermediate pre-selection loader, confirmed exit during import, no empty-settings flash after picker cancellation, then interactive settings with preview/button loaders, hidden zero-byte estimates, and safe completion during active scrolling
+- Screen stays awake during import and compression when `prevent_screen_sleep` is enabled
 - Compact icon-only `AppActionButton` layout for wide SVG assets (`arrow_back`, `share`, `more`)
 
 ## Test Boundaries

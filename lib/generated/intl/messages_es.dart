@@ -241,7 +241,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "mantener la pantalla encendida",
     ),
     "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
-      "evita que la pantalla se apague mientras se comprimen videos",
+      "evita que la pantalla se apague mientras se cargan o comprimen videos",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage(
       "sitio web del proyecto",

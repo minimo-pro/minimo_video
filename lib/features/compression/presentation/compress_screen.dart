@@ -8,7 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/app_icons.dart';
 import '../../../generated/l10n.dart';
 import '../../../router/app_router.gr.dart';
+import '../../../services/app_settings_service.dart';
 import '../../../services/review_service.dart';
+import '../../../services/screen_awake_service.dart';
 import '../../../widgets/app_action_button.dart';
 import '../../../widgets/app_snack_bar.dart';
 import '../../../widgets/minimo_loader.dart';
@@ -89,6 +91,7 @@ class _CompressViewState extends State<_CompressView>
   var _backgroundedWhileProcessing = false;
   int? _reviewRequestedForRunId;
   bool _loadingVideos = false;
+  bool _screenAwakeEnabled = false;
   (int, int)? _loadingProgress;
   bool _initialSelectionConfirmed = false;
   bool _leaveConfirmationOpen = false;
@@ -108,6 +111,7 @@ class _CompressViewState extends State<_CompressView>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    unawaited(_setScreenAwake(false));
     super.dispose();
   }
 
@@ -237,6 +241,7 @@ class _CompressViewState extends State<_CompressView>
       _loadingVideos = true;
       _loadingProgress = null;
     });
+    unawaited(_setScreenAwake(AppSettingsService.instance.preventScreenSleep));
 
     try {
       final videos = await _videoFileAdapter.pickVideos(
@@ -267,12 +272,23 @@ class _CompressViewState extends State<_CompressView>
         }
       }
     } finally {
+      unawaited(_setScreenAwake(false));
       if (mounted) {
         setState(() {
           _loadingVideos = false;
           _loadingProgress = null;
         });
       }
+    }
+  }
+
+  Future<void> _setScreenAwake(bool enabled) async {
+    if (enabled == _screenAwakeEnabled) return;
+    _screenAwakeEnabled = enabled;
+    try {
+      await ScreenAwakeService.instance.setEnabled(enabled);
+    } catch (_) {
+      _screenAwakeEnabled = !enabled;
     }
   }
 

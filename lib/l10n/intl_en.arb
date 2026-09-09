@@ -79,7 +79,7 @@
   "replaceOriginal": "replace original",
   "replaceOriginalDescription": "the compressed video will be saved, then Photos will ask to confirm deleting the original",
   "preventScreenSleep": "keep screen awake",
-  "preventScreenSleepDescription": "prevents the screen from sleeping while videos are compressing",
+  "preventScreenSleepDescription": "prevents the screen from sleeping while videos are loading or compressing",
   "clearCache": "clear cache",
   "clearCacheDescription": "removes temporary app files. videos saved to your gallery remain untouched",
   "holdToClearCache": "hold the button to clear cache",

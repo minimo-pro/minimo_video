@@ -14,6 +14,8 @@ import 'package:minimo_video/features/compression/presentation/widgets/compressi
 import 'package:minimo_video/features/compression/presentation/widgets/compression_mode_switch.dart';
 import 'package:minimo_video/features/compression/presentation/widgets/video_loading_view.dart';
 import 'package:minimo_video/generated/l10n.dart';
+import 'package:minimo_video/services/app_settings_service.dart';
+import 'package:minimo_video/services/screen_awake_service.dart';
 import 'package:minimo_video/theme/app_theme.dart';
 import 'package:minimo_video/widgets/app_action_button.dart';
 import 'package:minimo_video/widgets/minimo_loader.dart';
@@ -21,8 +23,17 @@ import 'package:minimo_video/widgets/minimo_loader.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   const channel = MethodChannel('minimo_video/videos');
+  late ScreenAwakeService previousScreenAwake;
+  late _RecordingScreenAwakeService screenAwake;
+
+  setUp(() {
+    previousScreenAwake = ScreenAwakeService.instance;
+    screenAwake = _RecordingScreenAwakeService();
+    ScreenAwakeService.instance = screenAwake;
+  });
 
   tearDown(() {
+    ScreenAwakeService.instance = previousScreenAwake;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, null);
   });
@@ -204,6 +215,71 @@ void main() {
       expect(find.text('start screen'), findsOneWidget);
     },
   );
+
+  testWidgets('keeps screen awake while videos import', (tester) async {
+    final previous = AppSettingsService.instance.preventScreenSleep;
+    AppSettingsService.instance.preventScreenSleep = true;
+    addTearDown(
+      () => AppSettingsService.instance.preventScreenSleep = previous,
+    );
+
+    final pickedVideos = Completer<List<Map<String, Object>>>();
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) {
+          if (call.method == 'pickVideos') return pickedVideos.future;
+          return null;
+        });
+
+    await _pumpScreen(tester);
+    await tester.pump();
+    expect(screenAwake.calls, [true]);
+
+    pickedVideos.complete([
+      {'path': '/video.mp4', 'name': 'video.mp4', 'size': 1000},
+    ]);
+    await tester.pump();
+    await tester.pump();
+
+    expect(screenAwake.calls, [true, false]);
+  });
+
+  testWidgets('does not keep screen awake during import when setting is off', (
+    tester,
+  ) async {
+    final previous = AppSettingsService.instance.preventScreenSleep;
+    AppSettingsService.instance.preventScreenSleep = false;
+    addTearDown(
+      () => AppSettingsService.instance.preventScreenSleep = previous,
+    );
+
+    final pickedVideos = Completer<List<Map<String, Object>>>();
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) {
+          if (call.method == 'pickVideos') return pickedVideos.future;
+          return null;
+        });
+
+    await _pumpScreen(tester);
+    await tester.pump();
+    expect(screenAwake.calls, isEmpty);
+
+    pickedVideos.complete([
+      {'path': '/video.mp4', 'name': 'video.mp4', 'size': 1000},
+    ]);
+    await tester.pump();
+    await tester.pump();
+
+    expect(screenAwake.calls, isEmpty);
+  });
+}
+
+class _RecordingScreenAwakeService extends ScreenAwakeService {
+  final calls = <bool>[];
+
+  @override
+  Future<void> setEnabled(bool enabled) async {
+    calls.add(enabled);
+  }
 }
 
 Future<void> _sendPickProgress({required int processed, required int total}) {

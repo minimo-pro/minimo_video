@@ -51,7 +51,7 @@ Both platforms report `pickProgress` (`processed`/`total`) over the videos metho
 
 ## Screen Awake
 
-`wakelock_plus` keeps the display awake during compression when the setting is enabled.
+`wakelock_plus` keeps the display awake during video import and compression when the setting is enabled.
 
 ## Orientation
 

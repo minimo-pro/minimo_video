@@ -240,7 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "keep screen awake",
     ),
     "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
-      "prevents the screen from sleeping while videos are compressing",
+      "prevents the screen from sleeping while videos are loading or compressing",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("project website"),
     "quality": MessageLookupByLibrary.simpleMessage("quality"),

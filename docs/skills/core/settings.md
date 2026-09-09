@@ -8,7 +8,7 @@ Settings use `shared_preferences` through `AppSettingsService`.
 | `show_overheat_warning` | `bool` | `true` | Show thermal warning during compression |
 | `save_videos_to_album` | `bool` | `false` | Save into gallery album `Minimo` |
 | `delete_originals_after_saving` | `bool` | `false` | Preselect deletable originals in the save sheet |
-| `prevent_screen_sleep` | `bool` | `true` | Keep the screen awake during compression |
+| `prevent_screen_sleep` | `bool` | `true` | Keep the screen awake during video import and compression |
 | `language_code` | `String?` | system | Override locale with a supported language code |
 | `dark_theme` | `bool?` | system | Override system theme after user selection |
 | `onboarding_completed` | `bool` | `false` | Skip onboarding after completion |

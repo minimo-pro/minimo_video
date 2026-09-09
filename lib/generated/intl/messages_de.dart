@@ -243,7 +243,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "bildschirm aktiv halten",
     ),
     "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
-      "verhindert den ruhezustand des bildschirms, während videos komprimiert werden",
+      "verhindert den ruhezustand des bildschirms, während videos geladen oder komprimiert werden",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("projektwebsite"),
     "quality": MessageLookupByLibrary.simpleMessage("qualität"),

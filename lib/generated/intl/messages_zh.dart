@@ -184,7 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("从图库选择"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage("保持屏幕亮起"),
     "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
-      "压缩视频时防止屏幕休眠",
+      "在加载或压缩视频时防止屏幕休眠",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("项目网站"),
     "quality": MessageLookupByLibrary.simpleMessage("质量"),

@@ -235,7 +235,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "स्क्रीन चालू रखें",
     ),
     "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
-      "कंप्रेशन के दौरान स्क्रीन को सोने नहीं देता",
+      "लोडिंग या कंप्रेशन के दौरान स्क्रीन को सोने नहीं देता",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("प्रोजेक्ट वेबसाइट"),
     "quality": MessageLookupByLibrary.simpleMessage("क्वालिटी"),
