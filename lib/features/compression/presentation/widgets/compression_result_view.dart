@@ -233,11 +233,23 @@ class CompressionResultView extends StatelessWidget {
       return;
     }
     final metadataIdentifiers = state.successResults
+        .where((item) => item.source.canPreserveMetadata)
+        .map((item) => item.source.sourceIdentifier)
+        .whereType<String>()
+        .toSet();
+    final deletableIdentifiers = state.successResults
         .where((item) => item.source.canDeleteOriginal)
         .map((item) => item.source.sourceIdentifier)
         .whereType<String>()
         .toSet();
     final metadataAvailable = metadataIdentifiers.isNotEmpty;
+    final replaceAvailable =
+        state.successResults.isNotEmpty &&
+        state.successResults.every(
+          (item) =>
+              item.source.canDeleteOriginal &&
+              item.source.sourceIdentifier != null,
+        );
     var selectedMode = _GallerySaveMode.copy;
     final mode = await showAppSheet<_GallerySaveMode>(
       context: context,
@@ -254,6 +266,7 @@ class CompressionResultView extends StatelessWidget {
           }) {
             final selected = selectedMode == mode;
             return Opacity(
+              key: ValueKey('gallery-save-mode-${mode.name}'),
               opacity: enabled ? 1 : 0.38,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -325,7 +338,7 @@ class CompressionResultView extends StatelessWidget {
                           _GallerySaveMode.replaceOriginal,
                           strings.replaceOriginal,
                           strings.replaceOriginalDescription,
-                          enabled: metadataAvailable,
+                          enabled: replaceAvailable,
                         ),
                       ],
                     ),
@@ -353,7 +366,7 @@ class CompressionResultView extends StatelessWidget {
         ? const <String>{}
         : metadataIdentifiers;
     final deleteOriginals = mode == _GallerySaveMode.replaceOriginal
-        ? metadataIdentifiers
+        ? deletableIdentifiers
         : const <String>{};
     context.read<CompressBloc>().add(
       CompressResultsSaved(

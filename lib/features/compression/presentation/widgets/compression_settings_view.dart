@@ -105,9 +105,11 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
       originalSize: state.totalOriginalSize,
       settings: state.settings,
     );
-    final estimatedSize = state.isEstimating
-        ? localEstimate
-        : state.estimatedSize ?? localEstimate;
+    final initialEstimatePending =
+        state.isEstimating && state.estimatedSize == null;
+    final estimatedSize =
+        state.estimatedSize ??
+        (initialEstimatePending ? state.totalOriginalSize : localEstimate);
     final savingsPercent = state.totalOriginalSize == 0
         ? 0
         : ((1 - estimatedSize / state.totalOriginalSize) * 100)
@@ -171,6 +173,7 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
                                     estimatedSize: estimatedSize,
                                     savingsPercent: savingsPercent,
                                     isEstimating: state.isEstimating,
+                                    showSavings: !initialEstimatePending,
                                     compact: compact,
                                   ),
                           ),
@@ -224,6 +227,7 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
                                 estimatedSize: estimatedSize,
                                 savingsPercent: savingsPercent,
                                 isEstimating: state.isEstimating,
+                                showSavings: !initialEstimatePending,
                               ),
                             ),
                           ),
@@ -240,7 +244,9 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
           onAdd: widget.onAddVideos,
           isImporting: widget.isImporting,
           importProgress: widget.importProgress,
-          onCompress: widget.isImporting || savingsPercent == 0
+          onCompress:
+              widget.isImporting ||
+                  (!initialEstimatePending && savingsPercent == 0)
               ? null
               : () => context.read<CompressBloc>().add(const CompressStarted()),
         ),
@@ -254,12 +260,14 @@ class _PinnedSizeSummary extends StatelessWidget {
   final int estimatedSize;
   final int savingsPercent;
   final bool isEstimating;
+  final bool showSavings;
 
   const _PinnedSizeSummary({
     required this.originalSize,
     required this.estimatedSize,
     required this.savingsPercent,
     required this.isEstimating,
+    required this.showSavings,
   });
 
   @override
@@ -339,7 +347,9 @@ class _PinnedSizeSummary extends StatelessWidget {
                 Flexible(
                   child: Align(
                     alignment: Alignment.centerRight,
-                    child: savingsPercent == 0
+                    child: !showSavings
+                        ? const SizedBox.shrink()
+                        : savingsPercent == 0
                         ? Text(
                             strings.noSavingsHint,
                             maxLines: 2,

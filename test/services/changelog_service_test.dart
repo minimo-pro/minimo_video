@@ -42,7 +42,14 @@ void main() {
       final update = await service.currentUpdate(language: Language.ru);
 
       expect(update?.version, '1.0.6');
-      expect(update?.changes, hasLength(5));
+      expect(
+        update?.changes,
+        unseenChanges(
+          lastSeen: '1.0.5',
+          current: '1.0.6',
+          language: Language.ru,
+        ),
+      );
     },
   );
 

@@ -16,6 +16,7 @@ class SelectedVideosSummary extends StatelessWidget {
   final int estimatedSize;
   final int savingsPercent;
   final bool isEstimating;
+  final bool showSavings;
   final Key? sizeRowKey;
   final bool compact;
 
@@ -27,6 +28,7 @@ class SelectedVideosSummary extends StatelessWidget {
     required this.estimatedSize,
     required this.savingsPercent,
     required this.isEstimating,
+    this.showSavings = true,
     this.sizeRowKey,
     this.compact = false,
   });
@@ -112,7 +114,9 @@ class SelectedVideosSummary extends StatelessWidget {
           ),
         ),
         SizedBox(height: compact ? 10 : 18),
-        if (savingsPercent == 0)
+        if (!showSavings)
+          SizedBox(height: compact ? 35 : 43)
+        else if (savingsPercent == 0)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(

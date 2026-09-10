@@ -6,7 +6,7 @@ The start screen and the compression screen's add-more action show the same sour
 
 ### iOS
 
-- **Gallery:** `PHPickerViewController` filtered to videos with unlimited multi-selection. Preserves Photos `assetIdentifier` and marks the pick deletable.
+- **Gallery:** `PHPickerViewController` filtered to videos with unlimited multi-selection. It keeps the Photos `assetIdentifier`, but marks the source deletable only when the matching `PHAsset` is actually visible to the app.
 - **Files:** `UIDocumentPickerViewController` for `UTType.movie`, multi-selection, `asCopy: true`. No Photos identifier — original deletion is unavailable for these picks.
 
 Selected files are imported sequentially into
@@ -16,6 +16,12 @@ use `Library/Caches/minimo_thumbnails`. Cold-start and manual cleanup also scan
 the native `tmp` directory for files left by older app versions or an
 interrupted compressor run. Neither picker path requests broad library
 permission.
+
+For private-picker videos outside the app's Limited Photos selection, iOS reads
+the embedded QuickTime creation date and ISO 6709 location from the temporary
+file representation. This does not expand Photos access. It allows saving a
+compressed copy with the available date/GPS metadata, but source albums,
+favorite state, and original deletion remain unavailable.
 
 ### Android
 
@@ -37,10 +43,15 @@ retry.
 - On iOS, beside-original and replace-original use native `saveReplacement`.
   Both preserve supported metadata; only replace requests source deletion after
   the new asset is created and verified.
+- Beside-original is available when either Photos metadata or embedded
+  QuickTime date/GPS is available. Replace-original requires every successful
+  source to resolve to an accessible, deletable `PHAsset`.
 - iOS copies the Photos capture date, location, writable user-album membership,
   and favorite state. The new asset always receives a new local identifier.
 - iOS original deletion requests Photos read/write authorization only when deletion is confirmed.
-- Flutter carries both `sourceIdentifier` and `canDeleteOriginal`; UI must not infer delete capability from identifier presence alone.
+- Flutter carries separate `canPreserveMetadata` and `canDeleteOriginal`
+  capabilities plus fallback capture date/GPS. UI must not infer either
+  capability from identifier presence alone.
 - Android always reports picks as non-deletable, does not register native
   replacement/deletion methods, and saves directly through `gal` when the user
   taps save. The beside/replace sheet remains iOS-only.

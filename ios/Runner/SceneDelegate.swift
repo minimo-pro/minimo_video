@@ -6,6 +6,15 @@ import PhotosUI
 import UIKit
 import UniformTypeIdentifiers
 
+private struct PickedVideoMetadata {
+  let creationDate: Date?
+  let location: CLLocation?
+
+  var isAvailable: Bool {
+    creationDate != nil || location != nil
+  }
+}
+
 class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDocumentPickerDelegate {
   private var pendingPickResult: FlutterResult?
   private var activePickID: UUID?
@@ -152,6 +161,15 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       var imported = videos
       if error == nil, let url {
         do {
+          let sourceAsset = item.assetIdentifier.flatMap {
+            self.photosAssetIfAccessible(identifier: $0)
+          }
+          let metadata = sourceAsset.map {
+            PickedVideoMetadata(
+              creationDate: $0.creationDate,
+              location: $0.location
+            )
+          } ?? self.videoMetadata(at: url)
           let outputURL = try self.copyPickedVideo(from: url, filename: filename)
           let size = (try? FileManager.default.attributesOfItem(
             atPath: outputURL.path
@@ -163,7 +181,15 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
           ]
           if let assetIdentifier = item.assetIdentifier {
             video["sourceIdentifier"] = assetIdentifier
-            video["canDeleteOriginal"] = true
+            video["canDeleteOriginal"] = sourceAsset != nil
+            video["canPreserveMetadata"] = sourceAsset != nil || metadata.isAvailable
+          }
+          if let creationDate = metadata.creationDate {
+            video["captureDate"] = ISO8601DateFormatter().string(from: creationDate)
+          }
+          if let location = metadata.location {
+            video["latitude"] = location.coordinate.latitude
+            video["longitude"] = location.coordinate.longitude
           }
           imported.append(video)
         } catch {
@@ -181,6 +207,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
           arguments: ["processed": index + 1, "total": results.count]
         )
       }
+      guard self.activePickID == pickID else { return }
       self.importPhotosVideos(
         results,
         pickID: pickID,
@@ -240,6 +267,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
           arguments: ["processed": index + 1, "total": urls.count]
         )
       }
+      guard self.activePickID == pickID else { return }
       self.importDocumentVideos(
         urls,
         pickID: pickID,
@@ -355,6 +383,83 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     window?.rootViewController?.present(picker, animated: true)
   }
 
+  private func photosAssetIfAccessible(identifier: String) -> PHAsset? {
+    PHAsset.fetchAssets(
+      withLocalIdentifiers: [identifier],
+      options: nil
+    ).firstObject
+  }
+
+  private func videoMetadata(at url: URL) -> PickedVideoMetadata {
+    let asset = AVURLAsset(url: url)
+    let quickTimeMetadata = asset.metadata(forFormat: .quickTimeMetadata)
+    let creationItem = asset.creationDate
+      ?? AVMetadataItem.metadataItems(
+        from: quickTimeMetadata,
+        filteredByIdentifier: .quickTimeMetadataCreationDate
+      ).first
+    let creationDate = creationItem?.dateValue
+      ?? creationItem?.stringValue.flatMap(parseMetadataDate)
+    let locationItem = AVMetadataItem.metadataItems(
+      from: quickTimeMetadata,
+      filteredByIdentifier: .quickTimeMetadataLocationISO6709
+    ).first
+    let location = locationItem?.stringValue.flatMap(parseISO6709Location)
+    return PickedVideoMetadata(
+      creationDate: creationDate,
+      location: location
+    )
+  }
+
+  private func pickedMetadata(from arguments: [String: Any]?) -> PickedVideoMetadata {
+    let creationDate = (arguments?["captureDate"] as? String)
+      .flatMap(parseMetadataDate)
+    let latitude = (arguments?["latitude"] as? NSNumber)?.doubleValue
+    let longitude = (arguments?["longitude"] as? NSNumber)?.doubleValue
+    let location: CLLocation?
+    if
+      let latitude,
+      let longitude,
+      (-90...90).contains(latitude),
+      (-180...180).contains(longitude)
+    {
+      location = CLLocation(latitude: latitude, longitude: longitude)
+    } else {
+      location = nil
+    }
+    return PickedVideoMetadata(
+      creationDate: creationDate,
+      location: location
+    )
+  }
+
+  private func parseMetadataDate(_ value: String) -> Date? {
+    let formatter = ISO8601DateFormatter()
+    if let date = formatter.date(from: value) { return date }
+    formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    return formatter.date(from: value)
+  }
+
+  private func parseISO6709Location(_ value: String) -> CLLocation? {
+    let pattern = #"^([+-]\d+(?:\.\d+)?)([+-]\d+(?:\.\d+)?)"#
+    guard
+      let expression = try? NSRegularExpression(pattern: pattern),
+      let match = expression.firstMatch(
+        in: value,
+        range: NSRange(value.startIndex..., in: value)
+      ),
+      let latitudeRange = Range(match.range(at: 1), in: value),
+      let longitudeRange = Range(match.range(at: 2), in: value),
+      let latitude = Double(value[latitudeRange]),
+      let longitude = Double(value[longitudeRange]),
+      (-90...90).contains(latitude),
+      (-180...180).contains(longitude)
+    else {
+      return nil
+    }
+    return CLLocation(latitude: latitude, longitude: longitude)
+  }
+
   private func deleteOriginals(_ identifiers: [String], result: @escaping FlutterResult) {
     guard !identifiers.isEmpty else {
       result(FlutterError(code: "delete_unavailable", message: "no Photos assets to delete", details: nil))
@@ -402,7 +507,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       return
     }
 
-    PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+    let fallbackMetadata = pickedMetadata(from: arguments)
+    let source = photosAssetIfAccessible(identifier: sourceIdentifier)
+    let accessLevel: PHAccessLevel = source == nil ? .addOnly : .readWrite
+    PHPhotoLibrary.requestAuthorization(for: accessLevel) { status in
       guard status == .authorized || status == .limited else {
         DispatchQueue.main.async {
           result(FlutterError(code: "save_denied", message: "Photos access was denied", details: nil))
@@ -410,24 +518,24 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
         return
       }
 
-      let assets = PHAsset.fetchAssets(withLocalIdentifiers: [sourceIdentifier], options: nil)
-      guard let source = assets.firstObject else {
+      var albums: [PHAssetCollection] = []
+      var skippedSourceAlbum = false
+      if let source {
+        let sourceAlbums = PHAssetCollection.fetchAssetCollectionsContaining(
+          source,
+          with: .album,
+          options: nil
+        )
+        sourceAlbums.enumerateObjects { collection, _, _ in
+          if collection.canPerform(.addContent) { albums.append(collection) }
+        }
+        skippedSourceAlbum = albums.count < sourceAlbums.count
+      } else if !fallbackMetadata.isAvailable {
         DispatchQueue.main.async {
-          result(FlutterError(code: "save_failed", message: "original Photos asset is unavailable", details: nil))
+          result(FlutterError(code: "save_failed", message: "source metadata is unavailable", details: nil))
         }
         return
       }
-
-      let sourceAlbums = PHAssetCollection.fetchAssetCollectionsContaining(
-        source,
-        with: .album,
-        options: nil
-      )
-      var albums: [PHAssetCollection] = []
-      sourceAlbums.enumerateObjects { collection, _, _ in
-        if collection.canPerform(.addContent) { albums.append(collection) }
-      }
-      let skippedSourceAlbum = albums.count < sourceAlbums.count
 
       let requestedAlbum = (arguments?["album"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
       self.ensureAlbum(named: requestedAlbum) { album, albumWarning in
@@ -436,8 +544,14 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
         }
         self.createReplacement(
           at: URL(fileURLWithPath: path),
-          source: source,
+          metadata: source.map {
+            PickedVideoMetadata(
+              creationDate: $0.creationDate,
+              location: $0.location
+            )
+          } ?? fallbackMetadata,
           albums: albums,
+          favorite: source?.isFavorite ?? false,
           initialWarnings: albumWarning || skippedSourceAlbum ? ["album_unavailable"] : [],
           result: result
         )
@@ -486,8 +600,9 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
 
   private func createReplacement(
     at url: URL,
-    source: PHAsset,
+    metadata: PickedVideoMetadata,
     albums: [PHAssetCollection],
+    favorite: Bool,
     initialWarnings: [String],
     result: @escaping FlutterResult
   ) {
@@ -495,8 +610,8 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     PHPhotoLibrary.shared().performChanges({
       let request = PHAssetCreationRequest.forAsset()
       request.addResource(with: .video, fileURL: url, options: nil)
-      request.creationDate = source.creationDate
-      request.location = source.location
+      request.creationDate = metadata.creationDate
+      request.location = metadata.location
       let placeholder = request.placeholderForCreatedAsset
       identifier = placeholder?.localIdentifier
       if let placeholder {
@@ -524,7 +639,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
         return
       }
 
-      guard source.isFavorite else {
+      guard favorite else {
         DispatchQueue.main.async { result(["saved": true, "warnings": initialWarnings]) }
         return
       }

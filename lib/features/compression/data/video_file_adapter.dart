@@ -35,7 +35,11 @@ class VideoFileAdapter {
         name: name,
         size: size,
         sourceIdentifier: file['sourceIdentifier'] as String?,
+        canPreserveMetadata: file['canPreserveMetadata'] as bool? ?? false,
         canDeleteOriginal: file['canDeleteOriginal'] as bool? ?? false,
+        captureDate: file['captureDate'] as String?,
+        latitude: (file['latitude'] as num?)?.toDouble(),
+        longitude: (file['longitude'] as num?)?.toDouble(),
       );
     }).toList();
   }
@@ -58,11 +62,19 @@ class VideoFileAdapter {
     String filePath,
     String sourceIdentifier, {
     String? album,
+    String? captureDate,
+    double? latitude,
+    double? longitude,
   }) async {
-    final result = await _channel.invokeMapMethod<String, dynamic>(
-      'saveReplacement',
-      {'path': filePath, 'sourceIdentifier': sourceIdentifier, 'album': album},
-    );
+    final result = await _channel
+        .invokeMapMethod<String, dynamic>('saveReplacement', {
+          'path': filePath,
+          'sourceIdentifier': sourceIdentifier,
+          'album': album,
+          'captureDate': captureDate,
+          'latitude': latitude,
+          'longitude': longitude,
+        });
     if (result == null || result['saved'] != true) {
       throw StateError('replacement video was not saved');
     }

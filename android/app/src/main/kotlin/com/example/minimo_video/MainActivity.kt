@@ -157,8 +157,12 @@ class MainActivity : FlutterActivity() {
 
     private fun cancelVideoPick(result: MethodChannel.Result) {
         val cancelledResult = pendingPickResult
+        val wasPicking = activePickId != null
         pendingPickResult = null
         activePickId = null
+        if (wasPicking) {
+            finishActivity(PICK_VIDEOS_REQUEST)
+        }
         cancelledResult?.success(emptyList<Map<String, Any>>())
         result.success(null)
     }

@@ -68,12 +68,13 @@ the same quality, codec, dimensions, bitrate, and audio-removal settings used
 for compression. Frame rate affects the automatic bitrate before that call,
 because the plugin estimate API has no separate FPS argument. Each estimate is
 capped at original file size. Superseded native estimates stop between videos
-so a stale large batch cannot block the latest settings request. While native
-work is pending, the UI shows the fast local estimate with a loader instead of
-a frozen previous result. Adding videos clears the old native estimate because
-it belongs to a different batch. A genuine completed `0%` estimate disables
-compression, while the adapter's 10% acceptance threshold remains
-authoritative for completed output.
+so a stale large batch cannot block the latest settings request. Before the
+first native estimate arrives, the UI keeps the original size visible with a
+loader instead of showing an optimistic local estimate that may jump back up.
+Later refreshes keep the previous native estimate visible. Adding videos clears
+the old native estimate because it belongs to a different batch. A genuine
+completed `0%` estimate disables compression, while the adapter's 10%
+acceptance threshold remains authoritative for completed output.
 
 ## Batch and Progress
 

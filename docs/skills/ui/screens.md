@@ -27,7 +27,7 @@ Before the initial picker confirms a non-empty selection, `CompressScreen` shows
 
 `CompressScreen` owns the top-left icon-only back button for `ready`, initial loading, and `done`. It matches the outlined `47×47` add-video action. Navigation chrome is hidden during `processing`. During import, top and system back show a confirmation dialog before returning to `StartRoute`.
 
-In `ready`, scrolling the main size row out of view pins a compact size summary beside the back button. The summary matches the button's `47`-pixel height and keeps the savings percentage right-aligned without a separate frame or fill. Settings changes keep the previous estimate visible until the refreshed native estimate arrives, preventing a transient no-savings hint and compress-button flicker. A genuine `0%` estimate still shows the no-savings hint and disables compression.
+In `ready`, scrolling the main size row out of view pins a compact size summary beside the back button. The summary matches the button's `47`-pixel height and keeps the savings percentage right-aligned without a separate frame or fill. The first calculation keeps the original size visible without a savings claim until the native estimate arrives. Settings changes keep the previous estimate visible until the refreshed native estimate arrives, preventing transient size reversals, no-savings hints, and compress-button flicker. A genuine `0%` estimate still shows the no-savings hint and disables compression.
 
 During `processing`, `PopScope(canPop: false)` blocks route pops, including Android system back and the iOS edge-swipe gesture. Hold-to-cancel is the only exit from processing back to settings. During file copying, route pops are intercepted by the import-exit confirmation instead.
 

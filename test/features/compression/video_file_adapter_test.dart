@@ -11,6 +11,35 @@ void main() {
         .setMockMethodCallHandler(channel, null);
   });
 
+  test('pickVideos maps private-picker metadata capabilities', () async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) async {
+          expect(call.method, 'pickVideos');
+          return [
+            {
+              'path': '/private.mov',
+              'name': 'private.mov',
+              'size': 42,
+              'sourceIdentifier': 'private-id',
+              'canPreserveMetadata': true,
+              'canDeleteOriginal': false,
+              'captureDate': '2026-09-10T08:00:00Z',
+              'latitude': 37.3317,
+              'longitude': -122.0301,
+            },
+          ];
+        });
+
+    final videos = await VideoFileAdapter().pickVideos();
+
+    expect(videos, hasLength(1));
+    expect(videos.single.canPreserveMetadata, isTrue);
+    expect(videos.single.canDeleteOriginal, isFalse);
+    expect(videos.single.captureDate, '2026-09-10T08:00:00Z');
+    expect(videos.single.latitude, 37.3317);
+    expect(videos.single.longitude, -122.0301);
+  });
+
   test(
     'saveReplacement forwards source and returns metadata warnings',
     () async {
@@ -28,6 +57,9 @@ void main() {
         '/compressed.mp4',
         'source-id',
         album: 'Minimo',
+        captureDate: '2026-09-10T08:00:00Z',
+        latitude: 37.3317,
+        longitude: -122.0301,
       );
 
       expect(received?.method, 'saveReplacement');
@@ -35,6 +67,9 @@ void main() {
         'path': '/compressed.mp4',
         'sourceIdentifier': 'source-id',
         'album': 'Minimo',
+        'captureDate': '2026-09-10T08:00:00Z',
+        'latitude': 37.3317,
+        'longitude': -122.0301,
       });
       expect(result.warnings, ['favorite_unavailable']);
     },

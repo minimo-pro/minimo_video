@@ -23,11 +23,14 @@ Current tests cover:
 - Cancellation state reset and compressor cancellation call
 - Weighted overall progress, current-file progress, and stale-event rejection
 - Saving and original deletion through source identifiers
+- Private-picker metadata payload mapping, fallback save forwarding, and separate metadata/delete capabilities
+- Beside-original enabled while replace-original stays disabled for an inaccessible Limited Photos asset
 - Compression failure state
 - Cache size and full cleanup
 - Preview styling and count-badge bounds, status percentage, press motion, and hold-button background
 - Rolling counters ignore unchanged formatted values and use calm motion
 - Previous estimate retained while a settings estimate refreshes
+- Initial estimate keeps the original size visible until native calculation completes, avoiding an optimistic size reversal
 - Add-more and compress actions sharing the settings bottom row
 - Repeated video-source requests reuse one open bottom sheet, and selection returns only after its closing transition
 - Import progress digit changes do not move the loader inside the Compress button
@@ -54,6 +57,12 @@ Native behavior needs focused manual checks when compression or platform code ch
 - Save, share, and delete-original flows show expected system UI
 - Multi-select preserves filenames and handles duplicate names
 - Adding videos from both gallery and files during configuration preserves the existing batch and settings, refreshes previews/estimate, and reports copy progress
+- With Limited Photos access, choose a video outside the app's allowed
+  selection through `PHPicker`: beside-original preserves its embedded capture
+  date/GPS without a broader permission prompt, while replace-original stays
+  disabled
+- With a fully accessible Photos asset, capture date, location, writable album
+  membership, favorite state, and replacement/deletion behavior remain intact
 
 Simulator tests are insufficient for codec, thermal, and real Photos/MediaStore behavior.
 
