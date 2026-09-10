@@ -8,6 +8,7 @@ import UniformTypeIdentifiers
 
 class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDocumentPickerDelegate {
   private var pendingPickResult: FlutterResult?
+  private var activePickID: UUID?
   private var videosChannel: FlutterMethodChannel?
 
   override func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -38,6 +39,8 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       case "pickVideos":
         let source = (call.arguments as? [String: Any])?["source"] as? String ?? "gallery"
         self.pickVideos(source: source, result: result)
+      case "cancelVideoPick":
+        self.cancelVideoPick(result: result)
       case "deleteOriginals":
         self.deleteOriginals(call.arguments as? [String] ?? [], result: result)
       case "saveReplacement":
@@ -58,10 +61,11 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
 
   func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
     picker.dismiss(animated: true)
-    guard let pendingPickResult else { return }
+    guard let pendingPickResult, let pickID = activePickID else { return }
 
     if results.isEmpty {
       self.pendingPickResult = nil
+      activePickID = nil
       pendingPickResult([])
       return
     }
@@ -71,9 +75,11 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       "pickProgress",
       arguments: ["processed": 0, "total": results.count]
     )
-    importPhotosVideos(results) { [weak self] videos in
+    importPhotosVideos(results, pickID: pickID) { [weak self] videos in
       DispatchQueue.main.async {
+        guard self?.activePickID == pickID else { return }
         self?.pendingPickResult = nil
+        self?.activePickID = nil
         print("[VideoPicker] Imported \(videos.count)/\(results.count) videos")
         pendingPickResult(videos)
       }
@@ -81,10 +87,11 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
   }
 
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-    guard let pendingPickResult else { return }
+    guard let pendingPickResult, let pickID = activePickID else { return }
 
     if urls.isEmpty {
       self.pendingPickResult = nil
+      activePickID = nil
       pendingPickResult([])
       return
     }
@@ -94,9 +101,11 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       "pickProgress",
       arguments: ["processed": 0, "total": urls.count]
     )
-    importDocumentVideos(urls) { [weak self] result in
+    importDocumentVideos(urls, pickID: pickID) { [weak self] result in
       DispatchQueue.main.async {
+        guard self?.activePickID == pickID else { return }
         self?.pendingPickResult = nil
+        self?.activePickID = nil
         switch result {
         case .success(let videos):
           print("[VideoPicker] Imported \(videos.count)/\(urls.count) videos")
@@ -115,11 +124,13 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
   func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
     guard let pendingPickResult else { return }
     self.pendingPickResult = nil
+    activePickID = nil
     pendingPickResult([])
   }
 
   private func importPhotosVideos(
     _ results: [PHPickerResult],
+    pickID: UUID,
     index: Int = 0,
     videos: [[String: Any]] = [],
     completion: @escaping ([[String: Any]]) -> Void
@@ -164,6 +175,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
 
       print("[VideoPicker] Processed \(index + 1)/\(results.count) videos")
       DispatchQueue.main.async {
+        guard self.activePickID == pickID else { return }
         self.videosChannel?.invokeMethod(
           "pickProgress",
           arguments: ["processed": index + 1, "total": results.count]
@@ -171,6 +183,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       }
       self.importPhotosVideos(
         results,
+        pickID: pickID,
         index: index + 1,
         videos: imported,
         completion: completion
@@ -180,6 +193,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
 
   private func importDocumentVideos(
     _ urls: [URL],
+    pickID: UUID,
     index: Int = 0,
     videos: [[String: Any]] = [],
     completion: @escaping (Result<[[String: Any]], Error>) -> Void
@@ -220,6 +234,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
 
       print("[VideoPicker] Processed \(index + 1)/\(urls.count) videos")
       DispatchQueue.main.async {
+        guard self.activePickID == pickID else { return }
         self.videosChannel?.invokeMethod(
           "pickProgress",
           arguments: ["processed": index + 1, "total": urls.count]
@@ -227,6 +242,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       }
       self.importDocumentVideos(
         urls,
+        pickID: pickID,
         index: index + 1,
         videos: imported,
         completion: completion
@@ -301,11 +317,21 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     }
 
     pendingPickResult = result
+    activePickID = UUID()
     if source == "files" {
       presentDocumentPicker()
     } else {
       presentPhotosPicker()
     }
+  }
+
+  private func cancelVideoPick(result: @escaping FlutterResult) {
+    let cancelledResult = pendingPickResult
+    pendingPickResult = nil
+    activePickID = nil
+    window?.rootViewController?.presentedViewController?.dismiss(animated: true)
+    cancelledResult?([])
+    result(nil)
   }
 
   private func presentPhotosPicker() {

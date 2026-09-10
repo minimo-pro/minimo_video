@@ -37,7 +37,7 @@ class CompressionBottomActions extends StatelessWidget {
                 ? [
                     S.of(context).loadingVideos,
                     if (importProgress case (final done, final total))
-                      '$done / $total',
+                      _fixedWidthProgress(done, total),
                   ].join(' ')
                 : S.of(context).compress,
             loading: isImporting,
@@ -49,4 +49,12 @@ class CompressionBottomActions extends StatelessWidget {
       ],
     );
   }
+}
+
+String _fixedWidthProgress(int done, int total) {
+  final doneText = done.toString();
+  final totalText = total.toString();
+  final padding = totalText.length - doneText.length;
+  final leadingSpace = List.filled(padding > 0 ? padding : 0, '\u2007').join();
+  return '$leadingSpace$doneText / $totalText';
 }

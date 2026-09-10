@@ -170,6 +170,40 @@ void main() {
     expect(find.text('start screen'), findsNothing);
   });
 
+  testWidgets('leaving during import cancels the pending native pick', (
+    tester,
+  ) async {
+    final pickedVideos = Completer<List<Map<String, Object>>>();
+    final calls = <String>[];
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) async {
+          calls.add(call.method);
+          if (call.method == 'pickVideos') return pickedVideos.future;
+          if (call.method == 'cancelVideoPick') {
+            if (!pickedVideos.isCompleted) pickedVideos.complete(const []);
+            return null;
+          }
+          return null;
+        });
+
+    await _pumpScreen(tester);
+    await tester.pump();
+
+    final backButton = find.byWidgetPredicate(
+      (widget) =>
+          widget is AppActionButton && widget.icon == AppIcons.arrowBack,
+    );
+    await tester.tap(backButton);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.text('leave'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(calls, containsAllInOrder(['pickVideos', 'cancelVideoPick']));
+    expect(find.text('start screen'), findsOneWidget);
+  });
+
   testWidgets('empty picker progress does not reveal empty settings', (
     tester,
   ) async {

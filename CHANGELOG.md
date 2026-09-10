@@ -1,3 +1,13 @@
+## [1.0.6]
+
+### Fixed
+
+* Kept the screen awake while selected videos are loading when the setting is enabled.
+* Allowed video selection to be retried immediately after leaving an import in progress.
+* Prevented duplicate video-source sheets and finished closing the sheet before opening the loading screen.
+* Kept the import loader stationary while its progress counter changes.
+* Replaced the loader's uneven geometry with a smooth centered arc.
+
 ## [1.0.5]
 
 ### Added

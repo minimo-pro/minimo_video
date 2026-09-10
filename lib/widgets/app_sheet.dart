@@ -60,39 +60,47 @@ Future<T?> showAppContentSheet<T>({
   required BuildContext context,
   required Widget child,
   bool showDragHandle = true,
+  bool waitForDismissal = false,
   Color? backgroundColor,
   ShapeBorder shape = const RoundedRectangleBorder(
     borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
   ),
 }) {
-  return Navigator.of(context).push<T>(
-    StupidSimpleSheetRoute<T>(
-      child: _SheetMediaQuery(
-        child: Builder(
-          builder: (context) {
-            final surface =
-                backgroundColor ?? Theme.of(context).colorScheme.surface;
+  final route = StupidSimpleSheetRoute<T>(
+    child: _SheetMediaQuery(
+      child: Builder(
+        builder: (context) {
+          final surface =
+              backgroundColor ?? Theme.of(context).colorScheme.surface;
 
-            return SheetBackground(
-              backgroundColor: surface,
-              shape: shape,
-              clipBehavior: Clip.antiAlias,
-              child: Material(
-                type: MaterialType.transparency,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (showDragHandle) const _SheetDragHandle(),
-                    child,
-                  ],
-                ),
+          return SheetBackground(
+            backgroundColor: surface,
+            shape: shape,
+            clipBehavior: Clip.antiAlias,
+            child: Material(
+              type: MaterialType.transparency,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [if (showDragHandle) const _SheetDragHandle(), child],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     ),
   );
+  final popped = Navigator.of(context).push<T>(route);
+  if (!waitForDismissal) return popped;
+  return _waitForSheetDismissal(popped, route.completed);
+}
+
+Future<T?> _waitForSheetDismissal<T>(
+  Future<T?> popped,
+  Future<T?> completed,
+) async {
+  final result = await popped;
+  await completed;
+  return result;
 }
 
 /// Sheet routes cover the full screen, but content sits in the bottom panel.

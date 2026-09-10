@@ -40,6 +40,16 @@ class VideoFileAdapter {
     }).toList();
   }
 
+  Future<void> cancelVideoPick() async {
+    try {
+      await _channel.invokeMethod<void>('cancelVideoPick');
+    } on PlatformException {
+      // Cancellation is best-effort; leaving the screen must still succeed.
+    } on MissingPluginException {
+      // Allows the same flow to run on unsupported/test platforms.
+    }
+  }
+
   Future<void> saveToGallery(String filePath, {String? album}) async {
     await Gal.putVideo(filePath, album: album);
   }

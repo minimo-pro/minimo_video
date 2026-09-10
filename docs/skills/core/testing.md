@@ -29,7 +29,9 @@ Current tests cover:
 - Rolling counters ignore unchanged formatted values and use calm motion
 - Previous estimate retained while a settings estimate refreshes
 - Add-more and compress actions sharing the settings bottom row
-- Intermediate pre-selection loader, confirmed exit during import, no empty-settings flash after picker cancellation, then interactive settings with preview/button loaders, hidden zero-byte estimates, and safe completion during active scrolling
+- Repeated video-source requests reuse one open bottom sheet, and selection returns only after its closing transition
+- Import progress digit changes do not move the loader inside the Compress button
+- Intermediate pre-selection loader, confirmed exit cancels the pending native import, no empty-settings flash after picker cancellation, then interactive settings with preview/button loaders, hidden zero-byte estimates, and safe completion during active scrolling
 - Screen stays awake during import and compression when `prevent_screen_sleep` is enabled
 - Compact icon-only `AppActionButton` layout for wide SVG assets (`arrow_back`, `share`, `more`)
 

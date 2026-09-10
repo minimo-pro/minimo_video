@@ -43,6 +43,60 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.6': {
+    Language.en: [
+      'keep the screen awake while selected videos are loading when enabled in Settings.',
+      'retry video selection immediately after leaving an import in progress.',
+    ],
+    Language.ru: [
+      'экран теперь остаётся включённым во время загрузки выбранных видео, если это разрешено в настройках.',
+      'выбор видео теперь можно сразу повторить после выхода во время загрузки.',
+    ],
+    Language.es: [
+      'mantén la pantalla encendida mientras se cargan los videos seleccionados si está activado en Ajustes.',
+      'vuelve a seleccionar videos inmediatamente después de salir durante una importación.',
+    ],
+    Language.pt: [
+      'mantenha a tela ligada durante o carregamento dos vídeos selecionados quando ativado nos Ajustes.',
+      'selecione vídeos novamente logo após sair durante uma importação.',
+    ],
+    Language.de: [
+      'der Bildschirm bleibt beim Laden ausgewählter Videos aktiv, wenn dies in den Einstellungen aktiviert ist.',
+      'die Videoauswahl kann direkt nach dem Verlassen eines laufenden Imports wiederholt werden.',
+    ],
+    Language.fr: [
+      'gardez l’écran allumé pendant le chargement des vidéos sélectionnées lorsque l’option est activée.',
+      'relancez immédiatement la sélection de vidéos après avoir quitté un import en cours.',
+    ],
+    Language.zh: [
+      '在设置中启用后，加载所选视频时屏幕会保持亮起。',
+      '退出正在进行的导入后可立即重新选择视频。',
+    ],
+    Language.hi: [
+      'सेटिंग चालू होने पर चुने गए वीडियो लोड होते समय स्क्रीन चालू रहती है।',
+      'चल रहे इंपोर्ट से बाहर निकलने के बाद वीडियो तुरंत दोबारा चुनें।',
+    ],
+    Language.nl: [
+      'houd het scherm aan terwijl geselecteerde video’s laden wanneer dit in Instellingen is ingeschakeld.',
+      'selecteer direct opnieuw video’s nadat je een actieve import hebt verlaten.',
+    ],
+    Language.ko: [
+      '설정이 활성화되면 선택한 동영상을 불러오는 동안 화면이 켜진 상태로 유지됩니다.',
+      '진행 중인 가져오기를 종료한 뒤 동영상을 즉시 다시 선택할 수 있습니다.',
+    ],
+    Language.ja: [
+      '設定が有効な場合、選択した動画の読み込み中も画面が点灯したままになります。',
+      '読み込み中に画面を離れても、すぐに動画を選び直せるようになりました。',
+    ],
+    Language.it: [
+      'mantieni lo schermo acceso durante il caricamento dei video selezionati se l’opzione è attiva.',
+      'seleziona nuovamente i video subito dopo aver lasciato un’importazione in corso.',
+    ],
+    Language.tr: [
+      'Ayarlar’da etkinleştirildiğinde seçilen videolar yüklenirken ekranı açık tutun.',
+      'devam eden bir içe aktarmadan çıktıktan sonra video seçimini hemen yeniden deneyin.',
+    ],
+  },
   '1.0.5': {
     Language.en: [
       'reopen What’s New from the About screen.',

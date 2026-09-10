@@ -26,6 +26,11 @@ Selected URIs are copied sequentially into app cache on a background thread with
 
 Both platforms report `pickProgress` (`processed`/`total`) over the videos method channel while files are imported. `CompressScreen` displays it in the disabled Compress button while the rest of the settings remain interactive.
 
+Leaving `CompressScreen` during import calls `cancelVideoPick`. Native code
+releases the pending method result immediately and identifies each import
+session so completion from an abandoned copy cannot clear or complete a later
+retry.
+
 ## Gallery and Deletion
 
 - Normal saving uses `gal` and may request add-only gallery permission.
