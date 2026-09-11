@@ -242,7 +242,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "не выключать экран",
     ),
     "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
-      "не даёт экрану уснуть, пока видео сжимаются",
+      "не даёт экрану уснуть, пока видео загружаются или сжимаются",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("сайт проекта"),
     "quality": MessageLookupByLibrary.simpleMessage("качество"),

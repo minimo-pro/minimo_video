@@ -8,7 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/app_icons.dart';
 import '../../../generated/l10n.dart';
 import '../../../router/app_router.gr.dart';
+import '../../../services/app_settings_service.dart';
 import '../../../services/review_service.dart';
+import '../../../services/screen_awake_service.dart';
 import '../../../widgets/app_action_button.dart';
 import '../../../widgets/app_snack_bar.dart';
 import '../../../widgets/minimo_loader.dart';
@@ -89,9 +91,11 @@ class _CompressViewState extends State<_CompressView>
   var _backgroundedWhileProcessing = false;
   int? _reviewRequestedForRunId;
   bool _loadingVideos = false;
+  bool _screenAwakeEnabled = false;
   (int, int)? _loadingProgress;
   bool _initialSelectionConfirmed = false;
   bool _leaveConfirmationOpen = false;
+  bool _leavingDuringImport = false;
 
   @override
   void initState() {
@@ -108,6 +112,10 @@ class _CompressViewState extends State<_CompressView>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    if (_loadingVideos) {
+      unawaited(_videoFileAdapter.cancelVideoPick());
+    }
+    unawaited(_setScreenAwake(false));
     super.dispose();
   }
 
@@ -237,6 +245,7 @@ class _CompressViewState extends State<_CompressView>
       _loadingVideos = true;
       _loadingProgress = null;
     });
+    unawaited(_setScreenAwake(AppSettingsService.instance.preventScreenSleep));
 
     try {
       final videos = await _videoFileAdapter.pickVideos(
@@ -252,7 +261,7 @@ class _CompressViewState extends State<_CompressView>
       );
       if (videos.isNotEmpty && mounted) {
         context.read<CompressBloc>().add(CompressVideosAdded(videos));
-      } else if (initial && mounted) {
+      } else if (initial && mounted && !_leavingDuringImport) {
         Navigator.of(context).pop();
       }
     } catch (_) {
@@ -267,12 +276,23 @@ class _CompressViewState extends State<_CompressView>
         }
       }
     } finally {
+      unawaited(_setScreenAwake(false));
       if (mounted) {
         setState(() {
           _loadingVideos = false;
           _loadingProgress = null;
         });
       }
+    }
+  }
+
+  Future<void> _setScreenAwake(bool enabled) async {
+    if (enabled == _screenAwakeEnabled) return;
+    _screenAwakeEnabled = enabled;
+    try {
+      await ScreenAwakeService.instance.setEnabled(enabled);
+    } catch (_) {
+      _screenAwakeEnabled = !enabled;
     }
   }
 
@@ -339,31 +359,36 @@ class _CompressViewState extends State<_CompressView>
 
   Future<void> _confirmUnsavedExit(BuildContext context) async {
     final strings = S.of(context);
-    await _confirmExit(
+    final leave = await _confirmExit(
       context,
       title: strings.unsavedResultsTitle,
       message: strings.unsavedResultsMessage,
       leaveLabel: strings.leaveWithoutSaving,
     );
+    if (leave && mounted) _goToStart(this.context);
   }
 
   Future<void> _confirmLoadingExit(BuildContext context) async {
     final strings = S.of(context);
-    await _confirmExit(
+    final leave = await _confirmExit(
       context,
       title: strings.loadingExitTitle,
       message: strings.loadingExitMessage,
       leaveLabel: strings.leave,
     );
+    if (!leave || !mounted) return;
+    _leavingDuringImport = true;
+    await _videoFileAdapter.cancelVideoPick();
+    if (mounted) Navigator.of(this.context).pop();
   }
 
-  Future<void> _confirmExit(
+  Future<bool> _confirmExit(
     BuildContext context, {
     required String title,
     required String message,
     required String leaveLabel,
   }) async {
-    if (_leaveConfirmationOpen) return;
+    if (_leaveConfirmationOpen) return false;
     _leaveConfirmationOpen = true;
     final leave = await showDialog<bool>(
       context: context,
@@ -374,7 +399,7 @@ class _CompressViewState extends State<_CompressView>
       ),
     );
     _leaveConfirmationOpen = false;
-    if (leave == true && mounted) _goToStart(this.context);
+    return leave ?? false;
   }
 }
 

@@ -55,7 +55,7 @@ On iOS the compression screen warns the user to keep the app open. If the app is
 
 After the start-screen source choice, `CompressScreen` opens the native picker and owns the import. Until native selection is confirmed, it shows the intermediate `VideoLoadingView` instead of an empty settings placeholder; empty `(0, 0)` progress does not reveal settings. Cancellation or a failed empty initial import returns to the start screen. Once `pickProgress(0, total)` confirms a non-empty selection, simple and advanced settings appear and remain interactive while cloud-backed videos download or files copy into cache. Until the first import completes, the preview area shows `MinimoLoader` plus the cloud/large-file hint; zero-byte estimates and the no-savings message stay hidden. After import, each pending thumbnail keeps a compact `MinimoLoader` until its video frame is ready. The Compress button shows its own compact `MinimoLoader` plus picker batch progress and stays disabled until every selected video is ready. Add-more is disabled during import. Top and system back remain available through a confirmation dialog; accepting returns to the start screen while late picker results are ignored. An add-more error restores the actions and shows a localized snackbar.
 
-The plus action beside the bottom Compress button is available only in `CompressStatus.ready`. It uses the same gallery/files source sheet and `VideoFileAdapter.pickVideos` path. Add-more imports use the same non-blocking settings UI and progress state.
+The plus action beside the bottom Compress button is available only in `CompressStatus.ready`. It uses the same gallery/files source sheet and `VideoFileAdapter.pickVideos` path. Add-more imports use the same non-blocking settings UI and progress state. While files are importing, `CompressScreen` enables the same `prevent_screen_sleep` wakelock used during compression so iCloud downloads and large copies are not interrupted by the display sleeping.
 
 Picked videos are appended through `CompressVideosAdded`; existing compression settings remain unchanged. Videos already in the batch are ignored: provider `sourceIdentifier` is the primary identity, with original filename plus file size as the fallback for providers that do not expose an identifier. The same filtering also removes duplicates returned in one additional pick.
 
@@ -68,12 +68,13 @@ the same quality, codec, dimensions, bitrate, and audio-removal settings used
 for compression. Frame rate affects the automatic bitrate before that call,
 because the plugin estimate API has no separate FPS argument. Each estimate is
 capped at original file size. Superseded native estimates stop between videos
-so a stale large batch cannot block the latest settings request. While native
-work is pending, the UI shows the fast local estimate with a loader instead of
-a frozen previous result. Adding videos clears the old native estimate because
-it belongs to a different batch. A genuine completed `0%` estimate disables
-compression, while the adapter's 10% acceptance threshold remains
-authoritative for completed output.
+so a stale large batch cannot block the latest settings request. Before the
+first native estimate arrives, the UI keeps the original size visible with a
+loader instead of showing an optimistic local estimate that may jump back up.
+Later refreshes keep the previous native estimate visible. Adding videos clears
+the old native estimate because it belongs to a different batch. A genuine
+completed `0%` estimate disables compression, while the adapter's 10%
+acceptance threshold remains authoritative for completed output.
 
 ## Batch and Progress
 

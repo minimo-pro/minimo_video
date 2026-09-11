@@ -71,33 +71,14 @@ class _HandDrawnLoaderPainter extends CustomPainter {
     final center = size.center(Offset.zero);
     final radius = size.shortestSide * 0.36;
     final rotation = animation.value * math.pi * 2;
-    final path = Path();
-
     const startAngle = 0.28;
     const sweepAngle = math.pi * 1.62;
-    const segments = 48;
-
-    for (var index = 0; index <= segments; index++) {
-      final progress = index / segments;
-      final angle = startAngle + sweepAngle * progress + rotation;
-      final wobble =
-          math.sin(progress * math.pi * 6) * size.shortestSide * 0.008;
-      final pointRadius = radius + wobble;
-      final point = Offset(
-        center.dx + math.cos(angle) * pointRadius,
-        center.dy + math.sin(angle) * pointRadius,
-      );
-
-      if (index == 0) {
-        path.moveTo(point.dx, point.dy);
-      } else {
-        path.lineTo(point.dx, point.dy);
-      }
-    }
-
     final strokeWidth = size.shortestSide * 0.042;
-    canvas.drawPath(
-      path,
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      startAngle + rotation,
+      sweepAngle,
+      false,
       Paint()
         ..color = lineColor
         ..style = PaintingStyle.stroke

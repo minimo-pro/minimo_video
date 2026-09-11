@@ -245,7 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "scherm ingeschakeld houden",
     ),
     "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
-      "voorkomt dat het scherm in slaapstand gaat terwijl video\'s worden gecomprimeerd",
+      "voorkomt dat het scherm in slaapstand gaat terwijl video\'s worden geladen of gecomprimeerd",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("projectwebsite"),
     "quality": MessageLookupByLibrary.simpleMessage("kwaliteit"),

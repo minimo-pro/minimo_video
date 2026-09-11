@@ -242,7 +242,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "ekranı açık tut",
     ),
     "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
-      "videolar sıkıştırılırken ekranın uykuya geçmesini engeller",
+      "videolar yüklenirken veya sıkıştırılırken ekranın uykuya geçmesini engeller",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("proje web sitesi"),
     "quality": MessageLookupByLibrary.simpleMessage("kalite"),

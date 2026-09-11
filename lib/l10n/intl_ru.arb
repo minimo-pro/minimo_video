@@ -79,7 +79,7 @@
   "replaceOriginal": "заменить оригинал",
   "replaceOriginalDescription": "сжатое видео сохранится, затем Фото попросит подтвердить удаление оригинала",
   "preventScreenSleep": "не выключать экран",
-  "preventScreenSleepDescription": "не даёт экрану уснуть, пока видео сжимаются",
+  "preventScreenSleepDescription": "не даёт экрану уснуть, пока видео загружаются или сжимаются",
   "clearCache": "очистка кеша",
   "clearCacheDescription": "удаляет временные файлы приложения. видео в галерее останутся",
   "holdToClearCache": "удерживайте кнопку, чтобы очистить кеш",

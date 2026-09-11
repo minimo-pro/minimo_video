@@ -49,7 +49,7 @@
   "replaceOriginal": "origineel vervangen",
   "replaceOriginalDescription": "de gecomprimeerde video wordt opgeslagen; daarna vraagt Foto's om verwijdering van het origineel te bevestigen",
   "preventScreenSleep": "scherm ingeschakeld houden",
-  "preventScreenSleepDescription": "voorkomt dat het scherm in slaapstand gaat terwijl video's worden gecomprimeerd",
+  "preventScreenSleepDescription": "voorkomt dat het scherm in slaapstand gaat terwijl video's worden geladen of gecomprimeerd",
   "clearCache": "cache wissen",
   "clearCacheDescription": "verwijdert tijdelijke appbestanden. video's in je galerij blijven ongewijzigd",
   "holdToClearCache": "houd de knop ingedrukt om de cache te wissen",

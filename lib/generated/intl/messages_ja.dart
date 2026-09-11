@@ -204,7 +204,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("ギャラリーから"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage("画面をオンのままにする"),
     "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
-      "動画の圧縮中に画面がスリープしないようにします",
+      "動画の読み込みまたは圧縮中に画面がスリープしないようにします",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("プロジェクトサイト"),
     "quality": MessageLookupByLibrary.simpleMessage("画質"),

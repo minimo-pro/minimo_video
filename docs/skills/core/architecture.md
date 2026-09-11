@@ -34,7 +34,7 @@ CompressScreen
         → native Android/iOS codecs
 ```
 
-`CompressBloc` owns the selected batch, settings, estimates, status per video, compression progress, cancellation, results, saving, and deletion. `CompressScreen` owns import progress so Bloc settings can change while native picking/copying is still pending. `CompressVideosAdded` appends completed imports only while the Bloc is `ready`, extends the aligned thumbnail/status lists, and schedules fresh thumbnails and an estimate without resetting settings. `CompressResultsSaved` receives selected source identifiers from the save sheet and deletes them only after all outputs save. Videos are compressed sequentially. Overall progress is weighted by input file size.
+`CompressBloc` owns the selected batch, settings, estimates, status per video, compression progress, cancellation, results, saving, and deletion. `CompressScreen` owns import progress so Bloc settings can change while native picking/copying is still pending, and it holds the screen awake for that import when `prevent_screen_sleep` is enabled. `CompressBloc` holds the same wakelock during compression. `CompressVideosAdded` appends completed imports only while the Bloc is `ready`, extends the aligned thumbnail/status lists, and schedules fresh thumbnails and an estimate without resetting settings. `CompressResultsSaved` receives selected source identifiers from the save sheet and deletes them only after all outputs save. Videos are compressed sequentially. Overall progress is weighted by input file size.
 
 ## Platform Channel
 
@@ -43,6 +43,7 @@ Channel: `minimo_video/videos`
 | Method | Purpose |
 |---|---|
 | `pickVideos` | Open gallery or files picker (`source`) and copy selected videos to cache |
+| `cancelVideoPick` | Release an active picker/import when leaving the compression screen |
 | `deleteOriginals` | Request explicit system deletion of source assets |
 | `videoInfo` | Read duration for size estimates |
 | `createThumbnail` | Generate cached JPEG preview |

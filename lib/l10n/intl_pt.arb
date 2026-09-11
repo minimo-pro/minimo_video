@@ -49,7 +49,7 @@
   "replaceOriginal": "substituir o original",
   "replaceOriginalDescription": "o vídeo comprimido será salvo; depois, o Fotos pedirá para confirmar a exclusão do original",
   "preventScreenSleep": "manter a tela ligada",
-  "preventScreenSleepDescription": "impede que a tela desligue enquanto os vídeos são comprimidos",
+  "preventScreenSleepDescription": "impede que a tela desligue enquanto os vídeos são carregados ou comprimidos",
   "clearCache": "limpar cache",
   "clearCacheDescription": "remove arquivos temporários do app. os vídeos salvos na galeria permanecem intactos",
   "holdToClearCache": "mantenha o botão pressionado para limpar o cache",

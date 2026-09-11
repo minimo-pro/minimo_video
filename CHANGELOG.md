@@ -1,3 +1,18 @@
+## [1.0.6]
+
+### Added
+
+* Preserved embedded capture date and GPS when saving videos selected through the private iOS picker, without requiring broader Photos access.
+
+### Fixed
+
+* Kept the screen awake while selected videos are loading when the setting is enabled.
+* Allowed video selection to be retried immediately after leaving an import in progress.
+* Prevented duplicate video-source sheets and finished closing the sheet before opening the loading screen.
+* Kept the import loader stationary while its progress counter changes.
+* Replaced the loader's uneven geometry with a smooth centered arc.
+* Prevented the initial compressed-size estimate from shrinking prematurely and then returning to the original size.
+
 ## [1.0.5]
 
 ### Added

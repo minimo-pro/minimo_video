@@ -472,6 +472,9 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
             outputPath,
             sourceIdentifier,
             album: album,
+            captureDate: item.source.captureDate,
+            latitude: item.source.latitude,
+            longitude: item.source.longitude,
           );
           _replacementSourceIdentifiers.add(sourceIdentifier);
           _savedOutputPaths.add(outputPath);

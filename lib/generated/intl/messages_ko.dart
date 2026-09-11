@@ -211,7 +211,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("갤러리에서"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage("화면 켜기"),
     "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
-      "동영상 압축 중 화면이 꺼지지 않게 합니다",
+      "동영상 불러오기 또는 압축 중 화면이 꺼지지 않게 합니다",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("프로젝트 웹사이트"),
     "quality": MessageLookupByLibrary.simpleMessage("화질"),

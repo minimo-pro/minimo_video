@@ -243,7 +243,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "garder l\'écran allumé",
     ),
     "preventScreenSleepDescription": MessageLookupByLibrary.simpleMessage(
-      "empêche l\'écran de s\'éteindre pendant la compression",
+      "empêche l\'écran de s\'éteindre pendant le chargement ou la compression",
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("site du projet"),
     "quality": MessageLookupByLibrary.simpleMessage("qualité"),

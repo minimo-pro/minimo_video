@@ -221,6 +221,9 @@ class _IosRecoveryCompressor extends VideoCompressorAdapter {
 class _SavingFileAdapter extends VideoFileAdapter {
   List<String> deletedIdentifiers = const [];
   final calls = <String>[];
+  String? captureDate;
+  double? latitude;
+  double? longitude;
 
   @override
   Future<void> saveToGallery(String filePath, {String? album}) async {
@@ -232,8 +235,14 @@ class _SavingFileAdapter extends VideoFileAdapter {
     String filePath,
     String sourceIdentifier, {
     String? album,
+    String? captureDate,
+    double? latitude,
+    double? longitude,
   }) async {
     calls.add('replace:$sourceIdentifier');
+    this.captureDate = captureDate;
+    this.latitude = latitude;
+    this.longitude = longitude;
     return const GallerySaveResult();
   }
 
@@ -251,6 +260,9 @@ class _FailingSaveFileAdapter extends _SavingFileAdapter {
     String filePath,
     String sourceIdentifier, {
     String? album,
+    String? captureDate,
+    double? latitude,
+    double? longitude,
   }) async {
     throw StateError('gallery unavailable');
   }
@@ -262,6 +274,9 @@ class _WarningSaveFileAdapter extends _SavingFileAdapter {
     String filePath,
     String sourceIdentifier, {
     String? album,
+    String? captureDate,
+    double? latitude,
+    double? longitude,
   }) async {
     calls.add('replace:$sourceIdentifier');
     return const GallerySaveResult(warnings: ['favorite_unavailable']);
@@ -274,6 +289,9 @@ class _UnavailableAfterDeleteFileAdapter extends _SavingFileAdapter {
     String filePath,
     String sourceIdentifier, {
     String? album,
+    String? captureDate,
+    double? latitude,
+    double? longitude,
   }) async {
     if (calls.any((call) => call.startsWith('replace:'))) {
       throw PlatformException(
@@ -281,7 +299,14 @@ class _UnavailableAfterDeleteFileAdapter extends _SavingFileAdapter {
         message: 'original Photos asset is unavailable',
       );
     }
-    return super.saveReplacement(filePath, sourceIdentifier, album: album);
+    return super.saveReplacement(
+      filePath,
+      sourceIdentifier,
+      album: album,
+      captureDate: captureDate,
+      latitude: latitude,
+      longitude: longitude,
+    );
   }
 }
 
@@ -477,6 +502,7 @@ void main() {
           name: 'video.mp4',
           size: 100,
           sourceIdentifier: 'photos-id',
+          canPreserveMetadata: true,
           canDeleteOriginal: true,
         ),
       ],
@@ -510,7 +536,10 @@ void main() {
           name: 'video.mp4',
           size: 100,
           sourceIdentifier: 'photos-id',
-          canDeleteOriginal: true,
+          canPreserveMetadata: true,
+          captureDate: '2026-09-10T08:00:00Z',
+          latitude: 37.3317,
+          longitude: -122.0301,
         ),
       ],
       videoFileAdapter: files,
@@ -529,6 +558,9 @@ void main() {
     await bloc.stream.firstWhere((state) => state.savedVideoCount == 1);
 
     expect(files.calls, ['replace:photos-id']);
+    expect(files.captureDate, '2026-09-10T08:00:00Z');
+    expect(files.latitude, 37.3317);
+    expect(files.longitude, -122.0301);
     expect(bloc.state.isSaved, isTrue);
     bloc.add(const CompressMessagesCleared());
     await bloc.stream.firstWhere((state) => state.savedVideoCount == null);

@@ -187,6 +187,80 @@ void main() {
     expect(find.byType(AnimatedAssetCheckbox), findsNothing);
   });
 
+  testWidgets(
+    'private-picker metadata enables beside but disables replacement',
+    (tester) async {
+      const source = PickedVideo(
+        path: '/video.mp4',
+        name: 'video.mp4',
+        size: 100,
+        sourceIdentifier: 'private-id',
+        canPreserveMetadata: true,
+        canDeleteOriginal: false,
+        captureDate: '2026-09-10T08:00:00Z',
+      );
+      final bloc = CompressBloc(videoCompressorAdapter: _NoopCompressor());
+      addTearDown(bloc.close);
+
+      await tester.pumpWidget(_resultApp(source, bloc));
+      await tester.tap(find.text('save'));
+      await tester.pumpAndSettle();
+
+      expect(
+        tester
+            .widget<Opacity>(
+              find.byKey(const ValueKey('gallery-save-mode-besideOriginal')),
+            )
+            .opacity,
+        1,
+      );
+      expect(
+        tester
+            .widget<Opacity>(
+              find.byKey(const ValueKey('gallery-save-mode-replaceOriginal')),
+            )
+            .opacity,
+        0.38,
+      );
+    },
+  );
+
+  testWidgets('full Photos access keeps both metadata save modes enabled', (
+    tester,
+  ) async {
+    const source = PickedVideo(
+      path: '/video.mp4',
+      name: 'video.mp4',
+      size: 100,
+      sourceIdentifier: 'photos-id',
+      canPreserveMetadata: true,
+      canDeleteOriginal: true,
+    );
+    final bloc = CompressBloc(videoCompressorAdapter: _NoopCompressor());
+    addTearDown(bloc.close);
+
+    await tester.pumpWidget(_resultApp(source, bloc));
+    await tester.tap(find.text('save'));
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const ValueKey('gallery-save-mode-besideOriginal')),
+          )
+          .opacity,
+      1,
+    );
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const ValueKey('gallery-save-mode-replaceOriginal')),
+          )
+          .opacity,
+      1,
+    );
+  });
+
   testWidgets('saved action shows checkmark and remains available', (
     tester,
   ) async {
@@ -245,6 +319,47 @@ void main() {
 }
 
 void _noop() {}
+
+Widget _resultApp(PickedVideo source, CompressBloc bloc) {
+  final state = CompressState(
+    status: CompressStatus.done,
+    videos: [source],
+    thumbnailPaths: const [null],
+    videoStatuses: const [VideoCompressionStatus.compressed],
+    results: [
+      CompressedVideo(
+        source: source,
+        result: const CompressionResult(
+          success: true,
+          originalSize: 100,
+          outputSize: 40,
+          outputPath: '/small.mp4',
+        ),
+      ),
+    ],
+    compressionRunId: 1,
+    processingIndex: 0,
+    progress: 1,
+    elapsed: Duration.zero,
+    settings: const CompressionSettings(),
+    isSaving: false,
+  );
+  return MaterialApp(
+    theme: ThemeData(platform: TargetPlatform.iOS),
+    localizationsDelegates: const [
+      S.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+    ],
+    supportedLocales: S.delegate.supportedLocales,
+    home: BlocProvider.value(
+      value: bloc,
+      child: Scaffold(
+        body: CompressionResultView(state: state, onTryAgain: _noop),
+      ),
+    ),
+  );
+}
 
 class _NoopCompressor extends VideoCompressorAdapter {
   @override

@@ -30,6 +30,12 @@ replace then requests original deletion. On Android, the button saves as new
 immediately without opening the sheet. If album saving is enabled, album name is
 `Minimo`.
 
+An iOS video chosen through the private picker can preserve its embedded
+QuickTime capture date and GPS even when it is outside the app's Limited Photos
+selection. Beside-original remains available for that case. Replace-original is
+disabled because Photos does not expose the original asset for verified
+deletion; inaccessible album membership and favorite state cannot be copied.
+
 Saving is guarded by `state.isSaving` against concurrent actions. Successfully
 saved outputs, replacements, and deletions are remembered for the current Bloc
 run, so partial-failure retries skip completed work or an already deleted Photos
@@ -49,7 +55,9 @@ chronological gallery position without risky in-place writes.
 - Metadata transfer failures use `metadataError` and are reported as partial success.
 - Deletion failures use `deleteError`, separate from `saveError`.
 - Sources without a platform identifier cannot be deleted.
-- Beside and replace modes are disabled when no source supports gallery replacement.
+- Beside is disabled when no source has preservable metadata.
+- Replace is enabled only when every successful source is accessible and
+  deletable through Photos.
 - Output paths equal to source paths are excluded defensively.
 - System confirmation remains authoritative; cancellation is not deletion success.
 

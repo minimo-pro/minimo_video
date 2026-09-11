@@ -434,10 +434,10 @@ class S {
     );
   }
 
-  /// `prevents the screen from sleeping while videos are compressing`
+  /// `prevents the screen from sleeping while videos are loading or compressing`
   String get preventScreenSleepDescription {
     return Intl.message(
-      'prevents the screen from sleeping while videos are compressing',
+      'prevents the screen from sleeping while videos are loading or compressing',
       name: 'preventScreenSleepDescription',
       desc: '',
       args: [],

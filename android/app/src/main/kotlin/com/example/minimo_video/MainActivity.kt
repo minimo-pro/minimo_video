@@ -18,6 +18,8 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterActivity() {
     private lateinit var videosChannel: MethodChannel
     private var pendingPickResult: MethodChannel.Result? = null
+    @Volatile private var activePickId: Long? = null
+    private var nextPickId = 0L
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -37,6 +39,7 @@ class MainActivity : FlutterActivity() {
         videosChannel.setMethodCallHandler { call, result ->
             when (call.method) {
                 "pickVideos" -> pickVideos(call.arguments, result)
+                "cancelVideoPick" -> cancelVideoPick(result)
                 "videoInfo" -> videoInfo(call.arguments as? String, result)
                 "createThumbnail" -> createThumbnail(call.arguments as? String, result)
                 else -> result.notImplemented()
@@ -50,23 +53,29 @@ class MainActivity : FlutterActivity() {
         if (requestCode != PICK_VIDEOS_REQUEST) return
 
         val result = pendingPickResult ?: return
+        val pickId = activePickId ?: return
         if (resultCode != RESULT_OK || data == null) {
             pendingPickResult = null
+            activePickId = null
             result.success(emptyList<Map<String, Any>>())
             return
         }
 
         Thread {
-            runCatching { readPickedVideos(data) }
+            runCatching { readPickedVideos(data, pickId) }
                 .onSuccess { videos ->
                     runOnUiThread {
+                        if (activePickId != pickId) return@runOnUiThread
                         pendingPickResult = null
+                        activePickId = null
                         result.success(videos)
                     }
                 }
                 .onFailure { error ->
                     runOnUiThread {
+                        if (activePickId != pickId) return@runOnUiThread
                         pendingPickResult = null
+                        activePickId = null
                         result.error("pick_failed", error.message, null)
                     }
                 }
@@ -136,6 +145,7 @@ class MainActivity : FlutterActivity() {
         }
 
         pendingPickResult = result
+        activePickId = ++nextPickId
         val source = (arguments as? Map<*, *>)?.get("source") as? String ?: "gallery"
         val intent = if (source == "files") {
             openDocumentIntent()
@@ -143,6 +153,18 @@ class MainActivity : FlutterActivity() {
             galleryIntent()
         }
         startActivityForResult(intent, PICK_VIDEOS_REQUEST)
+    }
+
+    private fun cancelVideoPick(result: MethodChannel.Result) {
+        val cancelledResult = pendingPickResult
+        val wasPicking = activePickId != null
+        pendingPickResult = null
+        activePickId = null
+        if (wasPicking) {
+            finishActivity(PICK_VIDEOS_REQUEST)
+        }
+        cancelledResult?.success(emptyList<Map<String, Any>>())
+        result.success(null)
     }
 
     private fun openDocumentIntent(): Intent {
@@ -168,7 +190,7 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    private fun readPickedVideos(data: Intent): List<Map<String, Any>> {
+    private fun readPickedVideos(data: Intent, pickId: Long): List<Map<String, Any>> {
         val uris = mutableListOf<Uri>()
         data.clipData?.let { clip ->
             for (index in 0 until clip.itemCount) {
@@ -179,9 +201,12 @@ class MainActivity : FlutterActivity() {
         Log.i(TAG, "Importing ${uris.size} videos sequentially")
         sendPickProgress(0, uris.size)
         return uris.mapIndexed { index, uri ->
+            check(activePickId == pickId) { "video import was cancelled" }
             copyPickedVideo(uri).also {
-                Log.i(TAG, "Imported ${index + 1}/${uris.size} videos")
-                sendPickProgress(index + 1, uris.size)
+                if (activePickId == pickId) {
+                    Log.i(TAG, "Imported ${index + 1}/${uris.size} videos")
+                    sendPickProgress(index + 1, uris.size)
+                }
             }
         }
     }

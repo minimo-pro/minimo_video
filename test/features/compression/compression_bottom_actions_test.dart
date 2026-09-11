@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/features/compression/presentation/widgets/compression_bottom_actions.dart';
 import 'package:minimo_video/generated/l10n.dart';
+import 'package:minimo_video/theme/app_theme.dart';
 import 'package:minimo_video/widgets/app_action_button.dart';
 import 'package:minimo_video/widgets/minimo_loader.dart';
 
@@ -90,5 +91,35 @@ void main() {
       find.byType(AppActionButton),
     );
     expect(actions.every((action) => action.onPressed == null), isTrue);
+  });
+
+  testWidgets('import progress does not move the loader', (tester) async {
+    Future<void> pumpProgress((int, int) progress) {
+      return tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.light,
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          home: Scaffold(
+            body: CompressionBottomActions(
+              onAdd: null,
+              isImporting: true,
+              importProgress: progress,
+            ),
+          ),
+        ),
+      );
+    }
+
+    await pumpProgress((9, 10));
+    final initialX = tester.getTopLeft(find.byType(MinimoLoader)).dx;
+
+    await pumpProgress((10, 10));
+
+    expect(tester.getTopLeft(find.byType(MinimoLoader)).dx, initialX);
   });
 }
