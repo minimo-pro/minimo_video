@@ -163,11 +163,11 @@ class _ModeButton extends StatelessWidget {
                 child: AnimatedDefaultTextStyle(
                   duration: animationDuration,
                   curve: Curves.easeOut,
-                  style: TextStyle(
+                  style: DefaultTextStyle.of(context).style.copyWith(
                     color: selected
                         ? CompressionUiColors.white
                         : Theme.of(context).colorScheme.onSurface,
-                    fontSize: 15,
+                    fontSize: 18,
                     height: 1,
                   ),
                   child: Text(label),
