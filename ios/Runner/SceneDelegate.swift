@@ -207,7 +207,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
           arguments: ["processed": index + 1, "total": results.count]
         )
       }
-      guard self.activePickID == pickID else { return }
+      guard self.activePickID == pickID else {
+        self.removeImportedVideos(imported)
+        return
+      }
       self.importPhotosVideos(
         results,
         pickID: pickID,
@@ -255,6 +258,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
         ])
       } catch {
         print("[VideoPicker] Failed to copy document video \(index + 1): \(error.localizedDescription)")
+        self.removeImportedVideos(imported)
         completion(.failure(error))
         return
       }
@@ -267,7 +271,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
           arguments: ["processed": index + 1, "total": urls.count]
         )
       }
-      guard self.activePickID == pickID else { return }
+      guard self.activePickID == pickID else {
+        self.removeImportedVideos(imported)
+        return
+      }
       self.importDocumentVideos(
         urls,
         pickID: pickID,
@@ -689,6 +696,12 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       )
     }
     return outputURL
+  }
+
+  private func removeImportedVideos(_ videos: [[String: Any]]) {
+    for path in videos.compactMap({ $0["path"] as? String }) {
+      try? FileManager.default.removeItem(atPath: path)
+    }
   }
 
   private func cacheDirectory(named name: String) throws -> URL {
