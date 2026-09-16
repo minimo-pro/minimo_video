@@ -39,9 +39,7 @@ void main() {
     );
   });
 
-  testWidgets('leads with outcomes and states the original-file rule', (
-    tester,
-  ) async {
+  testWidgets('leads with quality outcomes without trust copy', (tester) async {
     final bloc = CompressBloc();
     addTearDown(bloc.close);
 
@@ -50,10 +48,10 @@ void main() {
     expect(find.text('quality'), findsNWidgets(2));
     expect(find.text('balanced'), findsOneWidget);
     expect(find.text('smaller'), findsOneWidget);
-    expect(find.text('on device • open source'), findsOneWidget);
+    expect(find.text('on device • open source'), findsNothing);
     expect(
       find.text('keeps the original if it saves less than 10%'),
-      findsOneWidget,
+      findsNothing,
     );
   });
 }

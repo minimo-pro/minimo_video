@@ -12,5 +12,5 @@
 <key>NSExtension</key><dict>
 <key>NSExtensionPointIdentifier</key><string>com.apple.share-services</string>
 <key>NSExtensionPrincipalClass</key><string>$(PRODUCT_MODULE_NAME).ShareViewController</string>
-<key>NSExtensionAttributes</key><dict><key>NSExtensionActivationRule</key><dict><key>NSExtensionActivationSupportsMovieWithMaxCount</key><integer>20</integer></dict></dict>
+<key>NSExtensionAttributes</key><dict><key>NSExtensionActivationRule</key><dict><key>NSExtensionActivationDictionaryVersion</key><integer>2</integer><key>NSExtensionActivationSupportsMovieWithMaxCount</key><integer>20</integer></dict></dict>
 </dict></dict></plist>

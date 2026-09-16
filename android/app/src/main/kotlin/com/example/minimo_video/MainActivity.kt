@@ -77,11 +77,14 @@ class MainActivity : FlutterActivity() {
                 else @Suppress("DEPRECATION") externalIntent.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM)?.let(::addAll)
                 externalIntent.clipData?.let { clip -> for (index in 0 until clip.itemCount) add(clip.getItemAt(index).uri) }
             }
-        }.distinct().take(MAX_EXTERNAL_VIDEOS)
+        }.distinct().filter(::isPotentialVideo).take(MAX_EXTERNAL_VIDEOS)
         if (uris.isEmpty()) return
         pendingExternalUris.addAll(uris.filterNot(pendingExternalUris::contains))
         externalVideosChannel.invokeMethod("externalVideosAvailable", null)
     }
+
+    private fun isPotentialVideo(uri: Uri): Boolean =
+        contentResolver.getType(uri)?.startsWith("image/") != true
 
     private fun consumeExternalVideos(result: MethodChannel.Result) {
         val uris = pendingExternalUris.toList()

@@ -430,20 +430,6 @@ class _SimpleCompressionOptions extends StatelessWidget {
           onSelected: _onSelected(context),
           compact: compact,
         ),
-        SizedBox(height: compact ? 16 : 22),
-        Text(
-          strings.onDeviceOpenSource,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          strings.keepsOriginalWhenSavingsLow,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
-        ),
       ],
     );
   }
