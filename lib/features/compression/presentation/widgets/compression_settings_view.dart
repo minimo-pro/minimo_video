@@ -407,8 +407,8 @@ class _SimpleCompressionOptions extends StatelessWidget {
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.high,
           quality: SimpleCompressionQuality.high,
-          title: strings.high,
-          subtitle: strings.bitrateReducedDescription,
+          title: strings.quality,
+          subtitle: strings.qualityPresetDescription,
           onSelected: _onSelected(context),
           compact: compact,
         ),
@@ -416,8 +416,8 @@ class _SimpleCompressionOptions extends StatelessWidget {
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.medium,
           quality: SimpleCompressionQuality.medium,
-          title: strings.medium,
-          subtitle: strings.resolutionReducedHdDescription,
+          title: strings.balanced,
+          subtitle: strings.balancedPresetDescription,
           onSelected: _onSelected(context),
           compact: compact,
         ),
@@ -425,10 +425,24 @@ class _SimpleCompressionOptions extends StatelessWidget {
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.low,
           quality: SimpleCompressionQuality.low,
-          title: strings.low,
-          subtitle: strings.resolutionReducedSdDescription,
+          title: strings.smaller,
+          subtitle: strings.smallerPresetDescription,
           onSelected: _onSelected(context),
           compact: compact,
+        ),
+        SizedBox(height: compact ? 16 : 22),
+        Text(
+          strings.onDeviceOpenSource,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 5),
+        Text(
+          strings.keepsOriginalWhenSavingsLow,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );

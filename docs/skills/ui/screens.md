@@ -46,8 +46,8 @@ Top and system back actions ask for confirmation when successful outputs have no
 
 `CompressionBottomActions` places an outlined icon-only plus button and the filled Compress button in the same bottom row. During initial or add-more import, settings remain interactive while add is disabled, back requires confirmation, and Compress shows a spinner plus batch progress. When import completes, selected videos, thumbnails, and estimates refresh without resetting settings.
 
-Simple presets are the primary UX. Advanced mode exposes resolution, video
-bitrate, frame rate, H.264/HEVC codec, and audio controls.
+Quality, Balanced, and Smaller are the primary UX. Advanced mode exposes
+resolution, video bitrate, frame rate, H.264/HEVC codec, and audio controls.
 The advanced list leaves extra scroll space after the final audio control.
 The selected-video count badge stays inside the preview bounds so the scroll viewport never clips its circular top edge.
 

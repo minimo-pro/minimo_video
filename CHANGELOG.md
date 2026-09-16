@@ -1,3 +1,11 @@
+## [1.0.7]
+
+### Changed
+
+* Made the main compression choices outcome-based: Quality, Balanced, and Smaller.
+* Kept bitrate and frame-rate controls in Advanced settings.
+* Made on-device, open-source processing and the 10% minimum-saving rule visible before compression.
+
 ## [1.0.6]
 
 ### Added

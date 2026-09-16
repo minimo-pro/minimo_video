@@ -82,6 +82,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "behoud de oorspronkelijke audio of verwijder deze om meer ruimte te besparen",
     ),
     "automatic": MessageLookupByLibrary.simpleMessage("auto"),
+    "balanced": MessageLookupByLibrary.simpleMessage("gebalanceerd"),
+    "balancedPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "kleiner bestand met gebalanceerd beeld",
+    ),
     "better": MessageLookupByLibrary.simpleMessage("beter"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "de bitrate wordt verlaagd om ruimte te besparen",
@@ -176,6 +180,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "houd minimo open tijdens de compressie. als je de app verlaat, start de huidige video opnieuw wanneer je terugkomt",
     ),
+    "keepsOriginalWhenSavingsLow": MessageLookupByLibrary.simpleMessage(
+      "behoudt het origineel bij minder dan 10% besparing",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("taal"),
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "kies de taal van de app",
@@ -209,6 +216,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAudio": MessageLookupByLibrary.simpleMessage("geen audio"),
     "noSavingsHint": MessageLookupByLibrary.simpleMessage(
       "probeer een andere modus — deze maakt het bestand niet kleiner",
+    ),
+    "onDeviceOpenSource": MessageLookupByLibrary.simpleMessage(
+      "op je apparaat • open source",
     ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "kies een of meer video\'s. minimo werkt met lokale bestanden en laat de originelen ongewijzigd",
@@ -249,6 +259,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("projectwebsite"),
     "quality": MessageLookupByLibrary.simpleMessage("kwaliteit"),
+    "qualityPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "behoudt de meeste details",
+    ),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("beoordeel de app"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage(
       "origineel vervangen",
@@ -309,6 +322,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("overslaan"),
     "small": MessageLookupByLibrary.simpleMessage("klein"),
     "smaller": MessageLookupByLibrary.simpleMessage("kleiner"),
+    "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "maakt het kleinste bestand",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("blijven"),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "system": MessageLookupByLibrary.simpleMessage("systeem"),

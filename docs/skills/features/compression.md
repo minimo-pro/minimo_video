@@ -2,13 +2,16 @@
 
 ## Presets
 
-| Preset | Internal CRF tier | Target bitrate | Resolution |
+| Outcome | Internal CRF tier | Target bitrate | Resolution |
 |---|---:|---:|---|
-| High | 22 | 4 Mbps | original |
-| Medium | 28 | 2 Mbps | 1280×720 |
-| Low | 34 | 1 Mbps | 854×480 |
+| Quality | 22 | 4 Mbps | original |
+| Balanced | 28 | 2 Mbps | 1280×720 |
+| Smaller | 34 | 1 Mbps | 854×480 |
 
 Preset bitrates are nominal for 30 FPS H.264 input. CRF is retained internally to map existing UI state to `light_compressor_v2`; users do not edit it directly.
+
+The simple UI also states that processing happens on-device and is open source,
+and that the original stays when the output saves less than 10%.
 
 Advanced mode allows:
 

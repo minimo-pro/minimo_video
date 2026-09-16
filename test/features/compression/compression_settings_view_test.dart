@@ -38,6 +38,24 @@ void main() {
       findsNothing,
     );
   });
+
+  testWidgets('leads with outcomes and states the original-file rule', (
+    tester,
+  ) async {
+    final bloc = CompressBloc();
+    addTearDown(bloc.close);
+
+    await tester.pumpWidget(_app(CompressState.initial(const []), bloc));
+
+    expect(find.text('quality'), findsNWidgets(2));
+    expect(find.text('balanced'), findsOneWidget);
+    expect(find.text('smaller'), findsOneWidget);
+    expect(find.text('on device • open source'), findsOneWidget);
+    expect(
+      find.text('keeps the original if it saves less than 10%'),
+      findsOneWidget,
+    );
+  });
 }
 
 Widget _app(CompressState state, CompressBloc bloc) {

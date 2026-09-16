@@ -73,6 +73,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "保留原音频，或移除音频以节省更多空间",
     ),
     "automatic": MessageLookupByLibrary.simpleMessage("自动"),
+    "balanced": MessageLookupByLibrary.simpleMessage("均衡"),
+    "balancedPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "文件更小，画质均衡",
+    ),
     "better": MessageLookupByLibrary.simpleMessage("更好"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "将降低码率以节省空间",
@@ -135,6 +139,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "压缩时请保持 minimo 打开。如果离开，返回时当前视频将重新开始",
     ),
+    "keepsOriginalWhenSavingsLow": MessageLookupByLibrary.simpleMessage(
+      "节省不足 10% 时保留原视频",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("语言"),
     "languageDescription": MessageLookupByLibrary.simpleMessage("选择应用语言"),
     "leave": MessageLookupByLibrary.simpleMessage("退出"),
@@ -161,6 +168,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSavingsHint": MessageLookupByLibrary.simpleMessage(
       "请尝试其他模式 — 此模式不会缩小文件",
     ),
+    "onDeviceOpenSource": MessageLookupByLibrary.simpleMessage("仅在设备上处理 • 开源"),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "选择一个或多个视频。minimo 处理本地文件，不会修改原视频",
     ),
@@ -188,6 +196,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("项目网站"),
     "quality": MessageLookupByLibrary.simpleMessage("质量"),
+    "qualityPresetDescription": MessageLookupByLibrary.simpleMessage("保留最多细节"),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("为应用评分"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("替换原视频"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
@@ -236,6 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("跳过"),
     "small": MessageLookupByLibrary.simpleMessage("小"),
     "smaller": MessageLookupByLibrary.simpleMessage("更小"),
+    "smallerPresetDescription": MessageLookupByLibrary.simpleMessage("生成最小文件"),
     "stay": MessageLookupByLibrary.simpleMessage("留下"),
     "stereo": MessageLookupByLibrary.simpleMessage("立体声"),
     "system": MessageLookupByLibrary.simpleMessage("跟随系统"),

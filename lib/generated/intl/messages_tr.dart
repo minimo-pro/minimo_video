@@ -81,6 +81,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "orijinal sesi koru veya daha fazla alan kazanmak için kaldır",
     ),
     "automatic": MessageLookupByLibrary.simpleMessage("otomatik"),
+    "balanced": MessageLookupByLibrary.simpleMessage("dengeli"),
+    "balancedPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "dengeli görünümle daha küçük dosya",
+    ),
     "better": MessageLookupByLibrary.simpleMessage("daha iyi"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "alan kazanmak için bit hızı azaltılacak",
@@ -171,6 +175,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "sıkıştırma sırasında minimo\'yu açık tut. ayrılırsan geri döndüğünde mevcut video yeniden başlar",
     ),
+    "keepsOriginalWhenSavingsLow": MessageLookupByLibrary.simpleMessage(
+      "tasarruf %10\'dan azsa orijinali korur",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("dil"),
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "uygulamanın dilini seç",
@@ -206,6 +213,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAudio": MessageLookupByLibrary.simpleMessage("sessiz"),
     "noSavingsHint": MessageLookupByLibrary.simpleMessage(
       "başka bir mod dene — bu seçenek boyutu küçültmeyecek",
+    ),
+    "onDeviceOpenSource": MessageLookupByLibrary.simpleMessage(
+      "cihazda işlenir • açık kaynak",
     ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "bir veya birden fazla video seç. minimo yerel dosyalarla çalışır ve orijinalleri değiştirmez",
@@ -246,6 +256,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("proje web sitesi"),
     "quality": MessageLookupByLibrary.simpleMessage("kalite"),
+    "qualityPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "en fazla ayrıntıyı korur",
+    ),
     "rateTheApp": MessageLookupByLibrary.simpleMessage(
       "uygulamayı değerlendir",
     ),
@@ -310,6 +323,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("atla"),
     "small": MessageLookupByLibrary.simpleMessage("küçük"),
     "smaller": MessageLookupByLibrary.simpleMessage("daha küçük"),
+    "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "en küçük dosyayı oluşturur",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("kal"),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "system": MessageLookupByLibrary.simpleMessage("sistem"),

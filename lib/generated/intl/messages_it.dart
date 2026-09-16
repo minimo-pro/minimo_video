@@ -79,6 +79,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "mantieni l\'audio originale o rimuovilo per risparmiare più spazio",
     ),
     "automatic": MessageLookupByLibrary.simpleMessage("auto"),
+    "balanced": MessageLookupByLibrary.simpleMessage("bilanciato"),
+    "balancedPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "file più piccolo con resa bilanciata",
+    ),
     "better": MessageLookupByLibrary.simpleMessage("migliore"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "il bitrate verrà ridotto per risparmiare spazio",
@@ -171,6 +175,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "mantieni minimo aperto durante la compressione. se esci, il video corrente ripartirà quando torni",
     ),
+    "keepsOriginalWhenSavingsLow": MessageLookupByLibrary.simpleMessage(
+      "mantiene l’originale se risparmia meno del 10%",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("lingua"),
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "scegli la lingua dell\'app",
@@ -204,6 +211,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAudio": MessageLookupByLibrary.simpleMessage("senza audio"),
     "noSavingsHint": MessageLookupByLibrary.simpleMessage(
       "prova un\'altra modalità — questa non ridurrà le dimensioni",
+    ),
+    "onDeviceOpenSource": MessageLookupByLibrary.simpleMessage(
+      "sul dispositivo • open source",
     ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "scegli uno o più video. minimo usa file locali e lascia intatti gli originali",
@@ -244,6 +254,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("sito del progetto"),
     "quality": MessageLookupByLibrary.simpleMessage("qualità"),
+    "qualityPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "mantiene più dettagli",
+    ),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("valuta l\'app"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage(
       "sostituisci l\'originale",
@@ -304,6 +317,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("salta"),
     "small": MessageLookupByLibrary.simpleMessage("piccolo"),
     "smaller": MessageLookupByLibrary.simpleMessage("più piccolo"),
+    "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "crea il file più piccolo",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("rimani"),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "system": MessageLookupByLibrary.simpleMessage("sistema"),

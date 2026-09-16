@@ -82,6 +82,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "originalton behalten oder für mehr ersparnis entfernen",
     ),
     "automatic": MessageLookupByLibrary.simpleMessage("auto"),
+    "balanced": MessageLookupByLibrary.simpleMessage("ausgewogen"),
+    "balancedPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "kleinere Datei mit ausgewogenem Bild",
+    ),
     "better": MessageLookupByLibrary.simpleMessage("besser"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "die bitrate wird reduziert, um platz zu sparen",
@@ -174,6 +178,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "minimo während der komprimierung geöffnet lassen. beim verlassen startet das aktuelle video nach der rückkehr neu",
     ),
+    "keepsOriginalWhenSavingsLow": MessageLookupByLibrary.simpleMessage(
+      "behält das Original bei weniger als 10 % Ersparnis",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("sprache"),
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "sprache der app auswählen",
@@ -207,6 +214,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAudio": MessageLookupByLibrary.simpleMessage("ohne audio"),
     "noSavingsHint": MessageLookupByLibrary.simpleMessage(
       "versuche einen anderen modus – dieser verkleinert die datei nicht",
+    ),
+    "onDeviceOpenSource": MessageLookupByLibrary.simpleMessage(
+      "auf dem Gerät • Open Source",
     ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "wähle ein oder mehrere videos. minimo arbeitet mit lokalen dateien und lässt die originale unverändert",
@@ -247,6 +257,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("projektwebsite"),
     "quality": MessageLookupByLibrary.simpleMessage("qualität"),
+    "qualityPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "behält die meisten Details",
+    ),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("app bewerten"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage(
       "original ersetzen",
@@ -307,6 +320,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("überspringen"),
     "small": MessageLookupByLibrary.simpleMessage("klein"),
     "smaller": MessageLookupByLibrary.simpleMessage("kleiner"),
+    "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "erstellt die kleinste Datei",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("bleiben"),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "system": MessageLookupByLibrary.simpleMessage("system"),

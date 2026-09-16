@@ -81,6 +81,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "сохраните исходный звук или удалите его для меньшего размера",
     ),
     "automatic": MessageLookupByLibrary.simpleMessage("авто"),
+    "balanced": MessageLookupByLibrary.simpleMessage("баланс"),
+    "balancedPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "меньше размер без сильной потери качества",
+    ),
     "better": MessageLookupByLibrary.simpleMessage("лучше"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "битрейт будет уменьшен для экономии места",
@@ -173,6 +177,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "не сворачивайте minimo во время сжатия. иначе текущий ролик начнёт сжиматься заново после возвращения",
     ),
+    "keepsOriginalWhenSavingsLow": MessageLookupByLibrary.simpleMessage(
+      "оригинал останется, если экономия меньше 10%",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("язык"),
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "выберите язык приложения",
@@ -206,6 +213,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAudio": MessageLookupByLibrary.simpleMessage("без звука"),
     "noSavingsHint": MessageLookupByLibrary.simpleMessage(
       "попробуйте другой режим — размер почти не изменится",
+    ),
+    "onDeviceOpenSource": MessageLookupByLibrary.simpleMessage(
+      "на устройстве • открытый исходный код",
     ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "выберите одно или несколько видео. minimo работает с локальными файлами и не трогает оригиналы",
@@ -246,6 +256,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("сайт проекта"),
     "quality": MessageLookupByLibrary.simpleMessage("качество"),
+    "qualityPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "сохраняет больше деталей",
+    ),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("оценить приложение"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage(
       "заменить оригинал",
@@ -306,6 +319,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("пропустить"),
     "small": MessageLookupByLibrary.simpleMessage("маленький"),
     "smaller": MessageLookupByLibrary.simpleMessage("меньше"),
+    "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "делает файл минимального размера",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("остаться"),
     "stereo": MessageLookupByLibrary.simpleMessage("стерео"),
     "system": MessageLookupByLibrary.simpleMessage("система"),

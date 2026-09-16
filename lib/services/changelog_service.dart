@@ -43,6 +43,60 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.7': {
+    Language.en: [
+      'choose Quality, Balanced, or Smaller; technical controls stay in Advanced.',
+      'see that compression runs on-device, is open source, and keeps the original below 10% savings.',
+    ],
+    Language.ru: [
+      'выбирайте «Качество», «Баланс» или «Меньше»; технические настройки остались в расширенном режиме.',
+      'видно, что сжатие идёт на устройстве, проект открыт, а при экономии меньше 10% остаётся оригинал.',
+    ],
+    Language.es: [
+      'elige Calidad, Equilibrado o Más pequeño; los controles técnicos siguen en Avanzado.',
+      'ahora se muestra que la compresión es en el dispositivo, de código abierto y conserva el original si ahorra menos del 10%.',
+    ],
+    Language.pt: [
+      'escolha Qualidade, Equilibrado ou Menor; os controles técnicos ficam em Avançado.',
+      'agora está visível que a compressão ocorre no dispositivo, é de código aberto e mantém o original com menos de 10% de economia.',
+    ],
+    Language.de: [
+      'wähle Qualität, Ausgewogen oder Kleiner; technische Optionen bleiben unter Erweitert.',
+      'es wird angezeigt: Komprimierung auf dem Gerät, Open Source und Original behalten bei weniger als 10 % Ersparnis.',
+    ],
+    Language.fr: [
+      'choisissez Qualité, Équilibré ou Plus petit ; les réglages techniques restent dans Avancé.',
+      'l’application indique désormais le traitement sur l’appareil, l’open source et la conservation de l’original sous 10 % de gain.',
+    ],
+    Language.zh: [
+      '选择质量、均衡或更小；技术控制仍在高级设置中。',
+      '现在会显示：处理仅在设备上完成、项目开源，节省不足 10% 时保留原视频。',
+    ],
+    Language.hi: [
+      'क्वालिटी, संतुलित या छोटा चुनें; तकनीकी नियंत्रण उन्नत में रहते हैं।',
+      'अब दिखता है कि कंप्रेशन डिवाइस पर और ओपन सोर्स है तथा 10% से कम बचत पर मूल वीडियो रहता है।',
+    ],
+    Language.nl: [
+      'kies Kwaliteit, Gebalanceerd of Kleiner; technische opties blijven in Geavanceerd.',
+      'nu zichtbaar: verwerking op je apparaat, open source en behoud van het origineel bij minder dan 10% besparing.',
+    ],
+    Language.ko: [
+      '화질, 균형 또는 더 작게를 선택하세요. 기술 옵션은 고급에 있습니다.',
+      '기기 내 처리, 오픈 소스, 10% 미만 절약 시 원본 유지가 이제 표시됩니다.',
+    ],
+    Language.ja: [
+      '画質、バランス、より小さくから選択。技術設定は詳細にあります。',
+      '端末上での処理、オープンソース、10%未満の節約では元動画を残すことを表示します。',
+    ],
+    Language.it: [
+      'scegli Qualità, Bilanciato o Più piccolo; i controlli tecnici restano in Avanzato.',
+      'ora sono visibili l’elaborazione sul dispositivo, l’open source e il mantenimento dell’originale sotto il 10% di risparmio.',
+    ],
+    Language.tr: [
+      'Kalite, Dengeli veya Daha küçük seçin; teknik kontroller Gelişmiş’te kalır.',
+      'artık cihazda işleme, açık kaynak olması ve %10’dan az tasarrufta orijinalin korunması görünür.',
+    ],
+  },
   '1.0.6': {
     Language.en: [
       'keep the screen awake while selected videos are loading when enabled in Settings.',
