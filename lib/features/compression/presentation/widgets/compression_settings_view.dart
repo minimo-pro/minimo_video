@@ -324,20 +324,30 @@ class _PinnedSizeSummary extends StatelessWidget {
                               ),
                             ),
                           ),
-                          RollingCounterText(
-                            value: estimatedSize,
-                            formatter: (value) =>
-                                Utils.formatSize(value.toInt()).toLowerCase(),
-                            style: const TextStyle(
-                              color: CompressionUiColors.red,
-                              fontSize: 20,
-                              height: 1,
-                            ),
+                          AnimatedOpacity(
+                            opacity: isEstimating ? 0.45 : 1,
+                            duration: const Duration(milliseconds: 180),
+                            child: showSavings
+                                ? RollingCounterText(
+                                    value: estimatedSize,
+                                    formatter: (value) => Utils.formatSize(
+                                      value.toInt(),
+                                    ).toLowerCase(),
+                                    style: const TextStyle(
+                                      color: CompressionUiColors.red,
+                                      fontSize: 20,
+                                      height: 1,
+                                    ),
+                                  )
+                                : const Text(
+                                    '…',
+                                    style: TextStyle(
+                                      color: CompressionUiColors.red,
+                                      fontSize: 20,
+                                      height: 1,
+                                    ),
+                                  ),
                           ),
-                          if (isEstimating) ...[
-                            const SizedBox(width: 6),
-                            const MinimoLoader(size: 16),
-                          ],
                         ],
                       ),
                     ),

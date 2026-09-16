@@ -5,7 +5,6 @@ import '../../../../constants/app_icons.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../services/utils.dart';
 import '../../../../theme/app_colors.dart';
-import '../../../../widgets/minimo_loader.dart';
 import '../../../../widgets/rolling_counter_text.dart';
 import 'selected_videos_preview.dart';
 
@@ -43,7 +42,6 @@ class SelectedVideosSummary extends StatelessWidget {
           selectedCount: selectedCount,
           thumbnailPaths: thumbnailPaths,
           scale: compact ? 0.82 : 1,
-          loadingThumbnails: true,
         ),
         SizedBox(height: compact ? 0 : 4),
         SizedBox(
@@ -88,24 +86,28 @@ class SelectedVideosSummary extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        RollingCounterText(
-                          value: estimatedSize,
-                          formatter: (value) =>
-                              Utils.formatSize(value.toInt()).toLowerCase(),
-                          style: TextStyle(
-                            color: CompressionUiColors.red,
-                            fontSize: compact ? 23 : 28,
-                            height: 1,
-                          ),
-                        ),
-                        if (isEstimating) ...[
-                          const SizedBox(width: 6),
-                          MinimoLoader(size: compact ? 17 : 20),
-                        ],
-                      ],
+                    child: AnimatedOpacity(
+                      opacity: isEstimating ? 0.45 : 1,
+                      duration: const Duration(milliseconds: 180),
+                      child: showSavings
+                          ? RollingCounterText(
+                              value: estimatedSize,
+                              formatter: (value) =>
+                                  Utils.formatSize(value.toInt()).toLowerCase(),
+                              style: TextStyle(
+                                color: CompressionUiColors.red,
+                                fontSize: compact ? 23 : 28,
+                                height: 1,
+                              ),
+                            )
+                          : Text(
+                              '…',
+                              style: TextStyle(
+                                color: CompressionUiColors.red,
+                                fontSize: compact ? 23 : 28,
+                                height: 1,
+                              ),
+                            ),
                     ),
                   ),
                 ),
