@@ -2,6 +2,21 @@
 
 ## Media Selection
 
+## External Share and iOS Shortcuts
+
+iOS Share Extension and the iOS 16+ `Compress Videos in minimo` App Intent
+publish atomic request directories into the App Group
+`group.com.khlebobul.minimoVideo`. Files are copied before `manifest.json` is
+written and the staging directory is atomically renamed. Runner validates and
+copies each request into `Library/Caches/picked_videos`, then removes it.
+Share Extension supports 1–20 movies and attempts the public extension-context
+URL open API. iOS normally rejects app launches from Share Extensions, so the
+UI asks the user to open minimo manually; the request remains queued.
+
+Android declares `ACTION_SEND` and `ACTION_SEND_MULTIPLE` for `video/*`,
+deduplicates incoming `content://` URIs, and copies them sequentially only when
+Flutter consumes the pending request after startup cache cleanup.
+
 The start screen and the compression screen's add-more action show the same source sheet (`from gallery` / `from files`) before opening a native picker. Flutter passes `source` (`gallery` | `files`) to `pickVideos`. Selection from the compression screen is restricted to the pre-compression `ready` state and appends files to the existing batch.
 
 ### iOS

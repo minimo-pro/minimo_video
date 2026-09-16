@@ -48,6 +48,10 @@ Channel: `minimo_video/videos`
 | `videoInfo` | Read duration for size estimates |
 | `createThumbnail` | Generate cached JPEG preview |
 
+Channel `minimo_video/external_videos` exposes `consumeExternalVideos` and the
+`externalVideosAvailable` callback. `StartPage` alone consumes this queue, so
+onboarding, active compression, and unsaved results are never interrupted.
+
 Channel `minimo_video/thermal` exposes `currentState` for overheating warnings.
 
 ## File Lifecycle

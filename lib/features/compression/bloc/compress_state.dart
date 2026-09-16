@@ -60,7 +60,10 @@ class CompressState {
     this.compressionError,
   });
 
-  factory CompressState.initial(List<PickedVideo> videos) {
+  factory CompressState.initial(
+    List<PickedVideo> videos, {
+    CompressionSettings settings = const CompressionSettings(),
+  }) {
     return CompressState(
       status: CompressStatus.ready,
       videos: List.unmodifiable(videos),
@@ -79,7 +82,7 @@ class CompressState {
       progress: 0,
       currentVideoProgress: 0,
       elapsed: Duration.zero,
-      settings: CompressionSettings(),
+      settings: settings,
       estimatedSize: null,
       isEstimating: videos.isNotEmpty,
       isSaving: false,

@@ -37,6 +37,7 @@ Current tests cover:
 - Intermediate pre-selection loader, confirmed exit cancels the pending native import, no empty-settings flash after picker cancellation, then interactive settings with preview/button loaders, hidden zero-byte estimates, and safe completion during active scrolling
 - Screen stays awake during import and compression when `prevent_screen_sleep` is enabled
 - Compact icon-only `AppActionButton` layout for wide SVG assets (`arrow_back`, `share`, `more`)
+- External payload mapping, shortcut preset initialization, and non-delete semantics
 
 ## Test Boundaries
 
@@ -56,6 +57,7 @@ Native behavior needs focused manual checks when compression or platform code ch
 - Already optimized input is skipped when savings are below 10%
 - Save, share, and delete-original flows show expected system UI
 - Multi-select preserves filenames and handles duplicate names
+- iOS 15 Share Extension, iOS 16+ Shortcut, and Android single/multiple Share Sheet imports work on cold and warm launch
 - Adding videos from both gallery and files during configuration preserves the existing batch and settings, refreshes previews/estimate, and reports copy progress
 - With Limited Photos access, choose a video outside the app's allowed
   selection through `PHPicker`: beside-original preserves its embedded capture

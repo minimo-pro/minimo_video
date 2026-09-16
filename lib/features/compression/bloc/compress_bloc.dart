@@ -29,6 +29,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
 
   CompressBloc({
     List<PickedVideo> initialVideos = const [],
+    CompressionSettings initialSettings = const CompressionSettings(),
     VideoFileAdapter? videoFileAdapter,
     VideoCompressorAdapter? videoCompressorAdapter,
     AppSettingsService? appSettings,
@@ -38,7 +39,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
            videoCompressorAdapter ?? VideoCompressorAdapter(),
        _appSettings = appSettings ?? AppSettingsService.instance,
        _screenAwakeService = screenAwakeService ?? ScreenAwakeService.instance,
-       super(CompressState.initial(initialVideos)) {
+       super(CompressState.initial(initialVideos, settings: initialSettings)) {
     on<CompressThumbnailsRequested>(_onThumbnailsRequested);
     on<CompressEstimateRequested>(_onEstimateRequested);
     on<CompressVideosAdded>(_onVideosAdded);

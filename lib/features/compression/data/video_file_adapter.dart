@@ -26,6 +26,10 @@ class VideoFileAdapter {
     }
     if (result == null) return const [];
 
+    return mapPlatformFiles(result);
+  }
+
+  static List<PickedVideo> mapPlatformFiles(List<dynamic> result) {
     return result.cast<Map<dynamic, dynamic>>().map((file) {
       final path = file['path'] as String;
       final name = file['name'] as String;

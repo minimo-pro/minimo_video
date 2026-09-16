@@ -19,6 +19,7 @@ import '../bloc/compress_event.dart';
 import '../bloc/compress_state.dart';
 import '../data/video_file_adapter.dart';
 import '../domain/picked_video.dart';
+import '../domain/compression_settings.dart';
 import '../domain/video_pick_source.dart';
 import 'widgets/compression_progress_view.dart';
 import 'widgets/compression_result_view.dart';
@@ -30,11 +31,13 @@ import 'widgets/video_pick_source_sheet.dart';
 class CompressScreen extends StatelessWidget {
   final List<PickedVideo> initialVideos;
   final VideoPickSource? initialPickSource;
+  final CompressionSettings initialSettings;
 
   const CompressScreen({
     super.key,
     this.initialVideos = const [],
     this.initialPickSource,
+    this.initialSettings = const CompressionSettings(),
   });
 
   @override
@@ -44,7 +47,10 @@ class CompressScreen extends StatelessWidget {
     }
 
     return BlocProvider(
-      create: (_) => CompressBloc(initialVideos: initialVideos),
+      create: (_) => CompressBloc(
+        initialVideos: initialVideos,
+        initialSettings: initialSettings,
+      ),
       child: _CompressView(initialPickSource: initialPickSource),
     );
   }

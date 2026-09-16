@@ -1,5 +1,9 @@
 ## [1.0.7]
 
+### Added
+
+* Added iOS Shortcuts and iOS/Android Share Sheet imports with High, Medium, and Low preset routing.
+
 ### Changed
 
 * Made the main compression choices outcome-based: Quality, Balanced, and Smaller.
