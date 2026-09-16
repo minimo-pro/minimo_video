@@ -22,6 +22,7 @@ class MainActivity : FlutterActivity() {
     @Volatile private var activePickId: Long? = null
     private var nextPickId = 0L
     private val pendingExternalUris = mutableListOf<Uri>()
+    private val importedExternalVideos = linkedMapOf<Uri, Map<String, Any>>()
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -79,7 +80,9 @@ class MainActivity : FlutterActivity() {
             }
         }.distinct().filter(::isPotentialVideo).take(MAX_EXTERNAL_VIDEOS)
         if (uris.isEmpty()) return
-        pendingExternalUris.addAll(uris.filterNot(pendingExternalUris::contains))
+        pendingExternalUris.addAll(uris.filterNot {
+            it in pendingExternalUris || it in importedExternalVideos
+        })
         externalVideosChannel.invokeMethod("externalVideosAvailable", null)
     }
 
@@ -90,10 +93,33 @@ class MainActivity : FlutterActivity() {
         val uris = pendingExternalUris.toList()
         if (uris.isEmpty()) return result.success(null)
         Thread {
-            val videos = uris.mapNotNull { uri -> runCatching { copyPickedVideo(uri) }.getOrNull() }
+            val imported = mutableListOf<Pair<Uri, Map<String, Any>>>()
+            val failed = mutableListOf<Uri>()
+            uris.forEach { uri ->
+                runCatching { copyPickedVideo(uri) }
+                    .onSuccess { imported += uri to it }
+                    .onFailure { failed += uri }
+            }
             runOnUiThread {
-                pendingExternalUris.removeAll(uris.toSet())
-                result.success(if (videos.isEmpty()) null else mapOf("preset" to "medium", "files" to videos))
+                imported.forEach { (uri, video) ->
+                    pendingExternalUris.remove(uri)
+                    importedExternalVideos[uri] = video
+                }
+                if (failed.isNotEmpty()) {
+                    result.error(
+                        "external_import_incomplete",
+                        "Imported ${imported.size} of ${uris.size} videos; ${failed.size} remain pending.",
+                        mapOf(
+                            "batchSize" to uris.size,
+                            "importedCount" to imported.size,
+                            "failedCount" to failed.size
+                        )
+                    )
+                } else {
+                    val videos = importedExternalVideos.values.toList()
+                    importedExternalVideos.clear()
+                    result.success(mapOf("preset" to "medium", "files" to videos))
+                }
             }
         }.start()
     }

@@ -73,8 +73,8 @@ void main() {
       find.text("try another mode — this won't make it smaller"),
       findsNothing,
     );
-    await tester.ensureVisible(find.text('medium'));
-    await tester.tap(find.text('medium'));
+    await tester.ensureVisible(find.text('balanced'));
+    await tester.tap(find.text('balanced'));
     await tester.pump();
     final modeSwitchY = tester
         .getTopLeft(find.byType(CompressionModeSwitch))
@@ -110,8 +110,8 @@ void main() {
     );
     expect(bloc.state.settings.simpleQuality, SimpleCompressionQuality.medium);
 
-    await tester.ensureVisible(find.text('low'));
-    await tester.tap(find.text('low'));
+    await tester.ensureVisible(find.text('smaller'));
+    await tester.tap(find.text('smaller'));
     await tester.pump();
     expect(bloc.state.settings.simpleQuality, SimpleCompressionQuality.low);
   });
