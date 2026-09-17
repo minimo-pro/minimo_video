@@ -6,8 +6,8 @@
 
 ### Changed
 
-* Made the main compression choices outcome-based: Quality, Balanced, and Smaller.
-* Kept bitrate and frame-rate controls in Advanced settings.
+* Moved the Quality, Balanced, and Smaller presets to the main compression settings.
+* Moved bitrate and frame-rate controls to Advanced settings.
 * Kept the previous size estimate dimmed during recalculation and updated it smoothly when ready.
 * Redesigned the video import extension with clearer progress and completion states.
 

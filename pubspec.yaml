@@ -1,7 +1,7 @@
 name: minimo_video
 description: "minimo (video) - video compression app."
 publish_to: 'none'
-version: 1.0.7+24
+version: 1.0.7+25
 
 environment:
   sdk: ^3.12.0
