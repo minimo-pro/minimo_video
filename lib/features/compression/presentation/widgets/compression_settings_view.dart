@@ -417,7 +417,7 @@ class _SimpleCompressionOptions extends StatelessWidget {
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.high,
           quality: SimpleCompressionQuality.high,
-          title: strings.quality,
+          title: strings.high,
           subtitle: strings.qualityPresetDescription,
           onSelected: _onSelected(context),
           compact: compact,
@@ -426,7 +426,7 @@ class _SimpleCompressionOptions extends StatelessWidget {
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.medium,
           quality: SimpleCompressionQuality.medium,
-          title: strings.balanced,
+          title: strings.medium,
           subtitle: strings.balancedPresetDescription,
           onSelected: _onSelected(context),
           compact: compact,
@@ -435,7 +435,7 @@ class _SimpleCompressionOptions extends StatelessWidget {
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.low,
           quality: SimpleCompressionQuality.low,
-          title: strings.smaller,
+          title: strings.low,
           subtitle: strings.smallerPresetDescription,
           onSelected: _onSelected(context),
           compact: compact,

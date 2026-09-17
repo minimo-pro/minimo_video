@@ -45,15 +45,18 @@ void main() {
     );
   });
 
-  testWidgets('leads with quality outcomes without trust copy', (tester) async {
+  testWidgets('shows familiar quality levels without trust copy', (
+    tester,
+  ) async {
     final bloc = CompressBloc();
     addTearDown(bloc.close);
 
     await tester.pumpWidget(_app(CompressState.initial(const []), bloc));
 
-    expect(find.text('quality'), findsNWidgets(2));
-    expect(find.text('balanced'), findsOneWidget);
-    expect(find.text('smaller'), findsOneWidget);
+    expect(find.text('quality'), findsOneWidget);
+    expect(find.text('high'), findsOneWidget);
+    expect(find.text('medium'), findsOneWidget);
+    expect(find.text('low'), findsOneWidget);
     expect(find.text('on device • open source'), findsNothing);
     expect(
       find.text('keeps the original if it saves less than 10%'),

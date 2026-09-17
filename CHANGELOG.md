@@ -1,3 +1,9 @@
+## [1.0.8]
+
+### Changed
+
+* Restored the familiar High, Medium, and Low names for the basic compression presets.
+
 ## [1.0.7]
 
 ### Added

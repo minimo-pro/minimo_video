@@ -43,6 +43,41 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.8': {
+    Language.en: [
+      'Restored the familiar High, Medium, and Low names for basic compression.',
+    ],
+    Language.ru: [
+      'Вернули привычные названия базовых режимов сжатия: «Высокое», «Среднее» и «Низкое».',
+    ],
+    Language.es: [
+      'Recuperamos los nombres habituales Alta, Media y Baja para la compresión básica.',
+    ],
+    Language.pt: [
+      'Restauramos os nomes conhecidos Alta, Média e Baixa para a compressão básica.',
+    ],
+    Language.de: [
+      'Die vertrauten Bezeichnungen Hoch, Mittel und Niedrig für die Basiskomprimierung sind zurück.',
+    ],
+    Language.fr: [
+      'Les noms familiers Haute, Moyenne et Basse sont de retour pour la compression de base.',
+    ],
+    Language.zh: ['基础压缩恢复为熟悉的“高”“中”“低”名称。'],
+    Language.hi: [
+      'बुनियादी कंप्रेशन के लिए परिचित उच्च, मध्यम और कम नाम वापस लाए गए हैं।',
+    ],
+    Language.nl: [
+      'De vertrouwde namen Hoog, Gemiddeld en Laag zijn terug voor basiscompressie.',
+    ],
+    Language.ko: ['기본 압축에 익숙한 높음, 중간, 낮음 이름을 다시 적용했습니다.'],
+    Language.ja: ['基本圧縮の名称を、なじみのある「高」「中」「低」に戻しました。'],
+    Language.it: [
+      'Abbiamo ripristinato i nomi familiari Alta, Media e Bassa per la compressione di base.',
+    ],
+    Language.tr: [
+      'Temel sıkıştırma için bilinen Yüksek, Orta ve Düşük adları geri getirildi.',
+    ],
+  },
   '1.0.7': {
     Language.en: [
       'Added video import through the system share menu and shortcuts.',

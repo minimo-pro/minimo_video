@@ -11,12 +11,12 @@ PackageInfo _packageInfo(String version) => PackageInfo(
 );
 
 void main() {
-  test('bundled 1.0.7 changelog is localized for every language', () {
+  test('bundled 1.0.8 changelog is localized for every language', () {
     final changes = {
       for (final language in Language.values)
         unseenChanges(
-          lastSeen: '1.0.6',
-          current: '1.0.7',
+          lastSeen: '1.0.7',
+          current: '1.0.8',
           language: language,
         ).join('\n'),
     };
