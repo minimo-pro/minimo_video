@@ -44,6 +44,9 @@
   "myOtherApps": "我的其他应用",
   "emailCopied": "邮箱已复制",
   "settings": "设置",
+  "statistics": "统计",
+  "videosCompressedStat": "已压缩视频",
+  "spaceSavedStat": "已节省空间",
   "addPrefix": "添加 \"{prefix}\" 前缀",
   "@addPrefix": {
     "placeholders": {

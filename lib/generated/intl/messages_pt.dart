@@ -321,6 +321,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
       "cria o menor arquivo",
     ),
+    "spaceSavedStat": MessageLookupByLibrary.simpleMessage(
+      "espaço economizado",
+    ),
+    "statistics": MessageLookupByLibrary.simpleMessage("estatísticas"),
     "stay": MessageLookupByLibrary.simpleMessage("ficar"),
     "stereo": MessageLookupByLibrary.simpleMessage("estéreo"),
     "system": MessageLookupByLibrary.simpleMessage("sistema"),
@@ -343,6 +347,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "videoProgress": m12,
     "videosCompressed": m13,
+    "videosCompressedStat": MessageLookupByLibrary.simpleMessage(
+      "vídeos comprimidos",
+    ),
     "waiting": MessageLookupByLibrary.simpleMessage("aguardando"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
     "youSavedSize": m14,

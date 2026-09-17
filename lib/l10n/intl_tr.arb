@@ -44,6 +44,9 @@
   "myOtherApps": "diğer uygulamalarım",
   "emailCopied": "e-posta kopyalandı",
   "settings": "ayarlar",
+  "statistics": "istatistikler",
+  "videosCompressedStat": "sıkıştırılan videolar",
+  "spaceSavedStat": "kazanılan alan",
   "addPrefix": "\"{prefix}\" önekini ekle",
   "@addPrefix": {
     "placeholders": {

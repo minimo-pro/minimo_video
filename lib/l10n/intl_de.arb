@@ -44,6 +44,9 @@
   "myOtherApps": "meine anderen apps",
   "emailCopied": "e-mail kopiert",
   "settings": "einstellungen",
+  "statistics": "statistik",
+  "videosCompressedStat": "videos komprimiert",
+  "spaceSavedStat": "speicher gespart",
   "addPrefix": "präfix \"{prefix}\" hinzufügen",
   "@addPrefix": {
     "placeholders": {

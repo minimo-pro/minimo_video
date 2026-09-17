@@ -44,6 +44,9 @@
     "myOtherApps": "その他のアプリ",
     "emailCopied": "メールアドレスをコピーしました",
     "settings": "設定",
+    "statistics": "統計",
+    "videosCompressedStat": "圧縮した動画",
+    "spaceSavedStat": "節約した容量",
     "addPrefix": "\"{prefix}\"接頭辞を追加",
     "@addPrefix": {
         "placeholders": {

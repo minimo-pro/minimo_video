@@ -8,6 +8,7 @@ import '../domain/compression_result.dart';
 import '../domain/compression_settings.dart';
 import '../domain/picked_video.dart';
 import '../../../services/app_settings_service.dart';
+import '../../../services/app_stats_service.dart';
 import '../../../services/screen_awake_service.dart';
 import 'compress_event.dart';
 import 'compress_state.dart';
@@ -348,6 +349,14 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         );
       }
 
+      if (state.successResults.isNotEmpty) {
+        unawaited(
+          AppStatsService.recordCompressions(
+            videoCount: state.successResults.length,
+            savedBytes: state.resultsOriginalSize - state.compressedSize,
+          ).onError((_, _) {}),
+        );
+      }
       emit(
         state.copyWith(
           status: CompressStatus.done,

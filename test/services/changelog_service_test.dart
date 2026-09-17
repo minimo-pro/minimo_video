@@ -14,15 +14,12 @@ void main() {
   test('bundled 1.0.8 changelog is localized for every language', () {
     final changes = {
       for (final language in Language.values)
-        unseenChanges(
-          lastSeen: '1.0.7',
-          current: '1.0.8',
-          language: language,
-        ).join('\n'),
+        unseenChanges(lastSeen: '1.0.7', current: '1.0.8', language: language),
     };
 
     expect(changes, hasLength(Language.values.length));
     expect(changes.every((change) => change.isNotEmpty), isTrue);
+    expect(changes.every((change) => change.length == 2), isTrue);
   });
 
   test('every language code resolves to its language', () {

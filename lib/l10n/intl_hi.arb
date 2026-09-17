@@ -44,6 +44,9 @@
     "myOtherApps": "मेरे अन्य ऐप",
     "emailCopied": "ईमेल कॉपी हुआ",
     "settings": "सेटिंग्स",
+    "statistics": "आँकड़े",
+    "videosCompressedStat": "कंप्रेस किए गए वीडियो",
+    "spaceSavedStat": "बचाया गया स्थान",
     "addPrefix": "\"{prefix}\" प्रीफ़िक्स जोड़ें",
     "@addPrefix": {
         "placeholders": {

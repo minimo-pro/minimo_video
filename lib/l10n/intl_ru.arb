@@ -44,6 +44,9 @@
   "myOtherApps": "другие мои приложения",
   "emailCopied": "почта скопирована",
   "settings": "настройки",
+  "statistics": "статистика",
+  "videosCompressedStat": "видео сжато",
+  "spaceSavedStat": "места сэкономлено",
   "addPrefix": "добавлять префикс \"{prefix}\"",
   "@addPrefix": {
     "placeholders": {

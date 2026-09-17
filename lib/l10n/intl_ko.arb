@@ -44,6 +44,9 @@
     "myOtherApps": "내 다른 앱",
     "emailCopied": "이메일 복사됨",
     "settings": "설정",
+    "statistics": "통계",
+    "videosCompressedStat": "압축한 동영상",
+    "spaceSavedStat": "절약한 공간",
     "addPrefix": "\"{prefix}\" 접두사 추가",
     "@addPrefix": {
         "placeholders": {

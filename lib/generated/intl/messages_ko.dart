@@ -279,6 +279,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
       "가장 작은 파일 생성",
     ),
+    "spaceSavedStat": MessageLookupByLibrary.simpleMessage("절약한 공간"),
+    "statistics": MessageLookupByLibrary.simpleMessage("통계"),
     "stay": MessageLookupByLibrary.simpleMessage("머무르기"),
     "stereo": MessageLookupByLibrary.simpleMessage("스테레오"),
     "system": MessageLookupByLibrary.simpleMessage("시스템"),
@@ -297,6 +299,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "videoProgress": m12,
     "videosCompressed": m13,
+    "videosCompressedStat": MessageLookupByLibrary.simpleMessage("압축한 동영상"),
     "waiting": MessageLookupByLibrary.simpleMessage("대기 중"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
     "youSavedSize": m14,

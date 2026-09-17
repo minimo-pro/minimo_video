@@ -270,6 +270,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
       "最小のファイルにする",
     ),
+    "spaceSavedStat": MessageLookupByLibrary.simpleMessage("節約した容量"),
+    "statistics": MessageLookupByLibrary.simpleMessage("統計"),
     "stay": MessageLookupByLibrary.simpleMessage("戻る"),
     "stereo": MessageLookupByLibrary.simpleMessage("ステレオ"),
     "system": MessageLookupByLibrary.simpleMessage("システム"),
@@ -288,6 +290,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "videoProgress": m12,
     "videosCompressed": m13,
+    "videosCompressedStat": MessageLookupByLibrary.simpleMessage("圧縮した動画"),
     "waiting": MessageLookupByLibrary.simpleMessage("待機中"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
     "youSavedSize": m14,

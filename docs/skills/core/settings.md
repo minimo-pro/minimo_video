@@ -12,6 +12,11 @@ Settings use `shared_preferences` through `AppSettingsService`.
 | `language_code` | `String?` | system | Override locale with a supported language code |
 | `dark_theme` | `bool?` | system | Override system theme after user selection |
 | `onboarding_completed` | `bool` | `false` | Skip onboarding after completion |
+| `stats_compressed_videos` | `int` | `0` | Successfully compressed video count |
+| `stats_saved_bytes` | `int` | `0` | Total bytes removed by successful compression |
+
+Compression statistics stay on-device in `shared_preferences`. Skipped and
+failed results are not counted.
 
 ## Cache
 
