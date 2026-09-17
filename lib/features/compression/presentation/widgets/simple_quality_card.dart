@@ -32,7 +32,7 @@ class SimpleQualityCard extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 160),
           width: double.infinity,
-          height: compact ? 58 : 69,
+          constraints: BoxConstraints(minHeight: compact ? 58 : 69),
           padding: EdgeInsets.fromLTRB(
             10,
             compact ? 7 : 8,
@@ -52,6 +52,7 @@ class SimpleQualityCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

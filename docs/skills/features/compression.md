@@ -2,13 +2,16 @@
 
 ## Presets
 
-| Preset | Internal CRF tier | Target bitrate | Resolution |
+| Outcome | Internal CRF tier | Target bitrate | Resolution |
 |---|---:|---:|---|
-| High | 22 | 4 Mbps | original |
-| Medium | 28 | 2 Mbps | 1280×720 |
-| Low | 34 | 1 Mbps | 854×480 |
+| Quality | 22 | 4 Mbps | original |
+| Balanced | 28 | 2 Mbps | 1280×720 |
+| Smaller | 34 | 1 Mbps | 854×480 |
 
 Preset bitrates are nominal for 30 FPS H.264 input. CRF is retained internally to map existing UI state to `light_compressor_v2`; users do not edit it directly.
+
+The simple UI also states that processing happens on-device and is open source,
+and that the original stays when the output saves less than 10%.
 
 Advanced mode allows:
 
@@ -52,6 +55,10 @@ shows a localized notice.
 On iOS the compression screen warns the user to keep the app open. If the app is backgrounded during compression, the active native job is cancelled immediately; returning restarts only the current video and keeps completed batch items.
 
 ## Importing and Adding Videos During Configuration
+
+External imports reuse `CompressRoute(initialVideos, initialSettings)`. iOS
+Shortcuts map High/Medium/Low to the same three preset settings; platform Share
+Sheets use Medium. Shared sources never allow original replacement or deletion.
 
 After the start-screen source choice, `CompressScreen` opens the native picker and owns the import. Until native selection is confirmed, it shows the intermediate `VideoLoadingView` instead of an empty settings placeholder; empty `(0, 0)` progress does not reveal settings. Cancellation or a failed empty initial import returns to the start screen. Once `pickProgress(0, total)` confirms a non-empty selection, simple and advanced settings appear and remain interactive while cloud-backed videos download or files copy into cache. Until the first import completes, the preview area shows `MinimoLoader` plus the cloud/large-file hint; zero-byte estimates and the no-savings message stay hidden. After import, each pending thumbnail keeps a compact `MinimoLoader` until its video frame is ready. The Compress button shows its own compact `MinimoLoader` plus picker batch progress and stays disabled until every selected video is ready. Add-more is disabled during import. Top and system back remain available through a confirmation dialog; accepting returns to the start screen while late picker results are ignored. An add-more error restores the actions and shows a localized snackbar.
 

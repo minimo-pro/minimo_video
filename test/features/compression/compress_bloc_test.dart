@@ -320,6 +320,14 @@ class _FakeScreenAwakeService extends ScreenAwakeService {
 }
 
 void main() {
+  test('uses shortcut settings for initial estimate and UI state', () {
+    final bloc = CompressBloc(
+      initialSettings: const CompressionSettings(crf: 22, resolution: null),
+    );
+    addTearDown(bloc.close);
+
+    expect(bloc.state.settings.simpleQuality, SimpleCompressionQuality.high);
+  });
   test('quality presets select expected bitrate tier and resolution', () async {
     final bloc = CompressBloc(videoCompressorAdapter: _EstimatingCompressor());
 

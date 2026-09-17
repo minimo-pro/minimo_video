@@ -80,6 +80,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "मूल ऑडियो रखें या स्पेस बचाने के लिए हटाएँ",
     ),
     "automatic": MessageLookupByLibrary.simpleMessage("ऑटो"),
+    "balanced": MessageLookupByLibrary.simpleMessage("संतुलित"),
+    "balancedPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "संतुलित रूप के साथ छोटी फ़ाइल",
+    ),
     "better": MessageLookupByLibrary.simpleMessage("बेहतर"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "स्पेस बचाने के लिए बिटरेट घटेगा",
@@ -170,6 +174,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "कंप्रेशन के दौरान minimo खुला रखें। बाहर जाने पर वर्तमान वीडियो फिर शुरू होगा",
     ),
+    "keepsOriginalWhenSavingsLow": MessageLookupByLibrary.simpleMessage(
+      "10% से कम बचत पर मूल वीडियो रखा जाता है",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("भाषा"),
     "languageDescription": MessageLookupByLibrary.simpleMessage(
       "ऐप की भाषा चुनें",
@@ -201,6 +208,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAudio": MessageLookupByLibrary.simpleMessage("बिना ऑडियो"),
     "noSavingsHint": MessageLookupByLibrary.simpleMessage(
       "दूसरा मोड आज़माएँ — यह छोटा नहीं करेगा",
+    ),
+    "onDeviceOpenSource": MessageLookupByLibrary.simpleMessage(
+      "डिवाइस पर • ओपन सोर्स",
     ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "एक या कई वीडियो चुनें। minimo लोकल फ़ाइलों के साथ काम करता है और मूल वीडियो नहीं बदलता",
@@ -239,6 +249,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("प्रोजेक्ट वेबसाइट"),
     "quality": MessageLookupByLibrary.simpleMessage("क्वालिटी"),
+    "qualityPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "सबसे ज़्यादा विवरण रखता है",
+    ),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("ऐप को रेट करें"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("मूल बदलें"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
@@ -295,6 +308,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("छोड़ें"),
     "small": MessageLookupByLibrary.simpleMessage("छोटा"),
     "smaller": MessageLookupByLibrary.simpleMessage("छोटा"),
+    "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "सबसे छोटी फ़ाइल बनाता है",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("रुकें"),
     "stereo": MessageLookupByLibrary.simpleMessage("स्टीरियो"),
     "system": MessageLookupByLibrary.simpleMessage("सिस्टम"),

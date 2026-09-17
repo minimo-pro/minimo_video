@@ -43,6 +43,73 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.7': {
+    Language.en: [
+      'choose Quality, Balanced, or Smaller; technical controls stay in Advanced.',
+      'size estimates stay calm while recalculating and update smoothly when ready.',
+      'import shared videos even when they are selected alongside photos.',
+    ],
+    Language.ru: [
+      'выбирайте «Качество», «Баланс» или «Меньше»; технические настройки остались в расширенном режиме.',
+      'расчётный размер не дёргается во время пересчёта и плавно обновляется после него.',
+      'импортируйте видео, даже если вместе с ними выбраны фотографии.',
+    ],
+    Language.es: [
+      'elige Calidad, Equilibrado o Más pequeño; los controles técnicos siguen en Avanzado.',
+      'el tamaño estimado permanece estable durante el recálculo y se actualiza suavemente al terminar.',
+      'importa videos compartidos aunque estén seleccionados junto con fotos.',
+    ],
+    Language.pt: [
+      'escolha Qualidade, Equilibrado ou Menor; os controles técnicos ficam em Avançado.',
+      'o tamanho estimado permanece estável durante o recálculo e atualiza suavemente ao terminar.',
+      'importe vídeos compartilhados mesmo quando selecionados junto com fotos.',
+    ],
+    Language.de: [
+      'wähle Qualität, Ausgewogen oder Kleiner; technische Optionen bleiben unter Erweitert.',
+      'die geschätzte Größe bleibt während der Neuberechnung ruhig und wird danach sanft aktualisiert.',
+      'importiere geteilte Videos auch dann, wenn zugleich Fotos ausgewählt sind.',
+    ],
+    Language.fr: [
+      'choisissez Qualité, Équilibré ou Plus petit ; les réglages techniques restent dans Avancé.',
+      'la taille estimée reste stable pendant le recalcul et s’actualise en douceur une fois prête.',
+      'importez les vidéos partagées même lorsqu’elles sont sélectionnées avec des photos.',
+    ],
+    Language.zh: [
+      '选择质量、均衡或更小；技术控制仍在高级设置中。',
+      '重新计算时预估大小保持稳定，完成后平滑更新。',
+      '即使同时选择了照片，也能导入分享的视频。',
+    ],
+    Language.hi: [
+      'क्वालिटी, संतुलित या छोटा चुनें; तकनीकी नियंत्रण उन्नत में रहते हैं।',
+      'दोबारा गणना के दौरान अनुमानित आकार स्थिर रहता है और तैयार होने पर सहजता से अपडेट होता है।',
+      'फ़ोटो के साथ चुने गए शेयर किए हुए वीडियो भी इंपोर्ट करें।',
+    ],
+    Language.nl: [
+      'kies Kwaliteit, Gebalanceerd of Kleiner; technische opties blijven in Geavanceerd.',
+      'de geschatte grootte blijft rustig tijdens herberekening en wordt daarna vloeiend bijgewerkt.',
+      'importeer gedeelde video’s ook wanneer ze samen met foto’s zijn geselecteerd.',
+    ],
+    Language.ko: [
+      '화질, 균형 또는 더 작게를 선택하세요. 기술 옵션은 고급에 있습니다.',
+      '다시 계산하는 동안 예상 크기가 안정적으로 유지되고 완료되면 부드럽게 업데이트됩니다.',
+      '사진과 함께 선택한 공유 동영상도 가져옵니다.',
+    ],
+    Language.ja: [
+      '画質、バランス、より小さくから選択。技術設定は詳細にあります。',
+      '再計算中も推定サイズは安定し、完了後になめらかに更新されます。',
+      '写真と一緒に選択された共有動画も読み込めます。',
+    ],
+    Language.it: [
+      'scegli Qualità, Bilanciato o Più piccolo; i controlli tecnici restano in Avanzato.',
+      'la dimensione stimata resta stabile durante il ricalcolo e si aggiorna dolcemente al termine.',
+      'importa i video condivisi anche quando sono selezionati insieme alle foto.',
+    ],
+    Language.tr: [
+      'Kalite, Dengeli veya Daha küçük seçin; teknik kontroller Gelişmiş’te kalır.',
+      'tahmini boyut yeniden hesaplanırken sabit kalır ve hazır olduğunda akıcı biçimde güncellenir.',
+      'fotoğraflarla birlikte seçilen paylaşılan videoları da aktarın.',
+    ],
+  },
   '1.0.6': {
     Language.en: [
       'keep the screen awake while selected videos are loading when enabled in Settings.',

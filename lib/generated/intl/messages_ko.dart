@@ -76,6 +76,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "원본 오디오를 유지하거나 제거하여 공간을 더 절약합니다",
     ),
     "automatic": MessageLookupByLibrary.simpleMessage("자동"),
+    "balanced": MessageLookupByLibrary.simpleMessage("균형"),
+    "balancedPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "균형 잡힌 화질의 작은 파일",
+    ),
     "better": MessageLookupByLibrary.simpleMessage("더 좋게"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "공간을 절약하도록 비트레이트를 낮춥니다",
@@ -154,6 +158,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "압축 중에는 minimo를 열어 두세요. 나갔다가 돌아오면 현재 동영상이 다시 시작됩니다",
     ),
+    "keepsOriginalWhenSavingsLow": MessageLookupByLibrary.simpleMessage(
+      "10% 미만 절약 시 원본을 유지합니다",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("언어"),
     "languageDescription": MessageLookupByLibrary.simpleMessage("앱 언어를 선택하세요"),
     "leave": MessageLookupByLibrary.simpleMessage("나가기"),
@@ -181,6 +188,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAudio": MessageLookupByLibrary.simpleMessage("오디오 없음"),
     "noSavingsHint": MessageLookupByLibrary.simpleMessage(
       "다른 모드를 사용해 보세요 — 이 모드는 크기를 줄이지 않습니다",
+    ),
+    "onDeviceOpenSource": MessageLookupByLibrary.simpleMessage(
+      "기기에서 처리 • 오픈 소스",
     ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "하나 이상의 동영상을 선택하세요. minimo는 로컬 파일을 사용하며 원본을 변경하지 않습니다",
@@ -215,6 +225,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("프로젝트 웹사이트"),
     "quality": MessageLookupByLibrary.simpleMessage("화질"),
+    "qualityPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "가장 많은 디테일 유지",
+    ),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("앱 평가하기"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("원본 교체"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
@@ -263,6 +276,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("건너뛰기"),
     "small": MessageLookupByLibrary.simpleMessage("작음"),
     "smaller": MessageLookupByLibrary.simpleMessage("더 작게"),
+    "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "가장 작은 파일 생성",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("머무르기"),
     "stereo": MessageLookupByLibrary.simpleMessage("스테레오"),
     "system": MessageLookupByLibrary.simpleMessage("시스템"),

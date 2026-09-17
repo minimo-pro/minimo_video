@@ -19,6 +19,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
   private var pendingPickResult: FlutterResult?
   private var activePickID: UUID?
   private var videosChannel: FlutterMethodChannel?
+  private var externalVideosChannel: FlutterMethodChannel?
 
   override func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     super.scene(scene, willConnectTo: session, options: connectionOptions)
@@ -64,6 +65,60 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
         self.clearTemporaryCache(result: result)
       default:
         result(FlutterMethodNotImplemented)
+      }
+    }
+
+    let externalChannel = FlutterMethodChannel(
+      name: "minimo_video/external_videos",
+      binaryMessenger: controller.binaryMessenger
+    )
+    externalVideosChannel = externalChannel
+    externalChannel.setMethodCallHandler { call, result in
+      switch call.method {
+      case "consumeExternalVideos": self.consumeExternalVideos(result: result)
+      default: result(FlutterMethodNotImplemented)
+      }
+    }
+
+    if connectionOptions.urlContexts.contains(where: { $0.url.scheme == "minimovideo" }) {
+      externalChannel.invokeMethod("externalVideosAvailable", arguments: nil)
+    }
+  }
+
+  override func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    super.scene(scene, openURLContexts: URLContexts)
+    if URLContexts.contains(where: { $0.url.scheme == "minimovideo" }) {
+      externalVideosChannel?.invokeMethod("externalVideosAvailable", arguments: nil)
+    }
+  }
+
+  override func sceneDidBecomeActive(_ scene: UIScene) {
+    super.sceneDidBecomeActive(scene)
+    externalVideosChannel?.invokeMethod("externalVideosAvailable", arguments: nil)
+  }
+
+  private func consumeExternalVideos(result: @escaping FlutterResult) {
+    DispatchQueue.global(qos: .userInitiated).async {
+      do {
+        guard let (request, directory) = try SharedVideoInbox.next() else {
+          return DispatchQueue.main.async { result(nil) }
+        }
+        var videos: [[String: Any]] = []
+        do {
+          for name in request.files {
+            let input = directory.appendingPathComponent(name)
+            let output = try self.copyPickedVideo(from: input, filename: name)
+            videos.append(["path": output.path, "name": name, "size": (try? output.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0, "canPreserveMetadata": false, "canDeleteOriginal": false])
+          }
+          SharedVideoInbox.remove(directory)
+          DispatchQueue.main.async { result(["preset": request.preset, "files": videos]) }
+        } catch {
+          self.removeImportedVideos(videos)
+          SharedVideoInbox.remove(directory)
+          throw error
+        }
+      } catch {
+        DispatchQueue.main.async { result(FlutterError(code: "external_import_failed", message: error.localizedDescription, details: nil)) }
       }
     }
   }

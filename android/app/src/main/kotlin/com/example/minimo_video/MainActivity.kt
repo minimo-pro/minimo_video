@@ -17,9 +17,12 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
     private lateinit var videosChannel: MethodChannel
+    private lateinit var externalVideosChannel: MethodChannel
     private var pendingPickResult: MethodChannel.Result? = null
     @Volatile private var activePickId: Long? = null
     private var nextPickId = 0L
+    private val pendingExternalUris = mutableListOf<Uri>()
+    private val importedExternalVideos = linkedMapOf<Uri, Map<String, Any>>()
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -45,6 +48,80 @@ class MainActivity : FlutterActivity() {
                 else -> result.notImplemented()
             }
         }
+        externalVideosChannel = MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            "minimo_video/external_videos"
+        )
+        externalVideosChannel.setMethodCallHandler { call, result ->
+            when (call.method) {
+                "consumeExternalVideos" -> consumeExternalVideos(result)
+                else -> result.notImplemented()
+            }
+        }
+        importExternalIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        importExternalIntent(intent)
+    }
+
+    private fun importExternalIntent(intent: Intent?) {
+        val externalIntent = intent ?: return
+        if (externalIntent.action !in setOf(Intent.ACTION_SEND, Intent.ACTION_SEND_MULTIPLE)) return
+        val uris = buildList {
+            if (externalIntent.action == Intent.ACTION_SEND) {
+                (if (Build.VERSION.SDK_INT >= 33) externalIntent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java) else @Suppress("DEPRECATION") externalIntent.getParcelableExtra(Intent.EXTRA_STREAM))?.let(::add)
+            } else {
+                if (Build.VERSION.SDK_INT >= 33) externalIntent.getParcelableArrayListExtra(Intent.EXTRA_STREAM, Uri::class.java)?.let(::addAll)
+                else @Suppress("DEPRECATION") externalIntent.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM)?.let(::addAll)
+                externalIntent.clipData?.let { clip -> for (index in 0 until clip.itemCount) add(clip.getItemAt(index).uri) }
+            }
+        }.distinct().filter(::isPotentialVideo).take(MAX_EXTERNAL_VIDEOS)
+        if (uris.isEmpty()) return
+        pendingExternalUris.addAll(uris.filterNot {
+            it in pendingExternalUris || it in importedExternalVideos
+        })
+        externalVideosChannel.invokeMethod("externalVideosAvailable", null)
+    }
+
+    private fun isPotentialVideo(uri: Uri): Boolean =
+        contentResolver.getType(uri)?.startsWith("image/") != true
+
+    private fun consumeExternalVideos(result: MethodChannel.Result) {
+        val uris = pendingExternalUris.toList()
+        if (uris.isEmpty()) return result.success(null)
+        Thread {
+            val imported = mutableListOf<Pair<Uri, Map<String, Any>>>()
+            val failed = mutableListOf<Uri>()
+            uris.forEach { uri ->
+                runCatching { copyPickedVideo(uri) }
+                    .onSuccess { imported += uri to it }
+                    .onFailure { failed += uri }
+            }
+            runOnUiThread {
+                imported.forEach { (uri, video) ->
+                    pendingExternalUris.remove(uri)
+                    importedExternalVideos[uri] = video
+                }
+                if (failed.isNotEmpty()) {
+                    result.error(
+                        "external_import_incomplete",
+                        "Imported ${imported.size} of ${uris.size} videos; ${failed.size} remain pending.",
+                        mapOf(
+                            "batchSize" to uris.size,
+                            "importedCount" to imported.size,
+                            "failedCount" to failed.size
+                        )
+                    )
+                } else {
+                    val videos = importedExternalVideos.values.toList()
+                    importedExternalVideos.clear()
+                    result.success(mapOf("preset" to "medium", "files" to videos))
+                }
+            }
+        }.start()
     }
 
     @Deprecated("Deprecated in Java")
@@ -290,5 +367,6 @@ class MainActivity : FlutterActivity() {
     companion object {
         private const val TAG = "VideoPicker"
         private const val PICK_VIDEOS_REQUEST = 4207
+        private const val MAX_EXTERNAL_VIDEOS = 20
     }
 }

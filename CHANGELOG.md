@@ -1,3 +1,16 @@
+## [1.0.7]
+
+### Added
+
+* Added iOS Shortcuts and iOS/Android Share Sheet imports with High, Medium, and Low preset routing.
+
+### Changed
+
+* Made the main compression choices outcome-based: Quality, Balanced, and Smaller.
+* Kept bitrate and frame-rate controls in Advanced settings.
+* Kept the previous size estimate dimmed during recalculation and updated it smoothly when ready.
+* Redesigned the video import extension with clearer progress and completion states.
+
 ## [1.0.6]
 
 ### Added

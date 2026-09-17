@@ -324,20 +324,30 @@ class _PinnedSizeSummary extends StatelessWidget {
                               ),
                             ),
                           ),
-                          RollingCounterText(
-                            value: estimatedSize,
-                            formatter: (value) =>
-                                Utils.formatSize(value.toInt()).toLowerCase(),
-                            style: const TextStyle(
-                              color: CompressionUiColors.red,
-                              fontSize: 20,
-                              height: 1,
-                            ),
+                          AnimatedOpacity(
+                            opacity: isEstimating ? 0.45 : 1,
+                            duration: const Duration(milliseconds: 180),
+                            child: showSavings
+                                ? RollingCounterText(
+                                    value: estimatedSize,
+                                    formatter: (value) => Utils.formatSize(
+                                      value.toInt(),
+                                    ).toLowerCase(),
+                                    style: const TextStyle(
+                                      color: CompressionUiColors.red,
+                                      fontSize: 20,
+                                      height: 1,
+                                    ),
+                                  )
+                                : const Text(
+                                    '…',
+                                    style: TextStyle(
+                                      color: CompressionUiColors.red,
+                                      fontSize: 20,
+                                      height: 1,
+                                    ),
+                                  ),
                           ),
-                          if (isEstimating) ...[
-                            const SizedBox(width: 6),
-                            const MinimoLoader(size: 16),
-                          ],
                         ],
                       ),
                     ),
@@ -407,8 +417,8 @@ class _SimpleCompressionOptions extends StatelessWidget {
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.high,
           quality: SimpleCompressionQuality.high,
-          title: strings.high,
-          subtitle: strings.bitrateReducedDescription,
+          title: strings.quality,
+          subtitle: strings.qualityPresetDescription,
           onSelected: _onSelected(context),
           compact: compact,
         ),
@@ -416,8 +426,8 @@ class _SimpleCompressionOptions extends StatelessWidget {
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.medium,
           quality: SimpleCompressionQuality.medium,
-          title: strings.medium,
-          subtitle: strings.resolutionReducedHdDescription,
+          title: strings.balanced,
+          subtitle: strings.balancedPresetDescription,
           onSelected: _onSelected(context),
           compact: compact,
         ),
@@ -425,8 +435,8 @@ class _SimpleCompressionOptions extends StatelessWidget {
         SimpleQualityCard(
           selected: selectedQuality == SimpleCompressionQuality.low,
           quality: SimpleCompressionQuality.low,
-          title: strings.low,
-          subtitle: strings.resolutionReducedSdDescription,
+          title: strings.smaller,
+          subtitle: strings.smallerPresetDescription,
           onSelected: _onSelected(context),
           compact: compact,
         ),

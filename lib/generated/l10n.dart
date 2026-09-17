@@ -704,6 +704,61 @@ class S {
     );
   }
 
+  /// `balanced`
+  String get balanced {
+    return Intl.message('balanced', name: 'balanced', desc: '', args: []);
+  }
+
+  /// `keep the most detail`
+  String get qualityPresetDescription {
+    return Intl.message(
+      'keep the most detail',
+      name: 'qualityPresetDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `smaller file with a balanced look`
+  String get balancedPresetDescription {
+    return Intl.message(
+      'smaller file with a balanced look',
+      name: 'balancedPresetDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `make the smallest file`
+  String get smallerPresetDescription {
+    return Intl.message(
+      'make the smallest file',
+      name: 'smallerPresetDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `on device • open source`
+  String get onDeviceOpenSource {
+    return Intl.message(
+      'on device • open source',
+      name: 'onDeviceOpenSource',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `keeps the original if it saves less than 10%`
+  String get keepsOriginalWhenSavingsLow {
+    return Intl.message(
+      'keeps the original if it saves less than 10%',
+      name: 'keepsOriginalWhenSavingsLow',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `bitrate will be reduced to save space`
   String get bitrateReducedDescription {
     return Intl.message(

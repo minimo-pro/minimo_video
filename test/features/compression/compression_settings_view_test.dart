@@ -6,7 +6,9 @@ import 'package:minimo_video/features/compression/bloc/compress_bloc.dart';
 import 'package:minimo_video/features/compression/bloc/compress_state.dart';
 import 'package:minimo_video/features/compression/domain/picked_video.dart';
 import 'package:minimo_video/features/compression/presentation/widgets/compression_settings_view.dart';
+import 'package:minimo_video/features/compression/presentation/widgets/selected_videos_summary.dart';
 import 'package:minimo_video/generated/l10n.dart';
+import 'package:minimo_video/widgets/minimo_loader.dart';
 import 'package:minimo_video/widgets/rolling_counter_text.dart';
 
 void main() {
@@ -29,12 +31,32 @@ void main() {
     final displayedValues = tester
         .widgetList<RollingCounterText>(find.byType(RollingCounterText))
         .map((widget) => widget.value);
-    expect(
-      displayedValues.where((value) => value == source.size),
-      hasLength(2),
-    );
+    expect(displayedValues, isEmpty);
     expect(
       find.text("try another mode — this won't make it smaller"),
+      findsNothing,
+    );
+    expect(
+      find.descendant(
+        of: find.byType(SelectedVideosSummary),
+        matching: find.byType(MinimoLoader),
+      ),
+      findsNothing,
+    );
+  });
+
+  testWidgets('leads with quality outcomes without trust copy', (tester) async {
+    final bloc = CompressBloc();
+    addTearDown(bloc.close);
+
+    await tester.pumpWidget(_app(CompressState.initial(const []), bloc));
+
+    expect(find.text('quality'), findsNWidgets(2));
+    expect(find.text('balanced'), findsOneWidget);
+    expect(find.text('smaller'), findsOneWidget);
+    expect(find.text('on device • open source'), findsNothing);
+    expect(
+      find.text('keeps the original if it saves less than 10%'),
       findsNothing,
     );
   });

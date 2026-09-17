@@ -73,6 +73,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "元の音声を残すか、削除して容量を節約します",
     ),
     "automatic": MessageLookupByLibrary.simpleMessage("自動"),
+    "balanced": MessageLookupByLibrary.simpleMessage("バランス"),
+    "balancedPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "見た目を保ってファイルを小さく",
+    ),
     "better": MessageLookupByLibrary.simpleMessage("高品質"),
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "容量節約のためビットレートを下げます",
@@ -151,6 +155,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "圧縮中はminimoを開いたままにしてください。移動すると戻ったときに現在の動画が最初から始まります",
     ),
+    "keepsOriginalWhenSavingsLow": MessageLookupByLibrary.simpleMessage(
+      "10%未満しか節約できない場合は元の動画を残します",
+    ),
     "language": MessageLookupByLibrary.simpleMessage("言語"),
     "languageDescription": MessageLookupByLibrary.simpleMessage("アプリの言語を選択"),
     "leave": MessageLookupByLibrary.simpleMessage("終了"),
@@ -176,6 +183,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noAudio": MessageLookupByLibrary.simpleMessage("音声なし"),
     "noSavingsHint": MessageLookupByLibrary.simpleMessage(
       "別のモードをお試しください — これでは小さくなりません",
+    ),
+    "onDeviceOpenSource": MessageLookupByLibrary.simpleMessage(
+      "端末上で処理 • オープンソース",
     ),
     "onboardingPickDescription": MessageLookupByLibrary.simpleMessage(
       "1本または複数の動画を選択します。minimoはローカルファイルを使用し、元の動画は変更しません",
@@ -208,6 +218,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "projectWebsite": MessageLookupByLibrary.simpleMessage("プロジェクトサイト"),
     "quality": MessageLookupByLibrary.simpleMessage("画質"),
+    "qualityPresetDescription": MessageLookupByLibrary.simpleMessage("細部を最も残す"),
     "rateTheApp": MessageLookupByLibrary.simpleMessage("アプリを評価"),
     "replaceOriginal": MessageLookupByLibrary.simpleMessage("元の動画を置き換え"),
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
@@ -256,6 +267,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("スキップ"),
     "small": MessageLookupByLibrary.simpleMessage("小"),
     "smaller": MessageLookupByLibrary.simpleMessage("小さい"),
+    "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
+      "最小のファイルにする",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("戻る"),
     "stereo": MessageLookupByLibrary.simpleMessage("ステレオ"),
     "system": MessageLookupByLibrary.simpleMessage("システム"),
