@@ -350,12 +350,10 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       }
 
       if (state.successResults.isNotEmpty) {
-        unawaited(
-          AppStatsService.recordCompressions(
-            videoCount: state.successResults.length,
-            savedBytes: state.resultsOriginalSize - state.compressedSize,
-          ).onError((_, _) {}),
-        );
+        await AppStatsService.recordCompressions(
+          videoCount: state.successResults.length,
+          savedBytes: state.resultsOriginalSize - state.compressedSize,
+        ).onError((_, _) {});
       }
       emit(
         state.copyWith(

@@ -27,6 +27,10 @@ class StatsScreen extends StatelessWidget {
                 future: AppStatsService.load(),
                 builder: (context, snapshot) => snapshot.hasData
                     ? _StatsContent(stats: snapshot.requireData)
+                    : snapshot.hasError
+                    ? const _StatsContent(
+                        stats: AppStats(compressedVideos: 0, savedBytes: 0),
+                      )
                     : const Center(child: MinimoLoader()),
               ),
             ),
