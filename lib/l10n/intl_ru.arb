@@ -47,6 +47,7 @@
   "statistics": "статистика",
   "videosCompressedStat": "видео сжато",
   "spaceSavedStat": "места сэкономлено",
+  "statisticsSinceVersion": "статистика может быть неполной: она хранится локально и собирается только с версии 1.0.8.",
   "addPrefix": "добавлять префикс \"{prefix}\"",
   "@addPrefix": {
     "placeholders": {

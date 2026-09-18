@@ -328,6 +328,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "spaceSavedStat": MessageLookupByLibrary.simpleMessage("kazanılan alan"),
     "statistics": MessageLookupByLibrary.simpleMessage("istatistikler"),
+    "statisticsSinceVersion": MessageLookupByLibrary.simpleMessage(
+      "istatistikler eksik olabilir: yalnızca cihazda saklanır ve 1.0.8 sürümünden beri toplanır.",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("kal"),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "system": MessageLookupByLibrary.simpleMessage("sistem"),

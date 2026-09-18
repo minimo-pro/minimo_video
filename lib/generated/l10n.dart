@@ -324,6 +324,16 @@ class S {
     );
   }
 
+  /// `statistics may be incomplete: stored locally and collected only since version 1.0.8.`
+  String get statisticsSinceVersion {
+    return Intl.message(
+      'statistics may be incomplete: stored locally and collected only since version 1.0.8.',
+      name: 'statisticsSinceVersion',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `add "{prefix}" prefix`
   String addPrefix(String prefix) {
     return Intl.message(

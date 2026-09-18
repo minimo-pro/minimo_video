@@ -15,8 +15,8 @@ Settings use `shared_preferences` through `AppSettingsService`.
 | `stats_compressed_videos` | `int` | `0` | Successfully compressed video count |
 | `stats_saved_bytes` | `int` | `0` | Total bytes removed by successful compression |
 
-Compression statistics stay on-device in `shared_preferences`. Skipped and
-failed results are not counted.
+Compression statistics stay on-device in `shared_preferences` and accumulate
+from version 1.0.8 onward. Skipped and failed results are not counted.
 
 ## Cache
 

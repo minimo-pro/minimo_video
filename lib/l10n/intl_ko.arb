@@ -47,6 +47,7 @@
     "statistics": "통계",
     "videosCompressedStat": "압축한 동영상",
     "spaceSavedStat": "절약한 공간",
+    "statisticsSinceVersion": "통계는 불완전할 수 있습니다. 기기에만 저장되며 버전 1.0.8부터 수집됩니다.",
     "addPrefix": "\"{prefix}\" 접두사 추가",
     "@addPrefix": {
         "placeholders": {

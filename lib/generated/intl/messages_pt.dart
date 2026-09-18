@@ -325,6 +325,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "espaço economizado",
     ),
     "statistics": MessageLookupByLibrary.simpleMessage("estatísticas"),
+    "statisticsSinceVersion": MessageLookupByLibrary.simpleMessage(
+      "as estatísticas podem estar incompletas: são armazenadas localmente e coletadas apenas desde a versão 1.0.8.",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("ficar"),
     "stereo": MessageLookupByLibrary.simpleMessage("estéreo"),
     "system": MessageLookupByLibrary.simpleMessage("sistema"),

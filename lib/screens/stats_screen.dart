@@ -88,23 +88,37 @@ class _StatsContent extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: _StatCard(
-                value: stats.compressedVideos,
-                formatter: (value) => value.toInt().toString(),
-                label: strings.videosCompressedStat,
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: _StatCard(
+                    value: stats.compressedVideos,
+                    formatter: (value) => value.toInt().toString(),
+                    label: strings.videosCompressedStat,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _StatCard(
+                    value: stats.savedBytes,
+                    formatter: (value) =>
+                        Utils.formatSize(value.toInt()).toLowerCase(),
+                    label: strings.spaceSavedStat,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _StatCard(
-                value: stats.savedBytes,
-                formatter: (value) =>
-                    Utils.formatSize(value.toInt()).toLowerCase(),
-                label: strings.spaceSavedStat,
+            const SizedBox(height: 10),
+            Text(
+              strings.statisticsSinceVersion,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 12,
+                height: 1.1,
               ),
             ),
           ],

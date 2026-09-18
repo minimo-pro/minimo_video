@@ -47,6 +47,7 @@
   "statistics": "istatistikler",
   "videosCompressedStat": "sıkıştırılan videolar",
   "spaceSavedStat": "kazanılan alan",
+  "statisticsSinceVersion": "istatistikler eksik olabilir: yalnızca cihazda saklanır ve 1.0.8 sürümünden beri toplanır.",
   "addPrefix": "\"{prefix}\" önekini ekle",
   "@addPrefix": {
     "placeholders": {

@@ -47,6 +47,7 @@
   "statistics": "statistiche",
   "videosCompressedStat": "video compressi",
   "spaceSavedStat": "spazio risparmiato",
+  "statisticsSinceVersion": "le statistiche potrebbero essere incomplete: vengono archiviate localmente e raccolte solo dalla versione 1.0.8.",
   "addPrefix": "aggiungi il prefisso \"{prefix}\"",
   "@addPrefix": {
     "placeholders": {

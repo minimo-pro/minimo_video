@@ -47,6 +47,7 @@
   "statistics": "统计",
   "videosCompressedStat": "已压缩视频",
   "spaceSavedStat": "已节省空间",
+  "statisticsSinceVersion": "统计数据可能不完整：数据仅存储在本机，并从 1.0.8 版本开始收集。",
   "addPrefix": "添加 \"{prefix}\" 前缀",
   "@addPrefix": {
     "placeholders": {

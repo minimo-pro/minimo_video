@@ -327,6 +327,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "spaceSavedStat": MessageLookupByLibrary.simpleMessage("ruimte bespaard"),
     "statistics": MessageLookupByLibrary.simpleMessage("statistieken"),
+    "statisticsSinceVersion": MessageLookupByLibrary.simpleMessage(
+      "de statistieken kunnen onvolledig zijn: ze worden lokaal opgeslagen en pas sinds versie 1.0.8 verzameld.",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("blijven"),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "system": MessageLookupByLibrary.simpleMessage("systeem"),

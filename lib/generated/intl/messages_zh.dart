@@ -248,6 +248,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "smallerPresetDescription": MessageLookupByLibrary.simpleMessage("生成最小文件"),
     "spaceSavedStat": MessageLookupByLibrary.simpleMessage("已节省空间"),
     "statistics": MessageLookupByLibrary.simpleMessage("统计"),
+    "statisticsSinceVersion": MessageLookupByLibrary.simpleMessage(
+      "统计数据可能不完整：数据仅存储在本机，并从 1.0.8 版本开始收集。",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("留下"),
     "stereo": MessageLookupByLibrary.simpleMessage("立体声"),
     "system": MessageLookupByLibrary.simpleMessage("跟随系统"),

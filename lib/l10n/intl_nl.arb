@@ -35,6 +35,7 @@
   "statistics": "statistieken",
   "videosCompressedStat": "video's gecomprimeerd",
   "spaceSavedStat": "ruimte bespaard",
+  "statisticsSinceVersion": "de statistieken kunnen onvolledig zijn: ze worden lokaal opgeslagen en pas sinds versie 1.0.8 verzameld.",
   "addPrefix": "voorvoegsel \"{prefix}\" toevoegen",
   "@addPrefix": {"placeholders": {"prefix": {"type": "String"}}},
   "addPrefixDescription": "voegt \"{prefix}\" toe voor de oorspronkelijke bestandsnaam. uitschakelen behoudt de oorspronkelijke naam",

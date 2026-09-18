@@ -313,6 +313,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "spaceSavedStat": MessageLookupByLibrary.simpleMessage("बचाया गया स्थान"),
     "statistics": MessageLookupByLibrary.simpleMessage("आँकड़े"),
+    "statisticsSinceVersion": MessageLookupByLibrary.simpleMessage(
+      "आँकड़े अधूरे हो सकते हैं: वे लोकल रूप से संग्रहीत हैं और केवल संस्करण 1.0.8 से एकत्र किए जा रहे हैं।",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("रुकें"),
     "stereo": MessageLookupByLibrary.simpleMessage("स्टीरियो"),
     "system": MessageLookupByLibrary.simpleMessage("सिस्टम"),
