@@ -27,6 +27,7 @@ Current tests cover:
 - Beside-original enabled while replace-original stays disabled for an inaccessible Limited Photos asset
 - Compression failure state
 - Cache size and full cleanup
+- Local compressed-video and saved-space statistics
 - Preview styling and count-badge bounds, status percentage, press motion, and hold-button background
 - Rolling counters ignore unchanged formatted values and use calm motion
 - Previous estimate retained while a settings estimate refreshes

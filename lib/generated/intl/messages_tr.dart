@@ -326,6 +326,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
       "en küçük dosyayı oluşturur",
     ),
+    "spaceSavedStat": MessageLookupByLibrary.simpleMessage("kazanılan alan"),
+    "statistics": MessageLookupByLibrary.simpleMessage("istatistikler"),
+    "statisticsSinceVersion": MessageLookupByLibrary.simpleMessage(
+      "istatistikler eksik olabilir: yalnızca cihazda saklanır ve 1.0.8 sürümünden beri toplanır.",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("kal"),
     "stereo": MessageLookupByLibrary.simpleMessage("stereo"),
     "system": MessageLookupByLibrary.simpleMessage("sistem"),
@@ -346,6 +351,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "videoProgress": m12,
     "videosCompressed": m13,
+    "videosCompressedStat": MessageLookupByLibrary.simpleMessage(
+      "sıkıştırılan videolar",
+    ),
     "waiting": MessageLookupByLibrary.simpleMessage("bekliyor"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
     "youSavedSize": m14,

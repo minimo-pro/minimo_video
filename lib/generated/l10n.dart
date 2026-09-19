@@ -299,6 +299,41 @@ class S {
     return Intl.message('settings', name: 'settings', desc: '', args: []);
   }
 
+  /// `statistics`
+  String get statistics {
+    return Intl.message('statistics', name: 'statistics', desc: '', args: []);
+  }
+
+  /// `videos compressed`
+  String get videosCompressedStat {
+    return Intl.message(
+      'videos compressed',
+      name: 'videosCompressedStat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `space saved`
+  String get spaceSavedStat {
+    return Intl.message(
+      'space saved',
+      name: 'spaceSavedStat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `statistics may be incomplete: stored locally and collected only since version 1.0.8.`
+  String get statisticsSinceVersion {
+    return Intl.message(
+      'statistics may be incomplete: stored locally and collected only since version 1.0.8.',
+      name: 'statisticsSinceVersion',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `add "{prefix}" prefix`
   String addPrefix(String prefix) {
     return Intl.message(

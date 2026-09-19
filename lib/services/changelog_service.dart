@@ -43,6 +43,57 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.8': {
+    Language.en: [
+      'Restored the familiar High, Medium, and Low names for basic compression.',
+      'Added local statistics for compressed videos and saved space.',
+    ],
+    Language.ru: [
+      'Вернули привычные названия базовых режимов сжатия: «Высокое», «Среднее» и «Низкое».',
+      'Добавили локальную статистику с количеством сжатых видео и сэкономленного места.',
+    ],
+    Language.es: [
+      'Recuperamos los nombres habituales Alta, Media y Baja para la compresión básica.',
+      'Añadimos estadísticas locales de vídeos comprimidos y espacio ahorrado.',
+    ],
+    Language.pt: [
+      'Restauramos os nomes conhecidos Alta, Média e Baixa para a compressão básica.',
+      'Adicionamos estatísticas locais de vídeos comprimidos e espaço economizado.',
+    ],
+    Language.de: [
+      'Die vertrauten Bezeichnungen Hoch, Mittel und Niedrig für die Basiskomprimierung sind zurück.',
+      'Lokale Statistiken für komprimierte Videos und eingesparten Speicherplatz wurden hinzugefügt.',
+    ],
+    Language.fr: [
+      'Les noms familiers Haute, Moyenne et Basse sont de retour pour la compression de base.',
+      'Ajout de statistiques locales sur les vidéos compressées et l’espace économisé.',
+    ],
+    Language.zh: ['基础压缩恢复为熟悉的“高”“中”“低”名称。', '新增本地统计，显示已压缩视频数量和节省的空间。'],
+    Language.hi: [
+      'बुनियादी कंप्रेशन के लिए परिचित उच्च, मध्यम और कम नाम वापस लाए गए हैं।',
+      'कंप्रेस किए गए वीडियो और बचाई गई जगह के लिए लोकल आँकड़े जोड़े गए हैं।',
+    ],
+    Language.nl: [
+      'De vertrouwde namen Hoog, Gemiddeld en Laag zijn terug voor basiscompressie.',
+      'Lokale statistieken toegevoegd voor gecomprimeerde video’s en bespaarde ruimte.',
+    ],
+    Language.ko: [
+      '기본 압축에 익숙한 높음, 중간, 낮음 이름을 다시 적용했습니다.',
+      '압축한 동영상 수와 절약한 공간을 보여 주는 로컬 통계를 추가했습니다.',
+    ],
+    Language.ja: [
+      '基本圧縮の名称を、なじみのある「高」「中」「低」に戻しました。',
+      '圧縮した動画数と節約した容量を表示するローカル統計を追加しました。',
+    ],
+    Language.it: [
+      'Abbiamo ripristinato i nomi familiari Alta, Media e Bassa per la compressione di base.',
+      'Aggiunte statistiche locali sui video compressi e lo spazio risparmiato.',
+    ],
+    Language.tr: [
+      'Temel sıkıştırma için bilinen Yüksek, Orta ve Düşük adları geri getirildi.',
+      'Sıkıştırılan videolar ve kazanılan alan için yerel istatistikler eklendi.',
+    ],
+  },
   '1.0.7': {
     Language.en: [
       'Added video import through the system share menu and shortcuts.',

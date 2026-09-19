@@ -279,6 +279,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
       "가장 작은 파일 생성",
     ),
+    "spaceSavedStat": MessageLookupByLibrary.simpleMessage("절약한 공간"),
+    "statistics": MessageLookupByLibrary.simpleMessage("통계"),
+    "statisticsSinceVersion": MessageLookupByLibrary.simpleMessage(
+      "통계는 불완전할 수 있습니다. 기기에만 저장되며 버전 1.0.8부터 수집됩니다.",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("머무르기"),
     "stereo": MessageLookupByLibrary.simpleMessage("스테레오"),
     "system": MessageLookupByLibrary.simpleMessage("시스템"),
@@ -297,6 +302,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "videoProgress": m12,
     "videosCompressed": m13,
+    "videosCompressedStat": MessageLookupByLibrary.simpleMessage("압축한 동영상"),
     "waiting": MessageLookupByLibrary.simpleMessage("대기 중"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
     "youSavedSize": m14,

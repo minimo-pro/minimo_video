@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../constants/app_icons.dart';
 import '../screens/info_screen.dart';
 import '../screens/settings_screen.dart';
+import '../screens/stats_screen.dart';
 import '../theme/app_theme.dart';
 import 'app_sheet.dart';
 import 'pressable.dart';
@@ -43,6 +44,19 @@ class BottomFrame extends StatelessWidget {
                 color: theme.frameBorderColor.withValues(alpha: 0.5),
               ),
               _FrameButton(
+                icon: AppIcons.stats,
+                onTap: () => showAppSheet(
+                  context: context,
+                  heightFraction: 0.34,
+                  child: const StatsScreen(),
+                ),
+              ),
+              Container(
+                width: 1,
+                height: 32,
+                color: theme.frameBorderColor.withValues(alpha: 0.5),
+              ),
+              _FrameButton(
                 icon: AppIcons.info,
                 onTap: () => _showFullScreenSheet(context, const InfoScreen()),
               ),
@@ -73,7 +87,7 @@ class _FrameButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
             child: SvgPicture.asset(
               icon,
               width: 28,

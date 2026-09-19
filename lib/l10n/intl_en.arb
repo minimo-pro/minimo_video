@@ -44,6 +44,10 @@
   "myOtherApps": "my other apps",
   "emailCopied": "email copied",
   "settings": "settings",
+  "statistics": "statistics",
+  "videosCompressedStat": "videos compressed",
+  "spaceSavedStat": "space saved",
+  "statisticsSinceVersion": "statistics may be incomplete: stored locally and collected only since version 1.0.8.",
   "addPrefix": "add \"{prefix}\" prefix",
   "@addPrefix": {
     "placeholders": {

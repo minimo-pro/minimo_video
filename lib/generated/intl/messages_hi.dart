@@ -311,6 +311,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "smallerPresetDescription": MessageLookupByLibrary.simpleMessage(
       "सबसे छोटी फ़ाइल बनाता है",
     ),
+    "spaceSavedStat": MessageLookupByLibrary.simpleMessage("बचाया गया स्थान"),
+    "statistics": MessageLookupByLibrary.simpleMessage("आँकड़े"),
+    "statisticsSinceVersion": MessageLookupByLibrary.simpleMessage(
+      "आँकड़े अधूरे हो सकते हैं: वे लोकल रूप से संग्रहीत हैं और केवल संस्करण 1.0.8 से एकत्र किए जा रहे हैं।",
+    ),
     "stay": MessageLookupByLibrary.simpleMessage("रुकें"),
     "stereo": MessageLookupByLibrary.simpleMessage("स्टीरियो"),
     "system": MessageLookupByLibrary.simpleMessage("सिस्टम"),
@@ -331,6 +336,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "videoProgress": m12,
     "videosCompressed": m13,
+    "videosCompressedStat": MessageLookupByLibrary.simpleMessage(
+      "कंप्रेस किए गए वीडियो",
+    ),
     "waiting": MessageLookupByLibrary.simpleMessage("इंतज़ार"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
     "youSavedSize": m14,
