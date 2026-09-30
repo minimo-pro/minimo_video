@@ -52,7 +52,7 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
     '854:480',
     '640:360',
   ];
-  static const _bitrates = <int?>[null, 1, 2, 4, 6, 8];
+  static const _bitrates = <int?>[null, 1, 2, 4, 6, 8, 12, 15, 20];
   static const _frameRates = <int?>[null, 60, 30, 24, 15];
 
   CompressionOptionsMode _mode = CompressionOptionsMode.simple;
