@@ -43,6 +43,21 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.9': {
+    Language.en: ['Added manual video bitrate options up to 20 Mbps.'],
+    Language.ru: ['Добавили ручной выбор битрейта видео до 20 Мбит/с.'],
+    Language.es: ['Se añadieron opciones manuales de tasa de bits de video de hasta 20 Mbps.'],
+    Language.pt: ['Foram adicionadas opções manuais de taxa de bits de vídeo de até 20 Mbps.'],
+    Language.de: ['Manuelle Video-Bitraten bis zu 20 Mbit/s hinzugefügt.'],
+    Language.fr: ['Ajout de débits vidéo manuels jusqu’à 20 Mbit/s.'],
+    Language.zh: ['新增最高 20 Mbps 的手动视频比特率选项。'],
+    Language.hi: ['20 Mbps तक मैन्युअल वीडियो बिटरेट विकल्प जोड़े गए।'],
+    Language.nl: ['Handmatige videobitrates tot 20 Mbps toegevoegd.'],
+    Language.ko: ['최대 20Mbps 수동 동영상 비트레이트 옵션을 추가했습니다.'],
+    Language.ja: ['最大20 Mbpsの手動ビデオビットレート設定を追加しました。'],
+    Language.it: ['Aggiunte opzioni manuali di bitrate video fino a 20 Mbps.'],
+    Language.tr: ['20 Mbps’ye kadar manuel video bit hızı seçenekleri eklendi.'],
+  },
   '1.0.8': {
     Language.en: [
       'Restored the familiar High, Medium, and Low names for basic compression.',

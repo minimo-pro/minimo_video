@@ -16,12 +16,12 @@ and that the original stays when the output saves less than 10%.
 Advanced mode allows:
 
 - Original, 1080p, 720p, 480p, or 360p resolution
-- Automatic or 1, 2, 4, 6, or 8 Mbps video bitrate
+- Automatic or 1, 2, 4, 6, 8, 12, 15, or 20 Mbps video bitrate
 - Original, 60, 30, 24, or 15 FPS output; the package only downsamples
 - H.264 or HEVC output; unsupported HEVC hardware falls back to H.264
 - Stereo audio or no audio
 
-With automatic bitrate, `CompressionSettings.effectiveBitrateMbps()` derives the encoder target from the fitted output pixel count, effective output FPS, quality tier, and codec efficiency. Original resolution uses source dimensions for bitrate calculation without passing them as resize dimensions. Requested FPS is capped at the source FPS because the package only downsamples. HEVC targets fewer bits than H.264 for comparable quality. `light_compressor_v2` currently accepts only whole Mbps, so automatic targets are rounded and clamped to `1–8 Mbps`. A manually selected bitrate is absolute and is not modified by resolution, FPS, or codec.
+With automatic bitrate, `CompressionSettings.effectiveBitrateMbps()` derives the encoder target from the fitted output pixel count, effective output FPS, quality tier, and codec efficiency. Original resolution uses source dimensions for bitrate calculation without passing them as resize dimensions. Requested FPS is capped at the source FPS because the package only downsamples. HEVC targets fewer bits than H.264 for comparable quality. `light_compressor_v2` accepts whole Mbps, so automatic targets are rounded and clamped to `1–8 Mbps`. Manually selected values can go up to `20 Mbps` and are absolute, not modified by resolution, FPS, or codec.
 
 `light_compressor_v2 1.9.1` does not expose encoder speed presets or video
 container metadata copying. Do not add UI switches for either until the native

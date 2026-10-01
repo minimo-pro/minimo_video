@@ -1,3 +1,9 @@
+## [1.0.9]
+
+### Added
+
+* Added manual video bitrate options up to 20 Mbps.
+
 ## [1.0.8]
 
 ### Added
