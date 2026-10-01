@@ -1,4 +1,5 @@
 # Miscellaneous
+/promo/
 *.class
 *.log
 *.pyc

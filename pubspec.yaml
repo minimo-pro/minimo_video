@@ -20,7 +20,7 @@ dependencies:
   gal: ^2.3.3
   flutter_svg: ^2.3.0
   flutter_launcher_icons: ^0.14.4
-  auto_route: ^11.1.0
+  auto_route: ^11.2.0
   auto_route_generator: ^10.5.0
   build_runner: ^2.15.0
   intl_utils: ^2.8.11
@@ -29,7 +29,7 @@ dependencies:
   reel_text: ^0.5.1
   motor: ^1.1.0
   package_info_plus: ^10.2.1
-  wakelock_plus: ^1.8.0
+  wakelock_plus: ^1.8.1
   in_app_review: ^2.0.12
   upgrader: ^13.7.0
   pub_semver: ^2.2.1
