@@ -311,7 +311,7 @@ class _CompressViewState extends State<_CompressView>
     _reviewRequestedForRunId = state.compressionRunId;
     unawaited(
       ReviewService.instance.onSuccessfulConversions(
-        state.successfulOutputPaths.length,
+        1,
       ),
     );
   }
