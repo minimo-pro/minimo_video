@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   test(
-    'requests review after two successful compression runs and respects cooldown',
+    'requests review after two successful conversions and respects cooldown',
     () async {
       SharedPreferences.setMockInitialValues({});
       var requests = 0;

@@ -11,8 +11,6 @@
 
 Mixed batches can contain compressed, skipped, and failed items. Save/share actions use successful output paths only. Saved-space totals exclude skipped and failed videos.
 
-The in-app review prompt counts successful compression runs, not videos. It first becomes eligible after two runs with at least one successful output, then follows a three-month cooldown.
-
 ## Preview
 
 Successful results can be previewed from `CompressionResultView`. The preview uses `video_player` to show original and compressed local files side by side with a center divider, shared play/pause, shared seek, and muted playback.
