@@ -1,7 +1,7 @@
 <div align="center">
 
 
-[![App Store](https://img.shields.io/badge/App_Store-414141?style=for-the-badge&logo=apple&logoColor=F1F1F1)](https://apps.apple.com/us/app/minimo-video/id6787456951) [![Google Play](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=googleplay&logoColor=F1F1F1)](https://play.google.com/store/apps/details?id=com.khlebobul.minimo_video) [![Website](https://img.shields.io/badge/Website-414141?style=for-the-badge)](https://github.com/minimo-pro)
+[![App Store](https://img.shields.io/badge/App_Store-414141?style=for-the-badge&logo=apple&logoColor=F1F1F1)](https://apps.apple.com/us/app/minimo-video/id6787456951) [![Google Play](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=googleplay&logoColor=F1F1F1)](https://play.google.com/store/apps/details?id=com.khlebobul.minimo_video) [![Website](https://img.shields.io/badge/Website-414141?style=for-the-badge)](https://github.com/minimo-pro) [![Donate](https://img.shields.io/badge/Donate-414141?style=for-the-badge)](https://web.tribute.tg/d/PM3)
 
 <img width="900" alt="minimo video screenshots" src="screenshots/github.png" />
 
