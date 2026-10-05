@@ -1,3 +1,9 @@
+## [1.0.10]
+
+### Changed
+
+* Updated app dependencies, including `auto_route` and `wakelock_plus`.
+
 ## [1.0.9]
 
 ### Added

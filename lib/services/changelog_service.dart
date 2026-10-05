@@ -43,6 +43,21 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.10': {
+    Language.en: ['Technical update.'],
+    Language.ru: ['Техническое обновление.'],
+    Language.es: ['Actualización técnica.'],
+    Language.pt: ['Atualização técnica.'],
+    Language.de: ['Technische Aktualisierung.'],
+    Language.fr: ['Mise à jour technique.'],
+    Language.zh: ['技术更新。'],
+    Language.hi: ['तकनीकी अपडेट।'],
+    Language.nl: ['Technische update.'],
+    Language.ko: ['기술 업데이트.'],
+    Language.ja: ['技術的な更新。'],
+    Language.it: ['Aggiornamento tecnico.'],
+    Language.tr: ['Teknik güncelleme.'],
+  },
   '1.0.9': {
     Language.en: ['Added manual video bitrate options up to 20 Mbps.'],
     Language.ru: ['Добавили ручной выбор битрейта видео до 20 Мбит/с.'],
