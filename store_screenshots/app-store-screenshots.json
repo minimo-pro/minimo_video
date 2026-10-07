@@ -1,0 +1,1636 @@
+{
+  "schemaVersion": 2,
+  "appName": "minimo (video)",
+  "themeId": "minimo-sky",
+  "connectedCanvas": false,
+  "locales": [
+    "en"
+  ],
+  "locale": "en",
+  "device": "iphone",
+  "orientation": "portrait",
+  "appIcon": "/app-icon.png",
+  "slidesByDevice": {
+    "iphone": [
+      {
+        "id": "s_1",
+        "layout": "hero",
+        "label": {
+          "en": "free · no ads · no subscription"
+        },
+        "headline": {
+          "en": "make your videos\nsmaller"
+        },
+        "highlight": {
+          "en": "smaller"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/01-settings.png",
+        "transforms": {
+          "caption": {
+            "x": 79.2,
+            "y": 157.74,
+            "width": 1161.6,
+            "height": 573.6,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 92.4,
+            "y": 717,
+            "width": 1135.2,
+            "height": 2312.6090019569474,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_2",
+            "text": {
+              "en": "−75%"
+            },
+            "transform": {
+              "x": 818.4,
+              "y": 831.7199999999999,
+              "width": 448.8,
+              "height": 217.8,
+              "rotation": 8,
+              "zIndex": 8
+            },
+            "fontSize": 99,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          }
+        ],
+        "imageElements": [
+          {
+            "id": "i_3",
+            "src": "/photos/dog.jpg",
+            "radius": 32,
+            "border": 14,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": -52.800000000000004,
+              "y": 1089.84,
+              "width": 396,
+              "height": 297,
+              "rotation": -9,
+              "zIndex": 7
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_4",
+        "layout": "device-bottom",
+        "label": {
+          "en": "before & after"
+        },
+        "headline": {
+          "en": "same moments,\nsmaller files"
+        },
+        "highlight": {
+          "en": "smaller files"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/04-result.png",
+        "transforms": {
+          "caption": {
+            "x": 79.2,
+            "y": 157.74,
+            "width": 1161.6,
+            "height": 573.6,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 186.384,
+            "y": 1261.92,
+            "width": 947.232,
+            "height": 1929.683976516634,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_5",
+            "src": "/brand/compare.png",
+            "radius": 61,
+            "border": 24,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 52.800000000000004,
+              "y": 616.62,
+              "width": 1214.4,
+              "height": 910.8000000000001,
+              "rotation": -3,
+              "zIndex": 9
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_6",
+        "layout": "device-top",
+        "label": {
+          "en": "batch compression"
+        },
+        "headline": {
+          "en": "shrink them\nall at once"
+        },
+        "highlight": {
+          "en": "all at once"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/03-progress.png",
+        "transforms": {
+          "device": {
+            "x": 156.55023574608475,
+            "y": -182.72355125308007,
+            "width": 1029.6000000000001,
+            "height": 2097.4825831702547,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 79.2,
+            "y": 2222.7000000000003,
+            "width": 1161.6,
+            "height": 573.6,
+            "rotation": 0,
+            "zIndex": 6
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_7",
+            "src": "/photos/birthday.jpg",
+            "radius": 34,
+            "border": 15,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": -66,
+              "y": 1434,
+              "width": 422.40000000000003,
+              "height": 316.8,
+              "rotation": -8,
+              "zIndex": 7
+            }
+          },
+          {
+            "id": "i_8",
+            "src": "/photos/mountains.jpg",
+            "radius": 34,
+            "border": 15,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 950.4,
+              "y": 1606.0800000000002,
+              "width": 422.40000000000003,
+              "height": 316.8,
+              "rotation": 7,
+              "zIndex": 7
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_9",
+        "layout": "device-bottom",
+        "inverted": true,
+        "label": {
+          "en": "100% on-device"
+        },
+        "headline": {
+          "en": "your videos\nnever leave\nyour phone"
+        },
+        "highlight": {
+          "en": "never leave"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/09-result-dark.png",
+        "transforms": {
+          "caption": {
+            "x": 79.2,
+            "y": 157.74,
+            "width": 1161.6,
+            "height": 803.0400000000001,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 196.67999999999995,
+            "y": 1434,
+            "width": 926.6400000000001,
+            "height": 1887.7343248532293,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_10",
+            "text": {
+              "en": "no cloud"
+            },
+            "transform": {
+              "x": 0,
+              "y": 1204.56,
+              "width": 475.2,
+              "height": 130.68,
+              "rotation": -6,
+              "zIndex": 8
+            },
+            "fontSize": 59,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center"
+          },
+          {
+            "id": "t_11",
+            "text": {
+              "en": "no account"
+            },
+            "transform": {
+              "x": 792,
+              "y": 1276.26,
+              "width": 528,
+              "height": 130.68,
+              "rotation": 5,
+              "zIndex": 8
+            },
+            "fontSize": 59,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "s_14",
+        "layout": "device-bottom",
+        "label": {
+          "en": "advanced mode"
+        },
+        "headline": {
+          "en": "fine-tune\nevery detail"
+        },
+        "highlight": {
+          "en": "every detail"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/02-advanced.png",
+        "transforms": {
+          "caption": {
+            "x": 79.2,
+            "y": 157.74,
+            "width": 1161.6,
+            "height": 573.6,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 79.2,
+            "y": 774.36,
+            "width": 1029.6000000000001,
+            "height": 2097.4825831702547,
+            "rotation": -4,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_15",
+            "text": {
+              "en": "HEVC"
+            },
+            "transform": {
+              "x": 897.6,
+              "y": 1032.48,
+              "width": 369.6,
+              "height": 145.20000000000002,
+              "rotation": 8,
+              "zIndex": 8
+            },
+            "fontSize": 66,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          },
+          {
+            "id": "t_16",
+            "text": {
+              "en": "up to 20 Mbps"
+            },
+            "transform": {
+              "x": 660,
+              "y": 1434,
+              "width": 633.6,
+              "height": 121.96800000000002,
+              "rotation": -5,
+              "zIndex": 8
+            },
+            "fontSize": 55,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_17",
+            "text": {
+              "en": "60 · 30 · 24 fps"
+            },
+            "transform": {
+              "x": 633.6,
+              "y": 1835.52,
+              "width": 660,
+              "height": 121.96800000000002,
+              "rotation": 4,
+              "zIndex": 8
+            },
+            "fontSize": 55,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "s_20",
+        "layout": "no-device",
+        "label": {
+          "en": "simple · private · free"
+        },
+        "headline": {
+          "en": "everything you\nneed. nothing\nyou don't"
+        },
+        "highlight": {
+          "en": "nothing"
+        },
+        "screenshot": "",
+        "transforms": {
+          "caption": {
+            "x": 79.2,
+            "y": 200.76000000000002,
+            "width": 1161.6,
+            "height": 860.4,
+            "rotation": 0,
+            "zIndex": 6
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_21",
+            "text": {
+              "en": "batch compression"
+            },
+            "transform": {
+              "x": 52.800000000000004,
+              "y": 1147.2,
+              "width": 660,
+              "height": 116.16000000000003,
+              "rotation": -4,
+              "zIndex": 8
+            },
+            "fontSize": 53,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          },
+          {
+            "id": "t_22",
+            "text": {
+              "en": "before & after"
+            },
+            "transform": {
+              "x": 607.2,
+              "y": 1147.2,
+              "width": 660,
+              "height": 116.16000000000003,
+              "rotation": 3,
+              "zIndex": 8
+            },
+            "fontSize": 53,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_23",
+            "text": {
+              "en": "H.264 + HEVC"
+            },
+            "transform": {
+              "x": 52.800000000000004,
+              "y": 1362.3000000000002,
+              "width": 660,
+              "height": 116.16000000000003,
+              "rotation": 2,
+              "zIndex": 8
+            },
+            "fontSize": 53,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_24",
+            "text": {
+              "en": "Shortcuts & share sheet"
+            },
+            "transform": {
+              "x": 607.2,
+              "y": 1362.3000000000002,
+              "width": 660,
+              "height": 116.16000000000003,
+              "rotation": -3,
+              "zIndex": 8
+            },
+            "fontSize": 53,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_25",
+            "text": {
+              "en": "keeps date & location"
+            },
+            "transform": {
+              "x": 52.800000000000004,
+              "y": 1577.4,
+              "width": 660,
+              "height": 116.16000000000003,
+              "rotation": -2,
+              "zIndex": 8
+            },
+            "fontSize": 53,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_26",
+            "text": {
+              "en": "13 languages"
+            },
+            "transform": {
+              "x": 607.2,
+              "y": 1577.4,
+              "width": 660,
+              "height": 116.16000000000003,
+              "rotation": 4,
+              "zIndex": 8
+            },
+            "fontSize": 53,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          },
+          {
+            "id": "t_27",
+            "text": {
+              "en": "dark mode"
+            },
+            "transform": {
+              "x": 52.800000000000004,
+              "y": 1792.5,
+              "width": 660,
+              "height": 116.16000000000003,
+              "rotation": 3,
+              "zIndex": 8
+            },
+            "fontSize": 53,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_28",
+            "text": {
+              "en": "open source"
+            },
+            "transform": {
+              "x": 607.2,
+              "y": 1792.5,
+              "width": 660,
+              "height": 116.16000000000003,
+              "rotation": -4,
+              "zIndex": 8
+            },
+            "fontSize": 53,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          }
+        ],
+        "imageElements": [
+          {
+            "id": "i_29",
+            "src": "/app-icon.png",
+            "radius": 81,
+            "border": 0,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 475.2,
+              "y": 2179.68,
+              "width": 369.6,
+              "height": 369.6,
+              "rotation": -6,
+              "zIndex": 7
+            }
+          }
+        ]
+      }
+    ],
+    "android": [
+      {
+        "id": "s_59",
+        "layout": "hero",
+        "label": {
+          "en": "free · no ads · no subscription"
+        },
+        "headline": {
+          "en": "make your videos\nsmaller"
+        },
+        "highlight": {
+          "en": "smaller"
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/01-settings.png",
+        "transforms": {
+          "caption": {
+            "x": 64.8,
+            "y": 105.6,
+            "width": 950.4,
+            "height": 384,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 140.4,
+            "y": 480,
+            "width": 799.2,
+            "height": 1731.6,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_60",
+            "text": {
+              "en": "−75%"
+            },
+            "transform": {
+              "x": 669.6,
+              "y": 556.8,
+              "width": 367.20000000000005,
+              "height": 178.20000000000002,
+              "rotation": 8,
+              "zIndex": 8
+            },
+            "fontSize": 81,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          }
+        ],
+        "imageElements": [
+          {
+            "id": "i_61",
+            "src": "/photos/dog.jpg",
+            "radius": 26,
+            "border": 11,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": -43.2,
+              "y": 729.6,
+              "width": 324,
+              "height": 243,
+              "rotation": -9,
+              "zIndex": 7
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_62",
+        "layout": "device-bottom",
+        "label": {
+          "en": "before & after"
+        },
+        "headline": {
+          "en": "same moments,\nsmaller files"
+        },
+        "highlight": {
+          "en": "smaller files"
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/04-result.png",
+        "transforms": {
+          "caption": {
+            "x": 64.8,
+            "y": 105.6,
+            "width": 950.4,
+            "height": 384,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 222.048,
+            "y": 844.8,
+            "width": 635.904,
+            "height": 1377.792,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_63",
+            "src": "/brand/compare.png",
+            "radius": 50,
+            "border": 19,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 43.2,
+              "y": 451.2,
+              "width": 993.6,
+              "height": 745.2,
+              "rotation": -3,
+              "zIndex": 9
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_64",
+        "layout": "device-top",
+        "label": {
+          "en": "batch compression"
+        },
+        "headline": {
+          "en": "shrink them\nall at once"
+        },
+        "highlight": {
+          "en": "all at once"
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/03-progress.png",
+        "transforms": {
+          "device": {
+            "x": 194.4,
+            "y": -249.60000000000002,
+            "width": 691.2,
+            "height": 1497.6,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 64.8,
+            "y": 1488,
+            "width": 950.4,
+            "height": 384,
+            "rotation": 0,
+            "zIndex": 6
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_65",
+            "src": "/photos/birthday.jpg",
+            "radius": 28,
+            "border": 12,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": -54,
+              "y": 960,
+              "width": 345.6,
+              "height": 259.20000000000005,
+              "rotation": -8,
+              "zIndex": 7
+            }
+          },
+          {
+            "id": "i_66",
+            "src": "/photos/mountains.jpg",
+            "radius": 28,
+            "border": 12,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 777.6,
+              "y": 1075.2,
+              "width": 345.6,
+              "height": 259.20000000000005,
+              "rotation": 7,
+              "zIndex": 7
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_67",
+        "layout": "device-bottom",
+        "inverted": true,
+        "label": {
+          "en": "100% on-device"
+        },
+        "headline": {
+          "en": "your videos\nnever leave\nyour phone"
+        },
+        "highlight": {
+          "en": "never leave"
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/09-result-dark.png",
+        "transforms": {
+          "caption": {
+            "x": 64.8,
+            "y": 105.6,
+            "width": 950.4,
+            "height": 537.6,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 228.95999999999995,
+            "y": 960,
+            "width": 622.08,
+            "height": 1347.84,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_68",
+            "text": {
+              "en": "no cloud"
+            },
+            "transform": {
+              "x": 0,
+              "y": 806.4,
+              "width": 388.8,
+              "height": 106.92000000000002,
+              "rotation": -6,
+              "zIndex": 8
+            },
+            "fontSize": 49,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center"
+          },
+          {
+            "id": "t_69",
+            "text": {
+              "en": "no account"
+            },
+            "transform": {
+              "x": 648,
+              "y": 854.4,
+              "width": 432,
+              "height": 106.92000000000002,
+              "rotation": 5,
+              "zIndex": 8
+            },
+            "fontSize": 49,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "s_70",
+        "layout": "device-bottom",
+        "label": {
+          "en": "advanced mode"
+        },
+        "headline": {
+          "en": "fine-tune\nevery detail"
+        },
+        "highlight": {
+          "en": "every detail"
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/02-advanced.png",
+        "transforms": {
+          "caption": {
+            "x": 64.8,
+            "y": 105.6,
+            "width": 950.4,
+            "height": 384,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 64.8,
+            "y": 518.4000000000001,
+            "width": 691.2,
+            "height": 1497.6,
+            "rotation": -4,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_71",
+            "text": {
+              "en": "HEVC"
+            },
+            "transform": {
+              "x": 734.4000000000001,
+              "y": 691.1999999999999,
+              "width": 302.40000000000003,
+              "height": 118.80000000000001,
+              "rotation": 8,
+              "zIndex": 8
+            },
+            "fontSize": 54,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          },
+          {
+            "id": "t_72",
+            "text": {
+              "en": "up to 20 Mbps"
+            },
+            "transform": {
+              "x": 540,
+              "y": 960,
+              "width": 518.4,
+              "height": 99.792,
+              "rotation": -5,
+              "zIndex": 8
+            },
+            "fontSize": 45,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_73",
+            "text": {
+              "en": "60 · 30 · 24 fps"
+            },
+            "transform": {
+              "x": 518.4,
+              "y": 1228.8,
+              "width": 540,
+              "height": 99.792,
+              "rotation": 4,
+              "zIndex": 8
+            },
+            "fontSize": 45,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "s_76",
+        "layout": "no-device",
+        "label": {
+          "en": "simple · private · free"
+        },
+        "headline": {
+          "en": "everything you\nneed. nothing\nyou don't"
+        },
+        "highlight": {
+          "en": "nothing"
+        },
+        "screenshot": "",
+        "transforms": {
+          "caption": {
+            "x": 64.8,
+            "y": 134.4,
+            "width": 950.4,
+            "height": 576,
+            "rotation": 0,
+            "zIndex": 6
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_77",
+            "text": {
+              "en": "batch compression"
+            },
+            "transform": {
+              "x": 43.2,
+              "y": 768,
+              "width": 540,
+              "height": 95.04000000000002,
+              "rotation": -4,
+              "zIndex": 8
+            },
+            "fontSize": 43,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          },
+          {
+            "id": "t_78",
+            "text": {
+              "en": "before & after"
+            },
+            "transform": {
+              "x": 496.8,
+              "y": 768,
+              "width": 540,
+              "height": 95.04000000000002,
+              "rotation": 3,
+              "zIndex": 8
+            },
+            "fontSize": 43,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_79",
+            "text": {
+              "en": "H.264 + HEVC"
+            },
+            "transform": {
+              "x": 43.2,
+              "y": 912.0000000000001,
+              "width": 540,
+              "height": 95.04000000000002,
+              "rotation": 2,
+              "zIndex": 8
+            },
+            "fontSize": 43,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_80",
+            "text": {
+              "en": "share sheet import"
+            },
+            "transform": {
+              "x": 496.8,
+              "y": 912.0000000000001,
+              "width": 540,
+              "height": 95.04000000000002,
+              "rotation": -3,
+              "zIndex": 8
+            },
+            "fontSize": 43,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_81",
+            "text": {
+              "en": "keeps your quality"
+            },
+            "transform": {
+              "x": 43.2,
+              "y": 1056,
+              "width": 540,
+              "height": 95.04000000000002,
+              "rotation": -2,
+              "zIndex": 8
+            },
+            "fontSize": 43,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_82",
+            "text": {
+              "en": "13 languages"
+            },
+            "transform": {
+              "x": 496.8,
+              "y": 1056,
+              "width": 540,
+              "height": 95.04000000000002,
+              "rotation": 4,
+              "zIndex": 8
+            },
+            "fontSize": 43,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          },
+          {
+            "id": "t_83",
+            "text": {
+              "en": "dark mode"
+            },
+            "transform": {
+              "x": 43.2,
+              "y": 1200,
+              "width": 540,
+              "height": 95.04000000000002,
+              "rotation": 3,
+              "zIndex": 8
+            },
+            "fontSize": 43,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_84",
+            "text": {
+              "en": "open source"
+            },
+            "transform": {
+              "x": 496.8,
+              "y": 1200,
+              "width": 540,
+              "height": 95.04000000000002,
+              "rotation": -4,
+              "zIndex": 8
+            },
+            "fontSize": 43,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          }
+        ],
+        "imageElements": [
+          {
+            "id": "i_85",
+            "src": "/app-icon.png",
+            "radius": 67,
+            "border": 0,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 388.8,
+              "y": 1459.2,
+              "width": 302.40000000000003,
+              "height": 302.40000000000003,
+              "rotation": -6,
+              "zIndex": 7
+            }
+          }
+        ]
+      }
+    ],
+    "ipad": [
+      {
+        "id": "s_30",
+        "layout": "hero",
+        "label": {
+          "en": "free · no ads · no subscription"
+        },
+        "headline": {
+          "en": "make your videos\nsmaller"
+        },
+        "highlight": {
+          "en": "smaller"
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/01-settings.png",
+        "transforms": {
+          "caption": {
+            "x": 123.83999999999999,
+            "y": 151.36,
+            "width": 1816.32,
+            "height": 550.4,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 206.39999999999995,
+            "y": 688,
+            "width": 1651.2,
+            "height": 2144.4155844155844,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_31",
+            "text": {
+              "en": "−75%"
+            },
+            "transform": {
+              "x": 1403.5200000000002,
+              "y": 825.6,
+              "width": 701.7600000000001,
+              "height": 340.56,
+              "rotation": 8,
+              "zIndex": 8
+            },
+            "fontSize": 155,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          }
+        ],
+        "imageElements": [
+          {
+            "id": "i_32",
+            "src": "/photos/dog.jpg",
+            "radius": 36,
+            "border": 16,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 41.28,
+              "y": 1045.76,
+              "width": 454.08,
+              "height": 340.56,
+              "rotation": -9,
+              "zIndex": 7
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_33",
+        "layout": "device-bottom",
+        "label": {
+          "en": "before & after"
+        },
+        "headline": {
+          "en": "same moments,\nsmaller files"
+        },
+        "highlight": {
+          "en": "smaller files"
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/04-result.png",
+        "transforms": {
+          "caption": {
+            "x": 123.83999999999999,
+            "y": 151.36,
+            "width": 1816.32,
+            "height": 550.4,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 367.392,
+            "y": 1155.84,
+            "width": 1329.2160000000001,
+            "height": 1726.2545454545457,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_34",
+            "src": "/brand/compare.png",
+            "radius": 83,
+            "border": 37,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 206.4,
+              "y": 591.68,
+              "width": 1651.2,
+              "height": 1238.4,
+              "rotation": -3,
+              "zIndex": 9
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_35",
+        "layout": "device-top",
+        "label": {
+          "en": "batch compression"
+        },
+        "headline": {
+          "en": "shrink them\nall at once"
+        },
+        "highlight": {
+          "en": "all at once"
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/03-progress.png",
+        "transforms": {
+          "device": {
+            "x": 309.6,
+            "y": -357.76,
+            "width": 1444.8,
+            "height": 1876.3636363636363,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 123.83999999999999,
+            "y": 2174.08,
+            "width": 1816.32,
+            "height": 550.4,
+            "rotation": 0,
+            "zIndex": 6
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_36",
+            "src": "/photos/birthday.jpg",
+            "radius": 40,
+            "border": 17,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 61.919999999999995,
+              "y": 1376,
+              "width": 495.35999999999996,
+              "height": 371.52,
+              "rotation": -8,
+              "zIndex": 7
+            }
+          },
+          {
+            "id": "i_37",
+            "src": "/photos/mountains.jpg",
+            "radius": 40,
+            "border": 17,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 1506.72,
+              "y": 1541.1200000000001,
+              "width": 495.35999999999996,
+              "height": 371.52,
+              "rotation": 7,
+              "zIndex": 7
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_38",
+        "layout": "device-bottom",
+        "inverted": true,
+        "label": {
+          "en": "100% on-device"
+        },
+        "headline": {
+          "en": "your videos\nnever leave\nyour phone"
+        },
+        "highlight": {
+          "en": "never leave"
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/09-result-dark.png",
+        "transforms": {
+          "caption": {
+            "x": 123.83999999999999,
+            "y": 151.36,
+            "width": 1816.32,
+            "height": 770.5600000000001,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 381.84,
+            "y": 1293.4399999999998,
+            "width": 1300.32,
+            "height": 1688.7272727272725,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_39",
+            "text": {
+              "en": "no cloud"
+            },
+            "transform": {
+              "x": 123.83999999999999,
+              "y": 1155.84,
+              "width": 743.04,
+              "height": 204.336,
+              "rotation": -6,
+              "zIndex": 8
+            },
+            "fontSize": 93,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center"
+          },
+          {
+            "id": "t_40",
+            "text": {
+              "en": "no account"
+            },
+            "transform": {
+              "x": 1238.3999999999999,
+              "y": 1210.88,
+              "width": 825.6,
+              "height": 204.336,
+              "rotation": 5,
+              "zIndex": 8
+            },
+            "fontSize": 93,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "s_43",
+        "layout": "device-bottom",
+        "label": {
+          "en": "advanced mode"
+        },
+        "headline": {
+          "en": "fine-tune\nevery detail"
+        },
+        "highlight": {
+          "en": "every detail"
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/02-advanced.png",
+        "transforms": {
+          "caption": {
+            "x": 123.83999999999999,
+            "y": 151.36,
+            "width": 1816.32,
+            "height": 550.4,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 247.67999999999998,
+            "y": 743.0400000000001,
+            "width": 1444.8,
+            "height": 1876.3636363636363,
+            "rotation": -4,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_44",
+            "text": {
+              "en": "HEVC"
+            },
+            "transform": {
+              "x": 1527.36,
+              "y": 990.7199999999999,
+              "width": 577.9200000000001,
+              "height": 227.04000000000002,
+              "rotation": 8,
+              "zIndex": 8
+            },
+            "fontSize": 103,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          },
+          {
+            "id": "t_45",
+            "text": {
+              "en": "up to 20 Mbps"
+            },
+            "transform": {
+              "x": 1279.68,
+              "y": 1376,
+              "width": 990.7199999999999,
+              "height": 190.7136,
+              "rotation": -5,
+              "zIndex": 8
+            },
+            "fontSize": 87,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_46",
+            "text": {
+              "en": "60 · 30 · 24 fps"
+            },
+            "transform": {
+              "x": 1238.3999999999999,
+              "y": 1761.28,
+              "width": 1032,
+              "height": 190.7136,
+              "rotation": 4,
+              "zIndex": 8
+            },
+            "fontSize": 87,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "s_49",
+        "layout": "no-device",
+        "label": {
+          "en": "simple · private · free"
+        },
+        "headline": {
+          "en": "everything you\nneed. nothing\nyou don't"
+        },
+        "highlight": {
+          "en": "nothing"
+        },
+        "screenshot": "",
+        "transforms": {
+          "caption": {
+            "x": 123.83999999999999,
+            "y": 192.64000000000001,
+            "width": 1816.32,
+            "height": 825.6,
+            "rotation": 0,
+            "zIndex": 6
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_50",
+            "text": {
+              "en": "batch compression"
+            },
+            "transform": {
+              "x": 82.56,
+              "y": 1100.8,
+              "width": 1032,
+              "height": 163.4688,
+              "rotation": -4,
+              "zIndex": 8
+            },
+            "fontSize": 74,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          },
+          {
+            "id": "t_51",
+            "text": {
+              "en": "before & after"
+            },
+            "transform": {
+              "x": 949.44,
+              "y": 1100.8,
+              "width": 1032,
+              "height": 163.4688,
+              "rotation": 3,
+              "zIndex": 8
+            },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_52",
+            "text": {
+              "en": "H.264 + HEVC"
+            },
+            "transform": {
+              "x": 82.56,
+              "y": 1334.72,
+              "width": 1032,
+              "height": 163.4688,
+              "rotation": 2,
+              "zIndex": 8
+            },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_53",
+            "text": {
+              "en": "Shortcuts & share sheet"
+            },
+            "transform": {
+              "x": 949.44,
+              "y": 1334.72,
+              "width": 1032,
+              "height": 163.4688,
+              "rotation": -3,
+              "zIndex": 8
+            },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_54",
+            "text": {
+              "en": "keeps date & location"
+            },
+            "transform": {
+              "x": 82.56,
+              "y": 1568.64,
+              "width": 1032,
+              "height": 163.4688,
+              "rotation": -2,
+              "zIndex": 8
+            },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_55",
+            "text": {
+              "en": "13 languages"
+            },
+            "transform": {
+              "x": 949.44,
+              "y": 1568.64,
+              "width": 1032,
+              "height": 163.4688,
+              "rotation": 4,
+              "zIndex": 8
+            },
+            "fontSize": 74,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center"
+          },
+          {
+            "id": "t_56",
+            "text": {
+              "en": "dark mode"
+            },
+            "transform": {
+              "x": 82.56,
+              "y": 1802.5600000000002,
+              "width": 1032,
+              "height": 163.4688,
+              "rotation": 3,
+              "zIndex": 8
+            },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "t_57",
+            "text": {
+              "en": "open source"
+            },
+            "transform": {
+              "x": 949.44,
+              "y": 1802.5600000000002,
+              "width": 1032,
+              "height": 163.4688,
+              "rotation": -4,
+              "zIndex": 8
+            },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center"
+          }
+        ],
+        "imageElements": [
+          {
+            "id": "i_58",
+            "src": "/app-icon.png",
+            "radius": 127,
+            "border": 0,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 743.04,
+              "y": 2174.08,
+              "width": 577.9200000000001,
+              "height": 577.9200000000001,
+              "rotation": -6,
+              "zIndex": 7
+            }
+          }
+        ]
+      }
+    ],
+    "android-7": [],
+    "android-10": [],
+    "feature-graphic": [
+      {
+        "id": "s_86",
+        "layout": "feature-graphic",
+        "label": {
+          "en": ""
+        },
+        "headline": {
+          "en": "make videos smaller.\nno cloud. no subscription."
+        },
+        "screenshot": "",
+        "background": "/brand/sky-square.png"
+      }
+    ]
+  }
+}
