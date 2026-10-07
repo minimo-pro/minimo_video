@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useFitText } from "@/lib/use-fit-text";
 import { Rnd } from "react-rnd";
 import { RotateCw } from "lucide-react";
 import type {
@@ -146,6 +147,7 @@ function EditableText({
   onChange,
   style,
   multiline = false,
+  fit = false,
   placeholder,
   onFocus,
 }: {
@@ -154,10 +156,11 @@ function EditableText({
   onChange?: (v: string) => void;
   style?: React.CSSProperties;
   multiline?: boolean;
+  fit?: boolean;
   placeholder?: string;
   onFocus?: () => void;
 }) {
-  const ref = React.useRef<HTMLDivElement>(null);
+  const ref = useFitText(value, style, fit);
   React.useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -176,6 +179,7 @@ function EditableText({
   return (
     <div
       ref={ref}
+      data-fit-text={fit || undefined}
       contentEditable={editable}
       suppressContentEditableWarning
       data-placeholder={placeholder}
@@ -260,6 +264,7 @@ function Caption({
   return (
     <div style={{ textAlign: align, position: "relative", width: "100%" }}>
       <EditableText
+        fit={locale !== "en"}
         value={pickText(slide.label, locale)}
         editable={editable}
         onChange={edit?.onLabelChange}
@@ -291,6 +296,7 @@ function Caption({
       <div style={{ position: "relative" }}>
         <HighlightedText
           text={headline}
+          fit={locale !== "en"}
           highlight={pickText(slide.highlight, locale)}
           accent={accent}
           style={{ ...headlineStyle, minHeight: "1em" }}
@@ -324,16 +330,19 @@ export function HighlightedText({
   highlight,
   accent,
   style,
+  fit = false,
 }: {
   text: string;
+  fit?: boolean;
   highlight?: string;
   accent: string;
   style: React.CSSProperties;
 }) {
+  const ref = useFitText(text, style, fit);
   const at = highlight ? text.indexOf(highlight) : -1;
-  if (!highlight || at < 0) return <div style={style}>{text}</div>;
+  if (!highlight || at < 0) return <div ref={ref} data-fit-text={fit || undefined} style={style}>{text}</div>;
   return (
-    <div style={style}>
+    <div ref={ref} data-fit-text={fit || undefined} style={style}>
       {text.slice(0, at)}
       <span style={{ color: accent }}>{highlight}</span>
       {text.slice(at + highlight.length)}
@@ -1268,6 +1277,7 @@ function SlideElements({
           }}
         >
           <EditableText
+            fit={locale !== "en"}
             value={pickText(textElement.text, locale)}
             editable={editable}
             multiline
@@ -1330,7 +1340,7 @@ function SlideElements({
         onSelect={() => edit?.onSelectElement?.(elementId)}
       >
         <img
-          src={img(imageElement.src)}
+          src={img(resolveScreenshot(imageElement.src, locale))}
           alt=""
           draggable={false}
           style={{

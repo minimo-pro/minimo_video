@@ -1,13 +1,13 @@
 "use client";
 // Non-device store creatives, rendered at native size: /creative?kind=header|search|play
 import * as React from "react";
+import { useFitText } from "@/lib/use-fit-text";
+import { storeCopy } from "@/lib/store-copy";
 import { AndroidPhone, Phone } from "@/components/editor/device-frames";
 
 const FONT = "Pangolin, ui-rounded, system-ui, sans-serif";
 const INK = "#272727";
 const ACCENT = "#FC3636";
-const IOS = "/screenshots/apple/iphone/en";
-const ANDROID = "/screenshots/android/phone/en";
 
 const CREATIVES = {
   header: { w: 3840, h: 1646 },
@@ -42,9 +42,12 @@ function Sky({ veil }: { veil: string }) {
   );
 }
 
-function Headline({ size, align = "left", lines }: { size: number; align?: "left" | "center"; lines: React.ReactNode }) {
+function Headline({ size, align = "left", lines, fit }: { size: number; align?: "left" | "center"; lines: React.ReactNode; fit: boolean }) {
+  const ref = useFitText(lines, { fontSize: size, fontFamily: FONT }, fit);
   return (
     <div
+      ref={ref}
+      data-fit-text={fit || undefined}
       style={{
         fontFamily: FONT,
         fontSize: size,
@@ -60,6 +63,11 @@ function Headline({ size, align = "left", lines }: { size: number; align?: "left
   );
 }
 
+function BannerCopy({ text, size, color, fit, style }: { text: string; size: number; color: string; fit: boolean; style?: React.CSSProperties }) {
+  const ref = useFitText(text, { fontSize: size, fontFamily: FONT }, fit);
+  return <div ref={ref} data-fit-text={fit || undefined} style={{ fontFamily: FONT, fontSize: size, color, whiteSpace: "nowrap", ...style }}>{text}</div>;
+}
+
 function PhoneAt({ src, x, y, width, rotation = 0, z = 1, android }: { src: string; x: number; y: number; width: number; rotation?: number; z?: number; android?: boolean }) {
   const Frame = android ? AndroidPhone : Phone;
   return (
@@ -69,26 +77,27 @@ function PhoneAt({ src, x, y, width, rotation = 0, z = 1, android }: { src: stri
   );
 }
 
-function Header() {
+function Header({ locale }: { locale: string }) {
+  const t = (text: string) => storeCopy(text, locale);
+  const IOS = `/screenshots/apple/iphone/${locale}`;
   const { w: W, h: H } = CREATIVES.header;
   const pw = H * 0.5;
   return (
     <>
       <Sky veil="linear-gradient(90deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.55) 38%, rgba(255,255,255,0) 60%)" />
-      <div style={{ position: "absolute", left: W * 0.14, top: H * 0.27, zIndex: 10 }}>
-        <div style={{ fontFamily: FONT, fontSize: H * 0.055, color: ACCENT, marginBottom: H * 0.02 }}>100% on-device · no cloud</div>
+      <div style={{ position: "absolute", left: W * 0.14, top: H * 0.27, width: W * 0.43, zIndex: 10 }}>
+        <BannerCopy fit={locale !== "en"} text={t("100% on-device · no cloud")} size={H * 0.055} color={ACCENT} style={{ marginBottom: H * 0.02 }} />
         <Headline
+          fit={locale !== "en"}
           size={H * 0.135}
           lines={
             <>
-              make your videos{"\n"}
-              <span style={{ color: ACCENT }}>smaller</span>
+              {t("make your videos\nsmaller").split("\n")[0]}{"\n"}
+              <span style={{ color: ACCENT }}>{t("smaller")}</span>
             </>
           }
         />
-        <div style={{ fontFamily: FONT, fontSize: H * 0.05, color: "#5A606C", marginTop: H * 0.035 }}>
-          same moments. a quarter of the space.
-        </div>
+        <BannerCopy fit={locale !== "en"} text={t("same moments. a quarter of the space.")} size={H * 0.05} color="#5A606C" style={{ marginTop: H * 0.035 }} />
       </div>
       <PhoneAt src={`${IOS}/02-advanced.png`} x={W * 0.59} y={H * 0.2} width={pw} rotation={-7} z={1} />
       <PhoneAt src={`${IOS}/09-result-dark.png`} x={W * 0.77} y={H * 0.2} width={pw} rotation={7} z={1} />
@@ -97,7 +106,9 @@ function Header() {
   );
 }
 
-function Search() {
+function Search({ locale }: { locale: string }) {
+  const t = (text: string) => storeCopy(text, locale);
+  const IOS = `/screenshots/apple/iphone/${locale}`;
   const { w: W, h: H } = CREATIVES.search;
   const pw = W * 0.25;
   return (
@@ -105,17 +116,16 @@ function Search() {
       <Sky veil="linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.55) 22%, rgba(255,255,255,0) 42%)" />
       <div style={{ position: "absolute", left: 0, right: 0, top: H * 0.06, zIndex: 10 }}>
         <Headline
+          fit={locale !== "en"}
           size={H * 0.105}
           align="center"
           lines={
             <>
-              make your videos <span style={{ color: ACCENT }}>smaller</span>
+              {t("make your videos\nsmaller").split("\n")[0]} <span style={{ color: ACCENT }}>{t("smaller")}</span>
             </>
           }
         />
-        <div style={{ fontFamily: FONT, fontSize: H * 0.045, color: "#5A606C", textAlign: "center", marginTop: H * 0.015 }}>
-          compress in batches · keep the quality · 100% on-device
-        </div>
+        <BannerCopy fit={locale !== "en"} text={t("compress in batches · keep the quality · 100% on-device")} size={H * 0.045} color="#5A606C" style={{ marginTop: H * 0.015, textAlign: "center" }} />
       </div>
       <PhoneAt src={`${IOS}/01-settings.png`} x={W * 0.13} y={H * 0.36} width={pw} rotation={-6} />
       <PhoneAt src={`${IOS}/03-progress.png`} x={W * 0.62} y={H * 0.36} width={pw} rotation={6} />
@@ -124,13 +134,15 @@ function Search() {
   );
 }
 
-function PlayBanner() {
+function PlayBanner({ locale }: { locale: string }) {
+  const t = (text: string) => storeCopy(text, locale);
+  const ANDROID = `/screenshots/android/phone/${locale}`;
   const { w: W, h: H } = CREATIVES.play;
   const pw = H * 0.5;
   return (
     <>
       <Sky veil="linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 40%, rgba(255,255,255,0) 62%)" />
-      <div style={{ position: "absolute", left: W * 0.065, top: H * 0.25, zIndex: 10 }}>
+      <div style={{ position: "absolute", left: W * 0.065, top: H * 0.25, width: W * 0.45, zIndex: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: H * 0.04, marginBottom: H * 0.05 }}>
           <img
             src="/app-icon.png"
@@ -140,17 +152,16 @@ function PlayBanner() {
           <div style={{ fontFamily: FONT, fontSize: H * 0.075, color: INK }}>minimo (video)</div>
         </div>
         <Headline
+          fit={locale !== "en"}
           size={H * 0.13}
           lines={
             <>
-              make your videos{"\n"}
-              <span style={{ color: ACCENT }}>smaller</span>
+              {t("make your videos\nsmaller").split("\n")[0]}{"\n"}
+              <span style={{ color: ACCENT }}>{t("smaller")}</span>
             </>
           }
         />
-        <div style={{ fontFamily: FONT, fontSize: H * 0.05, color: "#5A606C", marginTop: H * 0.04 }}>
-          no cloud · no account · no subscription
-        </div>
+        <BannerCopy fit={locale !== "en"} text={t("no cloud · no account · no subscription")} size={H * 0.05} color="#5A606C" style={{ marginTop: H * 0.04 }} />
       </div>
       <PhoneAt android src={`${ANDROID}/01-settings.png`} x={W * 0.55} y={H * 0.2} width={pw} rotation={-7} />
       <PhoneAt android src={`${ANDROID}/04-result.png`} x={W * 0.715} y={H * 0.12} width={pw} rotation={6} z={2} />
@@ -159,9 +170,12 @@ function PlayBanner() {
 }
 
 export default function CreativePage() {
+  const [locale, setLocale] = React.useState("en");
   const [kind, setKind] = React.useState<Kind | null>(null);
   React.useEffect(() => {
-    const k = new URLSearchParams(window.location.search).get("kind") as Kind;
+    const params = new URLSearchParams(window.location.search);
+    setLocale(params.get("locale") || "en");
+    const k = params.get("kind") as Kind;
     setKind(k in CREATIVES ? k : "header");
   }, []);
   if (!kind) return null;
@@ -169,7 +183,7 @@ export default function CreativePage() {
   return (
     <div style={{ position: "relative", width: w, height: h, overflow: "hidden", background: "#F1F2F6" }}>
       <style>{"nextjs-portal{display:none!important} body{margin:0}"}</style>
-      {kind === "header" ? <Header /> : kind === "search" ? <Search /> : <PlayBanner />}
+      {kind === "header" ? <Header locale={locale} /> : kind === "search" ? <Search locale={locale} /> : <PlayBanner locale={locale} />}
     </div>
   );
 }

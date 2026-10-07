@@ -48,7 +48,7 @@ export default function PreviewPage() {
               device={device}
               orientation="portrait"
               theme={theme}
-              locale={state.locale}
+              locale={params.get("locale") || state.locale}
               appName={state.appName}
               appIcon={state.appIcon}
               hideEmpty

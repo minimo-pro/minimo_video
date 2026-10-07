@@ -193,6 +193,7 @@ if (only.length) {
   for (const device of only) saved.slidesByDevice[device] = deck(device);
   fs.writeFileSync(file, JSON.stringify(saved, null, 2) + "\n");
   console.log("seeded", Object.fromEntries(only.map((d) => [d, saved.slidesByDevice[d].length])));
+  await import("./localize-decks.mjs");
   process.exit(0);
 }
 
@@ -227,3 +228,5 @@ const state = {
 
 fs.writeFileSync(file, JSON.stringify(state, null, 2) + "\n");
 console.log("seeded", Object.fromEntries(Object.entries(state.slidesByDevice).map(([k, v]) => [k, v.length])));
+
+await import("./localize-decks.mjs");
