@@ -54,7 +54,7 @@ export type TextElement = {
   fontWeight?: number;
   color?: string;
   align?: "left" | "center" | "right";
-  // Optional pill behind the text (chips like "−75%").
+  // Optional pill behind the text (chips like "HEVC").
   background?: string;
   rotation?: number;
 };

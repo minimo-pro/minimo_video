@@ -82,7 +82,6 @@ function deck(device) {
     highlight: en("smaller"),
     screenshot: shot("01-settings"),
     transforms: { caption: caption(0.055), device: centered(top, heroW, 0) },
-    textElements: [chip("−75%", tablet ? 0.68 : 0.62, tablet ? 0.3 : 0.29, { w: 0.34, size: 0.075, rotation: 8 })],
     imageElements: [
       sticker("/photos/dog.jpg", tablet ? 0.02 : -0.04, 0.38, tablet ? 0.22 : 0.3, { rotation: -9 }),
     ],

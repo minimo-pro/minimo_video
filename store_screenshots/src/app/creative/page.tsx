@@ -60,28 +60,6 @@ function Headline({ size, align = "left", lines }: { size: number; align?: "left
   );
 }
 
-function Chip({ children, size, rotation, style }: { children: React.ReactNode; size: number; rotation: number; style: React.CSSProperties }) {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        fontFamily: FONT,
-        fontSize: size,
-        color: "#fff",
-        background: ACCENT,
-        borderRadius: 999,
-        padding: `${size * 0.22}px ${size * 0.55}px`,
-        transform: `rotate(${rotation}deg)`,
-        boxShadow: "0 18px 40px rgba(252,54,54,0.35)",
-        zIndex: 20,
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
 function PhoneAt({ src, x, y, width, rotation = 0, z = 1, android }: { src: string; x: number; y: number; width: number; rotation?: number; z?: number; android?: boolean }) {
   const Frame = android ? AndroidPhone : Phone;
   return (
@@ -115,9 +93,6 @@ function Header() {
       <PhoneAt src={`${IOS}/02-advanced.png`} x={W * 0.59} y={H * 0.2} width={pw} rotation={-7} z={1} />
       <PhoneAt src={`${IOS}/09-result-dark.png`} x={W * 0.77} y={H * 0.2} width={pw} rotation={7} z={1} />
       <PhoneAt src={`${IOS}/04-result.png`} x={W * 0.68} y={H * 0.1} width={pw * 1.06} z={2} />
-      <Chip size={H * 0.07} rotation={8} style={{ left: W * 0.79, top: H * 0.16 }}>
-        −75%
-      </Chip>
     </>
   );
 }
@@ -145,9 +120,6 @@ function Search() {
       <PhoneAt src={`${IOS}/01-settings.png`} x={W * 0.13} y={H * 0.36} width={pw} rotation={-6} />
       <PhoneAt src={`${IOS}/03-progress.png`} x={W * 0.62} y={H * 0.36} width={pw} rotation={6} />
       <PhoneAt src={`${IOS}/04-result.png`} x={W * 0.365} y={H * 0.3} width={pw * 1.08} z={2} />
-      <Chip size={H * 0.06} rotation={8} style={{ left: W * 0.6, top: H * 0.3 }}>
-        −75%
-      </Chip>
     </>
   );
 }
@@ -182,9 +154,6 @@ function PlayBanner() {
       </div>
       <PhoneAt android src={`${ANDROID}/01-settings.png`} x={W * 0.55} y={H * 0.2} width={pw} rotation={-7} />
       <PhoneAt android src={`${ANDROID}/04-result.png`} x={W * 0.715} y={H * 0.12} width={pw} rotation={6} z={2} />
-      <Chip size={H * 0.075} rotation={8} style={{ left: W * 0.8, top: H * 0.08 }}>
-        −75%
-      </Chip>
     </>
   );
 }

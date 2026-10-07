@@ -43,26 +43,6 @@
             "zIndex": 3
           }
         },
-        "textElements": [
-          {
-            "id": "t_2",
-            "text": {
-              "en": "−75%"
-            },
-            "transform": {
-              "x": 818.4,
-              "y": 831.7199999999999,
-              "width": 448.8,
-              "height": 217.8,
-              "rotation": 8,
-              "zIndex": 8
-            },
-            "fontSize": 99,
-            "color": "#FFFFFF",
-            "background": "#FC3636",
-            "align": "center"
-          }
-        ],
         "imageElements": [
           {
             "id": "i_3",
@@ -578,26 +558,6 @@
             "zIndex": 3
           }
         },
-        "textElements": [
-          {
-            "id": "t_60",
-            "text": {
-              "en": "−75%"
-            },
-            "transform": {
-              "x": 669.6,
-              "y": 556.8,
-              "width": 367.20000000000005,
-              "height": 178.20000000000002,
-              "rotation": 8,
-              "zIndex": 8
-            },
-            "fontSize": 81,
-            "color": "#FFFFFF",
-            "background": "#FC3636",
-            "align": "center"
-          }
-        ],
         "imageElements": [
           {
             "id": "i_61",
@@ -1113,26 +1073,6 @@
             "zIndex": 3
           }
         },
-        "textElements": [
-          {
-            "id": "t_31",
-            "text": {
-              "en": "−75%"
-            },
-            "transform": {
-              "x": 1403.5200000000002,
-              "y": 825.6,
-              "width": 701.7600000000001,
-              "height": 340.56,
-              "rotation": 8,
-              "zIndex": 8
-            },
-            "fontSize": 155,
-            "color": "#FFFFFF",
-            "background": "#FC3636",
-            "align": "center"
-          }
-        ],
         "imageElements": [
           {
             "id": "i_32",
