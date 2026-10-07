@@ -64,6 +64,8 @@ FFmpeg is available under LGPL or GPL depending on how it is built and which com
 
 Video compression is powered by [light_compressor_v2](https://pub.dev/packages/light_compressor_v2). Respect and thanks to its maintainers and contributors.
 
+App Store and Google Play screenshots are made with the [App Store Screenshots](https://www.parthjadhav.com/products/app-store-screenshots) skill by [Parth Jadhav](https://x.com/parthjadhav8). Thanks for the great editor template.
+
 Special thanks to [Kamran Bekirov](https://x.com/kamranbekirovyz) and his website [Flutter Pro Design](https://flutterpro.design/). I learned from and adapted many ideas from his work for myself and for this app.
 
 
