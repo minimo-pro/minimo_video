@@ -5,3 +5,8 @@ out
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# Keep generated store assets and UI captures locally.
+/export/
+/public/screenshots/
+/public/brand/compare*.png

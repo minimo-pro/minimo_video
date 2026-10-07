@@ -5,6 +5,10 @@
 *.pyc
 *.swp
 *.p8
+.asc/config.json
+.asc/signing/
+.asc/reports/
+/metadata/
 .DS_Store
 .atom/
 .build/

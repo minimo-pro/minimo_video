@@ -4,7 +4,19 @@
   "themeId": "minimo-sky",
   "connectedCanvas": false,
   "locales": [
-    "en"
+    "en",
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "it",
+    "ja",
+    "ko",
+    "nl",
+    "pt",
+    "ru",
+    "tr",
+    "zh"
   ],
   "locale": "en",
   "device": "iphone",
@@ -16,13 +28,49 @@
         "id": "s_1",
         "layout": "hero",
         "label": {
-          "en": "free · no ads · no subscription"
+          "en": "free · no ads · no subscription",
+          "de": "gratis · ohne werbung · ohne abo",
+          "es": "gratis · sin anuncios · sin suscripción",
+          "fr": "gratuit · sans pub · sans abonnement",
+          "hi": "मुफ़्त · बिना विज्ञापन · बिना सदस्यता",
+          "it": "gratis · senza pubblicità · senza abbonamento",
+          "ja": "無料 · 広告なし · サブスクなし",
+          "ko": "무료 · 광고 없음 · 구독 없음",
+          "nl": "gratis · geen ads · geen abonnement",
+          "pt": "grátis · sem anúncios · sem assinatura",
+          "ru": "бесплатно · без рекламы · без подписок",
+          "tr": "ücretsiz · reklamsız · aboneliksiz",
+          "zh": "免费 · 无广告 · 无订阅"
         },
         "headline": {
-          "en": "make your videos\nsmaller"
+          "en": "make your videos\nsmaller",
+          "de": "deine videos,\nkleiner",
+          "es": "tus vídeos,\nmás pequeños",
+          "fr": "tes vidéos,\nplus légères",
+          "hi": "अपने वीडियो\nछोटे करें",
+          "it": "i tuoi video,\npiù piccoli",
+          "ja": "動画を\nもっと小さく",
+          "ko": "동영상 용량을\n더 작게",
+          "nl": "je video’s,\nkleiner",
+          "pt": "seus vídeos,\nmenores",
+          "ru": "твои видео\nвесят меньше",
+          "tr": "videoların\ndaha küçük",
+          "zh": "让你的视频\n更小巧"
         },
         "highlight": {
-          "en": "smaller"
+          "en": "smaller",
+          "de": "kleiner",
+          "es": "más pequeños",
+          "fr": "plus légères",
+          "hi": "छोटे करें",
+          "it": "più piccoli",
+          "ja": "もっと小さく",
+          "ko": "더 작게",
+          "nl": "kleiner",
+          "pt": "menores",
+          "ru": "весят меньше",
+          "tr": "daha küçük",
+          "zh": "更小巧"
         },
         "screenshot": "/screenshots/apple/iphone/{locale}/01-settings.png",
         "transforms": {
@@ -66,13 +114,49 @@
         "id": "s_4",
         "layout": "device-bottom",
         "label": {
-          "en": "before & after"
+          "en": "before & after",
+          "de": "vorher & nachher",
+          "es": "antes y después",
+          "fr": "avant & après",
+          "hi": "पहले और बाद में",
+          "it": "prima e dopo",
+          "ja": "ビフォー＆アフター",
+          "ko": "압축 전후",
+          "nl": "voor & na",
+          "pt": "antes e depois",
+          "ru": "до и после",
+          "tr": "öncesi ve sonrası",
+          "zh": "压缩前后"
         },
         "headline": {
-          "en": "same moments,\nsmaller files"
+          "en": "same moments,\nsmaller files",
+          "de": "gleiche momente,\nkleinere dateien",
+          "es": "mismos momentos,\narchivos menores",
+          "fr": "mêmes souvenirs,\nfichiers réduits",
+          "hi": "वही पल,\nछोटी फ़ाइलें",
+          "it": "stessi momenti,\nfile più piccoli",
+          "ja": "思い出はそのまま\nファイルは小さく",
+          "ko": "추억은 그대로,\n파일은 작게",
+          "nl": "dezelfde momenten,\nkleinere bestanden",
+          "pt": "mesmos momentos,\narquivos menores",
+          "ru": "те же моменты,\nменьше места",
+          "tr": "aynı anılar,\nküçük dosyalar",
+          "zh": "精彩瞬间不变\n文件更小"
         },
         "highlight": {
-          "en": "smaller files"
+          "en": "smaller files",
+          "de": "kleinere dateien",
+          "es": "archivos menores",
+          "fr": "fichiers réduits",
+          "hi": "छोटी फ़ाइलें",
+          "it": "file più piccoli",
+          "ja": "ファイルは小さく",
+          "ko": "파일은 작게",
+          "nl": "kleinere bestanden",
+          "pt": "arquivos menores",
+          "ru": "меньше места",
+          "tr": "küçük dosyalar",
+          "zh": "文件更小"
         },
         "screenshot": "/screenshots/apple/iphone/{locale}/04-result.png",
         "transforms": {
@@ -96,7 +180,7 @@
         "imageElements": [
           {
             "id": "i_5",
-            "src": "/brand/compare.png",
+            "src": "/brand/compare-{locale}.png",
             "radius": 61,
             "border": 24,
             "shadow": true,
@@ -116,13 +200,49 @@
         "id": "s_6",
         "layout": "device-top",
         "label": {
-          "en": "batch compression"
+          "en": "batch compression",
+          "de": "stapelkomprimierung",
+          "es": "compresión por lotes",
+          "fr": "compression par lot",
+          "hi": "एक साथ कंप्रेशन",
+          "it": "compressione in serie",
+          "ja": "まとめて圧縮",
+          "ko": "여러 영상 압축",
+          "nl": "batchcompressie",
+          "pt": "compressão em lote",
+          "ru": "пакетное сжатие",
+          "tr": "toplu sıkıştırma",
+          "zh": "批量压缩"
         },
         "headline": {
-          "en": "shrink them\nall at once"
+          "en": "shrink them\nall at once",
+          "de": "alle videos\nauf einmal",
+          "es": "comprímelos\ntodos a la vez",
+          "fr": "compresse-les\ntous à la fois",
+          "hi": "सभी वीडियो\nएक साथ छोटे करें",
+          "it": "comprimili\ntutti insieme",
+          "ja": "動画をまとめて\n一度に圧縮",
+          "ko": "모든 영상을\n한 번에 압축",
+          "nl": "verklein ze\nallemaal tegelijk",
+          "pt": "comprima todos\nde uma vez",
+          "ru": "сжимай видео\nвсе сразу",
+          "tr": "tümünü\ntek seferde küçült",
+          "zh": "多个视频\n一次搞定"
         },
         "highlight": {
-          "en": "all at once"
+          "en": "all at once",
+          "de": "auf einmal",
+          "es": "todos a la vez",
+          "fr": "tous à la fois",
+          "hi": "एक साथ छोटे करें",
+          "it": "tutti insieme",
+          "ja": "一度に圧縮",
+          "ko": "한 번에 압축",
+          "nl": "allemaal tegelijk",
+          "pt": "de uma vez",
+          "ru": "все сразу",
+          "tr": "tek seferde küçült",
+          "zh": "一次搞定"
         },
         "screenshot": "/screenshots/apple/iphone/{locale}/03-progress.png",
         "transforms": {
@@ -183,13 +303,49 @@
         "layout": "device-bottom",
         "inverted": true,
         "label": {
-          "en": "100% on-device"
+          "en": "100% on-device",
+          "de": "100% auf dem gerät",
+          "es": "100% en tu dispositivo",
+          "fr": "100% sur l’appareil",
+          "hi": "100% डिवाइस पर",
+          "it": "100% sul dispositivo",
+          "ja": "すべて端末内で処理",
+          "ko": "100% 기기에서 처리",
+          "nl": "100% op je apparaat",
+          "pt": "100% no dispositivo",
+          "ru": "100% на устройстве",
+          "tr": "%100 cihazında",
+          "zh": "100% 本地处理"
         },
         "headline": {
-          "en": "your videos\nnever leave\nyour phone"
+          "en": "your videos\nnever leave\nyour phone",
+          "de": "deine videos\nbleiben auf\ndeinem handy",
+          "es": "tus vídeos\nse quedan\nen tu móvil",
+          "fr": "tes vidéos\nrestent sur\nton téléphone",
+          "hi": "आपके वीडियो\nफ़ोन में ही\nरहते हैं",
+          "it": "i tuoi video\nrestano sul\ntuo telefono",
+          "ja": "動画は\nスマホの中から\n出ません",
+          "ko": "내 동영상은\n휴대폰 안에\n그대로",
+          "nl": "je video’s\nblijven op\nje telefoon",
+          "pt": "seus vídeos\nficam no\nseu celular",
+          "ru": "твои видео\nостаются\nв телефоне",
+          "tr": "videoların\ntelefonunda\nkalır",
+          "zh": "你的视频\n始终留在\n手机里"
         },
         "highlight": {
-          "en": "never leave"
+          "en": "never leave",
+          "de": "bleiben auf",
+          "es": "se quedan",
+          "fr": "restent sur",
+          "hi": "फ़ोन में ही",
+          "it": "restano sul",
+          "ja": "出ません",
+          "ko": "휴대폰 안에",
+          "nl": "blijven op",
+          "pt": "ficam no",
+          "ru": "остаются",
+          "tr": "telefonunda",
+          "zh": "始终留在"
         },
         "screenshot": "/screenshots/apple/iphone/{locale}/09-result-dark.png",
         "transforms": {
@@ -214,7 +370,19 @@
           {
             "id": "t_10",
             "text": {
-              "en": "no cloud"
+              "en": "no cloud",
+              "de": "ohne cloud",
+              "es": "sin nube",
+              "fr": "sans cloud",
+              "hi": "बिना क्लाउड",
+              "it": "senza cloud",
+              "ja": "クラウド不要",
+              "ko": "클라우드 없이",
+              "nl": "geen cloud",
+              "pt": "sem nuvem",
+              "ru": "без облака",
+              "tr": "bulut yok",
+              "zh": "无需云端"
             },
             "transform": {
               "x": 0,
@@ -232,7 +400,19 @@
           {
             "id": "t_11",
             "text": {
-              "en": "no account"
+              "en": "no account",
+              "de": "ohne konto",
+              "es": "sin cuenta",
+              "fr": "sans compte",
+              "hi": "बिना खाते",
+              "it": "senza account",
+              "ja": "アカウント不要",
+              "ko": "계정 없이",
+              "nl": "geen account",
+              "pt": "sem conta",
+              "ru": "без аккаунта",
+              "tr": "hesap yok",
+              "zh": "无需账号"
             },
             "transform": {
               "x": 792,
@@ -253,13 +433,49 @@
         "id": "s_14",
         "layout": "device-bottom",
         "label": {
-          "en": "advanced mode"
+          "en": "advanced mode",
+          "de": "erweiterter modus",
+          "es": "modo avanzado",
+          "fr": "mode avancé",
+          "hi": "उन्नत मोड",
+          "it": "modalità avanzata",
+          "ja": "詳細モード",
+          "ko": "고급 모드",
+          "nl": "geavanceerde modus",
+          "pt": "modo avançado",
+          "ru": "расширенный режим",
+          "tr": "gelişmiş mod",
+          "zh": "高级模式"
         },
         "headline": {
-          "en": "fine-tune\nevery detail"
+          "en": "fine-tune\nevery detail",
+          "de": "jedes detail\nselbst bestimmen",
+          "es": "ajusta\ncada detalle",
+          "fr": "règle\nchaque détail",
+          "hi": "हर बारीकी\nअपने हिसाब से",
+          "it": "regola\nogni dettaglio",
+          "ja": "細部まで\n自由に調整",
+          "ko": "세세한 설정까지\n내 마음대로",
+          "nl": "stel elk detail\nzelf in",
+          "pt": "ajuste\ncada detalhe",
+          "ru": "настрой\nкаждую деталь",
+          "tr": "her ayrıntıyı\nkendin ayarla",
+          "zh": "精细调整\n每个细节"
         },
         "highlight": {
-          "en": "every detail"
+          "en": "every detail",
+          "de": "selbst bestimmen",
+          "es": "cada detalle",
+          "fr": "chaque détail",
+          "hi": "अपने हिसाब से",
+          "it": "ogni dettaglio",
+          "ja": "自由に調整",
+          "ko": "내 마음대로",
+          "nl": "zelf in",
+          "pt": "cada detalhe",
+          "ru": "каждую деталь",
+          "tr": "kendin ayarla",
+          "zh": "每个细节"
         },
         "screenshot": "/screenshots/apple/iphone/{locale}/02-advanced.png",
         "transforms": {
@@ -284,7 +500,19 @@
           {
             "id": "t_15",
             "text": {
-              "en": "HEVC"
+              "en": "HEVC",
+              "de": "HEVC",
+              "es": "HEVC",
+              "fr": "HEVC",
+              "hi": "HEVC",
+              "it": "HEVC",
+              "ja": "HEVC",
+              "ko": "HEVC",
+              "nl": "HEVC",
+              "pt": "HEVC",
+              "ru": "HEVC",
+              "tr": "HEVC",
+              "zh": "HEVC"
             },
             "transform": {
               "x": 897.6,
@@ -302,7 +530,19 @@
           {
             "id": "t_16",
             "text": {
-              "en": "up to 20 Mbps"
+              "en": "up to 20 Mbps",
+              "de": "bis zu 20 Mbit/s",
+              "es": "hasta 20 Mbps",
+              "fr": "jusqu’à 20 Mbit/s",
+              "hi": "20 Mbps तक",
+              "it": "fino a 20 Mbps",
+              "ja": "最大20 Mbps",
+              "ko": "최대 20 Mbps",
+              "nl": "tot 20 Mbps",
+              "pt": "até 20 Mbps",
+              "ru": "до 20 Мбит/с",
+              "tr": "20 Mbps’ye kadar",
+              "zh": "最高 20 Mbps"
             },
             "transform": {
               "x": 660,
@@ -320,7 +560,19 @@
           {
             "id": "t_17",
             "text": {
-              "en": "60 · 30 · 24 fps"
+              "en": "60 · 30 · 24 fps",
+              "de": "60 · 30 · 24 fps",
+              "es": "60 · 30 · 24 fps",
+              "fr": "60 · 30 · 24 fps",
+              "hi": "60 · 30 · 24 fps",
+              "it": "60 · 30 · 24 fps",
+              "ja": "60 · 30 · 24 fps",
+              "ko": "60 · 30 · 24 fps",
+              "nl": "60 · 30 · 24 fps",
+              "pt": "60 · 30 · 24 fps",
+              "ru": "60 · 30 · 24 кадр/с",
+              "tr": "60 · 30 · 24 fps",
+              "zh": "60 · 30 · 24 fps"
             },
             "transform": {
               "x": 633.6,
@@ -341,13 +593,49 @@
         "id": "s_20",
         "layout": "no-device",
         "label": {
-          "en": "simple · private · free"
+          "en": "simple · private · free",
+          "de": "einfach · privat · gratis",
+          "es": "simple · privado · gratis",
+          "fr": "simple · privé · gratuit",
+          "hi": "सरल · निजी · मुफ़्त",
+          "it": "semplice · privato · gratis",
+          "ja": "シンプル · 非公開 · 無料",
+          "ko": "간단하게 · 안전하게 · 무료",
+          "nl": "simpel · privé · gratis",
+          "pt": "simples · privado · grátis",
+          "ru": "просто · приватно · бесплатно",
+          "tr": "basit · özel · ücretsiz",
+          "zh": "简单 · 私密 · 免费"
         },
         "headline": {
-          "en": "everything you\nneed. nothing\nyou don't"
+          "en": "everything you\nneed. nothing\nyou don't",
+          "de": "alles, was du\nbrauchst. ohne\nüberflüssiges",
+          "es": "todo lo que\nnecesitas. nada\nde más",
+          "fr": "tout le nécessaire.\nrien de\nsuperflu",
+          "hi": "ज़रूरत की हर चीज़.\nकुछ भी\nफ़ालतू नहीं",
+          "it": "tutto ciò che serve.\nniente\ndi troppo",
+          "ja": "必要なものだけ。\n余計なものは\nありません",
+          "ko": "필요한 것만.\n불필요한 건\n없어요",
+          "nl": "alles wat je nodig\nhebt. niets\noverbodigs",
+          "pt": "tudo o que precisa.\nnada\na mais",
+          "ru": "всё нужное.\nничего\nлишнего",
+          "tr": "ihtiyacın olan her şey.\nfazlası\nyok",
+          "zh": "所需功能都有\n没有\n多余的"
         },
         "highlight": {
-          "en": "nothing"
+          "en": "nothing",
+          "de": "überflüssiges",
+          "es": "nada",
+          "fr": "rien",
+          "hi": "फ़ालतू नहीं",
+          "it": "niente",
+          "ja": "余計なもの",
+          "ko": "불필요한 건",
+          "nl": "niets",
+          "pt": "nada",
+          "ru": "ничего",
+          "tr": "fazlası",
+          "zh": "没有"
         },
         "screenshot": "",
         "transforms": {
@@ -364,7 +652,19 @@
           {
             "id": "t_21",
             "text": {
-              "en": "batch compression"
+              "en": "batch compression",
+              "de": "stapelkomprimierung",
+              "es": "compresión por lotes",
+              "fr": "compression par lot",
+              "hi": "एक साथ कंप्रेशन",
+              "it": "compressione in serie",
+              "ja": "まとめて圧縮",
+              "ko": "여러 영상 압축",
+              "nl": "batchcompressie",
+              "pt": "compressão em lote",
+              "ru": "пакетное сжатие",
+              "tr": "toplu sıkıştırma",
+              "zh": "批量压缩"
             },
             "transform": {
               "x": 52.800000000000004,
@@ -382,7 +682,19 @@
           {
             "id": "t_22",
             "text": {
-              "en": "before & after"
+              "en": "before & after",
+              "de": "vorher & nachher",
+              "es": "antes y después",
+              "fr": "avant & après",
+              "hi": "पहले और बाद में",
+              "it": "prima e dopo",
+              "ja": "ビフォー＆アフター",
+              "ko": "압축 전후",
+              "nl": "voor & na",
+              "pt": "antes e depois",
+              "ru": "до и после",
+              "tr": "öncesi ve sonrası",
+              "zh": "压缩前后"
             },
             "transform": {
               "x": 607.2,
@@ -400,7 +712,19 @@
           {
             "id": "t_23",
             "text": {
-              "en": "H.264 + HEVC"
+              "en": "H.264 + HEVC",
+              "de": "H.264 + HEVC",
+              "es": "H.264 + HEVC",
+              "fr": "H.264 + HEVC",
+              "hi": "H.264 + HEVC",
+              "it": "H.264 + HEVC",
+              "ja": "H.264 + HEVC",
+              "ko": "H.264 + HEVC",
+              "nl": "H.264 + HEVC",
+              "pt": "H.264 + HEVC",
+              "ru": "H.264 + HEVC",
+              "tr": "H.264 + HEVC",
+              "zh": "H.264 + HEVC"
             },
             "transform": {
               "x": 52.800000000000004,
@@ -418,7 +742,19 @@
           {
             "id": "t_24",
             "text": {
-              "en": "Shortcuts & share sheet"
+              "en": "Shortcuts & share sheet",
+              "de": "Kurzbefehle & Teilen",
+              "es": "Atajos y compartir",
+              "fr": "Raccourcis & partage",
+              "hi": "Shortcuts और शेयर",
+              "it": "Comandi Rapidi e condividi",
+              "ja": "ショートカット＆共有",
+              "ko": "단축어 및 공유",
+              "nl": "Opdrachten & delen",
+              "pt": "Atalhos e compartilhar",
+              "ru": "Команды и меню «Поделиться»",
+              "tr": "Kestirmeler ve paylaşım",
+              "zh": "快捷指令与分享"
             },
             "transform": {
               "x": 607.2,
@@ -436,7 +772,19 @@
           {
             "id": "t_25",
             "text": {
-              "en": "keeps date & location"
+              "en": "keeps date & location",
+              "de": "datum & ort bleiben",
+              "es": "conserva fecha y lugar",
+              "fr": "garde date et lieu",
+              "hi": "तारीख़ और जगह सुरक्षित",
+              "it": "mantiene data e luogo",
+              "ja": "日時と位置を保持",
+              "ko": "날짜와 위치 유지",
+              "nl": "behoudt datum & locatie",
+              "pt": "mantém data e local",
+              "ru": "дата и место сохраняются",
+              "tr": "tarih ve konum korunur",
+              "zh": "保留日期和位置"
             },
             "transform": {
               "x": 52.800000000000004,
@@ -454,7 +802,19 @@
           {
             "id": "t_26",
             "text": {
-              "en": "13 languages"
+              "en": "13 languages",
+              "de": "13 sprachen",
+              "es": "13 idiomas",
+              "fr": "13 langues",
+              "hi": "13 भाषाएँ",
+              "it": "13 lingue",
+              "ja": "13言語",
+              "ko": "13개 언어",
+              "nl": "13 talen",
+              "pt": "13 idiomas",
+              "ru": "13 языков",
+              "tr": "13 dil",
+              "zh": "13 种语言"
             },
             "transform": {
               "x": 607.2,
@@ -472,7 +832,19 @@
           {
             "id": "t_27",
             "text": {
-              "en": "dark mode"
+              "en": "dark mode",
+              "de": "dunkelmodus",
+              "es": "modo oscuro",
+              "fr": "mode sombre",
+              "hi": "डार्क मोड",
+              "it": "modalità scura",
+              "ja": "ダークモード",
+              "ko": "다크 모드",
+              "nl": "donkere modus",
+              "pt": "modo escuro",
+              "ru": "тёмная тема",
+              "tr": "koyu mod",
+              "zh": "深色模式"
             },
             "transform": {
               "x": 52.800000000000004,
@@ -490,7 +862,19 @@
           {
             "id": "t_28",
             "text": {
-              "en": "open source"
+              "en": "open source",
+              "de": "quelloffen",
+              "es": "código abierto",
+              "fr": "code ouvert",
+              "hi": "ओपन सोर्स",
+              "it": "open source",
+              "ja": "オープンソース",
+              "ko": "오픈 소스",
+              "nl": "open source",
+              "pt": "código aberto",
+              "ru": "открытый код",
+              "tr": "açık kaynak",
+              "zh": "开源"
             },
             "transform": {
               "x": 607.2,
@@ -531,13 +915,49 @@
         "id": "s_59",
         "layout": "hero",
         "label": {
-          "en": "free · no ads · no subscription"
+          "en": "free · no ads · no subscription",
+          "de": "gratis · ohne werbung · ohne abo",
+          "es": "gratis · sin anuncios · sin suscripción",
+          "fr": "gratuit · sans pub · sans abonnement",
+          "hi": "मुफ़्त · बिना विज्ञापन · बिना सदस्यता",
+          "it": "gratis · senza pubblicità · senza abbonamento",
+          "ja": "無料 · 広告なし · サブスクなし",
+          "ko": "무료 · 광고 없음 · 구독 없음",
+          "nl": "gratis · geen ads · geen abonnement",
+          "pt": "grátis · sem anúncios · sem assinatura",
+          "ru": "бесплатно · без рекламы · без подписок",
+          "tr": "ücretsiz · reklamsız · aboneliksiz",
+          "zh": "免费 · 无广告 · 无订阅"
         },
         "headline": {
-          "en": "make your videos\nsmaller"
+          "en": "make your videos\nsmaller",
+          "de": "deine videos,\nkleiner",
+          "es": "tus vídeos,\nmás pequeños",
+          "fr": "tes vidéos,\nplus légères",
+          "hi": "अपने वीडियो\nछोटे करें",
+          "it": "i tuoi video,\npiù piccoli",
+          "ja": "動画を\nもっと小さく",
+          "ko": "동영상 용량을\n더 작게",
+          "nl": "je video’s,\nkleiner",
+          "pt": "seus vídeos,\nmenores",
+          "ru": "твои видео\nвесят меньше",
+          "tr": "videoların\ndaha küçük",
+          "zh": "让你的视频\n更小巧"
         },
         "highlight": {
-          "en": "smaller"
+          "en": "smaller",
+          "de": "kleiner",
+          "es": "más pequeños",
+          "fr": "plus légères",
+          "hi": "छोटे करें",
+          "it": "più piccoli",
+          "ja": "もっと小さく",
+          "ko": "더 작게",
+          "nl": "kleiner",
+          "pt": "menores",
+          "ru": "весят меньше",
+          "tr": "daha küçük",
+          "zh": "更小巧"
         },
         "screenshot": "/screenshots/android/phone/{locale}/01-settings.png",
         "transforms": {
@@ -581,13 +1001,49 @@
         "id": "s_62",
         "layout": "device-bottom",
         "label": {
-          "en": "before & after"
+          "en": "before & after",
+          "de": "vorher & nachher",
+          "es": "antes y después",
+          "fr": "avant & après",
+          "hi": "पहले और बाद में",
+          "it": "prima e dopo",
+          "ja": "ビフォー＆アフター",
+          "ko": "압축 전후",
+          "nl": "voor & na",
+          "pt": "antes e depois",
+          "ru": "до и после",
+          "tr": "öncesi ve sonrası",
+          "zh": "压缩前后"
         },
         "headline": {
-          "en": "same moments,\nsmaller files"
+          "en": "same moments,\nsmaller files",
+          "de": "gleiche momente,\nkleinere dateien",
+          "es": "mismos momentos,\narchivos menores",
+          "fr": "mêmes souvenirs,\nfichiers réduits",
+          "hi": "वही पल,\nछोटी फ़ाइलें",
+          "it": "stessi momenti,\nfile più piccoli",
+          "ja": "思い出はそのまま\nファイルは小さく",
+          "ko": "추억은 그대로,\n파일은 작게",
+          "nl": "dezelfde momenten,\nkleinere bestanden",
+          "pt": "mesmos momentos,\narquivos menores",
+          "ru": "те же моменты,\nменьше места",
+          "tr": "aynı anılar,\nküçük dosyalar",
+          "zh": "精彩瞬间不变\n文件更小"
         },
         "highlight": {
-          "en": "smaller files"
+          "en": "smaller files",
+          "de": "kleinere dateien",
+          "es": "archivos menores",
+          "fr": "fichiers réduits",
+          "hi": "छोटी फ़ाइलें",
+          "it": "file più piccoli",
+          "ja": "ファイルは小さく",
+          "ko": "파일은 작게",
+          "nl": "kleinere bestanden",
+          "pt": "arquivos menores",
+          "ru": "меньше места",
+          "tr": "küçük dosyalar",
+          "zh": "文件更小"
         },
         "screenshot": "/screenshots/android/phone/{locale}/04-result.png",
         "transforms": {
@@ -611,7 +1067,7 @@
         "imageElements": [
           {
             "id": "i_63",
-            "src": "/brand/compare.png",
+            "src": "/brand/compare-{locale}.png",
             "radius": 50,
             "border": 19,
             "shadow": true,
@@ -631,13 +1087,49 @@
         "id": "s_64",
         "layout": "device-top",
         "label": {
-          "en": "batch compression"
+          "en": "batch compression",
+          "de": "stapelkomprimierung",
+          "es": "compresión por lotes",
+          "fr": "compression par lot",
+          "hi": "एक साथ कंप्रेशन",
+          "it": "compressione in serie",
+          "ja": "まとめて圧縮",
+          "ko": "여러 영상 압축",
+          "nl": "batchcompressie",
+          "pt": "compressão em lote",
+          "ru": "пакетное сжатие",
+          "tr": "toplu sıkıştırma",
+          "zh": "批量压缩"
         },
         "headline": {
-          "en": "shrink them\nall at once"
+          "en": "shrink them\nall at once",
+          "de": "alle videos\nauf einmal",
+          "es": "comprímelos\ntodos a la vez",
+          "fr": "compresse-les\ntous à la fois",
+          "hi": "सभी वीडियो\nएक साथ छोटे करें",
+          "it": "comprimili\ntutti insieme",
+          "ja": "動画をまとめて\n一度に圧縮",
+          "ko": "모든 영상을\n한 번에 압축",
+          "nl": "verklein ze\nallemaal tegelijk",
+          "pt": "comprima todos\nde uma vez",
+          "ru": "сжимай видео\nвсе сразу",
+          "tr": "tümünü\ntek seferde küçült",
+          "zh": "多个视频\n一次搞定"
         },
         "highlight": {
-          "en": "all at once"
+          "en": "all at once",
+          "de": "auf einmal",
+          "es": "todos a la vez",
+          "fr": "tous à la fois",
+          "hi": "एक साथ छोटे करें",
+          "it": "tutti insieme",
+          "ja": "一度に圧縮",
+          "ko": "한 번에 압축",
+          "nl": "allemaal tegelijk",
+          "pt": "de uma vez",
+          "ru": "все сразу",
+          "tr": "tek seferde küçült",
+          "zh": "一次搞定"
         },
         "screenshot": "/screenshots/android/phone/{locale}/03-progress.png",
         "transforms": {
@@ -698,13 +1190,49 @@
         "layout": "device-bottom",
         "inverted": true,
         "label": {
-          "en": "100% on-device"
+          "en": "100% on-device",
+          "de": "100% auf dem gerät",
+          "es": "100% en tu dispositivo",
+          "fr": "100% sur l’appareil",
+          "hi": "100% डिवाइस पर",
+          "it": "100% sul dispositivo",
+          "ja": "すべて端末内で処理",
+          "ko": "100% 기기에서 처리",
+          "nl": "100% op je apparaat",
+          "pt": "100% no dispositivo",
+          "ru": "100% на устройстве",
+          "tr": "%100 cihazında",
+          "zh": "100% 本地处理"
         },
         "headline": {
-          "en": "your videos\nnever leave\nyour phone"
+          "en": "your videos\nnever leave\nyour phone",
+          "de": "deine videos\nbleiben auf\ndeinem handy",
+          "es": "tus vídeos\nse quedan\nen tu móvil",
+          "fr": "tes vidéos\nrestent sur\nton téléphone",
+          "hi": "आपके वीडियो\nफ़ोन में ही\nरहते हैं",
+          "it": "i tuoi video\nrestano sul\ntuo telefono",
+          "ja": "動画は\nスマホの中から\n出ません",
+          "ko": "내 동영상은\n휴대폰 안에\n그대로",
+          "nl": "je video’s\nblijven op\nje telefoon",
+          "pt": "seus vídeos\nficam no\nseu celular",
+          "ru": "твои видео\nостаются\nв телефоне",
+          "tr": "videoların\ntelefonunda\nkalır",
+          "zh": "你的视频\n始终留在\n手机里"
         },
         "highlight": {
-          "en": "never leave"
+          "en": "never leave",
+          "de": "bleiben auf",
+          "es": "se quedan",
+          "fr": "restent sur",
+          "hi": "फ़ोन में ही",
+          "it": "restano sul",
+          "ja": "出ません",
+          "ko": "휴대폰 안에",
+          "nl": "blijven op",
+          "pt": "ficam no",
+          "ru": "остаются",
+          "tr": "telefonunda",
+          "zh": "始终留在"
         },
         "screenshot": "/screenshots/android/phone/{locale}/09-result-dark.png",
         "transforms": {
@@ -729,7 +1257,19 @@
           {
             "id": "t_68",
             "text": {
-              "en": "no cloud"
+              "en": "no cloud",
+              "de": "ohne cloud",
+              "es": "sin nube",
+              "fr": "sans cloud",
+              "hi": "बिना क्लाउड",
+              "it": "senza cloud",
+              "ja": "クラウド不要",
+              "ko": "클라우드 없이",
+              "nl": "geen cloud",
+              "pt": "sem nuvem",
+              "ru": "без облака",
+              "tr": "bulut yok",
+              "zh": "无需云端"
             },
             "transform": {
               "x": 0,
@@ -747,7 +1287,19 @@
           {
             "id": "t_69",
             "text": {
-              "en": "no account"
+              "en": "no account",
+              "de": "ohne konto",
+              "es": "sin cuenta",
+              "fr": "sans compte",
+              "hi": "बिना खाते",
+              "it": "senza account",
+              "ja": "アカウント不要",
+              "ko": "계정 없이",
+              "nl": "geen account",
+              "pt": "sem conta",
+              "ru": "без аккаунта",
+              "tr": "hesap yok",
+              "zh": "无需账号"
             },
             "transform": {
               "x": 648,
@@ -768,13 +1320,49 @@
         "id": "s_70",
         "layout": "device-bottom",
         "label": {
-          "en": "advanced mode"
+          "en": "advanced mode",
+          "de": "erweiterter modus",
+          "es": "modo avanzado",
+          "fr": "mode avancé",
+          "hi": "उन्नत मोड",
+          "it": "modalità avanzata",
+          "ja": "詳細モード",
+          "ko": "고급 모드",
+          "nl": "geavanceerde modus",
+          "pt": "modo avançado",
+          "ru": "расширенный режим",
+          "tr": "gelişmiş mod",
+          "zh": "高级模式"
         },
         "headline": {
-          "en": "fine-tune\nevery detail"
+          "en": "fine-tune\nevery detail",
+          "de": "jedes detail\nselbst bestimmen",
+          "es": "ajusta\ncada detalle",
+          "fr": "règle\nchaque détail",
+          "hi": "हर बारीकी\nअपने हिसाब से",
+          "it": "regola\nogni dettaglio",
+          "ja": "細部まで\n自由に調整",
+          "ko": "세세한 설정까지\n내 마음대로",
+          "nl": "stel elk detail\nzelf in",
+          "pt": "ajuste\ncada detalhe",
+          "ru": "настрой\nкаждую деталь",
+          "tr": "her ayrıntıyı\nkendin ayarla",
+          "zh": "精细调整\n每个细节"
         },
         "highlight": {
-          "en": "every detail"
+          "en": "every detail",
+          "de": "selbst bestimmen",
+          "es": "cada detalle",
+          "fr": "chaque détail",
+          "hi": "अपने हिसाब से",
+          "it": "ogni dettaglio",
+          "ja": "自由に調整",
+          "ko": "내 마음대로",
+          "nl": "zelf in",
+          "pt": "cada detalhe",
+          "ru": "каждую деталь",
+          "tr": "kendin ayarla",
+          "zh": "每个细节"
         },
         "screenshot": "/screenshots/android/phone/{locale}/02-advanced.png",
         "transforms": {
@@ -799,7 +1387,19 @@
           {
             "id": "t_71",
             "text": {
-              "en": "HEVC"
+              "en": "HEVC",
+              "de": "HEVC",
+              "es": "HEVC",
+              "fr": "HEVC",
+              "hi": "HEVC",
+              "it": "HEVC",
+              "ja": "HEVC",
+              "ko": "HEVC",
+              "nl": "HEVC",
+              "pt": "HEVC",
+              "ru": "HEVC",
+              "tr": "HEVC",
+              "zh": "HEVC"
             },
             "transform": {
               "x": 734.4000000000001,
@@ -817,7 +1417,19 @@
           {
             "id": "t_72",
             "text": {
-              "en": "up to 20 Mbps"
+              "en": "up to 20 Mbps",
+              "de": "bis zu 20 Mbit/s",
+              "es": "hasta 20 Mbps",
+              "fr": "jusqu’à 20 Mbit/s",
+              "hi": "20 Mbps तक",
+              "it": "fino a 20 Mbps",
+              "ja": "最大20 Mbps",
+              "ko": "최대 20 Mbps",
+              "nl": "tot 20 Mbps",
+              "pt": "até 20 Mbps",
+              "ru": "до 20 Мбит/с",
+              "tr": "20 Mbps’ye kadar",
+              "zh": "最高 20 Mbps"
             },
             "transform": {
               "x": 540,
@@ -835,7 +1447,19 @@
           {
             "id": "t_73",
             "text": {
-              "en": "60 · 30 · 24 fps"
+              "en": "60 · 30 · 24 fps",
+              "de": "60 · 30 · 24 fps",
+              "es": "60 · 30 · 24 fps",
+              "fr": "60 · 30 · 24 fps",
+              "hi": "60 · 30 · 24 fps",
+              "it": "60 · 30 · 24 fps",
+              "ja": "60 · 30 · 24 fps",
+              "ko": "60 · 30 · 24 fps",
+              "nl": "60 · 30 · 24 fps",
+              "pt": "60 · 30 · 24 fps",
+              "ru": "60 · 30 · 24 кадр/с",
+              "tr": "60 · 30 · 24 fps",
+              "zh": "60 · 30 · 24 fps"
             },
             "transform": {
               "x": 518.4,
@@ -856,13 +1480,49 @@
         "id": "s_76",
         "layout": "no-device",
         "label": {
-          "en": "simple · private · free"
+          "en": "simple · private · free",
+          "de": "einfach · privat · gratis",
+          "es": "simple · privado · gratis",
+          "fr": "simple · privé · gratuit",
+          "hi": "सरल · निजी · मुफ़्त",
+          "it": "semplice · privato · gratis",
+          "ja": "シンプル · 非公開 · 無料",
+          "ko": "간단하게 · 안전하게 · 무료",
+          "nl": "simpel · privé · gratis",
+          "pt": "simples · privado · grátis",
+          "ru": "просто · приватно · бесплатно",
+          "tr": "basit · özel · ücretsiz",
+          "zh": "简单 · 私密 · 免费"
         },
         "headline": {
-          "en": "everything you\nneed. nothing\nyou don't"
+          "en": "everything you\nneed. nothing\nyou don't",
+          "de": "alles, was du\nbrauchst. ohne\nüberflüssiges",
+          "es": "todo lo que\nnecesitas. nada\nde más",
+          "fr": "tout le nécessaire.\nrien de\nsuperflu",
+          "hi": "ज़रूरत की हर चीज़.\nकुछ भी\nफ़ालतू नहीं",
+          "it": "tutto ciò che serve.\nniente\ndi troppo",
+          "ja": "必要なものだけ。\n余計なものは\nありません",
+          "ko": "필요한 것만.\n불필요한 건\n없어요",
+          "nl": "alles wat je nodig\nhebt. niets\noverbodigs",
+          "pt": "tudo o que precisa.\nnada\na mais",
+          "ru": "всё нужное.\nничего\nлишнего",
+          "tr": "ihtiyacın olan her şey.\nfazlası\nyok",
+          "zh": "所需功能都有\n没有\n多余的"
         },
         "highlight": {
-          "en": "nothing"
+          "en": "nothing",
+          "de": "überflüssiges",
+          "es": "nada",
+          "fr": "rien",
+          "hi": "फ़ालतू नहीं",
+          "it": "niente",
+          "ja": "余計なもの",
+          "ko": "불필요한 건",
+          "nl": "niets",
+          "pt": "nada",
+          "ru": "ничего",
+          "tr": "fazlası",
+          "zh": "没有"
         },
         "screenshot": "",
         "transforms": {
@@ -879,7 +1539,19 @@
           {
             "id": "t_77",
             "text": {
-              "en": "batch compression"
+              "en": "batch compression",
+              "de": "stapelkomprimierung",
+              "es": "compresión por lotes",
+              "fr": "compression par lot",
+              "hi": "एक साथ कंप्रेशन",
+              "it": "compressione in serie",
+              "ja": "まとめて圧縮",
+              "ko": "여러 영상 압축",
+              "nl": "batchcompressie",
+              "pt": "compressão em lote",
+              "ru": "пакетное сжатие",
+              "tr": "toplu sıkıştırma",
+              "zh": "批量压缩"
             },
             "transform": {
               "x": 43.2,
@@ -897,7 +1569,19 @@
           {
             "id": "t_78",
             "text": {
-              "en": "before & after"
+              "en": "before & after",
+              "de": "vorher & nachher",
+              "es": "antes y después",
+              "fr": "avant & après",
+              "hi": "पहले और बाद में",
+              "it": "prima e dopo",
+              "ja": "ビフォー＆アフター",
+              "ko": "압축 전후",
+              "nl": "voor & na",
+              "pt": "antes e depois",
+              "ru": "до и после",
+              "tr": "öncesi ve sonrası",
+              "zh": "压缩前后"
             },
             "transform": {
               "x": 496.8,
@@ -915,7 +1599,19 @@
           {
             "id": "t_79",
             "text": {
-              "en": "H.264 + HEVC"
+              "en": "H.264 + HEVC",
+              "de": "H.264 + HEVC",
+              "es": "H.264 + HEVC",
+              "fr": "H.264 + HEVC",
+              "hi": "H.264 + HEVC",
+              "it": "H.264 + HEVC",
+              "ja": "H.264 + HEVC",
+              "ko": "H.264 + HEVC",
+              "nl": "H.264 + HEVC",
+              "pt": "H.264 + HEVC",
+              "ru": "H.264 + HEVC",
+              "tr": "H.264 + HEVC",
+              "zh": "H.264 + HEVC"
             },
             "transform": {
               "x": 43.2,
@@ -933,7 +1629,19 @@
           {
             "id": "t_80",
             "text": {
-              "en": "share sheet import"
+              "en": "share sheet import",
+              "de": "import via Teilen",
+              "es": "importar al compartir",
+              "fr": "import par partage",
+              "hi": "शेयर से इम्पोर्ट",
+              "it": "importa da condividi",
+              "ja": "共有から読み込み",
+              "ko": "공유로 가져오기",
+              "nl": "import via delen",
+              "pt": "importar ao compartilhar",
+              "ru": "импорт из «Поделиться»",
+              "tr": "paylaşımdan içe aktar",
+              "zh": "从分享菜单导入"
             },
             "transform": {
               "x": 496.8,
@@ -951,7 +1659,19 @@
           {
             "id": "t_81",
             "text": {
-              "en": "keeps your quality"
+              "en": "keeps your quality",
+              "de": "qualität bleibt",
+              "es": "conserva la calidad",
+              "fr": "préserve la qualité",
+              "hi": "क्वालिटी बनी रहे",
+              "it": "preserva la qualità",
+              "ja": "画質をキープ",
+              "ko": "화질 유지",
+              "nl": "behoudt kwaliteit",
+              "pt": "preserva a qualidade",
+              "ru": "качество сохраняется",
+              "tr": "kalite korunur",
+              "zh": "保持画质"
             },
             "transform": {
               "x": 43.2,
@@ -969,7 +1689,19 @@
           {
             "id": "t_82",
             "text": {
-              "en": "13 languages"
+              "en": "13 languages",
+              "de": "13 sprachen",
+              "es": "13 idiomas",
+              "fr": "13 langues",
+              "hi": "13 भाषाएँ",
+              "it": "13 lingue",
+              "ja": "13言語",
+              "ko": "13개 언어",
+              "nl": "13 talen",
+              "pt": "13 idiomas",
+              "ru": "13 языков",
+              "tr": "13 dil",
+              "zh": "13 种语言"
             },
             "transform": {
               "x": 496.8,
@@ -987,7 +1719,19 @@
           {
             "id": "t_83",
             "text": {
-              "en": "dark mode"
+              "en": "dark mode",
+              "de": "dunkelmodus",
+              "es": "modo oscuro",
+              "fr": "mode sombre",
+              "hi": "डार्क मोड",
+              "it": "modalità scura",
+              "ja": "ダークモード",
+              "ko": "다크 모드",
+              "nl": "donkere modus",
+              "pt": "modo escuro",
+              "ru": "тёмная тема",
+              "tr": "koyu mod",
+              "zh": "深色模式"
             },
             "transform": {
               "x": 43.2,
@@ -1005,7 +1749,19 @@
           {
             "id": "t_84",
             "text": {
-              "en": "open source"
+              "en": "open source",
+              "de": "quelloffen",
+              "es": "código abierto",
+              "fr": "code ouvert",
+              "hi": "ओपन सोर्स",
+              "it": "open source",
+              "ja": "オープンソース",
+              "ko": "오픈 소스",
+              "nl": "open source",
+              "pt": "código aberto",
+              "ru": "открытый код",
+              "tr": "açık kaynak",
+              "zh": "开源"
             },
             "transform": {
               "x": 496.8,
@@ -1046,13 +1802,49 @@
         "id": "s_30",
         "layout": "hero",
         "label": {
-          "en": "free · no ads · no subscription"
+          "en": "free · no ads · no subscription",
+          "de": "gratis · ohne werbung · ohne abo",
+          "es": "gratis · sin anuncios · sin suscripción",
+          "fr": "gratuit · sans pub · sans abonnement",
+          "hi": "मुफ़्त · बिना विज्ञापन · बिना सदस्यता",
+          "it": "gratis · senza pubblicità · senza abbonamento",
+          "ja": "無料 · 広告なし · サブスクなし",
+          "ko": "무료 · 광고 없음 · 구독 없음",
+          "nl": "gratis · geen ads · geen abonnement",
+          "pt": "grátis · sem anúncios · sem assinatura",
+          "ru": "бесплатно · без рекламы · без подписок",
+          "tr": "ücretsiz · reklamsız · aboneliksiz",
+          "zh": "免费 · 无广告 · 无订阅"
         },
         "headline": {
-          "en": "make your videos\nsmaller"
+          "en": "make your videos\nsmaller",
+          "de": "deine videos,\nkleiner",
+          "es": "tus vídeos,\nmás pequeños",
+          "fr": "tes vidéos,\nplus légères",
+          "hi": "अपने वीडियो\nछोटे करें",
+          "it": "i tuoi video,\npiù piccoli",
+          "ja": "動画を\nもっと小さく",
+          "ko": "동영상 용량을\n더 작게",
+          "nl": "je video’s,\nkleiner",
+          "pt": "seus vídeos,\nmenores",
+          "ru": "твои видео\nвесят меньше",
+          "tr": "videoların\ndaha küçük",
+          "zh": "让你的视频\n更小巧"
         },
         "highlight": {
-          "en": "smaller"
+          "en": "smaller",
+          "de": "kleiner",
+          "es": "más pequeños",
+          "fr": "plus légères",
+          "hi": "छोटे करें",
+          "it": "più piccoli",
+          "ja": "もっと小さく",
+          "ko": "더 작게",
+          "nl": "kleiner",
+          "pt": "menores",
+          "ru": "весят меньше",
+          "tr": "daha küçük",
+          "zh": "更小巧"
         },
         "screenshot": "/screenshots/apple/ipad/{locale}/01-settings.png",
         "transforms": {
@@ -1096,13 +1888,49 @@
         "id": "s_33",
         "layout": "device-bottom",
         "label": {
-          "en": "before & after"
+          "en": "before & after",
+          "de": "vorher & nachher",
+          "es": "antes y después",
+          "fr": "avant & après",
+          "hi": "पहले और बाद में",
+          "it": "prima e dopo",
+          "ja": "ビフォー＆アフター",
+          "ko": "압축 전후",
+          "nl": "voor & na",
+          "pt": "antes e depois",
+          "ru": "до и после",
+          "tr": "öncesi ve sonrası",
+          "zh": "压缩前后"
         },
         "headline": {
-          "en": "same moments,\nsmaller files"
+          "en": "same moments,\nsmaller files",
+          "de": "gleiche momente,\nkleinere dateien",
+          "es": "mismos momentos,\narchivos menores",
+          "fr": "mêmes souvenirs,\nfichiers réduits",
+          "hi": "वही पल,\nछोटी फ़ाइलें",
+          "it": "stessi momenti,\nfile più piccoli",
+          "ja": "思い出はそのまま\nファイルは小さく",
+          "ko": "추억은 그대로,\n파일은 작게",
+          "nl": "dezelfde momenten,\nkleinere bestanden",
+          "pt": "mesmos momentos,\narquivos menores",
+          "ru": "те же моменты,\nменьше места",
+          "tr": "aynı anılar,\nküçük dosyalar",
+          "zh": "精彩瞬间不变\n文件更小"
         },
         "highlight": {
-          "en": "smaller files"
+          "en": "smaller files",
+          "de": "kleinere dateien",
+          "es": "archivos menores",
+          "fr": "fichiers réduits",
+          "hi": "छोटी फ़ाइलें",
+          "it": "file più piccoli",
+          "ja": "ファイルは小さく",
+          "ko": "파일은 작게",
+          "nl": "kleinere bestanden",
+          "pt": "arquivos menores",
+          "ru": "меньше места",
+          "tr": "küçük dosyalar",
+          "zh": "文件更小"
         },
         "screenshot": "/screenshots/apple/ipad/{locale}/04-result.png",
         "transforms": {
@@ -1126,7 +1954,7 @@
         "imageElements": [
           {
             "id": "i_34",
-            "src": "/brand/compare.png",
+            "src": "/brand/compare-{locale}.png",
             "radius": 83,
             "border": 37,
             "shadow": true,
@@ -1146,13 +1974,49 @@
         "id": "s_35",
         "layout": "device-top",
         "label": {
-          "en": "batch compression"
+          "en": "batch compression",
+          "de": "stapelkomprimierung",
+          "es": "compresión por lotes",
+          "fr": "compression par lot",
+          "hi": "एक साथ कंप्रेशन",
+          "it": "compressione in serie",
+          "ja": "まとめて圧縮",
+          "ko": "여러 영상 압축",
+          "nl": "batchcompressie",
+          "pt": "compressão em lote",
+          "ru": "пакетное сжатие",
+          "tr": "toplu sıkıştırma",
+          "zh": "批量压缩"
         },
         "headline": {
-          "en": "shrink them\nall at once"
+          "en": "shrink them\nall at once",
+          "de": "alle videos\nauf einmal",
+          "es": "comprímelos\ntodos a la vez",
+          "fr": "compresse-les\ntous à la fois",
+          "hi": "सभी वीडियो\nएक साथ छोटे करें",
+          "it": "comprimili\ntutti insieme",
+          "ja": "動画をまとめて\n一度に圧縮",
+          "ko": "모든 영상을\n한 번에 압축",
+          "nl": "verklein ze\nallemaal tegelijk",
+          "pt": "comprima todos\nde uma vez",
+          "ru": "сжимай видео\nвсе сразу",
+          "tr": "tümünü\ntek seferde küçült",
+          "zh": "多个视频\n一次搞定"
         },
         "highlight": {
-          "en": "all at once"
+          "en": "all at once",
+          "de": "auf einmal",
+          "es": "todos a la vez",
+          "fr": "tous à la fois",
+          "hi": "एक साथ छोटे करें",
+          "it": "tutti insieme",
+          "ja": "一度に圧縮",
+          "ko": "한 번에 압축",
+          "nl": "allemaal tegelijk",
+          "pt": "de uma vez",
+          "ru": "все сразу",
+          "tr": "tek seferde küçült",
+          "zh": "一次搞定"
         },
         "screenshot": "/screenshots/apple/ipad/{locale}/03-progress.png",
         "transforms": {
@@ -1213,13 +2077,49 @@
         "layout": "device-bottom",
         "inverted": true,
         "label": {
-          "en": "100% on-device"
+          "en": "100% on-device",
+          "de": "100% auf dem gerät",
+          "es": "100% en tu dispositivo",
+          "fr": "100% sur l’appareil",
+          "hi": "100% डिवाइस पर",
+          "it": "100% sul dispositivo",
+          "ja": "すべて端末内で処理",
+          "ko": "100% 기기에서 처리",
+          "nl": "100% op je apparaat",
+          "pt": "100% no dispositivo",
+          "ru": "100% на устройстве",
+          "tr": "%100 cihazında",
+          "zh": "100% 本地处理"
         },
         "headline": {
-          "en": "your videos\nnever leave\nyour phone"
+          "en": "your videos\nnever leave\nyour phone",
+          "de": "deine videos\nbleiben auf\ndeinem handy",
+          "es": "tus vídeos\nse quedan\nen tu móvil",
+          "fr": "tes vidéos\nrestent sur\nton téléphone",
+          "hi": "आपके वीडियो\nफ़ोन में ही\nरहते हैं",
+          "it": "i tuoi video\nrestano sul\ntuo telefono",
+          "ja": "動画は\nスマホの中から\n出ません",
+          "ko": "내 동영상은\n휴대폰 안에\n그대로",
+          "nl": "je video’s\nblijven op\nje telefoon",
+          "pt": "seus vídeos\nficam no\nseu celular",
+          "ru": "твои видео\nостаются\nв телефоне",
+          "tr": "videoların\ntelefonunda\nkalır",
+          "zh": "你的视频\n始终留在\n手机里"
         },
         "highlight": {
-          "en": "never leave"
+          "en": "never leave",
+          "de": "bleiben auf",
+          "es": "se quedan",
+          "fr": "restent sur",
+          "hi": "फ़ोन में ही",
+          "it": "restano sul",
+          "ja": "出ません",
+          "ko": "휴대폰 안에",
+          "nl": "blijven op",
+          "pt": "ficam no",
+          "ru": "остаются",
+          "tr": "telefonunda",
+          "zh": "始终留在"
         },
         "screenshot": "/screenshots/apple/ipad/{locale}/09-result-dark.png",
         "transforms": {
@@ -1244,7 +2144,19 @@
           {
             "id": "t_39",
             "text": {
-              "en": "no cloud"
+              "en": "no cloud",
+              "de": "ohne cloud",
+              "es": "sin nube",
+              "fr": "sans cloud",
+              "hi": "बिना क्लाउड",
+              "it": "senza cloud",
+              "ja": "クラウド不要",
+              "ko": "클라우드 없이",
+              "nl": "geen cloud",
+              "pt": "sem nuvem",
+              "ru": "без облака",
+              "tr": "bulut yok",
+              "zh": "无需云端"
             },
             "transform": {
               "x": 123.83999999999999,
@@ -1262,7 +2174,19 @@
           {
             "id": "t_40",
             "text": {
-              "en": "no account"
+              "en": "no account",
+              "de": "ohne konto",
+              "es": "sin cuenta",
+              "fr": "sans compte",
+              "hi": "बिना खाते",
+              "it": "senza account",
+              "ja": "アカウント不要",
+              "ko": "계정 없이",
+              "nl": "geen account",
+              "pt": "sem conta",
+              "ru": "без аккаунта",
+              "tr": "hesap yok",
+              "zh": "无需账号"
             },
             "transform": {
               "x": 1238.3999999999999,
@@ -1283,13 +2207,49 @@
         "id": "s_43",
         "layout": "device-bottom",
         "label": {
-          "en": "advanced mode"
+          "en": "advanced mode",
+          "de": "erweiterter modus",
+          "es": "modo avanzado",
+          "fr": "mode avancé",
+          "hi": "उन्नत मोड",
+          "it": "modalità avanzata",
+          "ja": "詳細モード",
+          "ko": "고급 모드",
+          "nl": "geavanceerde modus",
+          "pt": "modo avançado",
+          "ru": "расширенный режим",
+          "tr": "gelişmiş mod",
+          "zh": "高级模式"
         },
         "headline": {
-          "en": "fine-tune\nevery detail"
+          "en": "fine-tune\nevery detail",
+          "de": "jedes detail\nselbst bestimmen",
+          "es": "ajusta\ncada detalle",
+          "fr": "règle\nchaque détail",
+          "hi": "हर बारीकी\nअपने हिसाब से",
+          "it": "regola\nogni dettaglio",
+          "ja": "細部まで\n自由に調整",
+          "ko": "세세한 설정까지\n내 마음대로",
+          "nl": "stel elk detail\nzelf in",
+          "pt": "ajuste\ncada detalhe",
+          "ru": "настрой\nкаждую деталь",
+          "tr": "her ayrıntıyı\nkendin ayarla",
+          "zh": "精细调整\n每个细节"
         },
         "highlight": {
-          "en": "every detail"
+          "en": "every detail",
+          "de": "selbst bestimmen",
+          "es": "cada detalle",
+          "fr": "chaque détail",
+          "hi": "अपने हिसाब से",
+          "it": "ogni dettaglio",
+          "ja": "自由に調整",
+          "ko": "내 마음대로",
+          "nl": "zelf in",
+          "pt": "cada detalhe",
+          "ru": "каждую деталь",
+          "tr": "kendin ayarla",
+          "zh": "每个细节"
         },
         "screenshot": "/screenshots/apple/ipad/{locale}/02-advanced.png",
         "transforms": {
@@ -1314,7 +2274,19 @@
           {
             "id": "t_44",
             "text": {
-              "en": "HEVC"
+              "en": "HEVC",
+              "de": "HEVC",
+              "es": "HEVC",
+              "fr": "HEVC",
+              "hi": "HEVC",
+              "it": "HEVC",
+              "ja": "HEVC",
+              "ko": "HEVC",
+              "nl": "HEVC",
+              "pt": "HEVC",
+              "ru": "HEVC",
+              "tr": "HEVC",
+              "zh": "HEVC"
             },
             "transform": {
               "x": 1527.36,
@@ -1332,7 +2304,19 @@
           {
             "id": "t_45",
             "text": {
-              "en": "up to 20 Mbps"
+              "en": "up to 20 Mbps",
+              "de": "bis zu 20 Mbit/s",
+              "es": "hasta 20 Mbps",
+              "fr": "jusqu’à 20 Mbit/s",
+              "hi": "20 Mbps तक",
+              "it": "fino a 20 Mbps",
+              "ja": "最大20 Mbps",
+              "ko": "최대 20 Mbps",
+              "nl": "tot 20 Mbps",
+              "pt": "até 20 Mbps",
+              "ru": "до 20 Мбит/с",
+              "tr": "20 Mbps’ye kadar",
+              "zh": "最高 20 Mbps"
             },
             "transform": {
               "x": 1279.68,
@@ -1350,7 +2334,19 @@
           {
             "id": "t_46",
             "text": {
-              "en": "60 · 30 · 24 fps"
+              "en": "60 · 30 · 24 fps",
+              "de": "60 · 30 · 24 fps",
+              "es": "60 · 30 · 24 fps",
+              "fr": "60 · 30 · 24 fps",
+              "hi": "60 · 30 · 24 fps",
+              "it": "60 · 30 · 24 fps",
+              "ja": "60 · 30 · 24 fps",
+              "ko": "60 · 30 · 24 fps",
+              "nl": "60 · 30 · 24 fps",
+              "pt": "60 · 30 · 24 fps",
+              "ru": "60 · 30 · 24 кадр/с",
+              "tr": "60 · 30 · 24 fps",
+              "zh": "60 · 30 · 24 fps"
             },
             "transform": {
               "x": 1238.3999999999999,
@@ -1371,13 +2367,49 @@
         "id": "s_49",
         "layout": "no-device",
         "label": {
-          "en": "simple · private · free"
+          "en": "simple · private · free",
+          "de": "einfach · privat · gratis",
+          "es": "simple · privado · gratis",
+          "fr": "simple · privé · gratuit",
+          "hi": "सरल · निजी · मुफ़्त",
+          "it": "semplice · privato · gratis",
+          "ja": "シンプル · 非公開 · 無料",
+          "ko": "간단하게 · 안전하게 · 무료",
+          "nl": "simpel · privé · gratis",
+          "pt": "simples · privado · grátis",
+          "ru": "просто · приватно · бесплатно",
+          "tr": "basit · özel · ücretsiz",
+          "zh": "简单 · 私密 · 免费"
         },
         "headline": {
-          "en": "everything you\nneed. nothing\nyou don't"
+          "en": "everything you\nneed. nothing\nyou don't",
+          "de": "alles, was du\nbrauchst. ohne\nüberflüssiges",
+          "es": "todo lo que\nnecesitas. nada\nde más",
+          "fr": "tout le nécessaire.\nrien de\nsuperflu",
+          "hi": "ज़रूरत की हर चीज़.\nकुछ भी\nफ़ालतू नहीं",
+          "it": "tutto ciò che serve.\nniente\ndi troppo",
+          "ja": "必要なものだけ。\n余計なものは\nありません",
+          "ko": "필요한 것만.\n불필요한 건\n없어요",
+          "nl": "alles wat je nodig\nhebt. niets\noverbodigs",
+          "pt": "tudo o que precisa.\nnada\na mais",
+          "ru": "всё нужное.\nничего\nлишнего",
+          "tr": "ihtiyacın olan her şey.\nfazlası\nyok",
+          "zh": "所需功能都有\n没有\n多余的"
         },
         "highlight": {
-          "en": "nothing"
+          "en": "nothing",
+          "de": "überflüssiges",
+          "es": "nada",
+          "fr": "rien",
+          "hi": "फ़ालतू नहीं",
+          "it": "niente",
+          "ja": "余計なもの",
+          "ko": "불필요한 건",
+          "nl": "niets",
+          "pt": "nada",
+          "ru": "ничего",
+          "tr": "fazlası",
+          "zh": "没有"
         },
         "screenshot": "",
         "transforms": {
@@ -1394,7 +2426,19 @@
           {
             "id": "t_50",
             "text": {
-              "en": "batch compression"
+              "en": "batch compression",
+              "de": "stapelkomprimierung",
+              "es": "compresión por lotes",
+              "fr": "compression par lot",
+              "hi": "एक साथ कंप्रेशन",
+              "it": "compressione in serie",
+              "ja": "まとめて圧縮",
+              "ko": "여러 영상 압축",
+              "nl": "batchcompressie",
+              "pt": "compressão em lote",
+              "ru": "пакетное сжатие",
+              "tr": "toplu sıkıştırma",
+              "zh": "批量压缩"
             },
             "transform": {
               "x": 82.56,
@@ -1412,7 +2456,19 @@
           {
             "id": "t_51",
             "text": {
-              "en": "before & after"
+              "en": "before & after",
+              "de": "vorher & nachher",
+              "es": "antes y después",
+              "fr": "avant & après",
+              "hi": "पहले और बाद में",
+              "it": "prima e dopo",
+              "ja": "ビフォー＆アフター",
+              "ko": "압축 전후",
+              "nl": "voor & na",
+              "pt": "antes e depois",
+              "ru": "до и после",
+              "tr": "öncesi ve sonrası",
+              "zh": "压缩前后"
             },
             "transform": {
               "x": 949.44,
@@ -1430,7 +2486,19 @@
           {
             "id": "t_52",
             "text": {
-              "en": "H.264 + HEVC"
+              "en": "H.264 + HEVC",
+              "de": "H.264 + HEVC",
+              "es": "H.264 + HEVC",
+              "fr": "H.264 + HEVC",
+              "hi": "H.264 + HEVC",
+              "it": "H.264 + HEVC",
+              "ja": "H.264 + HEVC",
+              "ko": "H.264 + HEVC",
+              "nl": "H.264 + HEVC",
+              "pt": "H.264 + HEVC",
+              "ru": "H.264 + HEVC",
+              "tr": "H.264 + HEVC",
+              "zh": "H.264 + HEVC"
             },
             "transform": {
               "x": 82.56,
@@ -1448,7 +2516,19 @@
           {
             "id": "t_53",
             "text": {
-              "en": "Shortcuts & share sheet"
+              "en": "Shortcuts & share sheet",
+              "de": "Kurzbefehle & Teilen",
+              "es": "Atajos y compartir",
+              "fr": "Raccourcis & partage",
+              "hi": "Shortcuts और शेयर",
+              "it": "Comandi Rapidi e condividi",
+              "ja": "ショートカット＆共有",
+              "ko": "단축어 및 공유",
+              "nl": "Opdrachten & delen",
+              "pt": "Atalhos e compartilhar",
+              "ru": "Команды и меню «Поделиться»",
+              "tr": "Kestirmeler ve paylaşım",
+              "zh": "快捷指令与分享"
             },
             "transform": {
               "x": 949.44,
@@ -1466,7 +2546,19 @@
           {
             "id": "t_54",
             "text": {
-              "en": "keeps date & location"
+              "en": "keeps date & location",
+              "de": "datum & ort bleiben",
+              "es": "conserva fecha y lugar",
+              "fr": "garde date et lieu",
+              "hi": "तारीख़ और जगह सुरक्षित",
+              "it": "mantiene data e luogo",
+              "ja": "日時と位置を保持",
+              "ko": "날짜와 위치 유지",
+              "nl": "behoudt datum & locatie",
+              "pt": "mantém data e local",
+              "ru": "дата и место сохраняются",
+              "tr": "tarih ve konum korunur",
+              "zh": "保留日期和位置"
             },
             "transform": {
               "x": 82.56,
@@ -1484,7 +2576,19 @@
           {
             "id": "t_55",
             "text": {
-              "en": "13 languages"
+              "en": "13 languages",
+              "de": "13 sprachen",
+              "es": "13 idiomas",
+              "fr": "13 langues",
+              "hi": "13 भाषाएँ",
+              "it": "13 lingue",
+              "ja": "13言語",
+              "ko": "13개 언어",
+              "nl": "13 talen",
+              "pt": "13 idiomas",
+              "ru": "13 языков",
+              "tr": "13 dil",
+              "zh": "13 种语言"
             },
             "transform": {
               "x": 949.44,
@@ -1502,7 +2606,19 @@
           {
             "id": "t_56",
             "text": {
-              "en": "dark mode"
+              "en": "dark mode",
+              "de": "dunkelmodus",
+              "es": "modo oscuro",
+              "fr": "mode sombre",
+              "hi": "डार्क मोड",
+              "it": "modalità scura",
+              "ja": "ダークモード",
+              "ko": "다크 모드",
+              "nl": "donkere modus",
+              "pt": "modo escuro",
+              "ru": "тёмная тема",
+              "tr": "koyu mod",
+              "zh": "深色模式"
             },
             "transform": {
               "x": 82.56,
@@ -1520,7 +2636,19 @@
           {
             "id": "t_57",
             "text": {
-              "en": "open source"
+              "en": "open source",
+              "de": "quelloffen",
+              "es": "código abierto",
+              "fr": "code ouvert",
+              "hi": "ओपन सोर्स",
+              "it": "open source",
+              "ja": "オープンソース",
+              "ko": "오픈 소스",
+              "nl": "open source",
+              "pt": "código aberto",
+              "ru": "открытый код",
+              "tr": "açık kaynak",
+              "zh": "开源"
             },
             "transform": {
               "x": 949.44,
@@ -1566,7 +2694,19 @@
           "en": ""
         },
         "headline": {
-          "en": "make videos smaller.\nno cloud. no subscription."
+          "en": "make videos smaller.\nno cloud. no subscription.",
+          "de": "kleinere videos.\nohne cloud. ohne abo.",
+          "es": "vídeos más pequeños.\nsin nube. sin suscripción.",
+          "fr": "vidéos plus légères.\nsans cloud. sans abonnement.",
+          "hi": "वीडियो छोटे करें.\nबिना क्लाउड. बिना सदस्यता.",
+          "it": "video più piccoli.\nsenza cloud. senza abbonamento.",
+          "ja": "動画を小さく。\nクラウド不要。サブスクなし。",
+          "ko": "동영상을 더 작게.\n클라우드 없이. 구독 없이.",
+          "nl": "kleinere video’s.\ngeen cloud. geen abonnement.",
+          "pt": "vídeos menores.\nsem nuvem. sem assinatura.",
+          "ru": "видео весят меньше.\nбез облака. без подписок.",
+          "tr": "daha küçük videolar.\nbulut yok. abonelik yok.",
+          "zh": "视频更小巧。\n无需云端。无需订阅。"
         },
         "screenshot": "",
         "background": "/brand/sky-square.png"

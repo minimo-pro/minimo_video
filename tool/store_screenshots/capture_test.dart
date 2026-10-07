@@ -2,7 +2,7 @@
 //
 //   flutter test tool/store_screenshots/capture_test.dart
 //
-// Output: store_screenshots/public/screenshots/<platform>/<device>/en/*.png
+// Output: store_screenshots/public/screenshots/<platform>/<device>/<locale>/*.png
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -33,6 +33,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const _root = 'store_screenshots/public';
 const _mb = 1024 * 1024;
+const _marketingOnly = bool.fromEnvironment(
+  'STORE_SCREENSHOTS_ONLY',
+  defaultValue: true,
+);
 
 final _photos = [
   'beach',
@@ -151,10 +155,7 @@ CompressState _doneState() => CompressState(
   status: CompressStatus.done,
   videos: _videos,
   thumbnailPaths: _thumbs,
-  videoStatuses: List.filled(
-    _videos.length,
-    VideoCompressionStatus.compressed,
-  ),
+  videoStatuses: List.filled(_videos.length, VideoCompressionStatus.compressed),
   results: [for (final v in _videos) _compressed(v)],
   compressionRunId: 1,
   processingIndex: _videos.length - 1,
@@ -175,6 +176,7 @@ CompressedVideo _compressed(PickedVideo video) => CompressedVideo(
 );
 
 final _captureKey = GlobalKey();
+late Locale _locale;
 
 void main() {
   setUpAll(() async {
@@ -187,6 +189,18 @@ void main() {
     final pangolin = FontLoader('Pangolin')
       ..addFont(rootBundle.load('assets/fonts/Pangolin-Regular.ttf'));
     await pangolin.load();
+    // Widget tests do not load the system fallback fonts automatically.
+    final fallback = FontLoader('StoreFallback')
+      ..addFont(
+        Future.value(
+          ByteData.sublistView(
+            File(
+              '/System/Library/Fonts/Supplemental/Arial Unicode.ttf',
+            ).readAsBytesSync(),
+          ),
+        ),
+      );
+    await fallback.load();
     final sf = FontLoader('StatusBar')
       ..addFont(
         Future.value(
@@ -198,132 +212,145 @@ void main() {
     await sf.load();
   });
 
-  for (final device in _devices) {
-    testWidgets('capture ${device.folder}', (tester) async {
-      tester.view.physicalSize = device.physicalSize;
-      tester.view.devicePixelRatio = device.pixelRatio;
-      tester.view.padding = FakeViewPadding(
-        top: device.padding.top * device.pixelRatio,
-        bottom: device.padding.bottom * device.pixelRatio,
-      );
-      tester.view.viewPadding = tester.view.padding;
-      debugDefaultTargetPlatformOverride = device.platform;
-      addTearDown(tester.view.reset);
-
-      final ios = device.platform == TargetPlatform.iOS;
-      await _precacheImages(tester);
-
-      await _shoot(
+  for (final locale in S.delegate.supportedLocales) {
+    for (final device in _devices) {
+      testWidgets('capture ${device.folder}/${locale.languageCode}', (
         tester,
-        device,
-        '01-settings',
-        _CompressPage(
-          child: CompressionSettingsView(
-            state: _readyState(),
-            onAddVideos: () {},
-          ),
-        ),
-      );
+      ) async {
+        _locale = locale;
+        tester.view.physicalSize = device.physicalSize;
+        tester.view.devicePixelRatio = device.pixelRatio;
+        tester.view.padding = FakeViewPadding(
+          top: device.padding.top * device.pixelRatio,
+          bottom: device.padding.bottom * device.pixelRatio,
+        );
+        tester.view.viewPadding = tester.view.padding;
+        debugDefaultTargetPlatformOverride = device.platform;
+        addTearDown(tester.view.reset);
 
-      await _shoot(
-        tester,
-        device,
-        '02-advanced',
-        _CompressPage(
-          child: CompressionSettingsView(
-            state: _readyState(
-              settings: const CompressionSettings(
-                resolution: '1920:1080',
-                videoBitrateMbps: 8,
-                frameRate: 30,
-                codec: CompressionCodec.hevc,
-              ),
-            ),
-            onAddVideos: () {},
-          ),
-        ),
-        interact: () async {
-          await tester.tap(find.text('advanced'));
-          await _settle(tester);
-        },
-      );
+        final ios = device.platform == TargetPlatform.iOS;
+        await _precacheImages(tester);
 
-      await _shoot(
-        tester,
-        device,
-        '03-progress',
-        _CompressPage(
-          showBack: false,
-          child: CompressionProgressView(state: _processingState()),
-        ),
-      );
-
-      await _shoot(
-        tester,
-        device,
-        '04-result',
-        _CompressPage(
-          child: CompressionResultView(state: _doneState(), onTryAgain: () {}),
-        ),
-      );
-
-      if (ios) {
         await _shoot(
           tester,
           device,
-          '05-save-options',
+          '01-settings',
+          _CompressPage(
+            child: CompressionSettingsView(
+              state: _readyState(),
+              onAddVideos: () {},
+            ),
+          ),
+        );
+
+        await _shoot(
+          tester,
+          device,
+          '02-advanced',
+          _CompressPage(
+            child: CompressionSettingsView(
+              state: _readyState(
+                settings: const CompressionSettings(
+                  resolution: '1920:1080',
+                  videoBitrateMbps: 8,
+                  frameRate: 30,
+                  codec: CompressionCodec.hevc,
+                ),
+              ),
+              onAddVideos: () {},
+            ),
+          ),
+          interact: () async {
+            await tester.tap(find.text(S.current.advancedOptions));
+            await _settle(tester);
+          },
+        );
+
+        await _shoot(
+          tester,
+          device,
+          '03-progress',
+          _CompressPage(
+            showBack: false,
+            child: CompressionProgressView(state: _processingState()),
+          ),
+        );
+
+        await _shoot(
+          tester,
+          device,
+          '04-result',
           _CompressPage(
             child: CompressionResultView(
               state: _doneState(),
               onTryAgain: () {},
             ),
           ),
-          interact: () async {
-            await tester.tap(find.text('save'));
-            await _settle(tester);
-            await tester.tap(find.text('replace original'));
-            await _settle(tester);
-          },
         );
-      }
 
-      await _shoot(tester, device, '06-home', const _StartPage());
-
-      await _shoot(
-        tester,
-        device,
-        '07-stats',
-        const _StartPage(),
-        interact: () async {
-          await tester.tap(
-            find.byWidgetPredicate(
-              (w) => w is SvgPicture && _svgAsset(w) == AppIcons.stats,
+        if (ios && !_marketingOnly) {
+          await _shoot(
+            tester,
+            device,
+            '05-save-options',
+            _CompressPage(
+              child: CompressionResultView(
+                state: _doneState(),
+                onTryAgain: () {},
+              ),
             ),
+            interact: () async {
+              await tester.tap(find.text(S.current.save));
+              await _settle(tester);
+              await tester.tap(find.text(S.current.replaceOriginal));
+              await _settle(tester);
+            },
           );
-          await _settle(tester, seconds: 3);
-        },
-      );
+        }
 
-      await _shoot(
-        tester,
-        device,
-        '08-home-dark',
-        const _StartPage(),
-        dark: true,
-      );
+        if (!_marketingOnly) {
+          await _shoot(tester, device, '06-home', const _StartPage());
 
-      await _shoot(
-        tester,
-        device,
-        '09-result-dark',
-        _CompressPage(
-          child: CompressionResultView(state: _doneState(), onTryAgain: () {}),
-        ),
-        dark: true,
-      );
+          await _shoot(
+            tester,
+            device,
+            '07-stats',
+            const _StartPage(),
+            interact: () async {
+              await tester.tap(
+                find.byWidgetPredicate(
+                  (w) => w is SvgPicture && _svgAsset(w) == AppIcons.stats,
+                ),
+              );
+              await _settle(tester, seconds: 3);
+            },
+          );
 
-      debugDefaultTargetPlatformOverride = null;
-    });
+          await _shoot(
+            tester,
+            device,
+            '08-home-dark',
+            const _StartPage(),
+            dark: true,
+          );
+        }
+
+        await _shoot(
+          tester,
+          device,
+          '09-result-dark',
+          _CompressPage(
+            child: CompressionResultView(
+              state: _doneState(),
+              onTryAgain: () {},
+            ),
+          ),
+          dark: true,
+        );
+
+        debugDefaultTargetPlatformOverride = null;
+      });
+    }
   }
 }
 
@@ -335,10 +362,9 @@ String? _svgAsset(SvgPicture picture) {
 /// Must run before any Image widget starts loading the same provider inside
 /// the fake-async zone, otherwise precaching waits on that load forever.
 Future<void> _precacheImages(WidgetTester tester) async {
-  await tester.pumpWidget(const Directionality(
-    textDirection: TextDirection.ltr,
-    child: SizedBox(),
-  ));
+  await tester.pumpWidget(
+    const Directionality(textDirection: TextDirection.ltr, child: SizedBox()),
+  );
   final context = tester.element(find.byType(SizedBox));
   await tester.runAsync(() async {
     for (final path in _photos) {
@@ -386,7 +412,7 @@ Future<void> _shoot(
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: S.delegate.supportedLocales,
-          locale: const Locale('en'),
+          locale: _locale,
           builder: (context, child) => Stack(
             children: [
               child!,
@@ -420,7 +446,9 @@ Future<void> _shoot(
     image.dispose();
     return data!.buffer.asUint8List();
   });
-  final file = File('$_root/screenshots/${device.folder}/en/$name.png');
+  final file = File(
+    '$_root/screenshots/${device.folder}/${_locale.languageCode}/$name.png',
+  );
   file.parent.createSync(recursive: true);
   file.writeAsBytesSync(bytes!);
 
@@ -430,8 +458,10 @@ Future<void> _shoot(
   await tester.pump();
 }
 
-ThemeData _theme(ThemeData base, TargetPlatform platform) =>
-    base.copyWith(platform: platform);
+ThemeData _theme(ThemeData base, TargetPlatform platform) => base.copyWith(
+  platform: platform,
+  textTheme: base.textTheme.apply(fontFamilyFallback: const ['StoreFallback']),
+);
 
 class _CompressPage extends StatelessWidget {
   final Widget child;

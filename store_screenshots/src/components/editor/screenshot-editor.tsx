@@ -88,7 +88,9 @@ export function ScreenshotEditor() {
     const allSlides: Slide[] = Object.values(state.slidesByDevice).flat();
     for (const s of allSlides) {
       if (s.background && s.background !== "none") paths.add(s.background);
-      for (const element of s.imageElements || []) paths.add(element.src);
+      for (const element of s.imageElements || []) {
+        for (const loc of state.locales) paths.add(resolveScreenshot(element.src, loc));
+      }
       for (const raw of [s.screenshot, s.screenshotSecondary]) {
         if (!raw || raw.startsWith("data:")) continue;
         if (raw.includes("{locale}")) {
