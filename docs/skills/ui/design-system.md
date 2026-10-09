@@ -41,9 +41,16 @@ When rendering icons inside `AppActionButton`, the SVG is wrapped in a fixed `Si
 | `FadedScrollView` | Clamped scroll with static alpha-only edge fading |
 | `showAppSheet` / `showAppContentSheet` | Modal sheets with shared drag handle and scroll-to-drag dismissal |
 | `AppOptionPicker` | Compact option selection |
+| `BitratePicker` | Hand-drawn horizontal bitrate slider, whole 1–20 Mbps steps, and automatic mode |
 | `AnimatedAssetCheckbox` | Custom settings checkbox |
 
 `AppActionButton` text variant is for chrome icons without border or fill. Compact icon-only buttons are typically `47×47`; compression back and add-video use the same outlined variant.
+
+`BitratePicker` uses fixed, slightly uneven Bézier curves for its track and a plain
+circular thumb without icons or grip marks, matching the Pangolin font and drawn
+SVG icons. Its native `Slider` keeps gestures, keyboard controls, and accessibility.
+Changing a whole-Mbps step gives selection haptics; the shared `AppActionButton`
+returns to automatic. Colors follow the system theme.
 
 ## Motion Rules
 

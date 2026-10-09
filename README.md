@@ -15,6 +15,7 @@ No cloud upload. No subscription. Your videos stay yours.
 
 - Simple quality presets: high, medium, low
 - Advanced controls: resolution, bitrate, frame rate, codec, and audio
+- Hand-drawn bitrate slider: 1–20 Mbps in whole steps, with haptic feedback and automatic mode
 - Batch compression
 - Save and share compressed videos
 
@@ -62,13 +63,13 @@ FFmpeg is available under LGPL or GPL depending on how it is built and which com
 
 ## Credits
 
-Video compression is powered by [light_compressor_v2](https://pub.dev/packages/light_compressor_v2). Respect and thanks to its maintainers and contributors.
+- Video compression is powered by [light_compressor_v2](https://pub.dev/packages/light_compressor_v2). Respect and thanks to its maintainers and contributors.
 
-App Store and Google Play screenshots are made with the [App Store Screenshots](https://www.parthjadhav.com/products/app-store-screenshots) skill by [Parth Jadhav](https://x.com/parthjadhav8). Thanks for the great editor template.
+- App Store and Google Play screenshots are made with the [App Store Screenshots](https://www.parthjadhav.com/products/app-store-screenshots) skill by [Parth Jadhav](https://x.com/parthjadhav8). Thanks for the great editor template.
 
-App Store uploads and metadata are managed with [App Store Connect CLI](https://github.com/rorkai/App-Store-Connect-CLI) and its [agent skills](https://github.com/rorkai/app-store-connect-cli-skills), created by [Rudrank Riyam](https://x.com/rudrank). Thanks to Rudrank and all maintainers and contributors.
+- App Store uploads and metadata are managed with [App Store Connect CLI](https://github.com/rorkai/App-Store-Connect-CLI) and its [agent skills](https://github.com/rorkai/app-store-connect-cli-skills), created by [Rudrank Riyam](https://x.com/rudrank). Thanks to Rudrank and all maintainers and contributors.
 
-Special thanks to [Kamran Bekirov](https://x.com/kamranbekirovyz) and his website [Flutter Pro Design](https://flutterpro.design/). I learned from and adapted many ideas from his work for myself and for this app.
+- Special thanks to [Kamran Bekirov](https://x.com/kamranbekirovyz) and his website [Flutter Pro Design](https://flutterpro.design/). I learned from and adapted many ideas from his work for myself and for this app.
 
 
 ## Contacts

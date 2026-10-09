@@ -1,3 +1,9 @@
+## [1.0.11]
+
+### Changed
+
+* Replaced bitrate preset buttons with a hand-drawn horizontal slider for every whole value from 1 to 20 Mbps, with a plain circular thumb, selection haptics, and a quick return to automatic.
+
 ## [1.0.10]
 
 ### Changed
