@@ -39,6 +39,7 @@ class _BitratePickerState extends State<BitratePicker> {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final strings = S.of(context);
+    final sliderBitrate = (_selected ?? 2).clamp(1, 20);
     return Padding(
       padding: const EdgeInsets.only(top: 2),
       child: Column(
@@ -95,12 +96,15 @@ class _BitratePickerState extends State<BitratePicker> {
                 ),
               ),
               child: Slider(
-                value: (_selected ?? 2).clamp(1, 20).toDouble(),
+                value: sliderBitrate.toDouble(),
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 min: 1,
                 max: 20,
                 divisions: 19,
-                semanticFormatterCallback: (value) => '${value.round()} Mbps',
+                semanticFormatterCallback: (value) =>
+                    _selected == null && value.round() == sliderBitrate
+                    ? strings.automatic
+                    : '${value.round()} Mbps',
                 onChanged: (value) => _select(value.round()),
               ),
             ),

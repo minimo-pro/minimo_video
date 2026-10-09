@@ -1,10 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/features/compression/presentation/widgets/bitrate_picker.dart';
 import 'package:minimo_video/generated/l10n.dart';
 
 void main() {
+  testWidgets('semantics announces auto and numeric values when adjusted', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    try {
+      final values = <int?>[];
+      SemanticsNode sliderNode() => tester
+          .getSemantics(find.byType(Slider))
+          .debugListChildrenInOrder(DebugSemanticsDumpOrder.traversalOrder)
+          .singleWhere(
+            (node) =>
+                node.getSemanticsData().hasAction(SemanticsAction.increase),
+          );
+      await tester.pumpWidget(_app(null, values.add));
+      var node = sliderNode();
+      expect(node.getSemanticsData().value, 'auto');
+      expect(node.getSemanticsData().increasedValue, '3 Mbps');
+      expect(node.getSemanticsData().decreasedValue, '1 Mbps');
+
+      tester.binding.performSemanticsAction(
+        SemanticsActionEvent(
+          type: SemanticsAction.increase,
+          nodeId: node.id,
+          viewId: tester.view.viewId,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(values.last, 3);
+      node = sliderNode();
+      expect(node.getSemanticsData().value, '3 Mbps');
+
+      await tester.tap(find.text('auto'));
+      await tester.pumpAndSettle();
+      expect(sliderNode().getSemanticsData().value, 'auto');
+      await tester.pumpWidget(_app(5, values.add));
+      await tester.pumpAndSettle();
+      expect(sliderNode().getSemanticsData().value, '5 Mbps');
+    } finally {
+      handle.dispose();
+    }
+  });
+
   testWidgets('slider selects whole Mbps with haptic and resets to auto', (
     tester,
   ) async {
