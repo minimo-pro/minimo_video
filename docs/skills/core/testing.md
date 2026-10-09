@@ -14,6 +14,8 @@ Current tests cover:
 
 - Quality preset mapping to internal tier and resolution
 - Appending only new picked videos while preserving settings and aligned batch state
+- Bitrate slider gestures, whole-Mbps selection haptics, reset to automatic, and external settings synchronization
+- Localized release notes for every supported language
 - Custom bitrate estimate fallback and exact bitrate/FPS/codec encode-plan mapping
 - Automatic bitrate response to resolution, effective FPS, and codec
 - Invalid configured/source frame-rate handling

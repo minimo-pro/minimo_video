@@ -20,6 +20,7 @@ import '../../bloc/compress_state.dart';
 import '../../domain/compression_settings.dart';
 import '../utils/compression_estimate.dart';
 import '../utils/compression_labels.dart';
+import 'bitrate_picker.dart';
 import 'compression_bottom_actions.dart';
 import 'compression_mode_switch.dart';
 import 'selected_videos_summary.dart';
@@ -52,7 +53,6 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
     '854:480',
     '640:360',
   ];
-  static const _bitrates = <int?>[null, 1, 2, 4, 6, 8, 12, 15, 20];
   static const _frameRates = <int?>[null, 60, 30, 24, 15];
 
   CompressionOptionsMode _mode = CompressionOptionsMode.simple;
@@ -489,18 +489,8 @@ class _AdvancedCompressionOptions extends StatelessWidget {
         AppSettingsSection(
           title: strings.videoBitrate,
           description: strings.videoBitrateDescription,
-          child: AppOptionPicker<int?>(
+          child: BitratePicker(
             value: settings.videoBitrateMbps,
-            options: _CompressionSettingsViewState._bitrates
-                .map(
-                  (bitrate) => AppOption(
-                    value: bitrate,
-                    label: bitrate == null
-                        ? strings.automatic
-                        : '$bitrate Mbps',
-                  ),
-                )
-                .toList(),
             onChanged: (value) => _changeSettings(
               context,
               settings.copyWith(videoBitrateMbps: value),

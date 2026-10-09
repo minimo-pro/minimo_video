@@ -16,7 +16,9 @@ and that the original stays when the output saves less than 10%.
 Advanced mode allows:
 
 - Original, 1080p, 720p, 480p, or 360p resolution
-- Automatic or 1, 2, 4, 6, 8, 12, 15, or 20 Mbps video bitrate
+- Automatic or any whole value from 1 to 20 Mbps video bitrate, selected with
+  a hand-drawn horizontal slider with a plain circular thumb, selection haptics,
+  and a quick return to automatic
 - Original, 60, 30, 24, or 15 FPS output; the package only downsamples
 - H.264 or HEVC output; unsupported HEVC hardware falls back to H.264
 - Stereo audio or no audio

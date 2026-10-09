@@ -43,6 +43,45 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.11': {
+    Language.en: [
+      'Choose any whole bitrate from 1–20 Mbps with a new hand-drawn slider, haptic feedback, and a quick return to automatic.',
+    ],
+    Language.ru: [
+      'Выбирайте любой целый битрейт от 1 до 20 Мбит/с рисованным слайдером с тактильным откликом и быстрым возвратом к автоматическому режиму.',
+    ],
+    Language.es: [
+      'Elige cualquier tasa de bits entera de 1 a 20 Mbps con un nuevo deslizador de estilo dibujado a mano, respuesta háptica y acceso rápido al modo automático.',
+    ],
+    Language.pt: [
+      'Escolha qualquer taxa de bits inteira de 1 a 20 Mbps com um novo controle deslizante desenhado à mão, resposta tátil e retorno rápido ao modo automático.',
+    ],
+    Language.de: [
+      'Wähle jede ganzzahlige Bitrate von 1 bis 20 Mbit/s mit einem neuen handgezeichneten Schieberegler, haptischem Feedback und schnellem Wechsel zurück zur Automatik.',
+    ],
+    Language.fr: [
+      'Choisissez un débit entier de 1 à 20 Mbit/s avec un nouveau curseur dessiné à la main, un retour haptique et un accès rapide au mode automatique.',
+    ],
+    Language.zh: ['使用全新手绘风格滑块选择 1–20 Mbps 的任意整数码率，支持触觉反馈，并可快速返回自动模式。'],
+    Language.hi: [
+      'नए हाथ से बनाए गए शैली वाले स्लाइडर से 1 से 20 Mbps तक कोई भी पूर्णांक बिटरेट चुनें, हैप्टिक फ़ीडबैक पाएँ और आसानी से ऑटो मोड पर लौटें।',
+    ],
+    Language.nl: [
+      'Kies elke gehele bitrate van 1 tot 20 Mbps met een nieuwe handgetekende schuifregelaar, haptische feedback en een snelle terugkeer naar automatisch.',
+    ],
+    Language.ko: [
+      '새로운 손그림 스타일 슬라이더로 1~20Mbps의 정수 비트레이트를 선택하세요. 햅틱 피드백과 자동 모드로 빠르게 돌아가는 기능을 제공합니다.',
+    ],
+    Language.ja: [
+      '手描き風の新しいスライダーで、1〜20 Mbpsの整数ビットレートを選べます。触覚フィードバックと自動モードへの素早い切り替えに対応しました。',
+    ],
+    Language.it: [
+      'Scegli qualsiasi bitrate intero da 1 a 20 Mbps con un nuovo cursore disegnato a mano, feedback aptico e ritorno rapido alla modalità automatica.',
+    ],
+    Language.tr: [
+      'Yeni el çizimi tarzındaki kaydırıcıyla 1–20 Mbps arasında herhangi bir tam sayı bit hızı seçin; dokunsal geri bildirim ve otomatik moda hızlı dönüş de mevcut.',
+    ],
+  },
   '1.0.10': {
     Language.en: ['Technical update.'],
     Language.ru: ['Техническое обновление.'],
@@ -61,8 +100,12 @@ const Changelog _changelog = {
   '1.0.9': {
     Language.en: ['Added manual video bitrate options up to 20 Mbps.'],
     Language.ru: ['Добавили ручной выбор битрейта видео до 20 Мбит/с.'],
-    Language.es: ['Se añadieron opciones manuales de tasa de bits de video de hasta 20 Mbps.'],
-    Language.pt: ['Foram adicionadas opções manuais de taxa de bits de vídeo de até 20 Mbps.'],
+    Language.es: [
+      'Se añadieron opciones manuales de tasa de bits de video de hasta 20 Mbps.',
+    ],
+    Language.pt: [
+      'Foram adicionadas opções manuais de taxa de bits de vídeo de até 20 Mbps.',
+    ],
     Language.de: ['Manuelle Video-Bitraten bis zu 20 Mbit/s hinzugefügt.'],
     Language.fr: ['Ajout de débits vidéo manuels jusqu’à 20 Mbit/s.'],
     Language.zh: ['新增最高 20 Mbps 的手动视频比特率选项。'],
@@ -71,7 +114,9 @@ const Changelog _changelog = {
     Language.ko: ['최대 20Mbps 수동 동영상 비트레이트 옵션을 추가했습니다.'],
     Language.ja: ['最大20 Mbpsの手動ビデオビットレート設定を追加しました。'],
     Language.it: ['Aggiunte opzioni manuali di bitrate video fino a 20 Mbps.'],
-    Language.tr: ['20 Mbps’ye kadar manuel video bit hızı seçenekleri eklendi.'],
+    Language.tr: [
+      '20 Mbps’ye kadar manuel video bit hızı seçenekleri eklendi.',
+    ],
   },
   '1.0.8': {
     Language.en: [
