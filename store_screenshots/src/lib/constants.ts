@@ -4,6 +4,8 @@ import type { Device, Orientation, SlideLayout, Theme, ThemeId } from "./types";
 export const CANVAS: Record<Device, { w: number; h: number; wL?: number; hL?: number }> = {
   iphone:        { w: 1320, h: 2868 },
   ipad:          { w: 2064, h: 2752 },
+  "duo-outer":   { w: 1398, h: 2034 },
+  "duo-inner":   { w: 2007, h: 2853 },
   android:       { w: 1080, h: 1920 },
   "android-7":   { w: 1200, h: 1920, wL: 1920, hL: 1200 },
   "android-10":  { w: 1600, h: 2560, wL: 2560, hL: 1600 },
@@ -24,6 +26,8 @@ export const EXPORT_SIZES: Record<Device, ExportSize[]> = {
     { label: '13" iPad',       w: 2064, h: 2752 },
     { label: '12.9" iPad Pro', w: 2048, h: 2732 },
   ],
+  "duo-outer": [{ label: "iPhone Duo outer", w: 1398, h: 2034 }],
+  "duo-inner": [{ label: "iPhone Duo inner", w: 2007, h: 2853 }],
   android:       [{ label: "Phone",          w: 1080, h: 1920 }],
   "android-7":   [{ label: '7" Portrait',    w: 1200, h: 1920 }],
   "android-10":  [{ label: '10" Portrait',   w: 1600, h: 2560 }],
@@ -52,6 +56,9 @@ export const MK_RATIO    = 1022 / 2082; // iPhone PNG mockup
 export const TAB_P_RATIO = 0.667;        // tablet portrait
 export const TAB_L_RATIO = 1.5;          // tablet landscape
 export const IPAD_RATIO  = 0.770;        // iPad
+// iPhone Duo bezels from Apple's product bezel cutouts (frame around the screen).
+export const DUO_OUTER_RATIO = 1574 / 2194;
+export const DUO_INNER_RATIO = 2247 / 3093;
 
 // iPhone mockup screen overlay (pre-measured)
 export const PHONE_SCREEN = {
@@ -163,6 +170,8 @@ export const PROJECT_SCHEMA_VERSION = 2;
 export const DEVICE_LABEL: Record<Device, string> = {
   iphone: "iPhone",
   ipad: "iPad",
+  "duo-outer": "iPhone Duo (outer)",
+  "duo-inner": "iPhone Duo (inner)",
   android: "Android Phone",
   "android-7": 'Android 7" Tablet',
   "android-10": 'Android 10" Tablet',

@@ -46,7 +46,7 @@ final _photos = [
   'concert',
 ].map((name) => File('$_root/photos/$name.jpg').absolute.path).toList();
 
-enum _Chrome { iphone, android, ipad }
+enum _Chrome { iphone, android, ipad, duoOuter, duoInner }
 
 class _Device {
   final String folder;
@@ -82,6 +82,26 @@ const _devices = [
     padding: EdgeInsets.only(top: 32, bottom: 20),
     platform: TargetPlatform.iOS,
     chrome: _Chrome.ipad,
+  ),
+  // iPhone Duo outer display, 466 × 678 pt. The camera, status bar and system
+  // bars sit in an 84 pt rail on the trailing edge (Apple iOS 27.1 UI kit).
+  _Device(
+    folder: 'apple/duo-outer',
+    physicalSize: Size(1398, 2034),
+    pixelRatio: 3,
+    padding: EdgeInsets.only(top: 24, bottom: 24, right: 84),
+    platform: TargetPlatform.iOS,
+    chrome: _Chrome.duoOuter,
+  ),
+  // iPhone Duo inner display upright, 669 × 951 pt: horizontal bars with the
+  // compact 92 × 48 status bar; the under-display camera stays hidden.
+  _Device(
+    folder: 'apple/duo-inner',
+    physicalSize: Size(2007, 2853),
+    pixelRatio: 3,
+    padding: EdgeInsets.only(top: 48, bottom: 24),
+    platform: TargetPlatform.iOS,
+    chrome: _Chrome.duoInner,
   ),
   _Device(
     folder: 'android/phone',
@@ -223,6 +243,7 @@ void main() {
         tester.view.padding = FakeViewPadding(
           top: device.padding.top * device.pixelRatio,
           bottom: device.padding.bottom * device.pixelRatio,
+          right: device.padding.right * device.pixelRatio,
         );
         tester.view.viewPadding = tester.view.padding;
         debugDefaultTargetPlatformOverride = device.platform;
@@ -416,13 +437,12 @@ Future<void> _shoot(
           builder: (context, child) => Stack(
             children: [
               child!,
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: _StatusBar(chrome: device.chrome, page: page),
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: _StatusBar(chrome: device.chrome, page: page),
+                  ),
                 ),
               ),
             ],
@@ -599,11 +619,19 @@ class _StatusBar extends StatelessWidget {
         _Chrome.iphone => 17,
         _Chrome.ipad => 14,
         _Chrome.android => 14,
+        _Chrome.duoOuter || _Chrome.duoInner => 15,
       },
       fontWeight: FontWeight.w600,
       height: 1,
     );
 
+    return Align(
+      alignment: Alignment.topCenter,
+      child: _bar(chrome, color, style),
+    );
+  }
+
+  Widget _bar(_Chrome chrome, Color color, TextStyle style) {
     return switch (chrome) {
       _Chrome.iphone => SizedBox(
         height: 62,
@@ -666,7 +694,83 @@ class _StatusBar extends StatelessWidget {
           ),
         ),
       ),
+      // Rail: 37 pt camera lens above the 48 × 86 vertical status bar, in a
+      // 48 pt column 24 pt from the trailing edge.
+      _Chrome.duoOuter => SizedBox(
+        height: 678,
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 18, right: 24),
+            child: SizedBox(
+              width: 48,
+              child: Column(
+                children: [
+                  Container(
+                    width: 37,
+                    height: 37,
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 86,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('9:41', style: style),
+                        const SizedBox(height: 12),
+                        _WifiIcon(color: color),
+                        const SizedBox(height: 10),
+                        _StatusIcons(
+                          color: color,
+                          scale: 0.85,
+                          cellular: false,
+                          wifi: false,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      _Chrome.duoInner => SizedBox(
+        height: 48,
+        child: Align(
+          alignment: Alignment.topRight,
+          child: SizedBox(
+            width: 92,
+            height: 48,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('9:41', style: style),
+                const SizedBox(width: 6),
+                _StatusIcons(color: color, scale: 0.8, cellular: false),
+              ],
+            ),
+          ),
+        ),
+      ),
     };
+  }
+}
+
+class _WifiIcon extends StatelessWidget {
+  final Color color;
+
+  const _WifiIcon({required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: const Size(17, 12),
+      painter: _StatusIconsPainter(color, 0.85, false, battery: false),
+    );
   }
 }
 
@@ -674,18 +778,21 @@ class _StatusIcons extends StatelessWidget {
   final Color color;
   final double scale;
   final bool cellular;
+  final bool wifi;
 
   const _StatusIcons({
     required this.color,
     required this.scale,
     this.cellular = true,
+    this.wifi = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    final width = (cellular ? 24 : 0) + (wifi ? 22 : 0) + 32;
     return CustomPaint(
-      size: Size((cellular ? 78 : 54) * scale, 13 * scale),
-      painter: _StatusIconsPainter(color, scale, cellular),
+      size: Size(width * scale, 13 * scale),
+      painter: _StatusIconsPainter(color, scale, cellular, wifi: wifi),
     );
   }
 }
@@ -694,8 +801,16 @@ class _StatusIconsPainter extends CustomPainter {
   final Color color;
   final double scale;
   final bool cellular;
+  final bool wifi;
+  final bool battery;
 
-  _StatusIconsPainter(this.color, this.scale, this.cellular);
+  _StatusIconsPainter(
+    this.color,
+    this.scale,
+    this.cellular, {
+    this.wifi = true,
+    this.battery = true,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -715,23 +830,26 @@ class _StatusIconsPainter extends CustomPainter {
       }
       x += 24;
     }
-    final wifi = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.1
-      ..strokeCap = StrokeCap.round;
-    final center = Offset(x + 8.5, 12);
-    for (final r in [3.5, 7.2, 10.8]) {
-      canvas.drawArc(
-        Rect.fromCircle(center: center, radius: r),
-        -2.36,
-        1.57,
-        false,
-        wifi,
-      );
+    if (wifi) {
+      final arc = Paint()
+        ..color = color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2.1
+        ..strokeCap = StrokeCap.round;
+      final center = Offset(x + 8.5, 12);
+      for (final r in [3.5, 7.2, 10.8]) {
+        canvas.drawArc(
+          Rect.fromCircle(center: center, radius: r),
+          -2.36,
+          1.57,
+          false,
+          arc,
+        );
+      }
+      canvas.drawCircle(center.translate(0, -0.6), 1.5, fill);
+      x += 22;
     }
-    canvas.drawCircle(center.translate(0, -0.6), 1.5, fill);
-    x += 22;
+    if (!battery) return;
     final body = RRect.fromRectAndRadius(
       Rect.fromLTWH(x, 0.5, 25, 12),
       const Radius.circular(3.6),
@@ -761,7 +879,10 @@ class _StatusIconsPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_StatusIconsPainter old) =>
-      old.color != color || old.scale != scale;
+      old.color != color ||
+      old.scale != scale ||
+      old.wifi != wifi ||
+      old.battery != battery;
 }
 
 class _NoopCompressor extends VideoCompressorAdapter {

@@ -7,6 +7,8 @@ import fs from "node:fs";
 const CANVAS = {
   iphone: { w: 1320, h: 2868, aspect: 1022 / 2082, shots: "/screenshots/apple/iphone/{locale}" },
   ipad: { w: 2064, h: 2752, aspect: 0.77, shots: "/screenshots/apple/ipad/{locale}" },
+  "duo-outer": { w: 1398, h: 2034, aspect: 1574 / 2194, shots: "/screenshots/apple/duo-outer/{locale}" },
+  "duo-inner": { w: 2007, h: 2853, aspect: 2247 / 3093, shots: "/screenshots/apple/duo-inner/{locale}" },
   android: { w: 1080, h: 1920, aspect: 9 / 19.5, shots: "/screenshots/android/phone/{locale}" },
 };
 
@@ -17,7 +19,8 @@ const id = (p) => `${p}_${++seq}`;
 function deck(device) {
   const c = CANVAS[device];
   const { w: W, h: H } = c;
-  const tablet = device === "ipad";
+  // iPad and both iPhone Duo displays share the wide (~0.7) canvas layout.
+  const tablet = device === "ipad" || device.startsWith("duo");
   const u = Math.min(W, H);
   const shot = (name) => `${c.shots}/${name}.png`;
 
@@ -31,9 +34,9 @@ function deck(device) {
   const bottom = (wf, margin = 0.025) => centered(1 - margin - (W * wf) / c.aspect / H, wf);
   const caption = (y, h = 0.2) => ({ x: W * 0.06, y: H * y, width: W * 0.88, height: H * h, rotation: 0, zIndex: 6 });
 
-  const phoneW = { iphone: 0.78, ipad: 0.7, android: 0.64 }[device];
+  const phoneW = { iphone: 0.78, ipad: 0.7, "duo-outer": 0.62, "duo-inner": 0.64, android: 0.64 }[device];
   const top = 0.25;
-  const heroW = { iphone: 0.86, ipad: 0.8, android: 0.74 }[device];
+  const heroW = { iphone: 0.86, ipad: 0.8, "duo-outer": 0.7, "duo-inner": 0.72, android: 0.74 }[device];
 
   const chip = (text, x, y, opts = {}) => ({
     id: id("t"),
@@ -150,8 +153,8 @@ function deck(device) {
     transforms: { caption: caption(0.055), device: dev(tablet ? 0.12 : 0.06, top + 0.02, phoneW, -4) },
     textElements: [
       chip("HEVC", tablet ? 0.74 : 0.68, 0.36, { w: 0.28, size: 0.05, rotation: 8 }),
-      chip("up to 20 Mbps", tablet ? 0.62 : 0.5, 0.5, { w: 0.48, size: 0.042, rotation: -5, bg: "#FFFFFF", color: "#272727" }),
-      chip("60 · 30 · 24 fps", tablet ? 0.6 : 0.48, 0.64, { w: 0.5, size: 0.042, rotation: 4, bg: "#FFFFFF", color: "#272727" }),
+      chip("up to 20 Mbps", tablet ? 0.58 : 0.5, 0.5, { w: 0.48, size: 0.042, rotation: -5, bg: "#FFFFFF", color: "#272727" }),
+      chip("60 · 30 · 24 fps", tablet ? 0.5 : 0.48, 0.64, { w: 0.5, size: 0.042, rotation: 4, bg: "#FFFFFF", color: "#272727" }),
     ],
   });
 
@@ -178,7 +181,9 @@ function deck(device) {
       }),
     ),
     imageElements: [
-      { ...sticker("/app-icon.png", 0.36, tablet ? 0.79 : 0.76, 0.28, { ratio: 1, radius: 0.22, border: 0, rotation: -6 }) },
+      device.startsWith("duo")
+        ? sticker("/app-icon.png", 0.4, 0.77, 0.2, { ratio: 1, radius: 0.22, border: 0, rotation: -6 })
+        : sticker("/app-icon.png", 0.36, tablet ? 0.79 : 0.76, 0.28, { ratio: 1, radius: 0.22, border: 0, rotation: -6 }),
     ],
   });
 
@@ -210,6 +215,8 @@ const state = {
   slidesByDevice: {
     iphone: deck("iphone"),
     ipad: deck("ipad"),
+    "duo-outer": deck("duo-outer"),
+    "duo-inner": deck("duo-inner"),
     android: deck("android"),
     "android-7": [],
     "android-10": [],

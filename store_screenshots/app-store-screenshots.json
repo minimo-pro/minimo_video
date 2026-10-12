@@ -19,7 +19,7 @@
     "zh"
   ],
   "locale": "en",
-  "device": "iphone",
+  "device": "duo-inner",
   "orientation": "portrait",
   "appIcon": "/app-icon.png",
   "slidesByDevice": {
@@ -1799,7 +1799,7 @@
     ],
     "ipad": [
       {
-        "id": "s_30",
+        "id": "s_1",
         "layout": "hero",
         "label": {
           "en": "free · no ads · no subscription",
@@ -1867,7 +1867,7 @@
         },
         "imageElements": [
           {
-            "id": "i_32",
+            "id": "i_2",
             "src": "/photos/dog.jpg",
             "radius": 36,
             "border": 16,
@@ -1885,7 +1885,7 @@
         ]
       },
       {
-        "id": "s_33",
+        "id": "s_3",
         "layout": "device-bottom",
         "label": {
           "en": "before & after",
@@ -1953,7 +1953,7 @@
         },
         "imageElements": [
           {
-            "id": "i_34",
+            "id": "i_4",
             "src": "/brand/compare-{locale}.png",
             "radius": 83,
             "border": 37,
@@ -1971,7 +1971,7 @@
         ]
       },
       {
-        "id": "s_35",
+        "id": "s_5",
         "layout": "device-top",
         "label": {
           "en": "batch compression",
@@ -2039,7 +2039,7 @@
         },
         "imageElements": [
           {
-            "id": "i_36",
+            "id": "i_6",
             "src": "/photos/birthday.jpg",
             "radius": 40,
             "border": 17,
@@ -2055,7 +2055,7 @@
             }
           },
           {
-            "id": "i_37",
+            "id": "i_7",
             "src": "/photos/mountains.jpg",
             "radius": 40,
             "border": 17,
@@ -2073,7 +2073,7 @@
         ]
       },
       {
-        "id": "s_38",
+        "id": "s_8",
         "layout": "device-bottom",
         "inverted": true,
         "label": {
@@ -2142,7 +2142,7 @@
         },
         "textElements": [
           {
-            "id": "t_39",
+            "id": "t_9",
             "text": {
               "en": "no cloud",
               "de": "ohne cloud",
@@ -2158,6 +2158,10 @@
               "tr": "bulut yok",
               "zh": "无需云端"
             },
+            "fontSize": 93,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center",
             "transform": {
               "x": 123.83999999999999,
               "y": 1155.84,
@@ -2165,14 +2169,10 @@
               "height": 204.336,
               "rotation": -6,
               "zIndex": 8
-            },
-            "fontSize": 93,
-            "color": "#272727",
-            "background": "rgba(255,255,255,0.92)",
-            "align": "center"
+            }
           },
           {
-            "id": "t_40",
+            "id": "t_10",
             "text": {
               "en": "no account",
               "de": "ohne konto",
@@ -2188,6 +2188,10 @@
               "tr": "hesap yok",
               "zh": "无需账号"
             },
+            "fontSize": 93,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center",
             "transform": {
               "x": 1238.3999999999999,
               "y": 1210.88,
@@ -2195,16 +2199,12 @@
               "height": 204.336,
               "rotation": 5,
               "zIndex": 8
-            },
-            "fontSize": 93,
-            "color": "#272727",
-            "background": "rgba(255,255,255,0.92)",
-            "align": "center"
+            }
           }
         ]
       },
       {
-        "id": "s_43",
+        "id": "s_11",
         "layout": "device-bottom",
         "label": {
           "en": "advanced mode",
@@ -2272,7 +2272,7 @@
         },
         "textElements": [
           {
-            "id": "t_44",
+            "id": "t_12",
             "text": {
               "en": "HEVC",
               "de": "HEVC",
@@ -2288,6 +2288,10 @@
               "tr": "HEVC",
               "zh": "HEVC"
             },
+            "fontSize": 103,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center",
             "transform": {
               "x": 1527.36,
               "y": 990.7199999999999,
@@ -2295,14 +2299,10 @@
               "height": 227.04000000000002,
               "rotation": 8,
               "zIndex": 8
-            },
-            "fontSize": 103,
-            "color": "#FFFFFF",
-            "background": "#FC3636",
-            "align": "center"
+            }
           },
           {
-            "id": "t_45",
+            "id": "t_13",
             "text": {
               "en": "up to 20 Mbps",
               "de": "bis zu 20 Mbit/s",
@@ -2318,21 +2318,21 @@
               "tr": "20 Mbps’ye kadar",
               "zh": "最高 20 Mbps"
             },
+            "fontSize": 87,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
             "transform": {
-              "x": 1279.68,
+              "x": 1197.12,
               "y": 1376,
               "width": 990.7199999999999,
               "height": 190.7136,
               "rotation": -5,
               "zIndex": 8
-            },
-            "fontSize": 87,
-            "color": "#272727",
-            "background": "#FFFFFF",
-            "align": "center"
+            }
           },
           {
-            "id": "t_46",
+            "id": "t_14",
             "text": {
               "en": "60 · 30 · 24 fps",
               "de": "60 · 30 · 24 fps",
@@ -2348,23 +2348,23 @@
               "tr": "60 · 30 · 24 fps",
               "zh": "60 · 30 · 24 fps"
             },
+            "fontSize": 87,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
             "transform": {
-              "x": 1238.3999999999999,
+              "x": 1032,
               "y": 1761.28,
               "width": 1032,
               "height": 190.7136,
               "rotation": 4,
               "zIndex": 8
-            },
-            "fontSize": 87,
-            "color": "#272727",
-            "background": "#FFFFFF",
-            "align": "center"
+            }
           }
         ]
       },
       {
-        "id": "s_49",
+        "id": "s_15",
         "layout": "no-device",
         "label": {
           "en": "simple · private · free",
@@ -2424,7 +2424,7 @@
         },
         "textElements": [
           {
-            "id": "t_50",
+            "id": "t_16",
             "text": {
               "en": "batch compression",
               "de": "stapelkomprimierung",
@@ -2440,6 +2440,10 @@
               "tr": "toplu sıkıştırma",
               "zh": "批量压缩"
             },
+            "fontSize": 74,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center",
             "transform": {
               "x": 82.56,
               "y": 1100.8,
@@ -2447,14 +2451,10 @@
               "height": 163.4688,
               "rotation": -4,
               "zIndex": 8
-            },
-            "fontSize": 74,
-            "color": "#FFFFFF",
-            "background": "#FC3636",
-            "align": "center"
+            }
           },
           {
-            "id": "t_51",
+            "id": "t_17",
             "text": {
               "en": "before & after",
               "de": "vorher & nachher",
@@ -2470,6 +2470,10 @@
               "tr": "öncesi ve sonrası",
               "zh": "压缩前后"
             },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
             "transform": {
               "x": 949.44,
               "y": 1100.8,
@@ -2477,14 +2481,10 @@
               "height": 163.4688,
               "rotation": 3,
               "zIndex": 8
-            },
-            "fontSize": 74,
-            "color": "#272727",
-            "background": "#FFFFFF",
-            "align": "center"
+            }
           },
           {
-            "id": "t_52",
+            "id": "t_18",
             "text": {
               "en": "H.264 + HEVC",
               "de": "H.264 + HEVC",
@@ -2500,6 +2500,10 @@
               "tr": "H.264 + HEVC",
               "zh": "H.264 + HEVC"
             },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
             "transform": {
               "x": 82.56,
               "y": 1334.72,
@@ -2507,14 +2511,10 @@
               "height": 163.4688,
               "rotation": 2,
               "zIndex": 8
-            },
-            "fontSize": 74,
-            "color": "#272727",
-            "background": "#FFFFFF",
-            "align": "center"
+            }
           },
           {
-            "id": "t_53",
+            "id": "t_19",
             "text": {
               "en": "Shortcuts & share sheet",
               "de": "Kurzbefehle & Teilen",
@@ -2530,6 +2530,10 @@
               "tr": "Kestirmeler ve paylaşım",
               "zh": "快捷指令与分享"
             },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
             "transform": {
               "x": 949.44,
               "y": 1334.72,
@@ -2537,14 +2541,10 @@
               "height": 163.4688,
               "rotation": -3,
               "zIndex": 8
-            },
-            "fontSize": 74,
-            "color": "#272727",
-            "background": "#FFFFFF",
-            "align": "center"
+            }
           },
           {
-            "id": "t_54",
+            "id": "t_20",
             "text": {
               "en": "keeps date & location",
               "de": "datum & ort bleiben",
@@ -2560,6 +2560,10 @@
               "tr": "tarih ve konum korunur",
               "zh": "保留日期和位置"
             },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
             "transform": {
               "x": 82.56,
               "y": 1568.64,
@@ -2567,14 +2571,10 @@
               "height": 163.4688,
               "rotation": -2,
               "zIndex": 8
-            },
-            "fontSize": 74,
-            "color": "#272727",
-            "background": "#FFFFFF",
-            "align": "center"
+            }
           },
           {
-            "id": "t_55",
+            "id": "t_21",
             "text": {
               "en": "13 languages",
               "de": "13 sprachen",
@@ -2590,6 +2590,10 @@
               "tr": "13 dil",
               "zh": "13 种语言"
             },
+            "fontSize": 74,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center",
             "transform": {
               "x": 949.44,
               "y": 1568.64,
@@ -2597,14 +2601,10 @@
               "height": 163.4688,
               "rotation": 4,
               "zIndex": 8
-            },
-            "fontSize": 74,
-            "color": "#FFFFFF",
-            "background": "#FC3636",
-            "align": "center"
+            }
           },
           {
-            "id": "t_56",
+            "id": "t_22",
             "text": {
               "en": "dark mode",
               "de": "dunkelmodus",
@@ -2620,6 +2620,10 @@
               "tr": "koyu mod",
               "zh": "深色模式"
             },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
             "transform": {
               "x": 82.56,
               "y": 1802.5600000000002,
@@ -2627,14 +2631,10 @@
               "height": 163.4688,
               "rotation": 3,
               "zIndex": 8
-            },
-            "fontSize": 74,
-            "color": "#272727",
-            "background": "#FFFFFF",
-            "align": "center"
+            }
           },
           {
-            "id": "t_57",
+            "id": "t_23",
             "text": {
               "en": "open source",
               "de": "quelloffen",
@@ -2650,6 +2650,10 @@
               "tr": "açık kaynak",
               "zh": "开源"
             },
+            "fontSize": 74,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
             "transform": {
               "x": 949.44,
               "y": 1802.5600000000002,
@@ -2657,16 +2661,12 @@
               "height": 163.4688,
               "rotation": -4,
               "zIndex": 8
-            },
-            "fontSize": 74,
-            "color": "#272727",
-            "background": "#FFFFFF",
-            "align": "center"
+            }
           }
         ],
         "imageElements": [
           {
-            "id": "i_58",
+            "id": "i_24",
             "src": "/app-icon.png",
             "radius": 127,
             "border": 0,
@@ -2677,6 +2677,1780 @@
               "y": 2174.08,
               "width": 577.9200000000001,
               "height": 577.9200000000001,
+              "rotation": -6,
+              "zIndex": 7
+            }
+          }
+        ]
+      }
+    ],
+    "duo-outer": [
+      {
+        "id": "s_1",
+        "layout": "hero",
+        "label": {
+          "en": "free · no ads · no subscription",
+          "de": "gratis · ohne werbung · ohne abo",
+          "es": "gratis · sin anuncios · sin suscripción",
+          "fr": "gratuit · sans pub · sans abonnement",
+          "hi": "मुफ़्त · बिना विज्ञापन · बिना सदस्यता",
+          "it": "gratis · senza pubblicità · senza abbonamento",
+          "ja": "無料 · 広告なし · サブスクなし",
+          "ko": "무료 · 광고 없음 · 구독 없음",
+          "nl": "gratis · geen ads · geen abonnement",
+          "pt": "grátis · sem anúncios · sem assinatura",
+          "ru": "бесплатно · без рекламы · без подписок",
+          "tr": "ücretsiz · reklamsız · aboneliksiz",
+          "zh": "免费 · 无广告 · 无订阅"
+        },
+        "headline": {
+          "en": "make your videos\nsmaller",
+          "de": "deine videos,\nkleiner",
+          "es": "tus vídeos,\nmás pequeños",
+          "fr": "tes vidéos,\nplus légères",
+          "hi": "अपने वीडियो\nछोटे करें",
+          "it": "i tuoi video,\npiù piccoli",
+          "ja": "動画を\nもっと小さく",
+          "ko": "동영상 용량을\n더 작게",
+          "nl": "je video’s,\nkleiner",
+          "pt": "seus vídeos,\nmenores",
+          "ru": "твои видео\nвесят меньше",
+          "tr": "videoların\ndaha küçük",
+          "zh": "让你的视频\n更小巧"
+        },
+        "highlight": {
+          "en": "smaller",
+          "de": "kleiner",
+          "es": "más pequeños",
+          "fr": "plus légères",
+          "hi": "छोटे करें",
+          "it": "più piccoli",
+          "ja": "もっと小さく",
+          "ko": "더 작게",
+          "nl": "kleiner",
+          "pt": "menores",
+          "ru": "весят меньше",
+          "tr": "daha küçük",
+          "zh": "更小巧"
+        },
+        "screenshot": "/screenshots/apple/duo-outer/{locale}/01-settings.png",
+        "transforms": {
+          "caption": {
+            "x": 83.88,
+            "y": 111.87,
+            "width": 1230.24,
+            "height": 406.8,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 209.70000000000002,
+            "y": 508.5,
+            "width": 978.5999999999999,
+            "height": 1364.071410419314,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_2",
+            "src": "/photos/dog.jpg",
+            "radius": 25,
+            "border": 11,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 27.96,
+              "y": 772.92,
+              "width": 307.56,
+              "height": 230.67000000000002,
+              "rotation": -9,
+              "zIndex": 7
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_3",
+        "layout": "device-bottom",
+        "label": {
+          "en": "before & after",
+          "de": "vorher & nachher",
+          "es": "antes y después",
+          "fr": "avant & après",
+          "hi": "पहले और बाद में",
+          "it": "prima e dopo",
+          "ja": "ビフォー＆アフター",
+          "ko": "압축 전후",
+          "nl": "voor & na",
+          "pt": "antes e depois",
+          "ru": "до и после",
+          "tr": "öncesi ve sonrası",
+          "zh": "压缩前后"
+        },
+        "headline": {
+          "en": "same moments,\nsmaller files",
+          "de": "gleiche momente,\nkleinere dateien",
+          "es": "mismos momentos,\narchivos menores",
+          "fr": "mêmes souvenirs,\nfichiers réduits",
+          "hi": "वही पल,\nछोटी फ़ाइलें",
+          "it": "stessi momenti,\nfile più piccoli",
+          "ja": "思い出はそのまま\nファイルは小さく",
+          "ko": "추억은 그대로,\n파일은 작게",
+          "nl": "dezelfde momenten,\nkleinere bestanden",
+          "pt": "mesmos momentos,\narquivos menores",
+          "ru": "те же моменты,\nменьше места",
+          "tr": "aynı anılar,\nküçük dosyalar",
+          "zh": "精彩瞬间不变\n文件更小"
+        },
+        "highlight": {
+          "en": "smaller files",
+          "de": "kleinere dateien",
+          "es": "archivos menores",
+          "fr": "fichiers réduits",
+          "hi": "छोटी फ़ाइलें",
+          "it": "file più piccoli",
+          "ja": "ファイルは小さく",
+          "ko": "파일은 작게",
+          "nl": "kleinere bestanden",
+          "pt": "arquivos menores",
+          "ru": "меньше места",
+          "tr": "küçük dosyalar",
+          "zh": "文件更小"
+        },
+        "screenshot": "/screenshots/apple/duo-outer/{locale}/04-result.png",
+        "transforms": {
+          "caption": {
+            "x": 83.88,
+            "y": 111.87,
+            "width": 1230.24,
+            "height": 406.8,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 300.2904,
+            "y": 854.28,
+            "width": 797.4192,
+            "height": 1111.5233321473954,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_4",
+            "src": "/brand/compare-{locale}.png",
+            "radius": 56,
+            "border": 25,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 139.8,
+              "y": 437.31,
+              "width": 1118.4,
+              "height": 838.8000000000001,
+              "rotation": -3,
+              "zIndex": 9
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_5",
+        "layout": "device-top",
+        "label": {
+          "en": "batch compression",
+          "de": "stapelkomprimierung",
+          "es": "compresión por lotes",
+          "fr": "compression par lot",
+          "hi": "एक साथ कंप्रेशन",
+          "it": "compressione in serie",
+          "ja": "まとめて圧縮",
+          "ko": "여러 영상 압축",
+          "nl": "batchcompressie",
+          "pt": "compressão em lote",
+          "ru": "пакетное сжатие",
+          "tr": "toplu sıkıştırma",
+          "zh": "批量压缩"
+        },
+        "headline": {
+          "en": "shrink them\nall at once",
+          "de": "alle videos\nauf einmal",
+          "es": "comprímelos\ntodos a la vez",
+          "fr": "compresse-les\ntous à la fois",
+          "hi": "सभी वीडियो\nएक साथ छोटे करें",
+          "it": "comprimili\ntutti insieme",
+          "ja": "動画をまとめて\n一度に圧縮",
+          "ko": "모든 영상을\n한 번에 압축",
+          "nl": "verklein ze\nallemaal tegelijk",
+          "pt": "comprima todos\nde uma vez",
+          "ru": "сжимай видео\nвсе сразу",
+          "tr": "tümünü\ntek seferde küçült",
+          "zh": "多个视频\n一次搞定"
+        },
+        "highlight": {
+          "en": "all at once",
+          "de": "auf einmal",
+          "es": "todos a la vez",
+          "fr": "tous à la fois",
+          "hi": "एक साथ छोटे करें",
+          "it": "tutti insieme",
+          "ja": "一度に圧縮",
+          "ko": "한 번에 압축",
+          "nl": "allemaal tegelijk",
+          "pt": "de uma vez",
+          "ru": "все сразу",
+          "tr": "tek seferde küçült",
+          "zh": "一次搞定"
+        },
+        "screenshot": "/screenshots/apple/duo-outer/{locale}/03-progress.png",
+        "transforms": {
+          "device": {
+            "x": 265.62,
+            "y": -264.42,
+            "width": 866.76,
+            "height": 1208.177534942821,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 83.88,
+            "y": 1606.8600000000001,
+            "width": 1230.24,
+            "height": 406.8,
+            "rotation": 0,
+            "zIndex": 6
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_6",
+            "src": "/photos/birthday.jpg",
+            "radius": 27,
+            "border": 12,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 41.94,
+              "y": 1017,
+              "width": 335.52,
+              "height": 251.64,
+              "rotation": -8,
+              "zIndex": 7
+            }
+          },
+          {
+            "id": "i_7",
+            "src": "/photos/mountains.jpg",
+            "radius": 27,
+            "border": 12,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 1020.54,
+              "y": 1139.0400000000002,
+              "width": 335.52,
+              "height": 251.64,
+              "rotation": 7,
+              "zIndex": 7
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_8",
+        "layout": "device-bottom",
+        "inverted": true,
+        "label": {
+          "en": "100% on-device",
+          "de": "100% auf dem gerät",
+          "es": "100% en tu dispositivo",
+          "fr": "100% sur l’appareil",
+          "hi": "100% डिवाइस पर",
+          "it": "100% sul dispositivo",
+          "ja": "すべて端末内で処理",
+          "ko": "100% 기기에서 처리",
+          "nl": "100% op je apparaat",
+          "pt": "100% no dispositivo",
+          "ru": "100% на устройстве",
+          "tr": "%100 cihazında",
+          "zh": "100% 本地处理"
+        },
+        "headline": {
+          "en": "your videos\nnever leave\nyour phone",
+          "de": "deine videos\nbleiben auf\ndeinem handy",
+          "es": "tus vídeos\nse quedan\nen tu móvil",
+          "fr": "tes vidéos\nrestent sur\nton téléphone",
+          "hi": "आपके वीडियो\nफ़ोन में ही\nरहते हैं",
+          "it": "i tuoi video\nrestano sul\ntuo telefono",
+          "ja": "動画は\nスマホの中から\n出ません",
+          "ko": "내 동영상은\n휴대폰 안에\n그대로",
+          "nl": "je video’s\nblijven op\nje telefoon",
+          "pt": "seus vídeos\nficam no\nseu celular",
+          "ru": "твои видео\nостаются\nв телефоне",
+          "tr": "videoların\ntelefonunda\nkalır",
+          "zh": "你的视频\n始终留在\n手机里"
+        },
+        "highlight": {
+          "en": "never leave",
+          "de": "bleiben auf",
+          "es": "se quedan",
+          "fr": "restent sur",
+          "hi": "फ़ोन में ही",
+          "it": "restano sul",
+          "ja": "出ません",
+          "ko": "휴대폰 안에",
+          "nl": "blijven op",
+          "pt": "ficam no",
+          "ru": "остаются",
+          "tr": "telefonunda",
+          "zh": "始终留在"
+        },
+        "screenshot": "/screenshots/apple/duo-outer/{locale}/09-result-dark.png",
+        "transforms": {
+          "caption": {
+            "x": 83.88,
+            "y": 111.87,
+            "width": 1230.24,
+            "height": 569.5200000000001,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 308.95799999999997,
+            "y": 955.9799999999999,
+            "width": 780.0840000000001,
+            "height": 1087.359781448539,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_9",
+            "text": {
+              "en": "no cloud",
+              "de": "ohne cloud",
+              "es": "sin nube",
+              "fr": "sans cloud",
+              "hi": "बिना क्लाउड",
+              "it": "senza cloud",
+              "ja": "クラウド不要",
+              "ko": "클라우드 없이",
+              "nl": "geen cloud",
+              "pt": "sem nuvem",
+              "ru": "без облака",
+              "tr": "bulut yok",
+              "zh": "无需云端"
+            },
+            "fontSize": 63,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center",
+            "transform": {
+              "x": 83.88,
+              "y": 854.28,
+              "width": 503.28,
+              "height": 138.40200000000002,
+              "rotation": -6,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_10",
+            "text": {
+              "en": "no account",
+              "de": "ohne konto",
+              "es": "sin cuenta",
+              "fr": "sans compte",
+              "hi": "बिना खाते",
+              "it": "senza account",
+              "ja": "アカウント不要",
+              "ko": "계정 없이",
+              "nl": "geen account",
+              "pt": "sem conta",
+              "ru": "без аккаунта",
+              "tr": "hesap yok",
+              "zh": "无需账号"
+            },
+            "fontSize": 63,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center",
+            "transform": {
+              "x": 838.8,
+              "y": 894.96,
+              "width": 559.2,
+              "height": 138.40200000000002,
+              "rotation": 5,
+              "zIndex": 8
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_11",
+        "layout": "device-bottom",
+        "label": {
+          "en": "advanced mode",
+          "de": "erweiterter modus",
+          "es": "modo avanzado",
+          "fr": "mode avancé",
+          "hi": "उन्नत मोड",
+          "it": "modalità avanzata",
+          "ja": "詳細モード",
+          "ko": "고급 모드",
+          "nl": "geavanceerde modus",
+          "pt": "modo avançado",
+          "ru": "расширенный режим",
+          "tr": "gelişmiş mod",
+          "zh": "高级模式"
+        },
+        "headline": {
+          "en": "fine-tune\nevery detail",
+          "de": "jedes detail\nselbst bestimmen",
+          "es": "ajusta\ncada detalle",
+          "fr": "règle\nchaque détail",
+          "hi": "हर बारीकी\nअपने हिसाब से",
+          "it": "regola\nogni dettaglio",
+          "ja": "細部まで\n自由に調整",
+          "ko": "세세한 설정까지\n내 마음대로",
+          "nl": "stel elk detail\nzelf in",
+          "pt": "ajuste\ncada detalhe",
+          "ru": "настрой\nкаждую деталь",
+          "tr": "her ayrıntıyı\nkendin ayarla",
+          "zh": "精细调整\n每个细节"
+        },
+        "highlight": {
+          "en": "every detail",
+          "de": "selbst bestimmen",
+          "es": "cada detalle",
+          "fr": "chaque détail",
+          "hi": "अपने हिसाब से",
+          "it": "ogni dettaglio",
+          "ja": "自由に調整",
+          "ko": "내 마음대로",
+          "nl": "zelf in",
+          "pt": "cada detalhe",
+          "ru": "каждую деталь",
+          "tr": "kendin ayarla",
+          "zh": "每个细节"
+        },
+        "screenshot": "/screenshots/apple/duo-outer/{locale}/02-advanced.png",
+        "transforms": {
+          "caption": {
+            "x": 83.88,
+            "y": 111.87,
+            "width": 1230.24,
+            "height": 406.8,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 167.76,
+            "y": 549.1800000000001,
+            "width": 866.76,
+            "height": 1208.177534942821,
+            "rotation": -4,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_12",
+            "text": {
+              "en": "HEVC",
+              "de": "HEVC",
+              "es": "HEVC",
+              "fr": "HEVC",
+              "hi": "HEVC",
+              "it": "HEVC",
+              "ja": "HEVC",
+              "ko": "HEVC",
+              "nl": "HEVC",
+              "pt": "HEVC",
+              "ru": "HEVC",
+              "tr": "HEVC",
+              "zh": "HEVC"
+            },
+            "fontSize": 70,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center",
+            "transform": {
+              "x": 1034.52,
+              "y": 732.24,
+              "width": 391.44000000000005,
+              "height": 153.78000000000003,
+              "rotation": 8,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_13",
+            "text": {
+              "en": "up to 20 Mbps",
+              "de": "bis zu 20 Mbit/s",
+              "es": "hasta 20 Mbps",
+              "fr": "jusqu’à 20 Mbit/s",
+              "hi": "20 Mbps तक",
+              "it": "fino a 20 Mbps",
+              "ja": "最大20 Mbps",
+              "ko": "최대 20 Mbps",
+              "nl": "tot 20 Mbps",
+              "pt": "até 20 Mbps",
+              "ru": "до 20 Мбит/с",
+              "tr": "20 Mbps’ye kadar",
+              "zh": "最高 20 Mbps"
+            },
+            "fontSize": 59,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 810.8399999999999,
+              "y": 1017,
+              "width": 671.04,
+              "height": 129.17520000000002,
+              "rotation": -5,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_14",
+            "text": {
+              "en": "60 · 30 · 24 fps",
+              "de": "60 · 30 · 24 fps",
+              "es": "60 · 30 · 24 fps",
+              "fr": "60 · 30 · 24 fps",
+              "hi": "60 · 30 · 24 fps",
+              "it": "60 · 30 · 24 fps",
+              "ja": "60 · 30 · 24 fps",
+              "ko": "60 · 30 · 24 fps",
+              "nl": "60 · 30 · 24 fps",
+              "pt": "60 · 30 · 24 fps",
+              "ru": "60 · 30 · 24 кадр/с",
+              "tr": "60 · 30 · 24 fps",
+              "zh": "60 · 30 · 24 fps"
+            },
+            "fontSize": 59,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 699,
+              "y": 1301.76,
+              "width": 699,
+              "height": 129.17520000000002,
+              "rotation": 4,
+              "zIndex": 8
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_15",
+        "layout": "no-device",
+        "label": {
+          "en": "simple · private · free",
+          "de": "einfach · privat · gratis",
+          "es": "simple · privado · gratis",
+          "fr": "simple · privé · gratuit",
+          "hi": "सरल · निजी · मुफ़्त",
+          "it": "semplice · privato · gratis",
+          "ja": "シンプル · 非公開 · 無料",
+          "ko": "간단하게 · 안전하게 · 무료",
+          "nl": "simpel · privé · gratis",
+          "pt": "simples · privado · grátis",
+          "ru": "просто · приватно · бесплатно",
+          "tr": "basit · özel · ücretsiz",
+          "zh": "简单 · 私密 · 免费"
+        },
+        "headline": {
+          "en": "everything you\nneed. nothing\nyou don't",
+          "de": "alles, was du\nbrauchst. ohne\nüberflüssiges",
+          "es": "todo lo que\nnecesitas. nada\nde más",
+          "fr": "tout le nécessaire.\nrien de\nsuperflu",
+          "hi": "ज़रूरत की हर चीज़.\nकुछ भी\nफ़ालतू नहीं",
+          "it": "tutto ciò che serve.\nniente\ndi troppo",
+          "ja": "必要なものだけ。\n余計なものは\nありません",
+          "ko": "필요한 것만.\n불필요한 건\n없어요",
+          "nl": "alles wat je nodig\nhebt. niets\noverbodigs",
+          "pt": "tudo o que precisa.\nnada\na mais",
+          "ru": "всё нужное.\nничего\nлишнего",
+          "tr": "ihtiyacın olan her şey.\nfazlası\nyok",
+          "zh": "所需功能都有\n没有\n多余的"
+        },
+        "highlight": {
+          "en": "nothing",
+          "de": "überflüssiges",
+          "es": "nada",
+          "fr": "rien",
+          "hi": "फ़ालतू नहीं",
+          "it": "niente",
+          "ja": "余計なもの",
+          "ko": "불필요한 건",
+          "nl": "niets",
+          "pt": "nada",
+          "ru": "ничего",
+          "tr": "fazlası",
+          "zh": "没有"
+        },
+        "screenshot": "",
+        "transforms": {
+          "caption": {
+            "x": 83.88,
+            "y": 142.38000000000002,
+            "width": 1230.24,
+            "height": 610.1999999999999,
+            "rotation": 0,
+            "zIndex": 6
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_16",
+            "text": {
+              "en": "batch compression",
+              "de": "stapelkomprimierung",
+              "es": "compresión por lotes",
+              "fr": "compression par lot",
+              "hi": "एक साथ कंप्रेशन",
+              "it": "compressione in serie",
+              "ja": "まとめて圧縮",
+              "ko": "여러 영상 압축",
+              "nl": "batchcompressie",
+              "pt": "compressão em lote",
+              "ru": "пакетное сжатие",
+              "tr": "toplu sıkıştırma",
+              "zh": "批量压缩"
+            },
+            "fontSize": 50,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center",
+            "transform": {
+              "x": 55.92,
+              "y": 813.6,
+              "width": 699,
+              "height": 110.7216,
+              "rotation": -4,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_17",
+            "text": {
+              "en": "before & after",
+              "de": "vorher & nachher",
+              "es": "antes y después",
+              "fr": "avant & après",
+              "hi": "पहले और बाद में",
+              "it": "prima e dopo",
+              "ja": "ビフォー＆アフター",
+              "ko": "압축 전후",
+              "nl": "voor & na",
+              "pt": "antes e depois",
+              "ru": "до и после",
+              "tr": "öncesi ve sonrası",
+              "zh": "压缩前后"
+            },
+            "fontSize": 50,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 643.08,
+              "y": 813.6,
+              "width": 699,
+              "height": 110.7216,
+              "rotation": 3,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_18",
+            "text": {
+              "en": "H.264 + HEVC",
+              "de": "H.264 + HEVC",
+              "es": "H.264 + HEVC",
+              "fr": "H.264 + HEVC",
+              "hi": "H.264 + HEVC",
+              "it": "H.264 + HEVC",
+              "ja": "H.264 + HEVC",
+              "ko": "H.264 + HEVC",
+              "nl": "H.264 + HEVC",
+              "pt": "H.264 + HEVC",
+              "ru": "H.264 + HEVC",
+              "tr": "H.264 + HEVC",
+              "zh": "H.264 + HEVC"
+            },
+            "fontSize": 50,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 55.92,
+              "y": 986.4900000000001,
+              "width": 699,
+              "height": 110.7216,
+              "rotation": 2,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_19",
+            "text": {
+              "en": "Shortcuts & share sheet",
+              "de": "Kurzbefehle & Teilen",
+              "es": "Atajos y compartir",
+              "fr": "Raccourcis & partage",
+              "hi": "Shortcuts और शेयर",
+              "it": "Comandi Rapidi e condividi",
+              "ja": "ショートカット＆共有",
+              "ko": "단축어 및 공유",
+              "nl": "Opdrachten & delen",
+              "pt": "Atalhos e compartilhar",
+              "ru": "Команды и меню «Поделиться»",
+              "tr": "Kestirmeler ve paylaşım",
+              "zh": "快捷指令与分享"
+            },
+            "fontSize": 50,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 643.08,
+              "y": 986.4900000000001,
+              "width": 699,
+              "height": 110.7216,
+              "rotation": -3,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_20",
+            "text": {
+              "en": "keeps date & location",
+              "de": "datum & ort bleiben",
+              "es": "conserva fecha y lugar",
+              "fr": "garde date et lieu",
+              "hi": "तारीख़ और जगह सुरक्षित",
+              "it": "mantiene data e luogo",
+              "ja": "日時と位置を保持",
+              "ko": "날짜와 위치 유지",
+              "nl": "behoudt datum & locatie",
+              "pt": "mantém data e local",
+              "ru": "дата и место сохраняются",
+              "tr": "tarih ve konum korunur",
+              "zh": "保留日期和位置"
+            },
+            "fontSize": 50,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 55.92,
+              "y": 1159.38,
+              "width": 699,
+              "height": 110.7216,
+              "rotation": -2,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_21",
+            "text": {
+              "en": "13 languages",
+              "de": "13 sprachen",
+              "es": "13 idiomas",
+              "fr": "13 langues",
+              "hi": "13 भाषाएँ",
+              "it": "13 lingue",
+              "ja": "13言語",
+              "ko": "13개 언어",
+              "nl": "13 talen",
+              "pt": "13 idiomas",
+              "ru": "13 языков",
+              "tr": "13 dil",
+              "zh": "13 种语言"
+            },
+            "fontSize": 50,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center",
+            "transform": {
+              "x": 643.08,
+              "y": 1159.38,
+              "width": 699,
+              "height": 110.7216,
+              "rotation": 4,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_22",
+            "text": {
+              "en": "dark mode",
+              "de": "dunkelmodus",
+              "es": "modo oscuro",
+              "fr": "mode sombre",
+              "hi": "डार्क मोड",
+              "it": "modalità scura",
+              "ja": "ダークモード",
+              "ko": "다크 모드",
+              "nl": "donkere modus",
+              "pt": "modo escuro",
+              "ru": "тёмная тема",
+              "tr": "koyu mod",
+              "zh": "深色模式"
+            },
+            "fontSize": 50,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 55.92,
+              "y": 1332.27,
+              "width": 699,
+              "height": 110.7216,
+              "rotation": 3,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_23",
+            "text": {
+              "en": "open source",
+              "de": "quelloffen",
+              "es": "código abierto",
+              "fr": "code ouvert",
+              "hi": "ओपन सोर्स",
+              "it": "open source",
+              "ja": "オープンソース",
+              "ko": "오픈 소스",
+              "nl": "open source",
+              "pt": "código aberto",
+              "ru": "открытый код",
+              "tr": "açık kaynak",
+              "zh": "开源"
+            },
+            "fontSize": 50,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 643.08,
+              "y": 1332.27,
+              "width": 699,
+              "height": 110.7216,
+              "rotation": -4,
+              "zIndex": 8
+            }
+          }
+        ],
+        "imageElements": [
+          {
+            "id": "i_24",
+            "src": "/app-icon.png",
+            "radius": 62,
+            "border": 0,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 559.2,
+              "y": 1566.18,
+              "width": 279.6,
+              "height": 279.6,
+              "rotation": -6,
+              "zIndex": 7
+            }
+          }
+        ]
+      }
+    ],
+    "duo-inner": [
+      {
+        "id": "s_25",
+        "layout": "hero",
+        "label": {
+          "en": "free · no ads · no subscription",
+          "de": "gratis · ohne werbung · ohne abo",
+          "es": "gratis · sin anuncios · sin suscripción",
+          "fr": "gratuit · sans pub · sans abonnement",
+          "hi": "मुफ़्त · बिना विज्ञापन · बिना सदस्यता",
+          "it": "gratis · senza pubblicità · senza abbonamento",
+          "ja": "無料 · 広告なし · サブスクなし",
+          "ko": "무료 · 광고 없음 · 구독 없음",
+          "nl": "gratis · geen ads · geen abonnement",
+          "pt": "grátis · sem anúncios · sem assinatura",
+          "ru": "бесплатно · без рекламы · без подписок",
+          "tr": "ücretsiz · reklamsız · aboneliksiz",
+          "zh": "免费 · 无广告 · 无订阅"
+        },
+        "headline": {
+          "en": "make your videos\nsmaller",
+          "de": "deine videos,\nkleiner",
+          "es": "tus vídeos,\nmás pequeños",
+          "fr": "tes vidéos,\nplus légères",
+          "hi": "अपने वीडियो\nछोटे करें",
+          "it": "i tuoi video,\npiù piccoli",
+          "ja": "動画を\nもっと小さく",
+          "ko": "동영상 용량을\n더 작게",
+          "nl": "je video’s,\nkleiner",
+          "pt": "seus vídeos,\nmenores",
+          "ru": "твои видео\nвесят меньше",
+          "tr": "videoların\ndaha küçük",
+          "zh": "让你的视频\n更小巧"
+        },
+        "highlight": {
+          "en": "smaller",
+          "de": "kleiner",
+          "es": "más pequeños",
+          "fr": "plus légères",
+          "hi": "छोटे करें",
+          "it": "più piccoli",
+          "ja": "もっと小さく",
+          "ko": "더 작게",
+          "nl": "kleiner",
+          "pt": "menores",
+          "ru": "весят меньше",
+          "tr": "daha küçük",
+          "zh": "更小巧"
+        },
+        "screenshot": "/screenshots/apple/duo-inner/{locale}/01-settings.png",
+        "transforms": {
+          "caption": {
+            "x": 120.42,
+            "y": 156.915,
+            "width": 1766.16,
+            "height": 570.6,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 280.98,
+            "y": 713.25,
+            "width": 1445.04,
+            "height": 1989.1004539385847,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_26",
+            "src": "/photos/dog.jpg",
+            "radius": 35,
+            "border": 15,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 40.14,
+              "y": 1084.14,
+              "width": 441.54,
+              "height": 331.15500000000003,
+              "rotation": -9,
+              "zIndex": 7
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_27",
+        "layout": "device-bottom",
+        "label": {
+          "en": "before & after",
+          "de": "vorher & nachher",
+          "es": "antes y después",
+          "fr": "avant & après",
+          "hi": "पहले और बाद में",
+          "it": "prima e dopo",
+          "ja": "ビフォー＆アフター",
+          "ko": "압축 전후",
+          "nl": "voor & na",
+          "pt": "antes e depois",
+          "ru": "до и после",
+          "tr": "öncesi ve sonrası",
+          "zh": "压缩前后"
+        },
+        "headline": {
+          "en": "same moments,\nsmaller files",
+          "de": "gleiche momente,\nkleinere dateien",
+          "es": "mismos momentos,\narchivos menores",
+          "fr": "mêmes souvenirs,\nfichiers réduits",
+          "hi": "वही पल,\nछोटी फ़ाइलें",
+          "it": "stessi momenti,\nfile più piccoli",
+          "ja": "思い出はそのまま\nファイルは小さく",
+          "ko": "추억은 그대로,\n파일은 작게",
+          "nl": "dezelfde momenten,\nkleinere bestanden",
+          "pt": "mesmos momentos,\narquivos menores",
+          "ru": "те же моменты,\nменьше места",
+          "tr": "aynı anılar,\nküçük dosyalar",
+          "zh": "精彩瞬间不变\n文件更小"
+        },
+        "highlight": {
+          "en": "smaller files",
+          "de": "kleinere dateien",
+          "es": "archivos menores",
+          "fr": "fichiers réduits",
+          "hi": "छोटी फ़ाइलें",
+          "it": "file più piccoli",
+          "ja": "ファイルは小さく",
+          "ko": "파일은 작게",
+          "nl": "kleinere bestanden",
+          "pt": "arquivos menores",
+          "ru": "меньше места",
+          "tr": "küçük dosyalar",
+          "zh": "文件更小"
+        },
+        "screenshot": "/screenshots/apple/duo-inner/{locale}/04-result.png",
+        "transforms": {
+          "caption": {
+            "x": 120.42,
+            "y": 156.915,
+            "width": 1766.16,
+            "height": 570.6,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 412.6392,
+            "y": 1198.26,
+            "width": 1181.7216,
+            "height": 1626.6421489986649,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_28",
+            "src": "/brand/compare-{locale}.png",
+            "radius": 80,
+            "border": 36,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 200.70000000000002,
+              "y": 613.395,
+              "width": 1605.6000000000001,
+              "height": 1204.2,
+              "rotation": -3,
+              "zIndex": 9
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_29",
+        "layout": "device-top",
+        "label": {
+          "en": "batch compression",
+          "de": "stapelkomprimierung",
+          "es": "compresión por lotes",
+          "fr": "compression par lot",
+          "hi": "एक साथ कंप्रेशन",
+          "it": "compressione in serie",
+          "ja": "まとめて圧縮",
+          "ko": "여러 영상 압축",
+          "nl": "batchcompressie",
+          "pt": "compressão em lote",
+          "ru": "пакетное сжатие",
+          "tr": "toplu sıkıştırma",
+          "zh": "批量压缩"
+        },
+        "headline": {
+          "en": "shrink them\nall at once",
+          "de": "alle videos\nauf einmal",
+          "es": "comprímelos\ntodos a la vez",
+          "fr": "compresse-les\ntous à la fois",
+          "hi": "सभी वीडियो\nएक साथ छोटे करें",
+          "it": "comprimili\ntutti insieme",
+          "ja": "動画をまとめて\n一度に圧縮",
+          "ko": "모든 영상을\n한 번에 압축",
+          "nl": "verklein ze\nallemaal tegelijk",
+          "pt": "comprima todos\nde uma vez",
+          "ru": "сжимай видео\nвсе сразу",
+          "tr": "tümünü\ntek seferde küçült",
+          "zh": "多个视频\n一次搞定"
+        },
+        "highlight": {
+          "en": "all at once",
+          "de": "auf einmal",
+          "es": "todos a la vez",
+          "fr": "tous à la fois",
+          "hi": "एक साथ छोटे करें",
+          "it": "tutti insieme",
+          "ja": "一度に圧縮",
+          "ko": "한 번에 압축",
+          "nl": "allemaal tegelijk",
+          "pt": "de uma vez",
+          "ru": "все сразу",
+          "tr": "tek seferde küçült",
+          "zh": "一次搞定"
+        },
+        "screenshot": "/screenshots/apple/duo-inner/{locale}/03-progress.png",
+        "transforms": {
+          "device": {
+            "x": 361.26,
+            "y": -370.89,
+            "width": 1284.48,
+            "height": 1768.089292389853,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 120.42,
+            "y": 2253.87,
+            "width": 1766.16,
+            "height": 570.6,
+            "rotation": 0,
+            "zIndex": 6
+          }
+        },
+        "imageElements": [
+          {
+            "id": "i_30",
+            "src": "/photos/birthday.jpg",
+            "radius": 39,
+            "border": 17,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 60.21,
+              "y": 1426.5,
+              "width": 481.68,
+              "height": 361.26,
+              "rotation": -8,
+              "zIndex": 7
+            }
+          },
+          {
+            "id": "i_31",
+            "src": "/photos/mountains.jpg",
+            "radius": 39,
+            "border": 17,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 1465.11,
+              "y": 1597.68,
+              "width": 481.68,
+              "height": 361.26,
+              "rotation": 7,
+              "zIndex": 7
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_32",
+        "layout": "device-bottom",
+        "inverted": true,
+        "label": {
+          "en": "100% on-device",
+          "de": "100% auf dem gerät",
+          "es": "100% en tu dispositivo",
+          "fr": "100% sur l’appareil",
+          "hi": "100% डिवाइस पर",
+          "it": "100% sul dispositivo",
+          "ja": "すべて端末内で処理",
+          "ko": "100% 기기에서 처리",
+          "nl": "100% op je apparaat",
+          "pt": "100% no dispositivo",
+          "ru": "100% на устройстве",
+          "tr": "%100 cihazında",
+          "zh": "100% 本地处理"
+        },
+        "headline": {
+          "en": "your videos\nnever leave\nyour phone",
+          "de": "deine videos\nbleiben auf\ndeinem handy",
+          "es": "tus vídeos\nse quedan\nen tu móvil",
+          "fr": "tes vidéos\nrestent sur\nton téléphone",
+          "hi": "आपके वीडियो\nफ़ोन में ही\nरहते हैं",
+          "it": "i tuoi video\nrestano sul\ntuo telefono",
+          "ja": "動画は\nスマホの中から\n出ません",
+          "ko": "내 동영상은\n휴대폰 안에\n그대로",
+          "nl": "je video’s\nblijven op\nje telefoon",
+          "pt": "seus vídeos\nficam no\nseu celular",
+          "ru": "твои видео\nостаются\nв телефоне",
+          "tr": "videoların\ntelefonunda\nkalır",
+          "zh": "你的视频\n始终留在\n手机里"
+        },
+        "highlight": {
+          "en": "never leave",
+          "de": "bleiben auf",
+          "es": "se quedan",
+          "fr": "restent sur",
+          "hi": "फ़ोन में ही",
+          "it": "restano sul",
+          "ja": "出ません",
+          "ko": "휴대폰 안에",
+          "nl": "blijven op",
+          "pt": "ficam no",
+          "ru": "остаются",
+          "tr": "telefonunda",
+          "zh": "始终留在"
+        },
+        "screenshot": "/screenshots/apple/duo-inner/{locale}/09-result-dark.png",
+        "transforms": {
+          "caption": {
+            "x": 120.42,
+            "y": 156.915,
+            "width": 1766.16,
+            "height": 798.84,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 425.4839999999999,
+            "y": 1340.9099999999999,
+            "width": 1156.0320000000002,
+            "height": 1591.280363150868,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_33",
+            "text": {
+              "en": "no cloud",
+              "de": "ohne cloud",
+              "es": "sin nube",
+              "fr": "sans cloud",
+              "hi": "बिना क्लाउड",
+              "it": "senza cloud",
+              "ja": "クラウド不要",
+              "ko": "클라우드 없이",
+              "nl": "geen cloud",
+              "pt": "sem nuvem",
+              "ru": "без облака",
+              "tr": "bulut yok",
+              "zh": "无需云端"
+            },
+            "fontSize": 90,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center",
+            "transform": {
+              "x": 120.42,
+              "y": 1198.26,
+              "width": 722.52,
+              "height": 198.693,
+              "rotation": -6,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_34",
+            "text": {
+              "en": "no account",
+              "de": "ohne konto",
+              "es": "sin cuenta",
+              "fr": "sans compte",
+              "hi": "बिना खाते",
+              "it": "senza account",
+              "ja": "アカウント不要",
+              "ko": "계정 없이",
+              "nl": "geen account",
+              "pt": "sem conta",
+              "ru": "без аккаунта",
+              "tr": "hesap yok",
+              "zh": "无需账号"
+            },
+            "fontSize": 90,
+            "color": "#272727",
+            "background": "rgba(255,255,255,0.92)",
+            "align": "center",
+            "transform": {
+              "x": 1204.2,
+              "y": 1255.32,
+              "width": 802.8000000000001,
+              "height": 198.693,
+              "rotation": 5,
+              "zIndex": 8
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_35",
+        "layout": "device-bottom",
+        "label": {
+          "en": "advanced mode",
+          "de": "erweiterter modus",
+          "es": "modo avanzado",
+          "fr": "mode avancé",
+          "hi": "उन्नत मोड",
+          "it": "modalità avanzata",
+          "ja": "詳細モード",
+          "ko": "고급 모드",
+          "nl": "geavanceerde modus",
+          "pt": "modo avançado",
+          "ru": "расширенный режим",
+          "tr": "gelişmiş mod",
+          "zh": "高级模式"
+        },
+        "headline": {
+          "en": "fine-tune\nevery detail",
+          "de": "jedes detail\nselbst bestimmen",
+          "es": "ajusta\ncada detalle",
+          "fr": "règle\nchaque détail",
+          "hi": "हर बारीकी\nअपने हिसाब से",
+          "it": "regola\nogni dettaglio",
+          "ja": "細部まで\n自由に調整",
+          "ko": "세세한 설정까지\n내 마음대로",
+          "nl": "stel elk detail\nzelf in",
+          "pt": "ajuste\ncada detalhe",
+          "ru": "настрой\nкаждую деталь",
+          "tr": "her ayrıntıyı\nkendin ayarla",
+          "zh": "精细调整\n每个细节"
+        },
+        "highlight": {
+          "en": "every detail",
+          "de": "selbst bestimmen",
+          "es": "cada detalle",
+          "fr": "chaque détail",
+          "hi": "अपने हिसाब से",
+          "it": "ogni dettaglio",
+          "ja": "自由に調整",
+          "ko": "내 마음대로",
+          "nl": "zelf in",
+          "pt": "cada detalhe",
+          "ru": "каждую деталь",
+          "tr": "kendin ayarla",
+          "zh": "每个细节"
+        },
+        "screenshot": "/screenshots/apple/duo-inner/{locale}/02-advanced.png",
+        "transforms": {
+          "caption": {
+            "x": 120.42,
+            "y": 156.915,
+            "width": 1766.16,
+            "height": 570.6,
+            "rotation": 0,
+            "zIndex": 6
+          },
+          "device": {
+            "x": 240.84,
+            "y": 770.3100000000001,
+            "width": 1284.48,
+            "height": 1768.089292389853,
+            "rotation": -4,
+            "zIndex": 3
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_36",
+            "text": {
+              "en": "HEVC",
+              "de": "HEVC",
+              "es": "HEVC",
+              "fr": "HEVC",
+              "hi": "HEVC",
+              "it": "HEVC",
+              "ja": "HEVC",
+              "ko": "HEVC",
+              "nl": "HEVC",
+              "pt": "HEVC",
+              "ru": "HEVC",
+              "tr": "HEVC",
+              "zh": "HEVC"
+            },
+            "fontSize": 100,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center",
+            "transform": {
+              "x": 1485.18,
+              "y": 1027.08,
+              "width": 561.96,
+              "height": 220.77000000000004,
+              "rotation": 8,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_37",
+            "text": {
+              "en": "up to 20 Mbps",
+              "de": "bis zu 20 Mbit/s",
+              "es": "hasta 20 Mbps",
+              "fr": "jusqu’à 20 Mbit/s",
+              "hi": "20 Mbps तक",
+              "it": "fino a 20 Mbps",
+              "ja": "最大20 Mbps",
+              "ko": "최대 20 Mbps",
+              "nl": "tot 20 Mbps",
+              "pt": "até 20 Mbps",
+              "ru": "до 20 Мбит/с",
+              "tr": "20 Mbps’ye kadar",
+              "zh": "最高 20 Mbps"
+            },
+            "fontSize": 84,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 1164.06,
+              "y": 1426.5,
+              "width": 963.36,
+              "height": 185.44680000000005,
+              "rotation": -5,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_38",
+            "text": {
+              "en": "60 · 30 · 24 fps",
+              "de": "60 · 30 · 24 fps",
+              "es": "60 · 30 · 24 fps",
+              "fr": "60 · 30 · 24 fps",
+              "hi": "60 · 30 · 24 fps",
+              "it": "60 · 30 · 24 fps",
+              "ja": "60 · 30 · 24 fps",
+              "ko": "60 · 30 · 24 fps",
+              "nl": "60 · 30 · 24 fps",
+              "pt": "60 · 30 · 24 fps",
+              "ru": "60 · 30 · 24 кадр/с",
+              "tr": "60 · 30 · 24 fps",
+              "zh": "60 · 30 · 24 fps"
+            },
+            "fontSize": 84,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 1003.5,
+              "y": 1825.92,
+              "width": 1003.5,
+              "height": 185.44680000000005,
+              "rotation": 4,
+              "zIndex": 8
+            }
+          }
+        ]
+      },
+      {
+        "id": "s_39",
+        "layout": "no-device",
+        "label": {
+          "en": "simple · private · free",
+          "de": "einfach · privat · gratis",
+          "es": "simple · privado · gratis",
+          "fr": "simple · privé · gratuit",
+          "hi": "सरल · निजी · मुफ़्त",
+          "it": "semplice · privato · gratis",
+          "ja": "シンプル · 非公開 · 無料",
+          "ko": "간단하게 · 안전하게 · 무료",
+          "nl": "simpel · privé · gratis",
+          "pt": "simples · privado · grátis",
+          "ru": "просто · приватно · бесплатно",
+          "tr": "basit · özel · ücretsiz",
+          "zh": "简单 · 私密 · 免费"
+        },
+        "headline": {
+          "en": "everything you\nneed. nothing\nyou don't",
+          "de": "alles, was du\nbrauchst. ohne\nüberflüssiges",
+          "es": "todo lo que\nnecesitas. nada\nde más",
+          "fr": "tout le nécessaire.\nrien de\nsuperflu",
+          "hi": "ज़रूरत की हर चीज़.\nकुछ भी\nफ़ालतू नहीं",
+          "it": "tutto ciò che serve.\nniente\ndi troppo",
+          "ja": "必要なものだけ。\n余計なものは\nありません",
+          "ko": "필요한 것만.\n불필요한 건\n없어요",
+          "nl": "alles wat je nodig\nhebt. niets\noverbodigs",
+          "pt": "tudo o que precisa.\nnada\na mais",
+          "ru": "всё нужное.\nничего\nлишнего",
+          "tr": "ihtiyacın olan her şey.\nfazlası\nyok",
+          "zh": "所需功能都有\n没有\n多余的"
+        },
+        "highlight": {
+          "en": "nothing",
+          "de": "überflüssiges",
+          "es": "nada",
+          "fr": "rien",
+          "hi": "फ़ालतू नहीं",
+          "it": "niente",
+          "ja": "余計なもの",
+          "ko": "불필요한 건",
+          "nl": "niets",
+          "pt": "nada",
+          "ru": "ничего",
+          "tr": "fazlası",
+          "zh": "没有"
+        },
+        "screenshot": "",
+        "transforms": {
+          "caption": {
+            "x": 120.42,
+            "y": 199.71,
+            "width": 1766.16,
+            "height": 855.9,
+            "rotation": 0,
+            "zIndex": 6
+          }
+        },
+        "textElements": [
+          {
+            "id": "t_40",
+            "text": {
+              "en": "batch compression",
+              "de": "stapelkomprimierung",
+              "es": "compresión por lotes",
+              "fr": "compression par lot",
+              "hi": "एक साथ कंप्रेशन",
+              "it": "compressione in serie",
+              "ja": "まとめて圧縮",
+              "ko": "여러 영상 압축",
+              "nl": "batchcompressie",
+              "pt": "compressão em lote",
+              "ru": "пакетное сжатие",
+              "tr": "toplu sıkıştırma",
+              "zh": "批量压缩"
+            },
+            "fontSize": 72,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center",
+            "transform": {
+              "x": 80.28,
+              "y": 1141.2,
+              "width": 1003.5,
+              "height": 158.9544,
+              "rotation": -4,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_41",
+            "text": {
+              "en": "before & after",
+              "de": "vorher & nachher",
+              "es": "antes y después",
+              "fr": "avant & après",
+              "hi": "पहले और बाद में",
+              "it": "prima e dopo",
+              "ja": "ビフォー＆アフター",
+              "ko": "압축 전후",
+              "nl": "voor & na",
+              "pt": "antes e depois",
+              "ru": "до и после",
+              "tr": "öncesi ve sonrası",
+              "zh": "压缩前后"
+            },
+            "fontSize": 72,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 923.22,
+              "y": 1141.2,
+              "width": 1003.5,
+              "height": 158.9544,
+              "rotation": 3,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_42",
+            "text": {
+              "en": "H.264 + HEVC",
+              "de": "H.264 + HEVC",
+              "es": "H.264 + HEVC",
+              "fr": "H.264 + HEVC",
+              "hi": "H.264 + HEVC",
+              "it": "H.264 + HEVC",
+              "ja": "H.264 + HEVC",
+              "ko": "H.264 + HEVC",
+              "nl": "H.264 + HEVC",
+              "pt": "H.264 + HEVC",
+              "ru": "H.264 + HEVC",
+              "tr": "H.264 + HEVC",
+              "zh": "H.264 + HEVC"
+            },
+            "fontSize": 72,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 80.28,
+              "y": 1383.7050000000002,
+              "width": 1003.5,
+              "height": 158.9544,
+              "rotation": 2,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_43",
+            "text": {
+              "en": "Shortcuts & share sheet",
+              "de": "Kurzbefehle & Teilen",
+              "es": "Atajos y compartir",
+              "fr": "Raccourcis & partage",
+              "hi": "Shortcuts और शेयर",
+              "it": "Comandi Rapidi e condividi",
+              "ja": "ショートカット＆共有",
+              "ko": "단축어 및 공유",
+              "nl": "Opdrachten & delen",
+              "pt": "Atalhos e compartilhar",
+              "ru": "Команды и меню «Поделиться»",
+              "tr": "Kestirmeler ve paylaşım",
+              "zh": "快捷指令与分享"
+            },
+            "fontSize": 72,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 923.22,
+              "y": 1383.7050000000002,
+              "width": 1003.5,
+              "height": 158.9544,
+              "rotation": -3,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_44",
+            "text": {
+              "en": "keeps date & location",
+              "de": "datum & ort bleiben",
+              "es": "conserva fecha y lugar",
+              "fr": "garde date et lieu",
+              "hi": "तारीख़ और जगह सुरक्षित",
+              "it": "mantiene data e luogo",
+              "ja": "日時と位置を保持",
+              "ko": "날짜와 위치 유지",
+              "nl": "behoudt datum & locatie",
+              "pt": "mantém data e local",
+              "ru": "дата и место сохраняются",
+              "tr": "tarih ve konum korunur",
+              "zh": "保留日期和位置"
+            },
+            "fontSize": 72,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 80.28,
+              "y": 1626.2100000000003,
+              "width": 1003.5,
+              "height": 158.9544,
+              "rotation": -2,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_45",
+            "text": {
+              "en": "13 languages",
+              "de": "13 sprachen",
+              "es": "13 idiomas",
+              "fr": "13 langues",
+              "hi": "13 भाषाएँ",
+              "it": "13 lingue",
+              "ja": "13言語",
+              "ko": "13개 언어",
+              "nl": "13 talen",
+              "pt": "13 idiomas",
+              "ru": "13 языков",
+              "tr": "13 dil",
+              "zh": "13 种语言"
+            },
+            "fontSize": 72,
+            "color": "#FFFFFF",
+            "background": "#FC3636",
+            "align": "center",
+            "transform": {
+              "x": 923.22,
+              "y": 1626.2100000000003,
+              "width": 1003.5,
+              "height": 158.9544,
+              "rotation": 4,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_46",
+            "text": {
+              "en": "dark mode",
+              "de": "dunkelmodus",
+              "es": "modo oscuro",
+              "fr": "mode sombre",
+              "hi": "डार्क मोड",
+              "it": "modalità scura",
+              "ja": "ダークモード",
+              "ko": "다크 모드",
+              "nl": "donkere modus",
+              "pt": "modo escuro",
+              "ru": "тёмная тема",
+              "tr": "koyu mod",
+              "zh": "深色模式"
+            },
+            "fontSize": 72,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 80.28,
+              "y": 1868.7150000000001,
+              "width": 1003.5,
+              "height": 158.9544,
+              "rotation": 3,
+              "zIndex": 8
+            }
+          },
+          {
+            "id": "t_47",
+            "text": {
+              "en": "open source",
+              "de": "quelloffen",
+              "es": "código abierto",
+              "fr": "code ouvert",
+              "hi": "ओपन सोर्स",
+              "it": "open source",
+              "ja": "オープンソース",
+              "ko": "오픈 소스",
+              "nl": "open source",
+              "pt": "código aberto",
+              "ru": "открытый код",
+              "tr": "açık kaynak",
+              "zh": "开源"
+            },
+            "fontSize": 72,
+            "color": "#272727",
+            "background": "#FFFFFF",
+            "align": "center",
+            "transform": {
+              "x": 923.22,
+              "y": 1868.7150000000001,
+              "width": 1003.5,
+              "height": 158.9544,
+              "rotation": -4,
+              "zIndex": 8
+            }
+          }
+        ],
+        "imageElements": [
+          {
+            "id": "i_48",
+            "src": "/app-icon.png",
+            "radius": 88,
+            "border": 0,
+            "shadow": true,
+            "fit": "cover",
+            "transform": {
+              "x": 802.8000000000001,
+              "y": 2196.81,
+              "width": 401.40000000000003,
+              "height": 401.40000000000003,
               "rotation": -6,
               "zIndex": 7
             }

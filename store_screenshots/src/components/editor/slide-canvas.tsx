@@ -17,6 +17,8 @@ import type {
 } from "@/lib/types";
 import {
   CANVAS,
+  DUO_INNER_RATIO,
+  DUO_OUTER_RATIO,
   IPAD_RATIO,
   MK_RATIO,
   ipadW,
@@ -32,6 +34,8 @@ import {
   AndroidPhone,
   AndroidTabletL,
   AndroidTabletP,
+  DuoInner,
+  DuoOuter,
   IPad,
   Phone,
 } from "./device-frames";
@@ -57,6 +61,8 @@ function getFrameAspect(device: Device, orientation: Orientation) {
     case "iphone":      return MK_RATIO;
     case "android":     return 9 / 19.5;
     case "ipad":        return IPAD_RATIO;
+    case "duo-outer":   return DUO_OUTER_RATIO;
+    case "duo-inner":   return DUO_INNER_RATIO;
     case "android-7":
     case "android-10":  return orientation === "landscape" ? 8 / 5 : 5 / 8;
     default:            return 1;
@@ -73,6 +79,10 @@ export function getFrameForDevice(device: Device, orientation: Orientation): {
       return { Comp: Phone, widthFn: phoneW, smallWidthFn: phoneWSmall };
     case "ipad":
       return { Comp: IPad, widthFn: ipadW, smallWidthFn: (cW, cH) => ipadW(cW, cH, 0.6) };
+    case "duo-outer":
+      return { Comp: DuoOuter, widthFn: () => 0.7, smallWidthFn: () => 0.56 };
+    case "duo-inner":
+      return { Comp: DuoInner, widthFn: () => 0.72, smallWidthFn: () => 0.58 };
     case "android":
       return { Comp: AndroidPhone, widthFn: phoneW, smallWidthFn: phoneWSmall };
     case "android-7":

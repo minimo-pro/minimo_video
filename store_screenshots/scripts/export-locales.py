@@ -12,26 +12,32 @@ from playwright.async_api import async_playwright
 ROOT = Path(__file__).resolve().parents[1]
 DECKS = [('iphone', 1320, 2868, 'apple/iphone-6.9'),
          ('ipad', 2064, 2752, 'apple/ipad-13'),
+         ('duo-outer', 1398, 2034, 'apple/iphone-duo-outer'),
+         ('duo-inner', 2007, 2853, 'apple/iphone-duo-inner'),
          ('android', 1080, 1920, 'android/phone')]
 BANNERS = [('header', 3840, 1646, 'apple/header'),
            ('search', 3840, 2560, 'apple/search-results'),
            ('play', 1024, 500, 'android/feature-graphic')]
 
 
-def jobs(state, locales):
+def jobs(state, locales, devices=None):
     for locale in locales:
         for device, w, h, folder in DECKS:
+            if devices and device not in devices:
+                continue
             for index, _ in enumerate(state['slidesByDevice'][device]):
                 yield (f'/preview?device={device}&locale={locale}&bare&from={index}&n=1',
                        w, h, ROOT / 'export' / folder / (locale if locale != 'en' else '') / f'{index+1:02d}.png')
+        if devices:
+            continue
         for kind, w, h, folder in BANNERS:
             yield (f'/creative?kind={kind}&locale={locale}',
                    w, h, ROOT / 'export' / folder / (locale if locale != 'en' else '') / '01.png')
 
 
-def check(state, locales):
+def check(state, locales, devices=None):
     count = 0
-    for _, w, h, path in jobs(state, locales):
+    for _, w, h, path in jobs(state, locales, devices):
         with Image.open(path) as image:
             assert image.size == (w, h), (path, image.size)
             assert image.mode == 'RGB', (path, image.mode)
@@ -40,7 +46,7 @@ def check(state, locales):
     print(f'Checked {count} PNGs: dimensions, RGB, nonblank', flush=True)
 
 
-async def export(state, locales, base):
+async def export(state, locales, base, devices=None):
     semaphore = asyncio.Semaphore(3)
     async with async_playwright() as playwright:
         browser = await playwright.chromium.launch(
@@ -79,23 +85,26 @@ async def export(state, locales, base):
 
         try:
             # The comparison PNGs must exist before rendering the decks.
-            await asyncio.gather(*(render((f'/comparison?locale={locale}', 1600, 1200,
-                ROOT / 'public/brand' / f'compare-{locale}.png')) for locale in locales))
-            await asyncio.gather(*(render(job) for job in jobs(state, locales)))
+            if not devices:
+                await asyncio.gather(*(render((f'/comparison?locale={locale}', 1600, 1200,
+                    ROOT / 'public/brand' / f'compare-{locale}.png')) for locale in locales))
+            await asyncio.gather(*(render(job) for job in jobs(state, locales, devices)))
         finally:
             await browser.close()
-    check(state, locales)
+    check(state, locales, devices)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--locales', nargs='+', help='Default: every project locale')
+    parser.add_argument('--devices', nargs='+', choices=[d[0] for d in DECKS],
+                        help='Only these decks; skips banners and comparison images')
     parser.add_argument('--check', action='store_true', help='Validate existing exports only')
     args = parser.parse_args()
     state = json.loads((ROOT / 'app-store-screenshots.json').read_text())
     locales = args.locales or state['locales']
     assert all(locale in state['locales'] for locale in locales), 'Unknown locale'
     if args.check:
-        check(state, locales)
+        check(state, locales, args.devices)
     else:
-        asyncio.run(export(state, locales, os.environ.get('BASE', 'http://localhost:3001')))
+        asyncio.run(export(state, locales, os.environ.get('BASE', 'http://localhost:3001'), args.devices))
