@@ -63,7 +63,7 @@ FFmpeg is available under LGPL or GPL depending on how it is built and which com
 
 ## Credits
 
-- Video compression is powered by [light_compressor_v2](https://pub.dev/packages/light_compressor_v2). Respect and thanks to its maintainers and contributors.
+- Video compression is powered by [light_compressor_v2](https://pub.dev/packages/light_compressor_v2). Respect and thanks to [Farid Gurbanov](https://www.linkedin.com/in/faridqurbanov/).
 
 - App Store and Google Play screenshots are made with the [App Store Screenshots](https://www.parthjadhav.com/products/app-store-screenshots) skill by [Parth Jadhav](https://x.com/parthjadhav8). Thanks for the great editor template.
 

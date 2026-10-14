@@ -85,7 +85,7 @@ class _BitratePickerState extends State<BitratePicker> {
                     ? colors.outline
                     : CompressionUiColors.red,
                 overlayShape: SliderComponentShape.noOverlay,
-                thumbShape: const _BitrateThumb(),
+                thumbShape: _BitrateThumb(backgroundColor: colors.surface),
                 trackShape: const _DrawnBitrateTrack(),
                 activeTickMarkColor: _selected == null
                     ? colors.outline
@@ -138,7 +138,9 @@ class _BitratePickerState extends State<BitratePicker> {
 }
 
 class _BitrateThumb extends SliderComponentShape {
-  const _BitrateThumb();
+  final Color backgroundColor;
+
+  const _BitrateThumb({required this.backgroundColor});
 
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) => const Size(28, 28);
@@ -160,15 +162,28 @@ class _BitrateThumb extends SliderComponentShape {
   }) {
     final canvas = context.canvas;
     final outline = Path()
-      ..moveTo(0, -14)
-      ..cubicTo(8, -14.5, 14, -7, 14, 0.5)
-      ..cubicTo(14, 8, 7, 14, -0.5, 14)
-      ..cubicTo(-8, 14, -14, 7, -14, -0.5)
-      ..cubicTo(-14, -8, -7, -14, 0, -14)
+      ..moveTo(-2, -12)
+      ..quadraticBezierTo(0, -14, 3, -11)
+      ..cubicTo(6, -8, 9, -5, 12, -2)
+      ..quadraticBezierTo(14, 0, 11, 3)
+      ..cubicTo(8, 7, 5, 9, 2, 12)
+      ..quadraticBezierTo(0, 14, -3, 11)
+      ..cubicTo(-7, 8, -9, 5, -12, 2)
+      ..quadraticBezierTo(-14, 0, -11, -3)
+      ..cubicTo(-8, -6, -5, -10, -2, -12)
       ..close();
+    final thumb = outline.shift(center);
     canvas.drawPath(
-      outline.shift(center),
-      Paint()..color = sliderTheme.thumbColor!,
+      thumb,
+      Paint()..color = backgroundColor,
+    );
+    canvas.drawPath(
+      thumb,
+      Paint()
+        ..color = sliderTheme.thumbColor!
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3
+        ..strokeJoin = StrokeJoin.round,
     );
   }
 }

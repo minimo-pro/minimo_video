@@ -31,7 +31,12 @@ and clears the native `tmp` directory so legacy picker copies and partial
 compressor outputs are included. The settings screen clears all managed
 directories and the compressor plugin cache. `main()` performs the same full
 cleanup on every cold start because compression sessions are not restored after
-relaunch.
+relaunch. Leaving a compression session removes only that session’s imported
+copies, outputs, and thumbnails, after active estimate, thumbnail, compression,
+save, and share operations finish. Unsaved results require the existing exit
+confirmation. Cancellation removes outputs but keeps imported sources and
+thumbnails for retry. Files outside managed cache directories are never removed
+by session cleanup; failed removals are retried by full cache cleanup.
 
 ## Compression Settings
 

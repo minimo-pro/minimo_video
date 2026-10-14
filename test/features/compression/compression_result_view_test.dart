@@ -15,7 +15,7 @@ import 'package:minimo_video/widgets/animated_asset_checkbox.dart';
 import 'package:minimo_video/widgets/app_action_button.dart';
 
 void main() {
-  testWidgets('result actions are VS, save, then share', (tester) async {
+  testWidgets('result actions are compare, save, then share', (tester) async {
     const source = PickedVideo(
       path: '/video.mp4',
       name: 'video.mp4',
@@ -59,13 +59,15 @@ void main() {
       ),
     );
 
-    final vs = find.text('VS');
+    final compare = find.byWidgetPredicate(
+      (widget) => widget is AppActionButton && widget.icon == AppIcons.vs,
+    );
     final save = find.text('save');
     final share = find.byWidgetPredicate(
       (widget) => widget is AppActionButton && widget.icon == AppIcons.share,
     );
 
-    expect(tester.getCenter(vs).dx, lessThan(tester.getCenter(save).dx));
+    expect(tester.getCenter(compare).dx, lessThan(tester.getCenter(save).dx));
     expect(tester.getCenter(save).dx, lessThan(tester.getCenter(share).dx));
     expect(
       find.byWidgetPredicate(

@@ -5,6 +5,8 @@
 `ChangelogService` stores a local versioned changelog map in Dart. Keys are semantic versions, language keys use the `Language` enum, and version comparisons use `pub_semver`.
 The app never fetches changelog content remotely.
 
+Current release: `1.0.12+31`, with automatic batch cache cleanup notes in all 13 supported languages.
+
 ## Seen Version
 
 `last_seen_version` is stored in `shared_preferences`. First install is skipped and saves the current version. Existing users without `last_seen_version` are treated as update users and can see bundled entries up to the current version.

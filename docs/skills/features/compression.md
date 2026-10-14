@@ -17,7 +17,7 @@ Advanced mode allows:
 
 - Original, 1080p, 720p, 480p, or 360p resolution
 - Automatic or any whole value from 1 to 20 Mbps video bitrate, selected with
-  a hand-drawn horizontal slider with a plain circular thumb, selection haptics,
+  a hand-drawn horizontal slider with an outlined diamond thumb, selection haptics,
   and a quick return to automatic
 - Original, 60, 30, 24, or 15 FPS output; the package only downsamples
 - H.264 or HEVC output; unsupported HEVC hardware falls back to H.264
@@ -94,7 +94,7 @@ acceptance threshold remains authoritative for completed output.
 
 ## Cancellation
 
-Cancellation increments a generation counter, calls the plugin cancellation API, clears partial results, and returns the Bloc to `ready`. Stale progress events are ignored by compression run ID.
+Cancellation increments a generation counter, calls the plugin cancellation API, clears partial results, and returns the Bloc to `ready`. Stale progress events are ignored by compression run ID. Cancellation removes completed and late outputs; the adapter waits for the native job to finish and cleans leftover iOS partial output. Imported videos and thumbnails remain available for retry.
 
 ## Output Naming
 

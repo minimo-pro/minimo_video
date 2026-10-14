@@ -9,6 +9,7 @@ import '../../../constants/app_icons.dart';
 import '../../../generated/l10n.dart';
 import '../../../router/app_router.gr.dart';
 import '../../../services/app_settings_service.dart';
+import '../../../services/app_cache_service.dart';
 import '../../../services/review_service.dart';
 import '../../../services/screen_awake_service.dart';
 import '../../../widgets/app_action_button.dart';
@@ -158,6 +159,7 @@ class _CompressViewState extends State<_CompressView>
         final canLeave =
             state.status != CompressStatus.processing &&
             !_loadingVideos &&
+            !state.isSaving &&
             !state.hasUnsavedResults;
         final backButton = AppActionButton(
           width: 47,
@@ -267,6 +269,8 @@ class _CompressViewState extends State<_CompressView>
       );
       if (videos.isNotEmpty && mounted) {
         context.read<CompressBloc>().add(CompressVideosAdded(videos));
+      } else if (!mounted && videos.isNotEmpty) {
+        await AppCacheService.removeFiles(videos.map((video) => video.path));
       } else if (initial && mounted && !_leavingDuringImport) {
         Navigator.of(context).pop();
       }
@@ -354,6 +358,7 @@ class _CompressViewState extends State<_CompressView>
   }
 
   Future<void> _requestLeave(BuildContext context, CompressState state) async {
+    if (state.isSaving) return;
     if (_loadingVideos) {
       await _confirmLoadingExit(context);
     } else if (state.hasUnsavedResults) {
@@ -364,6 +369,7 @@ class _CompressViewState extends State<_CompressView>
   }
 
   Future<void> _confirmUnsavedExit(BuildContext context) async {
+    if (context.read<CompressBloc>().state.isSaving) return;
     final strings = S.of(context);
     final leave = await _confirmExit(
       context,

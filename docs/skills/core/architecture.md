@@ -61,7 +61,9 @@ Channel `minimo_video/thermal` exposes `currentState` for overheating warnings.
 3. Compressor writes MP4 output into temporary `minimo_video` storage.
 4. Output saving uses `gal`; sharing uses `share_plus`.
 5. Outputs saving less than 10% are deleted and marked skipped.
-6. App and compressor temporary files are cleared on every cold start.
+6. Leaving the compression screen removes the session’s tracked cache files once active file operations finish. Unsaved results require exit confirmation; saved results remain previewable/shareable while the screen is open.
+7. Cancellation removes completed and late outputs while keeping imported sources for retry. The compressor waits for native cancellation and removes leftover iOS partial MP4 files.
+8. App and compressor temporary files are also cleared on every cold start.
 
 ## Generated Files
 
