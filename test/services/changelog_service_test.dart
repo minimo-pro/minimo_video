@@ -11,6 +11,19 @@ PackageInfo _packageInfo(String version) => PackageInfo(
 );
 
 void main() {
+  test('bundled 1.0.12 cache cleanup notes cover every language', () {
+    final changes = {
+      for (final language in Language.values)
+        unseenChanges(
+          lastSeen: '1.0.11',
+          current: '1.0.12',
+          language: language,
+        ).single,
+    };
+    expect(changes, hasLength(Language.values.length));
+    expect(changes.every((change) => change.isNotEmpty), isTrue);
+  });
+
   test('bundled 1.0.11 slider changelog is localized for every language', () {
     final changes = {
       for (final language in Language.values)

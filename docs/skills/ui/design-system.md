@@ -46,8 +46,8 @@ When rendering icons inside `AppActionButton`, the SVG is wrapped in a fixed `Si
 
 `AppActionButton` text variant is for chrome icons without border or fill. Compact icon-only buttons are typically `47×47`; compression back and add-video use the same outlined variant.
 
-`BitratePicker` uses fixed, slightly uneven Bézier curves for its track and a plain
-circular thumb without icons or grip marks, matching the Pangolin font and drawn
+`BitratePicker` uses fixed, slightly uneven Bézier curves for its track and a drawn
+diamond thumb with soft corners and a surface-colored fill, matching the Pangolin font and drawn
 SVG icons. Its native `Slider` keeps gestures, keyboard controls, and accessibility.
 Changing a whole-Mbps step gives selection haptics; the shared `AppActionButton`
 returns to automatic. Colors follow the system theme.

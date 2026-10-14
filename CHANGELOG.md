@@ -1,3 +1,10 @@
+## [1.0.12]
+
+### Changed
+
+* Automatically remove each batch’s temporary videos and previews after leaving the compression screen, once active operations finish. Gallery videos remain untouched.
+* Remove completed and partial outputs on cancellation while keeping imported videos available for retry.
+
 ## [1.0.11]
 
 ### Changed

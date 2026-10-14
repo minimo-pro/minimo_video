@@ -138,9 +138,9 @@ class CompressionResultView extends StatelessWidget {
                       message: strings.compareVideos,
                       child: AppActionButton(
                         width: 47,
-                        label: 'VS',
-                        fontSize: 16,
-                        padding: EdgeInsets.zero,
+                        icon: AppIcons.vs,
+                        iconWidth: 22,
+                        iconHeight: 30,
                         onPressed: allFailed
                             ? null
                             : () => _showComparison(context),
@@ -202,10 +202,14 @@ class CompressionResultView extends StatelessWidget {
         : renderBox.localToGlobal(Offset.zero) & renderBox.size;
 
     try {
-      await SharePlus.instance.share(
-        ShareParams(
-          files: paths.map((path) => XFile(path, mimeType: 'video/*')).toList(),
-          sharePositionOrigin: origin,
+      await context.read<CompressBloc>().useFiles(
+        () => SharePlus.instance.share(
+          ShareParams(
+            files: paths
+                .map((path) => XFile(path, mimeType: 'video/*'))
+                .toList(),
+            sharePositionOrigin: origin,
+          ),
         ),
       );
     } catch (_) {

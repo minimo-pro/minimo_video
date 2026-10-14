@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:light_compressor_v2/light_compressor_v2.dart' as light;
 import 'package:path/path.dart' as path;
@@ -14,6 +15,7 @@ class VideoCompressorAdapter {
   final light.LightCompressor _compressor = light.LightCompressor();
   Future<void> _preparation = Future.value();
   var _cancelGeneration = 0;
+  Future<CompressionResult>? _activeCompression;
 
   VideoCompressorAdapter();
 
@@ -22,6 +24,28 @@ class VideoCompressorAdapter {
     String originalName,
     CompressionSettings settings, {
     bool addKompressoPrefix = true,
+    void Function(double progress)? onProgress,
+  }) async {
+    final operation = _compressPrepared(
+      inputPath,
+      originalName,
+      settings,
+      addKompressoPrefix: addKompressoPrefix,
+      onProgress: onProgress,
+    );
+    _activeCompression = operation;
+    try {
+      return await operation;
+    } finally {
+      if (identical(_activeCompression, operation)) _activeCompression = null;
+    }
+  }
+
+  Future<CompressionResult> _compressPrepared(
+    String inputPath,
+    String originalName,
+    CompressionSettings settings, {
+    required bool addKompressoPrefix,
     void Function(double progress)? onProgress,
   }) async {
     final cancelGeneration = _cancelGeneration;
@@ -33,22 +57,39 @@ class VideoCompressorAdapter {
       originalName,
       addKompressoPrefix: addKompressoPrefix,
     );
-    return _compress(inputPath, outputPath, settings, onProgress: onProgress);
+    return _compress(
+      inputPath,
+      outputPath,
+      settings,
+      cancelGeneration,
+      onProgress: onProgress,
+    );
   }
 
   Future<void> cancelCompression() async {
     _cancelGeneration++;
+    final active = _activeCompression;
+    if (active == null) return;
     await _compressor.cancelCompression();
+    try {
+      await active;
+    } catch (_) {
+      // Cancellation and encoder failures still release the active file.
+    }
   }
 
   Future<CompressionResult> _compress(
     String inputPath,
     String outputPath,
-    CompressionSettings settings, {
+    CompressionSettings settings,
+    int cancelGeneration, {
     void Function(double progress)? onProgress,
   }) async {
     final stopwatch = Stopwatch()..start();
     final media = await _targetMedia(inputPath, settings.resolution);
+    if (cancelGeneration != _cancelGeneration) {
+      throw StateError('Video compression cancelled');
+    }
     final plan = encodePlan(
       settings,
       outputWidth: media.outputWidth,
@@ -61,6 +102,10 @@ class VideoCompressorAdapter {
             (value) => onProgress((value / 100).clamp(0, 1)),
           );
 
+    // iOS leaves a partial MP4 in native tmp on some failure/cancel paths.
+    final nativeOutput = Platform.isIOS
+        ? File(path.join(Directory.systemTemp.path, path.basename(outputPath)))
+        : null;
     try {
       final result = await _compressor.compressVideo(
         path: inputPath,
@@ -113,6 +158,13 @@ class VideoCompressorAdapter {
       );
     } finally {
       await progress?.cancel();
+      if (nativeOutput != null) {
+        try {
+          if (await nativeOutput.exists()) await nativeOutput.delete();
+        } on FileSystemException catch (error) {
+          debugPrint('Partial output cleanup failed: $error');
+        }
+      }
     }
   }
 

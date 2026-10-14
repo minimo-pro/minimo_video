@@ -28,7 +28,8 @@ Current tests cover:
 - Private-picker metadata payload mapping, fallback save forwarding, and separate metadata/delete capabilities
 - Beside-original enabled while replace-original stays disabled for an inaccessible Limited Photos asset
 - Compression failure state
-- Cache size and full cleanup
+- Cache size, full cleanup, and session cleanup restricted to tracked cache files
+- Session cleanup waits for active file operations, removes late outputs/thumbnails, and retains sources on cancellation
 - Local compressed-video and saved-space statistics
 - Preview styling and count-badge bounds, status percentage, press motion, and hold-button background
 - Rolling counters ignore unchanged formatted values and use calm motion

@@ -142,7 +142,10 @@ class MainActivity : FlutterActivity() {
             runCatching { readPickedVideos(data, pickId) }
                 .onSuccess { videos ->
                     runOnUiThread {
-                        if (activePickId != pickId) return@runOnUiThread
+                        if (activePickId != pickId) {
+                            videos.forEach { File(it["path"] as String).delete() }
+                            return@runOnUiThread
+                        }
                         pendingPickResult = null
                         activePickId = null
                         result.success(videos)
@@ -205,7 +208,8 @@ class MainActivity : FlutterActivity() {
             } finally {
                 retriever.release()
             }
-            val output = File(cacheDir, "thumbnail_${System.nanoTime()}.jpg")
+            val directory = File(cacheDir, "minimo_thumbnails").apply { mkdirs() }
+            val output = File(directory, "thumbnail_${System.nanoTime()}.jpg")
             output.outputStream().use {
                 frame.compress(android.graphics.Bitmap.CompressFormat.JPEG, 82, it)
             }
@@ -277,14 +281,19 @@ class MainActivity : FlutterActivity() {
         data.data?.let { uris.add(it) }
         Log.i(TAG, "Importing ${uris.size} videos sequentially")
         sendPickProgress(0, uris.size)
-        return uris.mapIndexed { index, uri ->
-            check(activePickId == pickId) { "video import was cancelled" }
-            copyPickedVideo(uri).also {
-                if (activePickId == pickId) {
-                    Log.i(TAG, "Imported ${index + 1}/${uris.size} videos")
-                    sendPickProgress(index + 1, uris.size)
-                }
+        val imported = mutableListOf<Map<String, Any>>()
+        try {
+            uris.forEachIndexed { index, uri ->
+                check(activePickId == pickId) { "video import was cancelled" }
+                imported += copyPickedVideo(uri)
+                check(activePickId == pickId) { "video import was cancelled" }
+                Log.i(TAG, "Imported ${index + 1}/${uris.size} videos")
+                sendPickProgress(index + 1, uris.size)
             }
+            return imported
+        } catch (error: Exception) {
+            imported.forEach { File(it["path"] as String).delete() }
+            throw error
         }
     }
 
@@ -300,15 +309,17 @@ class MainActivity : FlutterActivity() {
         val name = sanitizeFileName(metadata.first)
         val outputFile = uniqueCacheFile(name)
 
-        contentResolver.openInputStream(uri).use { input ->
-            requireNotNull(input) { "unable to open selected video" }
-            outputFile.outputStream().use { output ->
-                input.copyTo(output, 1024 * 1024)
+        try {
+            contentResolver.openInputStream(uri).use { input ->
+                requireNotNull(input) { "unable to open selected video" }
+                outputFile.outputStream().use { output ->
+                    input.copyTo(output, 1024 * 1024)
+                }
             }
-        }
-        if (!isVideoFile(outputFile)) {
+            check(isVideoFile(outputFile)) { "selected file is not a video" }
+        } catch (error: Exception) {
             outputFile.delete()
-            error("selected file is not a video")
+            throw error
         }
 
         return mapOf(
@@ -357,7 +368,7 @@ class MainActivity : FlutterActivity() {
         val extension = name.substringAfterLast('.', "mp4")
         var candidate = File(directory, "$baseName.$extension")
         var index = 2
-        while (candidate.exists()) {
+        while (!candidate.createNewFile()) {
             candidate = File(directory, "${baseName}_$index.$extension")
             index++
         }

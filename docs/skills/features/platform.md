@@ -30,7 +30,8 @@ keep native writes aligned with Flutter cache accounting. Generated previews
 use `Library/Caches/minimo_thumbnails`. Cold-start and manual cleanup also scan
 the native `tmp` directory for files left by older app versions or an
 interrupted compressor run. Neither picker path requests broad library
-permission.
+permission. Cache copies use unique names so an abandoned import cannot collide
+with a new picker; the original display/output filename stays unchanged.
 
 For private-picker videos outside the app's Limited Photos selection, iOS reads
 the embedded QuickTime creation date and ISO 6709 location from the temporary
@@ -43,7 +44,9 @@ favorite state, and original deletion remain unavailable.
 - **Gallery:** system photo picker (`MediaStore.ACTION_PICK_IMAGES`, `video/*`) on Android 13+; `ACTION_GET_CONTENT` + `video/*` on older versions. Selected URIs are imported only; Android does not retain identifiers for replacement or deletion.
 - **Files:** `ACTION_OPEN_DOCUMENT`, `video/*`, multi-selection. Document picks are non-deletable.
 
-Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer. After copying, native code verifies that the cached file contains a video track; invalid files are deleted and the pick fails so Flutter shows an error snackbar instead of opening compression. A later add-more pick must not clear `picked_videos`, because the existing batch still references those cached copies; cold-start cleanup owns removal of the directory.
+Generated previews use `cacheDir/minimo_thumbnails`. Cancelled or failed imports remove their own completed and partial copies after the copy operation finishes. Cache filenames are reserved atomically to avoid collisions with a retry.
+
+Selected URIs are copied sequentially into app cache on a background thread with a 1 MB buffer. After copying, native code verifies that the cached file contains a video track; invalid files are deleted and the pick fails so Flutter shows an error snackbar instead of opening compression. A later add-more pick must not clear `picked_videos`, because the existing batch still references those cached copies; session cleanup removes the tracked copies on exit, with cold-start cleanup as a fallback.
 
 Both platforms report `pickProgress` (`processed`/`total`) over the videos method channel while files are imported. `CompressScreen` displays it in the disabled Compress button while the rest of the settings remain interactive.
 

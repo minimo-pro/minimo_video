@@ -41,7 +41,11 @@ saved outputs, replacements, and deletions are remembered for the current Bloc
 run, so partial-failure retries skip completed work or an already deleted Photos
 asset. After every output is saved, the primary action shows `Saved` with a
 checkmark but remains available; choosing save as new again creates another copy.
-Save failure restores the ready action.
+Save failure restores the ready action. Exit is blocked while saving. Outputs
+remain available for preview, sharing, and repeated saving until the session is
+closed; cleanup waits for the share operation to finish. Confirmed exit with
+unsaved results discards the session’s temporary files without touching gallery
+assets.
 
 ## Save and Delete Originals
 

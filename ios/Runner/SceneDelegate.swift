@@ -141,7 +141,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     )
     importPhotosVideos(results, pickID: pickID) { [weak self] videos in
       DispatchQueue.main.async {
-        guard self?.activePickID == pickID else { return }
+        guard self?.activePickID == pickID else {
+          self?.removeImportedVideos(videos)
+          return
+        }
         self?.pendingPickResult = nil
         self?.activePickID = nil
         print("[VideoPicker] Imported \(videos.count)/\(results.count) videos")
@@ -167,7 +170,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     )
     importDocumentVideos(urls, pickID: pickID) { [weak self] result in
       DispatchQueue.main.async {
-        guard self?.activePickID == pickID else { return }
+        guard self?.activePickID == pickID else {
+          if case .success(let videos) = result { self?.removeImportedVideos(videos) }
+          return
+        }
         self?.pendingPickResult = nil
         self?.activePickID = nil
         switch result {
@@ -731,17 +737,15 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     let directory = try cacheDirectory(named: "picked_videos")
 
     let safeFilename = sanitizeFilename(filename)
-    var outputURL = directory.appendingPathComponent(safeFilename)
-    let ext = outputURL.pathExtension.isEmpty ? "mov" : outputURL.pathExtension
-    let baseName = outputURL.deletingPathExtension().lastPathComponent
-    var index = 2
+    // Abandoned imports may still be copying when a new picker starts.
+    let outputURL = directory.appendingPathComponent("\(UUID().uuidString)_\(safeFilename)")
 
-    while FileManager.default.fileExists(atPath: outputURL.path) {
-      outputURL = directory.appendingPathComponent("\(baseName)_\(index).\(ext)")
-      index += 1
+    do {
+      try FileManager.default.copyItem(at: sourceURL, to: outputURL)
+    } catch {
+      try? FileManager.default.removeItem(at: outputURL)
+      throw error
     }
-
-    try FileManager.default.copyItem(at: sourceURL, to: outputURL)
     guard isVideoFile(outputURL) else {
       try? FileManager.default.removeItem(at: outputURL)
       throw NSError(

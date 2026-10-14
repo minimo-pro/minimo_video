@@ -43,6 +43,41 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.12': {
+    Language.en: [
+      'Temporary videos are now cleaned up automatically when you leave a batch. Videos saved to your gallery stay safe.',
+    ],
+    Language.ru: [
+      'Временные видео теперь удаляются автоматически после выхода из партии. Сохранённые в галерею видео остаются.',
+    ],
+    Language.es: [
+      'Los videos temporales ahora se eliminan automáticamente al salir de un lote. Los videos guardados en la galería se conservan.',
+    ],
+    Language.pt: [
+      'Os vídeos temporários agora são removidos automaticamente ao sair de um lote. Os vídeos salvos na galeria são mantidos.',
+    ],
+    Language.de: [
+      'Temporäre Videos werden jetzt beim Verlassen eines Stapels automatisch gelöscht. In der Galerie gespeicherte Videos bleiben erhalten.',
+    ],
+    Language.fr: [
+      'Les vidéos temporaires sont désormais supprimées automatiquement lorsque vous quittez un lot. Les vidéos enregistrées dans la galerie sont conservées.',
+    ],
+    Language.zh: ['离开批次后，临时视频现在会自动清理。已保存到相册的视频不会被删除。'],
+    Language.hi: [
+      'बैच से बाहर निकलने पर अस्थायी वीडियो अब अपने आप हट जाते हैं। गैलरी में सहेजे गए वीडियो सुरक्षित रहते हैं।',
+    ],
+    Language.nl: [
+      'Tijdelijke video’s worden nu automatisch verwijderd wanneer je een batch verlaat. Video’s die in je galerij zijn opgeslagen blijven behouden.',
+    ],
+    Language.ko: ['작업 화면을 나가면 임시 동영상이 자동으로 정리됩니다. 갤러리에 저장한 동영상은 유지됩니다.'],
+    Language.ja: ['処理画面を閉じると、一時動画が自動的に削除されます。ギャラリーに保存した動画は残ります。'],
+    Language.it: [
+      'I video temporanei vengono ora eliminati automaticamente quando esci da un gruppo. I video salvati nella galleria vengono conservati.',
+    ],
+    Language.tr: [
+      'Bir gruptan çıktığınızda geçici videolar artık otomatik olarak temizlenir. Galeriye kaydedilen videolar korunur.',
+    ],
+  },
   '1.0.11': {
     Language.en: [
       'Choose any whole bitrate from 1–20 Mbps with a new hand-drawn slider, haptic feedback, and a quick return to automatic.',
