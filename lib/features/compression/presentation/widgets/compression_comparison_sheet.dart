@@ -264,8 +264,8 @@ class _ComparisonPlayerState extends State<_ComparisonPlayer> {
             child: ColoredBox(
               color: Colors.black,
               child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: _SplitPlayerBody(
+                aspectRatio: _originalController?.value.aspectRatio ?? 16 / 9,
+                child: _OverlayPlayerBody(
                   originalController: _originalController,
                   compressedController: _compressedController,
                   loading: _loading,
@@ -296,7 +296,7 @@ class _ComparisonPlayerState extends State<_ComparisonPlayer> {
   }
 }
 
-class _SplitPlayerBody extends StatelessWidget {
+class _OverlayPlayerBody extends StatefulWidget {
   final VideoPlayerController? originalController;
   final VideoPlayerController? compressedController;
   final bool loading;
@@ -304,7 +304,7 @@ class _SplitPlayerBody extends StatelessWidget {
   final String originalLabel;
   final String compressedLabel;
 
-  const _SplitPlayerBody({
+  const _OverlayPlayerBody({
     required this.originalController,
     required this.compressedController,
     required this.loading,
@@ -314,15 +314,25 @@ class _SplitPlayerBody extends StatelessWidget {
   });
 
   @override
+  State<_OverlayPlayerBody> createState() => _OverlayPlayerBodyState();
+}
+
+class _OverlayPlayerBodyState extends State<_OverlayPlayerBody> {
+  var _split = 0.5;
+
+  void _setSplit(double value) =>
+      setState(() => _split = value.clamp(0.0, 1.0));
+
+  @override
   Widget build(BuildContext context) {
-    if (loading) {
+    if (widget.loading) {
       return const Center(
         child: CircularProgressIndicator(color: CompressionUiColors.white),
       );
     }
-    if (error != null ||
-        originalController == null ||
-        compressedController == null) {
+    if (widget.error != null ||
+        widget.originalController == null ||
+        widget.compressedController == null) {
       return Center(
         child: Icon(
           Icons.videocam_off,
@@ -331,35 +341,94 @@ class _SplitPlayerBody extends StatelessWidget {
         ),
       );
     }
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: _FittedVideo(
-                controller: originalController!,
-                alignment: Alignment.centerRight,
-              ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        void moveTo(Offset position) {
+          if (width > 0) _setSplit(position.dx / width);
+        }
+
+        return Semantics(
+          label: '${widget.originalLabel} / ${widget.compressedLabel}',
+          value: '${((1 - _split) * 100).round()}%',
+          increasedValue:
+              '${((1 - (_split - 0.1).clamp(0.0, 1.0)) * 100).round()}%',
+          decreasedValue:
+              '${((1 - (_split + 0.1).clamp(0.0, 1.0)) * 100).round()}%',
+          onIncrease: () => _setSplit(_split - 0.1),
+          onDecrease: () => _setSplit(_split + 0.1),
+          slider: true,
+          child: GestureDetector(
+            key: const ValueKey('comparison-reveal'),
+            behavior: HitTestBehavior.opaque,
+            onTapUp: (details) => moveTo(details.localPosition),
+            onHorizontalDragStart: (details) => moveTo(details.localPosition),
+            onHorizontalDragUpdate: (details) => moveTo(details.localPosition),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                _FittedVideo(controller: widget.originalController!),
+                ClipRect(
+                  key: const ValueKey('comparison-result-clip'),
+                  clipper: _RevealClipper(_split),
+                  child: _FittedVideo(controller: widget.compressedController!),
+                ),
+                Positioned(
+                  left: width * _split - 1,
+                  top: 0,
+                  bottom: 0,
+                  child: Container(width: 2, color: CompressionUiColors.white),
+                ),
+                Positioned(
+                  left: (width * _split - 22).clamp(
+                    0.0,
+                    (width - 44).clamp(0.0, double.infinity),
+                  ),
+                  top: 0,
+                  bottom: 0,
+                  child: const Center(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: CompressionUiColors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: SizedBox.square(
+                        dimension: 44,
+                        child: Icon(Icons.drag_handle, color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 10,
+                  top: 10,
+                  child: _VideoLabel(text: widget.originalLabel),
+                ),
+                Positioned(
+                  right: 10,
+                  top: 10,
+                  child: _VideoLabel(text: widget.compressedLabel),
+                ),
+              ],
             ),
-            Expanded(
-              child: _FittedVideo(
-                controller: compressedController!,
-                alignment: Alignment.centerLeft,
-              ),
-            ),
-          ],
-        ),
-        Center(child: Container(width: 2, color: CompressionUiColors.white)),
-        Positioned(left: 10, top: 10, child: _VideoLabel(text: originalLabel)),
-        Positioned(
-          right: 10,
-          top: 10,
-          child: _VideoLabel(text: compressedLabel),
-        ),
-      ],
+          ),
+        );
+      },
     );
   }
+}
+
+class _RevealClipper extends CustomClipper<Rect> {
+  final double split;
+
+  const _RevealClipper(this.split);
+
+  @override
+  Rect getClip(Size size) =>
+      Rect.fromLTRB(size.width * split, 0, size.width, size.height);
+
+  @override
+  bool shouldReclip(_RevealClipper oldClipper) => split != oldClipper.split;
 }
 
 class _VideoLabel extends StatelessWidget {
@@ -391,9 +460,8 @@ class _VideoLabel extends StatelessWidget {
 
 class _FittedVideo extends StatelessWidget {
   final VideoPlayerController controller;
-  final Alignment alignment;
 
-  const _FittedVideo({required this.controller, required this.alignment});
+  const _FittedVideo({required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -401,8 +469,7 @@ class _FittedVideo extends StatelessWidget {
 
     return ClipRect(
       child: FittedBox(
-        fit: BoxFit.cover,
-        alignment: alignment,
+        fit: BoxFit.contain,
         child: SizedBox(
           width: size.width,
           height: size.height,

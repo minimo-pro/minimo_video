@@ -43,6 +43,41 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.13': {
+    Language.en: [
+      'Compare the original and compressed video in one view. Drag the divider to reveal the result.',
+    ],
+    Language.ru: [
+      'Сравнивайте оригинал и сжатое видео наложением. Перемещайте разделитель, чтобы открыть результат.',
+    ],
+    Language.es: [
+      'Compara el video original y el comprimido superpuestos. Arrastra el separador para revelar el resultado.',
+    ],
+    Language.pt: [
+      'Compare o vídeo original e o comprimido sobrepostos. Arraste o divisor para revelar o resultado.',
+    ],
+    Language.de: [
+      'Vergleiche Original und komprimiertes Video übereinander. Ziehe die Trennlinie, um das Ergebnis sichtbar zu machen.',
+    ],
+    Language.fr: [
+      'Comparez la vidéo originale et la vidéo compressée par superposition. Faites glisser le séparateur pour révéler le résultat.',
+    ],
+    Language.zh: ['将原始视频和压缩视频叠加比较。拖动分隔线即可查看压缩结果。'],
+    Language.hi: [
+      'मूल और संपीड़ित वीडियो को एक-दूसरे पर रखकर तुलना करें। परिणाम देखने के लिए विभाजक खींचें।',
+    ],
+    Language.nl: [
+      'Vergelijk de originele en gecomprimeerde video over elkaar. Sleep de scheidingslijn om het resultaat te onthullen.',
+    ],
+    Language.ko: ['원본과 압축 동영상을 겹쳐서 비교하세요. 구분선을 드래그하여 결과를 확인하세요.'],
+    Language.ja: ['元の動画と圧縮後の動画を重ねて比較できます。境界線をドラッグして結果を確認しましょう。'],
+    Language.it: [
+      'Confronta il video originale e quello compresso sovrapposti. Trascina il divisore per mostrare il risultato.',
+    ],
+    Language.tr: [
+      'Orijinal ve sıkıştırılmış videoyu üst üste karşılaştırın. Sonucu görmek için ayırıcıyı sürükleyin.',
+    ],
+  },
   '1.0.12': {
     Language.en: [
       'Temporary videos are now cleaned up automatically when you leave a batch. Videos saved to your gallery stay safe.',

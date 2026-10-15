@@ -1,3 +1,9 @@
+## [1.0.13]
+
+### Changed
+
+* Compare original and compressed videos as aligned overlays with a draggable divider that reveals the result, full-frame portrait/landscape previews, and accessible reveal controls.
+
 ## [1.0.12]
 
 ### Changed

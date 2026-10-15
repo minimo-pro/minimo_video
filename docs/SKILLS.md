@@ -52,4 +52,4 @@ Save, share, deletion, result semantics, errors, and known limitations.
 
 ---
 
-*Last updated: October 11, 2026 · v1.0.12+31*
+*Last updated: October 14, 2026 · v1.0.13+32*

@@ -44,6 +44,8 @@ On a successful result:
 | Bottom row | `VS` compare, filled primary save, icon-only share |
 | Save sheet | Per-video delete selection before saving; unavailable originals are greyed out and long lists fade at scroll edges |
 
+The comparison sheet overlays original and compressed videos in a shared full-frame viewport. Drag the vertical divider to reveal the compressed result on the right; play/pause and timeline controls affect both videos.
+
 Failed compression replaces save with retry and disables `VS`. Already-optimized results keep `VS` disabled without a primary filled action.
 
 Top and system back actions ask for confirmation when successful outputs have not been saved. Saved and all-failed results leave immediately.

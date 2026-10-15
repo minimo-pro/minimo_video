@@ -15,6 +15,7 @@ Current tests cover:
 - Quality preset mapping to internal tier and resolution
 - Appending only new picked videos while preserving settings and aligned batch state
 - Bitrate slider gestures, whole-Mbps selection haptics, reset to automatic, and external settings synchronization
+- Overlay comparison keeps video bounds aligned while dragging, clamps reveal at both edges, supports accessibility adjustments, and uses portrait aspect ratios
 - Localized release notes for every supported language
 - Custom bitrate estimate fallback and exact bitrate/FPS/codec encode-plan mapping
 - Automatic bitrate response to resolution, effective FPS, and codec
@@ -54,6 +55,7 @@ Do not mock private helpers or test generated code. Prefer behavior through `Com
 Native behavior needs focused manual checks when compression or platform code changes:
 
 - Portrait and landscape-recorded MOV/MP4 inputs produce visible video and synchronized audio
+- Comparison divider reveals aligned native frames during playback and seeking for portrait and landscape inputs
 - High, medium, and low outputs play on the source device
 - Audio removal produces silent video
 - Current-file and overall progress advance correctly
