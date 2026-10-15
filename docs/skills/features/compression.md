@@ -16,16 +16,16 @@ and that the original stays when the output saves less than 10%.
 Advanced mode allows:
 
 - Original, 1080p, 720p, 480p, or 360p resolution
-- Automatic or any whole value from 1 to 20 Mbps video bitrate, selected with
+- Automatic or 1–20 Mbps video bitrate in 0.5 Mbps steps (e.g. 1.5 Mbps), selected with
   a hand-drawn horizontal slider with an outlined diamond thumb, selection haptics,
   and a quick return to automatic
 - Original, 60, 30, 24, or 15 FPS output; the package only downsamples
 - H.264 or HEVC output; unsupported HEVC hardware falls back to H.264
 - Stereo audio or no audio
 
-With automatic bitrate, `CompressionSettings.effectiveBitrateMbps()` derives the encoder target from the fitted output pixel count, effective output FPS, quality tier, and codec efficiency. Original resolution uses source dimensions for bitrate calculation without passing them as resize dimensions. Requested FPS is capped at the source FPS because the package only downsamples. HEVC targets fewer bits than H.264 for comparable quality. `light_compressor_v2` accepts whole Mbps, so automatic targets are rounded and clamped to `1–8 Mbps`. Manually selected values can go up to `20 Mbps` and are absolute, not modified by resolution, FPS, or codec.
+With automatic bitrate, `CompressionSettings.effectiveBitrateMbps()` derives the encoder target from the fitted output pixel count, effective output FPS, quality tier, and codec efficiency. Original resolution uses source dimensions for bitrate calculation without passing them as resize dimensions. Requested FPS is capped at the source FPS because the package only downsamples. HEVC targets fewer bits than H.264 for comparable quality. `light_compressor_v2 1.10.0` accepts fractional Mbps. Automatic targets retain their fractional precision and are clamped to `1–8 Mbps`. Manually selected values use `0.5 Mbps` steps up to `20 Mbps` and are absolute, not modified by resolution, FPS, or codec. `CompressionSettings.videoBitrateMbps` and the shared encode plan use `double`; `null` means automatic. Both native compression and native size estimates receive the same unrounded value. Manual bitrate must be finite and greater than zero.
 
-`light_compressor_v2 1.9.1` does not expose encoder speed presets or video
+`light_compressor_v2 1.10.0` does not expose encoder speed presets or video
 container metadata copying. Do not add UI switches for either until the native
 pipeline can honor them on both Android and iOS.
 

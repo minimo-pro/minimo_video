@@ -54,7 +54,7 @@ Top and system back actions ask for confirmation when successful outputs have no
 
 High, Medium, and Low are the primary UX. Advanced mode exposes
 resolution, video bitrate, frame rate, H.264/HEVC codec, and audio controls.
-Bitrate uses a hand-drawn horizontal slider for whole 1–20 Mbps values, a plain
+Bitrate uses a hand-drawn horizontal slider for 1–20 Mbps values in 0.5 Mbps steps, a plain
 circular thumb, selection haptics, and a quick automatic-mode button.
 The advanced list leaves extra scroll space after the final audio control.
 The selected-video count badge stays inside the preview bounds so the scroll viewport never clips its circular top edge.

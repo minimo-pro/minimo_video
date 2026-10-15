@@ -14,10 +14,11 @@ Current tests cover:
 
 - Quality preset mapping to internal tier and resolution
 - Appending only new picked videos while preserving settings and aligned batch state
-- Bitrate slider gestures, whole-Mbps selection haptics, reset to automatic, and external settings synchronization
+- Bitrate slider gestures, 0.5 Mbps selection haptics and accessibility announcements, reset to automatic, and external settings synchronization
 - Overlay comparison keeps video bounds aligned while dragging, clamps reveal at both edges, supports accessibility adjustments, and uses portrait aspect ratios
 - Localized release notes for every supported language
-- Custom bitrate estimate fallback and exact bitrate/FPS/codec encode-plan mapping
+- Fractional bitrate copying, clearing, invalid-value rejection, estimate fallback, and exact bitrate/FPS/codec encode-plan mapping
+- Matching unrounded manual and automatic bitrates in native estimate and compression channel arguments
 - Automatic bitrate response to resolution, effective FPS, and codec
 - Invalid configured/source frame-rate handling
 - HEVC-to-H.264 fallback notice on the result screen
@@ -57,6 +58,7 @@ Native behavior needs focused manual checks when compression or platform code ch
 - Portrait and landscape-recorded MOV/MP4 inputs produce visible video and synchronized audio
 - Comparison divider reveals aligned native frames during playback and seeking for portrait and landscape inputs
 - High, medium, and low outputs play on the source device
+- Manual 1.5 Mbps compression works on Android and iOS, and the size estimate uses the same target
 - Audio removal produces silent video
 - Current-file and overall progress advance correctly
 - Cancellation stops work and leaves no usable partial result

@@ -18,6 +18,44 @@ void main() {
     expect(custom, lessThan(automatic));
   });
 
+  test(
+    'fractional bitrate survives copying and overrides automatic settings',
+    () {
+      final settings = const CompressionSettings(
+        videoBitrateMbps: 1.5,
+      ).copyWith(codec: CompressionCodec.hevc, frameRate: 60);
+      expect(settings.videoBitrateMbps, 1.5);
+      expect(VideoCompressorAdapter.encodePlan(settings).bitrateMbps, 1.5);
+      expect(settings.copyWith(videoBitrateMbps: 2.5).videoBitrateMbps, 2.5);
+      expect(settings.copyWith(videoBitrateMbps: 2).videoBitrateMbps, 2.0);
+      expect(
+        settings.copyWith(videoBitrateMbps: null).videoBitrateMbps,
+        isNull,
+      );
+    },
+  );
+
+  test('fallback estimate preserves fractional bitrate', () {
+    int estimate(double bitrate) => CompressionEstimate.compressedSize(
+      originalSize: 100000000,
+      settings: CompressionSettings(videoBitrateMbps: bitrate),
+    );
+    expect(estimate(1.5), greaterThan(estimate(1)));
+    expect(estimate(1.5), lessThan(estimate(2)));
+    expect(estimate(1.5), ((estimate(1) + estimate(2)) / 2).round());
+  });
+
+  test('rejects invalid manual bitrate before native calls', () {
+    for (final bitrate in [0.0, -1.5, double.nan, double.infinity]) {
+      expect(
+        () => CompressionSettings(
+          videoBitrateMbps: bitrate,
+        ).effectiveBitrateMbps(),
+        throwsArgumentError,
+      );
+    }
+  });
+
   test('advanced codec and frame rate survive other setting changes', () {
     final settings = const CompressionSettings(
       frameRate: 24,
@@ -49,12 +87,12 @@ void main() {
       const CompressionSettings(crf: 28),
     );
 
-    expect(plan.bitrateMbps, 2);
+    expect(plan.bitrateMbps, closeTo(1.93536, 1e-9));
     expect(plan.format, light.VideoFormat.h264);
   });
 
   test('automatic bitrate follows resolution, frame rate, and codec', () {
-    int bitrate(CompressionSettings settings) =>
+    double bitrate(CompressionSettings settings) =>
         VideoCompressorAdapter.encodePlan(settings).bitrateMbps;
 
     const h264720 = CompressionSettings(resolution: '1280:720', frameRate: 30);

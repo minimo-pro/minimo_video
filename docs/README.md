@@ -2,7 +2,7 @@
 
 Modular documentation for **minimo (video)**. It is written for developers and AI coding agents working in this repository.
 
-Current version: **1.0.13+32** · updated October 14, 2026.
+Current version: **1.0.13+32** · updated October 15, 2026.
 
 ## Structure
 

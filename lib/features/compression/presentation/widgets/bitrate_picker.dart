@@ -6,8 +6,8 @@ import '../../../../theme/app_colors.dart';
 import '../../../../widgets/app_action_button.dart';
 
 class BitratePicker extends StatefulWidget {
-  final int? value;
-  final ValueChanged<int?> onChanged;
+  final double? value;
+  final ValueChanged<double?> onChanged;
 
   const BitratePicker({
     super.key,
@@ -20,7 +20,7 @@ class BitratePicker extends StatefulWidget {
 }
 
 class _BitratePickerState extends State<BitratePicker> {
-  late int? _selected = widget.value;
+  late double? _selected = widget.value;
 
   @override
   void didUpdateWidget(covariant BitratePicker oldWidget) {
@@ -28,7 +28,7 @@ class _BitratePickerState extends State<BitratePicker> {
     if (oldWidget.value != widget.value) _selected = widget.value;
   }
 
-  void _select(int? value) {
+  void _select(double? value) {
     if (value == _selected) return;
     setState(() => _selected = value);
     HapticFeedback.selectionClick();
@@ -39,7 +39,7 @@ class _BitratePickerState extends State<BitratePicker> {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final strings = S.of(context);
-    final sliderBitrate = (_selected ?? 2).clamp(1, 20);
+    final sliderBitrate = (_selected ?? 2.0).clamp(1.0, 20.0);
     return Padding(
       padding: const EdgeInsets.only(top: 2),
       child: Column(
@@ -60,7 +60,7 @@ class _BitratePickerState extends State<BitratePicker> {
               if (_selected != null)
                 Expanded(
                   child: Text(
-                    '$_selected Mbps',
+                    '${_formatBitrate(_selected!)} Mbps',
                     textAlign: TextAlign.right,
                     style: const TextStyle(
                       fontSize: 25,
@@ -96,16 +96,16 @@ class _BitratePickerState extends State<BitratePicker> {
                 ),
               ),
               child: Slider(
-                value: sliderBitrate.toDouble(),
+                value: sliderBitrate,
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 min: 1,
                 max: 20,
-                divisions: 19,
+                divisions: 38,
                 semanticFormatterCallback: (value) =>
-                    _selected == null && value.round() == sliderBitrate
+                    _selected == null && value == sliderBitrate
                     ? strings.automatic
-                    : '${value.round()} Mbps',
-                onChanged: (value) => _select(value.round()),
+                    : '${_formatBitrate(value)} Mbps',
+                onChanged: (value) => _select((value * 2).round() / 2),
               ),
             ),
           ),
@@ -136,6 +136,10 @@ class _BitratePickerState extends State<BitratePicker> {
     );
   }
 }
+
+String _formatBitrate(double value) => value == value.roundToDouble()
+    ? value.toInt().toString()
+    : value.toStringAsFixed(1);
 
 class _BitrateThumb extends SliderComponentShape {
   final Color backgroundColor;
@@ -173,10 +177,7 @@ class _BitrateThumb extends SliderComponentShape {
       ..cubicTo(-8, -6, -5, -10, -2, -12)
       ..close();
     final thumb = outline.shift(center);
-    canvas.drawPath(
-      thumb,
-      Paint()..color = backgroundColor,
-    );
+    canvas.drawPath(thumb, Paint()..color = backgroundColor);
     canvas.drawPath(
       thumb,
       Paint()

@@ -45,36 +45,55 @@ typedef Changelog = Map<String, Map<Language, List<String>>>;
 const Changelog _changelog = {
   '1.0.13': {
     Language.en: [
+      'Choose fractional video bitrates, such as 1.5 Mbps, with 0.5 Mbps slider steps. Size estimates and compression preserve the selected value.',
       'Compare the original and compressed video in one view. Drag the divider to reveal the result.',
     ],
     Language.ru: [
+      'Выбирайте дробный битрейт, например 1,5 Мбит/с, с шагом 0,5 Мбит/с. Оценка размера и сжатие сохраняют выбранное значение.',
       'Сравнивайте оригинал и сжатое видео наложением. Перемещайте разделитель, чтобы открыть результат.',
     ],
     Language.es: [
+      'Elige tasas de bits fraccionarias, como 1,5 Mbps, con pasos de 0,5 Mbps. La estimación del tamaño y la compresión conservan el valor elegido.',
       'Compara el video original y el comprimido superpuestos. Arrastra el separador para revelar el resultado.',
     ],
     Language.pt: [
+      'Escolha taxas de bits fracionárias, como 1,5 Mbps, em passos de 0,5 Mbps. A estimativa de tamanho e a compressão preservam o valor escolhido.',
       'Compare o vídeo original e o comprimido sobrepostos. Arraste o divisor para revelar o resultado.',
     ],
     Language.de: [
+      'Wähle gebrochene Bitraten wie 1,5 Mbit/s in Schritten von 0,5 Mbit/s. Größenschätzung und Komprimierung behalten den gewählten Wert bei.',
       'Vergleiche Original und komprimiertes Video übereinander. Ziehe die Trennlinie, um das Ergebnis sichtbar zu machen.',
     ],
     Language.fr: [
+      'Choisissez des débits fractionnaires, comme 1,5 Mbps, par pas de 0,5 Mbps. L’estimation de taille et la compression conservent la valeur choisie.',
       'Comparez la vidéo originale et la vidéo compressée par superposition. Faites glisser le séparateur pour révéler le résultat.',
     ],
-    Language.zh: ['将原始视频和压缩视频叠加比较。拖动分隔线即可查看压缩结果。'],
+    Language.zh: [
+      '支持以 0.5 Mbps 为步长选择小数码率，例如 1.5 Mbps。大小估算和压缩均保留所选值。',
+      '将原始视频和压缩视频叠加比较。拖动分隔线即可查看压缩结果。',
+    ],
     Language.hi: [
+      '0.5 Mbps के चरणों में 1.5 Mbps जैसी दशमलव बिटरेट चुनें। आकार का अनुमान और संपीड़न चुने गए मान को बनाए रखते हैं।',
       'मूल और संपीड़ित वीडियो को एक-दूसरे पर रखकर तुलना करें। परिणाम देखने के लिए विभाजक खींचें।',
     ],
     Language.nl: [
+      'Kies decimale bitrates, zoals 1,5 Mbps, in stappen van 0,5 Mbps. De geschatte grootte en compressie behouden de gekozen waarde.',
       'Vergelijk de originele en gecomprimeerde video over elkaar. Sleep de scheidingslijn om het resultaat te onthullen.',
     ],
-    Language.ko: ['원본과 압축 동영상을 겹쳐서 비교하세요. 구분선을 드래그하여 결과를 확인하세요.'],
-    Language.ja: ['元の動画と圧縮後の動画を重ねて比較できます。境界線をドラッグして結果を確認しましょう。'],
+    Language.ko: [
+      '0.5Mbps 단위로 1.5Mbps 같은 소수 비트레이트를 선택하세요. 크기 예상과 압축에 선택한 값이 그대로 적용됩니다.',
+      '원본과 압축 동영상을 겹쳐서 비교하세요. 구분선을 드래그하여 결과를 확인하세요.',
+    ],
+    Language.ja: [
+      '0.5 Mbps刻みで1.5 Mbpsなどの小数ビットレートを選べます。サイズ予測と圧縮に選択した値がそのまま使われます。',
+      '元の動画と圧縮後の動画を重ねて比較できます。境界線をドラッグして結果を確認しましょう。',
+    ],
     Language.it: [
+      'Scegli bitrate decimali, come 1,5 Mbps, con incrementi di 0,5 Mbps. La stima delle dimensioni e la compressione mantengono il valore scelto.',
       'Confronta il video originale e quello compresso sovrapposti. Trascina il divisore per mostrare il risultato.',
     ],
     Language.tr: [
+      '0,5 Mbps adımlarla 1,5 Mbps gibi kesirli bit hızları seçin. Boyut tahmini ve sıkıştırma seçilen değeri korur.',
       'Orijinal ve sıkıştırılmış videoyu üst üste karşılaştırın. Sonucu görmek için ayırıcıyı sürükleyin.',
     ],
   },

@@ -21,7 +21,7 @@
 | `stupid_simple_sheet` | Modal sheets with scroll-to-drag dismissal |
 | `flutter_svg` | SVG icons |
 
-`light_compressor_v2` stays pinned in `pubspec.yaml`; verify its example app before changing compression options.
+`light_compressor_v2 1.10.0` supports fractional Mbps for compression and estimates and stays pinned in `pubspec.yaml`; verify its example app before changing compression options.
 
 ## Commands
 

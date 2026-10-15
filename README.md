@@ -15,7 +15,7 @@ No cloud upload. No subscription. Your videos stay yours.
 
 - Simple quality presets: high, medium, low
 - Advanced controls: resolution, bitrate, frame rate, codec, and audio
-- Hand-drawn bitrate slider: 1–20 Mbps in whole steps, with haptic feedback and automatic mode
+- Hand-drawn bitrate slider: 1–20 Mbps in 0.5 Mbps steps, with haptic feedback and automatic mode
 - Batch compression
 - Compare original and compressed videos as overlays with a draggable divider
 - Save and share compressed videos

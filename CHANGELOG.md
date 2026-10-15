@@ -1,7 +1,13 @@
 ## [1.0.13]
 
+### Added
+
+* Select fractional video bitrates from 1 to 20 Mbps in 0.5 Mbps steps, including 1.5 Mbps (#47).
+
 ### Changed
 
+* Preserve fractional bitrate values through settings, size estimates, and native compression; automatic bitrate no longer rounds to whole Mbps.
+* Update `light_compressor_v2` to 1.10.0 for fractional bitrate support on Android and iOS.
 * Compare original and compressed videos as aligned overlays with a draggable divider that reveals the result, full-frame portrait/landscape previews, and accessible reveal controls.
 
 ## [1.0.12]

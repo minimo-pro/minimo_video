@@ -214,7 +214,7 @@ class VideoCompressorAdapter {
   static ({
     light.VideoQuality quality,
     light.VideoFormat format,
-    int bitrateMbps,
+    double bitrateMbps,
     int? frameRate,
   })
   encodePlan(

@@ -15,7 +15,7 @@ dependencies:
   shared_preferences: ^2.5.6
   share_plus: ^13.3.1
   url_launcher: ^6.3.3
-  light_compressor_v2: 1.9.1
+  light_compressor_v2: 1.10.0
   flutter_bloc: ^9.1.1
   gal: ^2.3.3
   flutter_svg: ^2.3.0
