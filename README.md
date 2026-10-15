@@ -13,12 +13,11 @@ No cloud upload. No subscription. Your videos stay yours.
 
 ## Features
 
-- Simple quality presets: high, medium, low
-- Advanced controls: resolution, bitrate, frame rate, codec, and audio
-- Hand-drawn bitrate slider: 1–20 Mbps in 0.5 Mbps steps, with haptic feedback and automatic mode
-- Batch compression
-- Compare original and compressed videos as overlays with a draggable divider
-- Save and share compressed videos
+- **Estimate before encoding.** See the expected output size and space saved as you adjust compression settings.
+- **Inspect the difference.** Overlay the original and compressed video, then drag the divider to compare the same part of the frame.
+- **Fine-tune size and quality.** Choose H.264 or HEVC, adjust resolution and frame rate, and set a target bitrate from 1–20 Mbps in 0.5 Mbps steps.
+- **Preserve gallery context on iOS.** Keep capture date, location, albums, and favorites where available. Replacement creates and verifies a compressed copy before requesting deletion of the original.
+- **Start from iOS Shortcuts.** Send videos to minimo with a quality preset already selected.
 
 ## Native compression pipeline
 
