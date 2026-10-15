@@ -13,7 +13,7 @@ Mixed batches can contain compressed, skipped, and failed items. Save/share acti
 
 ## Preview
 
-Successful results can be previewed from `CompressionResultView`. The preview uses `video_player` to show original and compressed local files side by side with a center divider, shared play/pause, shared seek, and muted playback.
+Successful results can be previewed from `CompressionResultView`. The preview uses `video_player` to show original and compressed local files as aligned full-frame overlays. A draggable vertical divider reveals the compressed video on the right; both layers retain the same centered, contained viewport while the divider moves. The viewport follows the original aspect ratio, including portrait video. Tap or drag horizontally to move the divider, or use accessibility increase/decrease actions. Both videos share play/pause and seek controls and remain muted.
 
 Only `state.successResults` are previewable. Skipped and failed items stay in the status list.
 
@@ -77,7 +77,7 @@ chronological gallery position without risky in-place writes.
 
 ## Known Limitations
 
-- `light_compressor_v2` is pinned to `1.9.1`; update it deliberately and repeat physical-device codec checks.
+- `light_compressor_v2` is pinned to `1.10.0`; update it deliberately and repeat physical-device codec checks.
 - Installing/changing a native plugin requires a full rebuild; hot reload cannot register new platform channels.
 - Already compressed inputs are re-encoded before the 10% policy decides whether to keep output.
 - Estimates are bitrate-based approximations, not guarantees.

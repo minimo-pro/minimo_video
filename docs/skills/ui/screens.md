@@ -44,6 +44,8 @@ On a successful result:
 | Bottom row | `VS` compare, filled primary save, icon-only share |
 | Save sheet | Per-video delete selection before saving; unavailable originals are greyed out and long lists fade at scroll edges |
 
+The comparison sheet overlays original and compressed videos in a shared full-frame viewport. Drag the vertical divider to reveal the compressed result on the right; play/pause and timeline controls affect both videos.
+
 Failed compression replaces save with retry and disables `VS`. Already-optimized results keep `VS` disabled without a primary filled action.
 
 Top and system back actions ask for confirmation when successful outputs have not been saved. Saved and all-failed results leave immediately.
@@ -52,7 +54,7 @@ Top and system back actions ask for confirmation when successful outputs have no
 
 High, Medium, and Low are the primary UX. Advanced mode exposes
 resolution, video bitrate, frame rate, H.264/HEVC codec, and audio controls.
-Bitrate uses a hand-drawn horizontal slider for whole 1–20 Mbps values, a plain
+Bitrate uses a hand-drawn horizontal slider for 1–20 Mbps values in 0.5 Mbps steps, a plain
 circular thumb, selection haptics, and a quick automatic-mode button.
 The advanced list leaves extra scroll space after the final audio control.
 The selected-video count badge stays inside the preview bounds so the scroll viewport never clips its circular top edge.

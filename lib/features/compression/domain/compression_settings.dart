@@ -2,7 +2,7 @@ class CompressionSettings {
   final double crf;
   final String? resolution;
   final CompressionAudioMode audioMode;
-  final int? videoBitrateMbps;
+  final double? videoBitrateMbps;
   final int? frameRate;
   final CompressionCodec codec;
 
@@ -31,7 +31,7 @@ class CompressionSettings {
       audioMode: audioMode ?? this.audioMode,
       videoBitrateMbps: videoBitrateMbps == _unset
           ? this.videoBitrateMbps
-          : videoBitrateMbps as int?,
+          : (videoBitrateMbps as num?)?.toDouble(),
       frameRate: frameRate == _unset ? this.frameRate : frameRate as int?,
       codec: codec ?? this.codec,
     );
@@ -56,13 +56,22 @@ class CompressionSettings {
     return frameRate;
   }
 
-  int effectiveBitrateMbps({
+  double effectiveBitrateMbps({
     int? outputWidth,
     int? outputHeight,
     double? sourceFrameRate,
   }) {
     final configuredFrameRate = validatedFrameRate;
-    if (videoBitrateMbps case final bitrate?) return bitrate;
+    if (videoBitrateMbps case final bitrate?) {
+      if (!bitrate.isFinite || bitrate <= 0) {
+        throw ArgumentError.value(
+          bitrate,
+          'videoBitrateMbps',
+          'Must be finite and greater than zero',
+        );
+      }
+      return bitrate;
+    }
 
     final validSourceFrameRate = sourceFrameRate != null && sourceFrameRate > 0
         ? sourceFrameRate
@@ -94,8 +103,7 @@ class CompressionSettings {
       bitrate = width * height * outputFps * bitsPerPixel * qualityScale / 1e6;
     }
 
-    // ponytail: plugin accepts whole Mbps; use finer units when it supports them.
-    return bitrate.round().clamp(1, 8);
+    return bitrate.clamp(1.0, 8.0);
   }
 
   double get resolutionEstimateScale => switch (resolution) {

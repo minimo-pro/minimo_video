@@ -6,12 +6,53 @@ import 'package:minimo_video/features/compression/presentation/widgets/bitrate_p
 import 'package:minimo_video/generated/l10n.dart';
 
 void main() {
+  testWidgets(
+    'configured precision survives labels and semantics until adjusted',
+    (tester) async {
+      final handle = tester.ensureSemantics();
+      try {
+        final values = <double?>[];
+        SemanticsNode sliderNode() => tester
+            .getSemantics(find.byType(Slider))
+            .debugListChildrenInOrder(DebugSemanticsDumpOrder.traversalOrder)
+            .singleWhere(
+              (node) =>
+                  node.getSemanticsData().hasAction(SemanticsAction.increase),
+            );
+
+        for (final bitrate in [1.26, 1.23456789]) {
+          await tester.pumpWidget(_app(bitrate, values.add));
+          await tester.pumpAndSettle();
+          expect(find.text('$bitrate Mbps'), findsOneWidget);
+          expect(sliderNode().getSemanticsData().value, '$bitrate Mbps');
+          expect(values, isEmpty);
+        }
+
+        final node = sliderNode();
+        expect(node.getSemanticsData().increasedValue, '1.5 Mbps');
+        tester.binding.performSemanticsAction(
+          SemanticsActionEvent(
+            type: SemanticsAction.increase,
+            nodeId: node.id,
+            viewId: tester.view.viewId,
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(values, [1.5]);
+        expect(find.text('1.5 Mbps'), findsOneWidget);
+        expect(sliderNode().getSemanticsData().value, '1.5 Mbps');
+      } finally {
+        handle.dispose();
+      }
+    },
+  );
+
   testWidgets('semantics announces auto and numeric values when adjusted', (
     tester,
   ) async {
     final handle = tester.ensureSemantics();
     try {
-      final values = <int?>[];
+      final values = <double?>[];
       SemanticsNode sliderNode() => tester
           .getSemantics(find.byType(Slider))
           .debugListChildrenInOrder(DebugSemanticsDumpOrder.traversalOrder)
@@ -22,8 +63,8 @@ void main() {
       await tester.pumpWidget(_app(null, values.add));
       var node = sliderNode();
       expect(node.getSemanticsData().value, 'auto');
-      expect(node.getSemanticsData().increasedValue, '3 Mbps');
-      expect(node.getSemanticsData().decreasedValue, '1 Mbps');
+      expect(node.getSemanticsData().increasedValue, '2.5 Mbps');
+      expect(node.getSemanticsData().decreasedValue, '1.5 Mbps');
 
       tester.binding.performSemanticsAction(
         SemanticsActionEvent(
@@ -33,9 +74,9 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(values.last, 3);
+      expect(values.last, 2.5);
       node = sliderNode();
-      expect(node.getSemanticsData().value, '3 Mbps');
+      expect(node.getSemanticsData().value, '2.5 Mbps');
 
       await tester.tap(find.text('auto'));
       await tester.pumpAndSettle();
@@ -48,10 +89,10 @@ void main() {
     }
   });
 
-  testWidgets('slider selects whole Mbps with haptic and resets to auto', (
+  testWidgets('slider selects fractional Mbps with haptic and resets to auto', (
     tester,
   ) async {
-    final values = <int?>[];
+    final values = <double?>[];
     final haptics = <MethodCall>[];
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
       SystemChannels.platform,
@@ -69,10 +110,16 @@ void main() {
     await tester.pumpWidget(_app(5, values.add));
     final picker = tester.widget<Slider>(find.byType(Slider));
     expect(picker.value, 5);
-    expect(find.text('5 Mbps', findRichText: true), findsOneWidget);
+    expect(find.text('5 Mbps'), findsOneWidget);
+    final start = tester.getTopLeft(find.byType(Slider));
+    // 1.5 Mbps is the second discrete position after the 14px track inset.
+    await tester.tapAt(start + const Offset(14 + 252 / 38, 24));
+    await tester.pumpAndSettle();
+    expect(values.last, 1.5);
+    expect(find.text('1.5 Mbps'), findsOneWidget);
     await tester.drag(find.byType(Slider), const Offset(30, 0));
     await tester.pumpAndSettle();
-    expect(values.last, greaterThan(5));
+    expect(values.last, greaterThan(1.5));
     expect(values.last, lessThanOrEqualTo(20));
     expect(haptics.last.arguments, 'HapticFeedbackType.selectionClick');
     await tester.tap(find.text('auto').last);
@@ -84,12 +131,12 @@ void main() {
   testWidgets('slider follows external settings without haptic or callbacks', (
     tester,
   ) async {
-    final values = <int?>[];
+    final values = <double?>[];
     await tester.pumpWidget(_app(5, values.add));
-    await tester.pumpWidget(_app(20, values.add));
+    await tester.pumpWidget(_app(19.5, values.add));
     await tester.pumpAndSettle();
     final picker = tester.widget<Slider>(find.byType(Slider));
-    expect(picker.value, 20);
+    expect(picker.value, 19.5);
     expect(values, isEmpty);
     await tester.pumpWidget(_app(null, values.add));
     await tester.pumpAndSettle();
@@ -98,7 +145,7 @@ void main() {
   });
 }
 
-Widget _app(int? value, ValueChanged<int?> onChanged) => MaterialApp(
+Widget _app(double? value, ValueChanged<double?> onChanged) => MaterialApp(
   localizationsDelegates: const [S.delegate],
   home: Scaffold(
     body: Center(

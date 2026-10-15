@@ -11,6 +11,7 @@
 - Sequential batch compression with overall and per-video progress
 - Hold-to-confirm cancellation and original deletion
 - Save to the gallery, optionally into the `Minimo` album
+- Compare original and compressed videos as aligned overlays with a draggable reveal divider
 - Share compressed files
 - Light/dark system theme
 - English and Russian localization
