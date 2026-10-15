@@ -367,11 +367,17 @@ class _OverlayPlayerBodyState extends State<_OverlayPlayerBody> {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                _FittedVideo(controller: widget.originalController!),
+                _FittedVideo(
+                  controller: widget.originalController!,
+                  frameSize: widget.originalController!.value.size,
+                ),
                 ClipRect(
                   key: const ValueKey('comparison-result-clip'),
                   clipper: _RevealClipper(_split),
-                  child: _FittedVideo(controller: widget.compressedController!),
+                  child: _FittedVideo(
+                    controller: widget.compressedController!,
+                    frameSize: widget.originalController!.value.size,
+                  ),
                 ),
                 Positioned(
                   left: width * _split - 1,
@@ -460,19 +466,20 @@ class _VideoLabel extends StatelessWidget {
 
 class _FittedVideo extends StatelessWidget {
   final VideoPlayerController controller;
+  final Size frameSize;
 
-  const _FittedVideo({required this.controller});
+  const _FittedVideo({required this.controller, required this.frameSize});
 
   @override
   Widget build(BuildContext context) {
-    final size = controller.value.size;
-
     return ClipRect(
       child: FittedBox(
         fit: BoxFit.contain,
         child: SizedBox(
-          width: size.width,
-          height: size.height,
+          // Map both full frames to the source rectangle, even if encoding
+          // changed the aspect ratio; independent fitting misaligns the reveal.
+          width: frameSize.width,
+          height: frameSize.height,
           child: VideoPlayer(controller),
         ),
       ),

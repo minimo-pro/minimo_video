@@ -19,10 +19,17 @@ const _result = CompressedVideo(
 );
 
 void main() {
-  for (final size in [const Size(1920, 1080), const Size(1080, 1920)]) {
-    testWidgets('overlay stays aligned when revealing $size', (tester) async {
+  for (final (size, compressedSize) in [
+    (const Size(1920, 1080), const Size(960, 540)),
+    (const Size(1080, 1920), const Size(540, 960)),
+    (const Size(1920, 1080), const Size(960, 720)),
+    (const Size(1080, 1920), const Size(720, 960)),
+  ]) {
+    testWidgets('overlay stays aligned for $size → $compressedSize', (
+      tester,
+    ) async {
       final oldPlatform = VideoPlayerPlatform.instance;
-      VideoPlayerPlatform.instance = _FakeVideoPlatform(size);
+      VideoPlayerPlatform.instance = _FakeVideoPlatform(size, compressedSize);
       addTearDown(() => VideoPlayerPlatform.instance = oldPlatform);
 
       await tester.pumpWidget(
@@ -50,6 +57,7 @@ void main() {
         tester.getRect(videos.at(1)),
       ];
       expect(bounds[0], bounds[1]);
+      expect(bounds[0], viewport);
       final aspect = tester.widget<AspectRatio>(
         find.ancestor(of: reveal, matching: find.byType(AspectRatio)).first,
       );
@@ -94,8 +102,9 @@ void main() {
 }
 
 class _FakeVideoPlatform extends VideoPlayerPlatform {
-  _FakeVideoPlatform(this.size);
+  _FakeVideoPlatform(this.size, this.compressedSize);
   final Size size;
+  final Size compressedSize;
   var _nextId = 0;
 
   @override
@@ -108,7 +117,7 @@ class _FakeVideoPlatform extends VideoPlayerPlatform {
     VideoEvent(
       eventType: VideoEventType.initialized,
       duration: const Duration(seconds: 10),
-      size: playerId == 1 ? size : size / 2,
+      size: playerId == 1 ? size : compressedSize,
     ),
   );
   @override
