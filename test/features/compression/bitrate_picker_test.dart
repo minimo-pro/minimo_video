@@ -6,6 +6,47 @@ import 'package:minimo_video/features/compression/presentation/widgets/bitrate_p
 import 'package:minimo_video/generated/l10n.dart';
 
 void main() {
+  testWidgets(
+    'configured precision survives labels and semantics until adjusted',
+    (tester) async {
+      final handle = tester.ensureSemantics();
+      try {
+        final values = <double?>[];
+        SemanticsNode sliderNode() => tester
+            .getSemantics(find.byType(Slider))
+            .debugListChildrenInOrder(DebugSemanticsDumpOrder.traversalOrder)
+            .singleWhere(
+              (node) =>
+                  node.getSemanticsData().hasAction(SemanticsAction.increase),
+            );
+
+        for (final bitrate in [1.26, 1.23456789]) {
+          await tester.pumpWidget(_app(bitrate, values.add));
+          await tester.pumpAndSettle();
+          expect(find.text('$bitrate Mbps'), findsOneWidget);
+          expect(sliderNode().getSemanticsData().value, '$bitrate Mbps');
+          expect(values, isEmpty);
+        }
+
+        final node = sliderNode();
+        expect(node.getSemanticsData().increasedValue, '1.5 Mbps');
+        tester.binding.performSemanticsAction(
+          SemanticsActionEvent(
+            type: SemanticsAction.increase,
+            nodeId: node.id,
+            viewId: tester.view.viewId,
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(values, [1.5]);
+        expect(find.text('1.5 Mbps'), findsOneWidget);
+        expect(sliderNode().getSemanticsData().value, '1.5 Mbps');
+      } finally {
+        handle.dispose();
+      }
+    },
+  );
+
   testWidgets('semantics announces auto and numeric values when adjusted', (
     tester,
   ) async {

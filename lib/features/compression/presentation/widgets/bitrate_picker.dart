@@ -101,10 +101,16 @@ class _BitratePickerState extends State<BitratePicker> {
                 min: 1,
                 max: 20,
                 divisions: 38,
-                semanticFormatterCallback: (value) =>
-                    _selected == null && value == sliderBitrate
-                    ? strings.automatic
-                    : '${_formatBitrate(value)} Mbps',
+                semanticFormatterCallback: (value) {
+                  final step = (value * 2).round() / 2;
+                  // Flutter discretizes the current semantic value too.
+                  if (step == (sliderBitrate * 2).round() / 2) {
+                    return _selected == null
+                        ? strings.automatic
+                        : '${_formatBitrate(_selected!)} Mbps';
+                  }
+                  return '${_formatBitrate(step)} Mbps';
+                },
                 onChanged: (value) => _select((value * 2).round() / 2),
               ),
             ),
@@ -139,7 +145,7 @@ class _BitratePickerState extends State<BitratePicker> {
 
 String _formatBitrate(double value) => value == value.roundToDouble()
     ? value.toInt().toString()
-    : value.toStringAsFixed(1);
+    : value.toString();
 
 class _BitrateThumb extends SliderComponentShape {
   final Color backgroundColor;
