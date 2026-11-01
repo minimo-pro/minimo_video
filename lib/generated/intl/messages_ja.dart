@@ -210,6 +210,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "デバイスが熱くなると圧縮が遅くなることがあります",
     ),
+    "photoAppDescription": MessageLookupByLibrary.simpleMessage(
+      "写真をスマートフォンで手軽に圧縮",
+    ),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("ファイルから"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("ギャラリーから"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage("画面をオンのままにする"),

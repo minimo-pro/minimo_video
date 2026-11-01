@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -250,15 +249,6 @@ class S {
     return Intl.message(
       'project website',
       name: 'projectWebsite',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get photoAppDescription {
-    return Intl.message(
-      'make photos smaller, right on your phone',
-      name: 'photoAppDescription',
       desc: '',
       args: [],
     );
@@ -1302,6 +1292,16 @@ class S {
     return Intl.message(
       'couldn\'t save the videos. try again',
       name: 'failedToSave',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `make photos smaller, right on your phone`
+  String get photoAppDescription {
+    return Intl.message(
+      'make photos smaller, right on your phone',
+      name: 'photoAppDescription',
       desc: '',
       args: [],
     );

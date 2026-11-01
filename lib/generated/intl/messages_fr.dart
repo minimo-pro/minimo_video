@@ -243,6 +243,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "la compression peut ralentir si votre appareil chauffe",
     ),
+    "photoAppDescription": MessageLookupByLibrary.simpleMessage(
+      "réduisez vos photos directement sur votre téléphone",
+    ),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage(
       "depuis les fichiers",
     ),

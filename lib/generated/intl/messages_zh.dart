@@ -188,6 +188,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "originalDeletionFailed": MessageLookupByLibrary.simpleMessage("部分原视频无法删除"),
     "originalVideo": MessageLookupByLibrary.simpleMessage("压缩前"),
     "overheatWarning": MessageLookupByLibrary.simpleMessage("设备发热时，压缩可能变慢"),
+    "photoAppDescription": MessageLookupByLibrary.simpleMessage("直接在手机上压缩照片"),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("从文件选择"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("从图库选择"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage("保持屏幕亮起"),

@@ -45,8 +45,7 @@ typedef Changelog = Map<String, Map<Language, List<String>>>;
 const Changelog _changelog = {
   '1.0.14': {
     Language.en: [
-      'Added a link to minimo (photo) on the About screen.',
-      'Added the project website to Settings.',
+      'Added a link to minimo (photo) in Settings and About.',
     ],
     Language.ru: [
       'Добавлена ссылка на minimo (photo) в разделе «О приложении».',
@@ -753,11 +752,7 @@ List<String> unseenChanges({
 
   for (final entry in entries) {
     if (entry.version > lastSeenVersion && entry.version <= currentVersion) {
-      result.addAll(
-        (entry.texts[language] ?? entry.texts[Language.en] ?? []).map(
-          (change) => change.toLowerCase(),
-        ),
-      );
+      result.addAll(entry.texts[language] ?? entry.texts[Language.en] ?? []);
     }
   }
 
@@ -802,10 +797,7 @@ class ChangelogService {
 
     final changes = texts[language] ?? texts[Language.en] ?? const [];
     if (changes.isEmpty) return null;
-    return ChangelogUpdate(
-      version: current,
-      changes: changes.map((change) => change.toLowerCase()).toList(),
-    );
+    return ChangelogUpdate(version: current, changes: changes);
   }
 
   Future<ChangelogUpdate?> initialize({required Language language}) async {

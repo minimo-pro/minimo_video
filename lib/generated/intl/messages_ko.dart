@@ -217,6 +217,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "기기가 뜨거워지면 압축이 느려질 수 있습니다",
     ),
+    "photoAppDescription": MessageLookupByLibrary.simpleMessage(
+      "휴대폰에서 바로 사진 용량을 줄이세요",
+    ),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("파일에서"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("갤러리에서"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage("화면 켜기"),

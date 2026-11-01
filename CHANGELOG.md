@@ -2,7 +2,7 @@
 
 ### Added
 
-* Added the project website link to Settings and About.
+* Added a link to minimo (photo) in Settings and About.
 
 ## [1.0.13]
 
