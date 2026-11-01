@@ -68,7 +68,7 @@ void main() {
         current: '1.0.11',
         language: Language.en,
       ).single,
-      contains('1–20 Mbps'),
+      contains('1–20 mbps'),
     );
   });
 
