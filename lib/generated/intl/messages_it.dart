@@ -244,6 +244,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "la compressione può rallentare se il dispositivo si surriscalda",
     ),
+    "photoAppDescription": MessageLookupByLibrary.simpleMessage(
+      "riduci le foto direttamente sul telefono",
+    ),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("dai file"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("dalla galleria"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage(

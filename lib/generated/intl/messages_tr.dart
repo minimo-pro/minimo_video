@@ -246,6 +246,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "overheatWarning": MessageLookupByLibrary.simpleMessage(
       "cihazın ısınırsa sıkıştırma yavaşlayabilir",
     ),
+    "photoAppDescription": MessageLookupByLibrary.simpleMessage(
+      "fotoğrafları doğrudan telefonunuzda küçültün",
+    ),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("dosyalardan"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("galeriden"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage(

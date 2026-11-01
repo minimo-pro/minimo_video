@@ -43,6 +43,59 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.14': {
+    Language.en: [
+      'Added a link to minimo (photo) in Settings and About.',
+    ],
+    Language.ru: [
+      'Добавлена ссылка на minimo (photo) в разделе «О приложении».',
+      'Добавлена ссылка на minimo (photo) в настройки.',
+    ],
+    Language.es: [
+      'Se añadió un enlace a minimo (photo) en la pantalla Acerca de.',
+      'Se añadió un enlace a minimo (photo) en Ajustes.',
+    ],
+    Language.pt: [
+      'Foi adicionado um link para minimo (photo) na tela Sobre.',
+      'Foi adicionado um link para minimo (photo) nas Configurações.',
+    ],
+    Language.de: [
+      'Ein Link zu minimo (photo) wurde dem Bildschirm „Über“ hinzugefügt.',
+      'Ein Link zu minimo (photo) wurde den Einstellungen hinzugefügt.',
+    ],
+    Language.fr: [
+      'Un lien vers minimo (photo) a été ajouté à la page À propos.',
+      'Un lien vers minimo (photo) a été ajouté aux réglages.',
+    ],
+    Language.zh: [
+      '在“关于”页面添加了 minimo (photo) 链接。',
+      '在设置中添加了 minimo (photo) 链接。',
+    ],
+    Language.hi: [
+      'परिचय स्क्रीन पर minimo (photo) का लिंक जोड़ा गया।',
+      'सेटिंग्स में minimo (photo) का लिंक जोड़ा गया।',
+    ],
+    Language.nl: [
+      'Een link naar minimo (photo) toegevoegd aan het scherm Over.',
+      'Een link naar minimo (photo) toegevoegd aan Instellingen.',
+    ],
+    Language.ko: [
+      '정보 화면에 minimo (photo) 링크를 추가했습니다.',
+      '설정에 minimo (photo) 링크를 추가했습니다.',
+    ],
+    Language.ja: [
+      'アプリについて画面に minimo (photo) へのリンクを追加しました。',
+      '設定に minimo (photo) へのリンクを追加しました。',
+    ],
+    Language.it: [
+      'Aggiunto un link a minimo (photo) nella schermata Informazioni.',
+      'Aggiunto un link a minimo (photo) nelle Impostazioni.',
+    ],
+    Language.tr: [
+      'Hakkında ekranına minimo (photo) bağlantısı eklendi.',
+      'Ayarlara minimo (photo) bağlantısı eklendi.',
+    ],
+  },
   '1.0.13': {
     Language.en: [
       'Choose fractional video bitrates, such as 1.5 Mbps, with 0.5 Mbps slider steps. Size estimates and compression preserve the selected value.',

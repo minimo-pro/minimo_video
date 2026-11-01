@@ -15,6 +15,7 @@ import '../widgets/app_snack_bar.dart';
 import '../widgets/faded_scroll_view.dart';
 import '../widgets/hold_to_confirm_button.dart';
 import '../widgets/pressable.dart';
+import '../widgets/photo_app_card.dart';
 
 @RoutePage()
 class SettingsScreen extends StatelessWidget {
@@ -82,6 +83,8 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       const _CacheRow(),
                       _LanguageRow(settings: settings),
+                      const SizedBox(height: 8),
+                      const PhotoAppCard(),
                     ],
                   ),
                 ),
@@ -93,6 +96,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 }
+
 
 class _CacheRow extends StatefulWidget {
   const _CacheRow();

@@ -25,6 +25,7 @@
   "@changelogTitle": {"placeholders": {"version": {"type": "String"}}},
   "changelogSubtitle": "cambios de actualizaciones que aún no has visto",
   "changelogDone": "entendido",
+  "photoAppDescription": "reduce el tamaño de tus fotos desde el móvil",
   "projectWebsite": "sitio web del proyecto",
   "githubRepository": "repositorio de github",
   "xTwitter": "x (twitter)",

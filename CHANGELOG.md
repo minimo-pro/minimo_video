@@ -1,3 +1,9 @@
+## [1.0.14]
+
+### Added
+
+* Added a link to minimo (photo) in Settings and About.
+
 ## [1.0.13]
 
 ### Added
