@@ -753,7 +753,11 @@ List<String> unseenChanges({
 
   for (final entry in entries) {
     if (entry.version > lastSeenVersion && entry.version <= currentVersion) {
-      result.addAll(entry.texts[language] ?? entry.texts[Language.en] ?? []);
+      result.addAll(
+        (entry.texts[language] ?? entry.texts[Language.en] ?? []).map(
+          (change) => change.toLowerCase(),
+        ),
+      );
     }
   }
 
@@ -798,7 +802,10 @@ class ChangelogService {
 
     final changes = texts[language] ?? texts[Language.en] ?? const [];
     if (changes.isEmpty) return null;
-    return ChangelogUpdate(version: current, changes: changes);
+    return ChangelogUpdate(
+      version: current,
+      changes: changes.map((change) => change.toLowerCase()).toList(),
+    );
   }
 
   Future<ChangelogUpdate?> initialize({required Language language}) async {
