@@ -255,6 +255,15 @@ class S {
     );
   }
 
+  String get photoAppDescription {
+    return Intl.message(
+      'make photos smaller, right on your phone',
+      name: 'photoAppDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `github repository`
   String get githubRepository {
     return Intl.message(

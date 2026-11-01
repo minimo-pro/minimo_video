@@ -18,6 +18,7 @@ import '../widgets/app_snack_bar.dart';
 import '../widgets/changelog_dialog.dart';
 import '../widgets/faded_scroll_view.dart';
 import '../widgets/pressable.dart';
+import '../widgets/photo_app_card.dart';
 
 @RoutePage()
 class InfoScreen extends StatelessWidget {
@@ -36,7 +37,7 @@ class InfoScreen extends StatelessWidget {
     'https://play.google.com/store/apps/developer?id=Gleb+Shalimov&hl=en',
   );
   static final _links = <String, Uri>{
-    'project': Uri.parse('https://github.com/minimo-pro'),
+    'project': Uri.parse('https://minimo-video.vercel.app'),
     'github': Uri.parse('https://github.com/minimo-pro/minimo_video'),
     'x': Uri.parse('https://x.com/khlebobul'),
   };
@@ -145,6 +146,7 @@ class InfoScreen extends StatelessWidget {
                     const SizedBox(height: 24),
                     _CompressionExplanation(strings: strings),
                     const SizedBox(height: 18),
+
                     const _WhatsNewLink(),
                     _InfoLink(title: strings.rateTheApp, onTap: _rateApp),
                     _InfoLink(
@@ -155,6 +157,8 @@ class InfoScreen extends StatelessWidget {
                       title: strings.myOtherApps,
                       onTap: _openOtherApps,
                     ),
+                    const SizedBox(height: 12),
+                    const PhotoAppCard(),
                     const SizedBox(height: 16),
                     Text(
                       strings.openSourceNote,

@@ -1,3 +1,9 @@
+## [1.0.14]
+
+### Added
+
+* Added the project website link to Settings and About.
+
 ## [1.0.13]
 
 ### Added

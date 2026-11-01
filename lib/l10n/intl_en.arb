@@ -262,5 +262,6 @@
       }
     }
   },
-  "failedToSave": "couldn't save the videos. try again"
+  "failedToSave": "couldn't save the videos. try again",
+  "photoAppDescription": "make photos smaller, right on your phone"
 }
