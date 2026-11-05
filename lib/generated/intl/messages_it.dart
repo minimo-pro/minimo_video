@@ -153,6 +153,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "repository github",
     ),
     "good": MessageLookupByLibrary.simpleMessage("buona"),
+    "hdrToSdrHint": MessageLookupByLibrary.simpleMessage(
+      "il video HDR verrà convertito in SDR — i colori potrebbero cambiare leggermente",
+    ),
+    "hdrToSdrLabel": MessageLookupByLibrary.simpleMessage("HDR → SDR"),
     "hevcFallbackNotice": MessageLookupByLibrary.simpleMessage(
       "HEVC non era disponibile, quindi il video è stato salvato come H.264",
     ),

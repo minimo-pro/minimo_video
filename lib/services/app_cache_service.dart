@@ -13,6 +13,7 @@ class AppCacheService {
     'minimo_video',
     'minimo_thumbnails',
   ];
+  static final _pluginThumbnailName = RegExp(r'^thumb_\d+(?:_\d+)?\.jpg$');
 
   static Future<int> size({Directory? root}) async {
     final directories = await _directories(root);
@@ -21,6 +22,13 @@ class AppCacheService {
       if (!await directory.exists()) continue;
       await for (final entity in directory.list(recursive: true)) {
         if (entity is File) bytes += await entity.length();
+      }
+    }
+    final cacheRoot = root ?? await getTemporaryDirectory();
+    await for (final entity in cacheRoot.list(followLinks: false)) {
+      if (entity is File &&
+          _pluginThumbnailName.hasMatch(path.basename(entity.path))) {
+        bytes += await entity.length();
       }
     }
     if (root == null && Platform.isIOS) {
@@ -38,6 +46,13 @@ class AppCacheService {
   static Future<void> clear({Directory? root}) async {
     for (final directory in await _directories(root)) {
       if (await directory.exists()) await directory.delete(recursive: true);
+    }
+    final cacheRoot = root ?? await getTemporaryDirectory();
+    await for (final entity in cacheRoot.list(followLinks: false)) {
+      if (entity is File &&
+          _pluginThumbnailName.hasMatch(path.basename(entity.path))) {
+        await entity.delete();
+      }
     }
     if (root == null) {
       if (Platform.isIOS) {
@@ -64,14 +79,24 @@ class AppCacheService {
       final file = File(filePath);
       try {
         if (!await file.exists()) continue;
+        if (await FileSystemEntity.type(filePath, followLinks: false) !=
+            FileSystemEntityType.file) {
+          continue;
+        }
         final resolved = await file.resolveSymbolicLinks();
         final resolvedRoot = await cacheRoot.resolveSymbolicLinks();
-        if (!directories.any(
-              (directory) => path.isWithin(directory, filePath),
-            ) ||
-            !_directoryNames.any(
-              (name) => path.isWithin(path.join(resolvedRoot, name), resolved),
-            )) {
+        final pluginThumbnail =
+            path.dirname(filePath) == cacheRoot.path &&
+            path.dirname(resolved) == resolvedRoot &&
+            _pluginThumbnailName.hasMatch(path.basename(filePath));
+        if (!pluginThumbnail &&
+            (!directories.any(
+                  (directory) => path.isWithin(directory, filePath),
+                ) ||
+                !_directoryNames.any(
+                  (name) =>
+                      path.isWithin(path.join(resolvedRoot, name), resolved),
+                ))) {
           continue;
         }
         await file.delete();

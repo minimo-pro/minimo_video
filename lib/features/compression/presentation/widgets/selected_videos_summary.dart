@@ -11,6 +11,8 @@ import 'selected_videos_preview.dart';
 class SelectedVideosSummary extends StatelessWidget {
   final int selectedCount;
   final List<String?> thumbnailPaths;
+  final List<bool> hdrFlags;
+  final bool showHdrHint;
   final int originalSize;
   final int estimatedSize;
   final int savingsPercent;
@@ -23,6 +25,8 @@ class SelectedVideosSummary extends StatelessWidget {
     super.key,
     required this.selectedCount,
     required this.thumbnailPaths,
+    this.hdrFlags = const [],
+    this.showHdrHint = false,
     required this.originalSize,
     required this.estimatedSize,
     required this.savingsPercent,
@@ -41,6 +45,7 @@ class SelectedVideosSummary extends StatelessWidget {
         SelectedVideosPreview(
           selectedCount: selectedCount,
           thumbnailPaths: thumbnailPaths,
+          hdrFlags: hdrFlags,
           scale: compact ? 0.82 : 1,
         ),
         SizedBox(height: compact ? 0 : 4),
@@ -150,6 +155,20 @@ class SelectedVideosSummary extends StatelessWidget {
             ),
           ),
         ],
+        if (showHdrHint)
+          Padding(
+            padding: EdgeInsets.fromLTRB(24, compact ? 8 : 12, 24, 0),
+            child: Text(
+              strings.hdrToSdrHint,
+              key: const ValueKey('hdr-to-sdr-hint'),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: compact ? 13 : 14,
+                height: 1.2,
+              ),
+            ),
+          ),
       ],
     );
   }

@@ -164,6 +164,8 @@
     "pickFromFiles": "파일에서",
     "loadingVideos": "동영상 가져오는 중...",
     "loadingManyVideosHint": "클라우드에서 다운로드하거나 큰 파일을 복사하는 데 시간이 더 걸릴 수 있습니다",
+    "hdrToSdrHint": "HDR 동영상은 SDR로 변환됩니다 — 색상이 약간 달라질 수 있습니다",
+    "hdrToSdrLabel": "HDR → SDR",
     "failedToPickVideos": "동영상 파일을 선택하세요",
     "compressionComplete": "압축 완료",
     "compressionCompleted": "압축이 완료됨",

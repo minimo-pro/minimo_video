@@ -136,6 +136,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "getStarted": MessageLookupByLibrary.simpleMessage("시작하기"),
     "githubRepository": MessageLookupByLibrary.simpleMessage("github 저장소"),
     "good": MessageLookupByLibrary.simpleMessage("좋음"),
+    "hdrToSdrHint": MessageLookupByLibrary.simpleMessage(
+      "HDR 동영상은 SDR로 변환됩니다 — 색상이 약간 달라질 수 있습니다",
+    ),
+    "hdrToSdrLabel": MessageLookupByLibrary.simpleMessage("HDR → SDR"),
     "hevcFallbackNotice": MessageLookupByLibrary.simpleMessage(
       "HEVC를 사용할 수 없어 이 동영상을 H.264로 저장했습니다",
     ),

@@ -164,6 +164,8 @@
   "pickFromFiles": "dai file",
   "loadingVideos": "importazione video...",
   "loadingManyVideosHint": "il download dal cloud o la copia di file grandi può richiedere più tempo",
+  "hdrToSdrHint": "il video HDR verrà convertito in SDR — i colori potrebbero cambiare leggermente",
+  "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "scegli un file video",
   "compressionComplete": "compressione completata",
   "compressionCompleted": "compressione completata",

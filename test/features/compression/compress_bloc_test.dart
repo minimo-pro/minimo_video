@@ -34,11 +34,17 @@ class _EstimatingCompressor extends VideoCompressorAdapter {
   Future<String?> createThumbnail(String inputPath) async => null;
 
   @override
-  Future<int?> estimateCompressedSize(
+  Future<({int? bytes, Set<String> hdrPaths})> estimateCompressedSize(
     Iterable<String> inputPaths,
     CompressionSettings settings, {
     bool Function()? isCancelled,
-  }) async => 15;
+  }) async => (
+    bytes: 15,
+    hdrPaths: {
+      for (final path in inputPaths)
+        if (path.contains('hdr')) path,
+    },
+  );
 }
 
 class _QueuedEstimatingCompressor extends VideoCompressorAdapter {
@@ -49,7 +55,7 @@ class _QueuedEstimatingCompressor extends VideoCompressorAdapter {
   var calls = 0;
 
   @override
-  Future<int?> estimateCompressedSize(
+  Future<({int? bytes, Set<String> hdrPaths})> estimateCompressedSize(
     Iterable<String> inputPaths,
     CompressionSettings settings, {
     bool Function()? isCancelled,
@@ -65,7 +71,7 @@ class _QueuedEstimatingCompressor extends VideoCompressorAdapter {
         await releaseFirst.future;
         if (isCancelled?.call() != true) await releaseUncancelled.future;
       }
-      return settings.crf.round();
+      return (bytes: settings.crf.round(), hdrPaths: const <String>{});
     } finally {
       done.complete();
     }
@@ -766,6 +772,20 @@ void main() {
       'replace:two-id',
       'delete:two-id',
     ]);
+    await bloc.close();
+  });
+
+  test('marks HDR videos from the size estimate', () async {
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/clip.mp4', name: 'clip.mp4', size: 17),
+        PickedVideo(path: '/hdr.mp4', name: 'hdr.mp4', size: 17),
+      ],
+      videoCompressorAdapter: _EstimatingCompressor(),
+    );
+
+    await bloc.stream.firstWhere((state) => state.hasHdrVideos);
+    expect(bloc.state.hdrFlags, [false, true]);
     await bloc.close();
   });
 

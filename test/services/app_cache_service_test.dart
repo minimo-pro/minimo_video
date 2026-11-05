@@ -19,12 +19,20 @@ void main() {
       final original = await File(
         '${root.path}/original.mp4',
       ).writeAsBytes([4]);
+      final pluginThumbnail = await File(
+        '${root.path}/thumb_123.jpg',
+      ).writeAsBytes([5]);
+      final unrelatedJpeg = await File(
+        '${root.path}/photo.jpg',
+      ).writeAsBytes([6]);
       final link = await Link(
         '${picked.path}/linked.mp4',
       ).create(original.path);
       await AppCacheService.removeFiles([
         imported.path,
         result.path,
+        pluginThumbnail.path,
+        unrelatedJpeg.path,
         original.path,
         link.path,
         '${picked.path}/../original.mp4',
@@ -32,6 +40,8 @@ void main() {
       ], root: root);
       expect(await imported.exists(), isFalse);
       expect(await result.exists(), isFalse);
+      expect(await pluginThumbnail.exists(), isFalse);
+      expect(await unrelatedJpeg.exists(), isTrue);
       expect(await otherBatch.exists(), isTrue);
       expect(await original.exists(), isTrue);
       expect(await link.exists(), isTrue);
@@ -50,11 +60,15 @@ void main() {
     final thumbnail = await File(
       '${thumbnails.path}/preview.jpg',
     ).writeAsBytes([4, 5]);
+    final pluginThumbnail = await File(
+      '${root.path}/thumb_123.jpg',
+    ).writeAsBytes([6, 7, 8]);
 
-    expect(await AppCacheService.size(root: root), 5);
+    expect(await AppCacheService.size(root: root), 8);
     await AppCacheService.clear(root: root);
     expect(await first.exists(), isFalse);
     expect(await second.exists(), isFalse);
     expect(await thumbnail.exists(), isFalse);
+    expect(await pluginThumbnail.exists(), isFalse);
   });
 }

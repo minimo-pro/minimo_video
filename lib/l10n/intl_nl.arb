@@ -125,6 +125,8 @@
   "pickFromFiles": "uit bestanden",
   "loadingVideos": "video's importeren...",
   "loadingManyVideosHint": "downloaden uit cloudopslag of kopiëren van grote bestanden kan langer duren",
+  "hdrToSdrHint": "HDR-video wordt omgezet naar SDR — kleuren kunnen iets afwijken",
+  "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "kies een videobestand",
   "compressionComplete": "compressie voltooid",
   "compressionCompleted": "compressie voltooid",

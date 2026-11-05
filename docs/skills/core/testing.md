@@ -33,7 +33,7 @@ Current tests cover:
 - Cache size, full cleanup, and session cleanup restricted to tracked cache files
 - Session cleanup waits for active file operations, removes late outputs/thumbnails, and retains sources on cancellation
 - Local compressed-video and saved-space statistics
-- Preview styling and count-badge bounds, status percentage, press motion, and hold-button background
+- Preview styling, count-badge bounds, HDR thumbnail badges, HDR conversion hint, comparison HDR → SDR label, status percentage, press motion, and hold-button background
 - Rolling counters ignore unchanged formatted values and use calm motion
 - Previous estimate retained while a settings estimate refreshes
 - Initial estimate keeps the original size visible until native calculation completes, avoiding an optimistic size reversal

@@ -166,6 +166,8 @@
   "pickFromFiles": "из файлов",
   "loadingVideos": "импорт видео...",
   "loadingManyVideosHint": "загрузка из облака или копирование больших файлов может занять больше времени",
+  "hdrToSdrHint": "HDR-видео будет переведено в SDR — цвета могут немного измениться",
+  "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "выберите видеофайл",
   "compressionComplete": "сжатие завершено",
   "compressionCompleted": "сжатие завершено",

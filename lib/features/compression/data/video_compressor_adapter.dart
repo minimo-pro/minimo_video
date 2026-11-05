@@ -155,6 +155,7 @@ class VideoCompressorAdapter {
         usedCodec: result.usedFormat == light.VideoFormat.h265
             ? CompressionCodec.hevc
             : CompressionCodec.h264,
+        sourceIsHdr: media.isHdr,
       );
     } finally {
       await progress?.cancel();
@@ -168,18 +169,25 @@ class VideoCompressorAdapter {
     }
   }
 
-  Future<int?> estimateCompressedSize(
+  Future<({int? bytes, Set<String> hdrPaths})> estimateCompressedSize(
     Iterable<String> inputPaths,
     CompressionSettings settings, {
     bool Function()? isCancelled,
   }) {
     return _prepare(() async {
-      try {
-        var total = 0;
-        for (final inputPath in inputPaths) {
-          if (isCancelled?.call() == true) return null;
-          final media = await _targetMedia(inputPath, settings.resolution);
-          if (isCancelled?.call() == true) return null;
+      final hdrPaths = <String>{};
+      int? total = 0;
+      for (final inputPath in inputPaths) {
+        if (isCancelled?.call() == true) {
+          return (bytes: null, hdrPaths: hdrPaths);
+        }
+        final media = await _targetMedia(inputPath, settings.resolution);
+        if (media.isHdr) hdrPaths.add(inputPath);
+        if (isCancelled?.call() == true) {
+          return (bytes: null, hdrPaths: hdrPaths);
+        }
+        if (total == null) continue;
+        try {
           final plan = encodePlan(
             settings,
             outputWidth: media.outputWidth,
@@ -196,14 +204,16 @@ class VideoCompressorAdapter {
             videoBitrateInMbps: plan.bitrateMbps,
             disableAudio: settings.audioMode == CompressionAudioMode.remove,
           );
-          if (isCancelled?.call() == true) return null;
+          if (isCancelled?.call() == true) {
+            return (bytes: null, hdrPaths: hdrPaths);
+          }
           final originalSize = await File(inputPath).length();
           total += estimate.estimatedSizeBytes.clamp(0, originalSize);
+        } catch (_) {
+          total = null;
         }
-        return total;
-      } catch (_) {
-        return null;
       }
+      return (bytes: total, hdrPaths: hdrPaths);
     });
   }
 
@@ -240,6 +250,13 @@ class VideoCompressorAdapter {
 
   Future<String?> createThumbnail(String inputPath) {
     return _prepare(() async {
+      // MediaMetadataRetriever cannot decode Dolby Vision on most Android
+      // devices; the plugin falls back to the HEVC base layer.
+      if (Platform.isAndroid) {
+        try {
+          return await _compressor.getVideoThumbnail(inputPath, quality: 82);
+        } catch (_) {}
+      }
       try {
         return await _channel.invokeMethod<String>(
           'createThumbnail',
@@ -321,6 +338,7 @@ class VideoCompressorAdapter {
       int? outputWidth,
       int? outputHeight,
       double? sourceFrameRate,
+      bool isHdr,
     })
   >
   _targetMedia(String inputPath, String? resolution) async {
@@ -329,6 +347,7 @@ class VideoCompressorAdapter {
 
     try {
       final info = await _compressor.getMediaInfo(inputPath);
+      final isHdr = info.isHdr ?? false;
       if (targetWidth == null || targetHeight == null) {
         return (
           videoWidth: null,
@@ -336,6 +355,7 @@ class VideoCompressorAdapter {
           outputWidth: info.width,
           outputHeight: info.height,
           sourceFrameRate: info.frameRate,
+          isHdr: isHdr,
         );
       }
       final (width, height) = targetResolutionForSource(
@@ -350,6 +370,7 @@ class VideoCompressorAdapter {
         outputWidth: width,
         outputHeight: height,
         sourceFrameRate: info.frameRate,
+        isHdr: isHdr,
       );
     } catch (_) {
       return (
@@ -358,6 +379,7 @@ class VideoCompressorAdapter {
         outputWidth: targetWidth,
         outputHeight: targetHeight,
         sourceFrameRate: null,
+        isHdr: false,
       );
     }
   }

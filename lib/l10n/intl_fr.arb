@@ -164,6 +164,8 @@
   "pickFromFiles": "depuis les fichiers",
   "loadingVideos": "importation des vidéos...",
   "loadingManyVideosHint": "le téléchargement depuis le cloud ou la copie de gros fichiers peut prendre plus de temps",
+  "hdrToSdrHint": "la vidéo HDR sera convertie en SDR — les couleurs peuvent légèrement changer",
+  "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "choisissez un fichier vidéo",
   "compressionComplete": "compression terminée",
   "compressionCompleted": "compression terminée",

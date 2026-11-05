@@ -99,6 +99,61 @@ void main() {
       await tester.pumpAndSettle();
     });
   }
+
+  testWidgets('labels HDR sources as HDR → SDR', (tester) async {
+    tester.view.physicalSize = const Size(320, 800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final oldPlatform = VideoPlayerPlatform.instance;
+    VideoPlayerPlatform.instance = _FakeVideoPlatform(
+      const Size(1920, 1080),
+      const Size(960, 540),
+    );
+    addTearDown(() => VideoPlayerPlatform.instance = oldPlatform);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: const TextScaler.linear(2)),
+          child: child!,
+        ),
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        home: const Scaffold(
+          body: CompressionComparisonSheet(
+            results: [
+              CompressedVideo(
+                source: PickedVideo(
+                  path: '/original.mp4',
+                  name: 'original.mp4',
+                  size: 100,
+                ),
+                result: CompressionResult(
+                  success: true,
+                  originalSize: 100,
+                  outputPath: '/compressed.mp4',
+                  outputSize: 40,
+                  sourceIsHdr: true,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('comparison-hdr-to-sdr')), findsOneWidget);
+    expect(find.text('· HDR → SDR'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }
 
 class _FakeVideoPlatform extends VideoPlayerPlatform {

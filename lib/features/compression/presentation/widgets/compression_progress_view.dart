@@ -78,6 +78,7 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
                   SelectedVideosPreview(
                     selectedCount: state.videos.length,
                     thumbnailPaths: state.thumbnailPaths,
+                    hdrFlags: state.hdrFlags,
                     scale: previewScale,
                   ),
                   SizedBox(height: afterPreviewGap),

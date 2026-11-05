@@ -133,6 +133,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "getStarted": MessageLookupByLibrary.simpleMessage("始める"),
     "githubRepository": MessageLookupByLibrary.simpleMessage("githubリポジトリ"),
     "good": MessageLookupByLibrary.simpleMessage("良好"),
+    "hdrToSdrHint": MessageLookupByLibrary.simpleMessage(
+      "HDR 動画は SDR に変換されます — 色味が少し変わる場合があります",
+    ),
+    "hdrToSdrLabel": MessageLookupByLibrary.simpleMessage("HDR → SDR"),
     "hevcFallbackNotice": MessageLookupByLibrary.simpleMessage(
       "HEVCが使用できないため、この動画はH.264で保存されました",
     ),

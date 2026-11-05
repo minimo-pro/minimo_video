@@ -169,6 +169,8 @@ class _CompressionSettingsViewState extends State<CompressionSettingsView> {
                                     sizeRowKey: _sizeRowKey,
                                     selectedCount: state.videos.length,
                                     thumbnailPaths: state.thumbnailPaths,
+                                    hdrFlags: state.hdrFlags,
+                                    showHdrHint: state.hasHdrVideos,
                                     originalSize: state.totalOriginalSize,
                                     estimatedSize: estimatedSize,
                                     savingsPercent: savingsPercent,

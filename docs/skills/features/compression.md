@@ -23,9 +23,9 @@ Advanced mode allows:
 - H.264 or HEVC output; unsupported HEVC hardware falls back to H.264
 - Stereo audio or no audio
 
-With automatic bitrate, `CompressionSettings.effectiveBitrateMbps()` derives the encoder target from the fitted output pixel count, effective output FPS, quality tier, and codec efficiency. Original resolution uses source dimensions for bitrate calculation without passing them as resize dimensions. Requested FPS is capped at the source FPS because the package only downsamples. HEVC targets fewer bits than H.264 for comparable quality. `light_compressor_v2 1.10.0` accepts fractional Mbps. Automatic targets retain their fractional precision and are clamped to `1–8 Mbps`. Manually selected values use `0.5 Mbps` steps up to `20 Mbps` and are absolute, not modified by resolution, FPS, or codec. `CompressionSettings.videoBitrateMbps` and the shared encode plan use `double`; `null` means automatic. Both native compression and native size estimates receive the same unrounded value. Manual bitrate must be finite and greater than zero.
+With automatic bitrate, `CompressionSettings.effectiveBitrateMbps()` derives the encoder target from the fitted output pixel count, effective output FPS, quality tier, and codec efficiency. Original resolution uses source dimensions for bitrate calculation without passing them as resize dimensions. Requested FPS is capped at the source FPS because the package only downsamples. HEVC targets fewer bits than H.264 for comparable quality. `light_compressor_v2` accepts fractional Mbps. Automatic targets retain their fractional precision and are clamped to `1–8 Mbps`. Manually selected values use `0.5 Mbps` steps up to `20 Mbps` and are absolute, not modified by resolution, FPS, or codec. `CompressionSettings.videoBitrateMbps` and the shared encode plan use `double`; `null` means automatic. Both native compression and native size estimates receive the same unrounded value. Manual bitrate must be finite and greater than zero.
 
-`light_compressor_v2 1.10.0` does not expose encoder speed presets or video
+`light_compressor_v2 1.11.0` does not expose encoder speed presets or video
 container metadata copying. Do not add UI switches for either until the native
 pipeline can honor them on both Android and iOS.
 
@@ -37,7 +37,11 @@ aspect ratio. The plugin applies rotation metadata itself, so passing display
 dimensions would rotate the target twice. Original resolution does not pass
 custom dimensions and relies on the package's `keepOriginalResolution` path.
 
-Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough: `light_compressor_v2 1.8.1` can crash inside `AVAssetWriter.addInput` when the source audio format is incompatible with MP4.
+Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough: `light_compressor_v2 1.8.1` can crash inside `AVAssetWriter.addInput` when the source audio format is incompatible with MP4. Since 1.11.0 the package also re-encodes non-AAC audio (for example camera PCM in `.mov`) on iOS; Android cannot read QuickTime PCM and drops that track.
+
+HDR sources (HLG or PQ, including iPhone Dolby Vision 8.4) are written as SDR BT.709. iOS tone-maps them; Android tone-maps on Android 13+ when the decoder supports it, otherwise colours may look flatter.
+
+`MediaInfo.isHdr` comes from the same `getMediaInfo()` call that sizes the output. The estimate returns those HDR paths with the size; compression stores `sourceIsHdr` on each result. HDR clips show a badge on the first three selected-video thumbnails, a conversion hint on the settings summary, and `HDR → SDR` on the comparison sheet.
 
 ## Pipeline
 
@@ -81,7 +85,8 @@ so a stale large batch cannot block the latest settings request. Before the
 first native estimate arrives, the UI keeps the original size visible with a
 loader instead of showing an optimistic local estimate that may jump back up.
 Later refreshes keep the previous native estimate visible. Adding videos clears
-the old native estimate because it belongs to a different batch. A genuine
+the old native estimate because it belongs to a different batch. HDR flags from
+earlier videos in the session stay until the next estimate merge. A genuine
 completed `0%` estimate disables compression, while the adapter's 10%
 acceptance threshold remains authoritative for completed output.
 

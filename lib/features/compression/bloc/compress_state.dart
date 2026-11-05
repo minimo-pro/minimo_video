@@ -18,6 +18,7 @@ class CompressState {
   final List<PickedVideo> videos;
   final List<String?> thumbnailPaths;
   final List<VideoCompressionStatus> videoStatuses;
+  final Set<String> hdrVideoPaths;
   final List<CompressedVideo> results;
   final int compressionRunId;
   final int processingIndex;
@@ -41,6 +42,7 @@ class CompressState {
     required this.videos,
     required this.thumbnailPaths,
     required this.videoStatuses,
+    this.hdrVideoPaths = const {},
     required this.results,
     required this.compressionRunId,
     required this.processingIndex,
@@ -90,6 +92,12 @@ class CompressState {
   }
 
   bool get showSettings => videos.isNotEmpty && status == CompressStatus.ready;
+
+  bool get hasHdrVideos =>
+      videos.any((video) => hdrVideoPaths.contains(video.path));
+
+  List<bool> get hdrFlags =>
+      videos.map((video) => hdrVideoPaths.contains(video.path)).toList();
 
   bool get hasUnsavedResults =>
       status == CompressStatus.done && successResults.isNotEmpty && !isSaved;
@@ -148,6 +156,7 @@ class CompressState {
     List<PickedVideo>? videos,
     List<String?>? thumbnailPaths,
     List<VideoCompressionStatus>? videoStatuses,
+    Set<String>? hdrVideoPaths,
     List<CompressedVideo>? results,
     int? compressionRunId,
     int? processingIndex,
@@ -178,6 +187,9 @@ class CompressState {
       videoStatuses: videoStatuses == null
           ? this.videoStatuses
           : List.unmodifiable(videoStatuses),
+      hdrVideoPaths: hdrVideoPaths == null
+          ? this.hdrVideoPaths
+          : Set.unmodifiable(hdrVideoPaths),
       results: results == null ? this.results : List.unmodifiable(results),
       compressionRunId: compressionRunId ?? this.compressionRunId,
       processingIndex: processingIndex ?? this.processingIndex,

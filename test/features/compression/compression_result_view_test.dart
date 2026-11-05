@@ -365,11 +365,11 @@ Widget _resultApp(PickedVideo source, CompressBloc bloc) {
 
 class _NoopCompressor extends VideoCompressorAdapter {
   @override
-  Future<int?> estimateCompressedSize(
+  Future<({int? bytes, Set<String> hdrPaths})> estimateCompressedSize(
     Iterable<String> inputPaths,
     CompressionSettings settings, {
     bool Function()? isCancelled,
-  }) async => 0;
+  }) async => (bytes: 0, hdrPaths: const <String>{});
 
   @override
   Future<String?> createThumbnail(String inputPath) async => null;

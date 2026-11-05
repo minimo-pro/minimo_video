@@ -63,6 +63,36 @@ void main() {
       findsNothing,
     );
   });
+
+  testWidgets('shows an HDR conversion hint for HDR selections', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(800, 1000);
+    addTearDown(tester.view.resetPhysicalSize);
+    const source = PickedVideo(
+      path: '/video.mp4',
+      name: 'video.mp4',
+      size: 1000,
+    );
+    final state = CompressState.initial(const [source]).copyWith(
+      hdrVideoPaths: {'/video.mp4'},
+      estimatedSize: 800,
+      isEstimating: false,
+    );
+    final bloc = CompressBloc();
+    addTearDown(bloc.close);
+
+    await tester.pumpWidget(_app(state, bloc));
+
+    expect(find.byKey(const ValueKey('hdr-to-sdr-hint')), findsOneWidget);
+    expect(find.text('HDR'), findsOneWidget);
+    expect(
+      find.text(
+        'HDR video will be converted to SDR — colours may change slightly',
+      ),
+      findsOneWidget,
+    );
+  });
 }
 
 Widget _app(CompressState state, CompressBloc bloc) {
