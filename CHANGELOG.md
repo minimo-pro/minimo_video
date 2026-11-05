@@ -1,8 +1,20 @@
-## [Unreleased]
+## [1.0.15]
+
+### Added
+
+* Show an HDR badge on selected videos, a note that HDR will be converted to SDR, and an HDR → SDR label on the comparison sheet.
+
+### Changed
+
+* Update `light_compressor_v2` to 1.11.0.
 
 ### Fixed
 
 * Keep video counts on one line inside the selection badge.
+* Fixed [#54](https://github.com/minimo-pro/minimo_video/issues/54) (Android foreground service startup race) via light_compressor_v2 upgrade
+* Android: compress iPhone HDR (Dolby Vision) videos on devices without a Dolby Vision decoder, and show their previews.
+* HDR videos now compress to standard SDR (BT.709) instead of keeping HDR tags on 8-bit video, which caused banding or washed-out colours.
+* iOS: non-AAC audio, such as the PCM audio many cameras write into `.mov`, is re-encoded to AAC instead of being copied uncompressed.
 
 ## [1.0.14]
 
