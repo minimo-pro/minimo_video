@@ -1,3 +1,9 @@
+## [Unreleased]
+
+### Fixed
+
+* Keep video counts on one line inside the selection badge.
+
 ## [1.0.14]
 
 ### Added

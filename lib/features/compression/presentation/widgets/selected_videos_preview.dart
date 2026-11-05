@@ -188,12 +188,20 @@ class _SelectedCountBadge extends StatelessWidget {
         ],
       ),
       alignment: Alignment.center,
-      child: Text(
-        '$count',
-        style: TextStyle(
-          color: CompressionUiColors.white,
-          fontSize: 21 * scale,
-          height: 1,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 3 * scale),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            '$count',
+            maxLines: 1,
+            softWrap: false,
+            style: TextStyle(
+              color: CompressionUiColors.white,
+              fontSize: 21 * scale,
+              height: 1,
+            ),
+          ),
         ),
       ),
     );
