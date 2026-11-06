@@ -37,6 +37,7 @@
   },
   "changelogSubtitle": "modifications des mises à jour que vous n'avez pas encore vues",
   "changelogDone": "compris",
+  "photoAppPromptTitle": "vous compressez aussi des photos ?",
   "photoAppDescription": "réduisez vos photos directement sur votre téléphone",
   "projectWebsite": "site du projet",
   "githubRepository": "dépôt github",

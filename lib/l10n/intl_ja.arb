@@ -37,6 +37,7 @@
     },
     "changelogSubtitle": "まだ確認していない更新内容",
     "changelogDone": "了解",
+    "photoAppPromptTitle": "写真も圧縮しますか？",
     "photoAppDescription": "写真をスマートフォンで手軽に圧縮",
     "projectWebsite": "プロジェクトサイト",
     "githubRepository": "githubリポジトリ",

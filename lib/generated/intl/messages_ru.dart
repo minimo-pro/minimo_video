@@ -253,6 +253,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoAppDescription": MessageLookupByLibrary.simpleMessage(
       "сжимайте фото прямо на телефоне",
     ),
+    "photoAppPromptTitle": MessageLookupByLibrary.simpleMessage(
+      "сжимаете и фото?",
+    ),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("из файлов"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("из галереи"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage(

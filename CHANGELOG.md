@@ -3,6 +3,7 @@
 ### Added
 
 * Show an HDR badge on selected videos, a note that HDR will be converted to SDR, and an HDR → SDR label on the comparison sheet.
+* Suggest minimo (photo) in a dismissible animated card at the top after successful video compressions, with separate counters and three-month cooldowns for the photo and rating prompts.
 
 ### Changed
 
@@ -10,6 +11,7 @@
 
 ### Fixed
 
+* Avoid a crash when leaving the compression screen while the photo-app suggestion is visible.
 * Keep video counts on one line inside the selection badge.
 * Fixed [#54](https://github.com/minimo-pro/minimo_video/issues/54) (Android foreground service startup race) via light_compressor_v2 upgrade
 * Android: compress iPhone HDR (Dolby Vision) videos on devices without a Dolby Vision decoder, and show their previews.

@@ -217,6 +217,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoAppDescription": MessageLookupByLibrary.simpleMessage(
       "写真をスマートフォンで手軽に圧縮",
     ),
+    "photoAppPromptTitle": MessageLookupByLibrary.simpleMessage("写真も圧縮しますか？"),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("ファイルから"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("ギャラリーから"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage("画面をオンのままにする"),

@@ -25,6 +25,7 @@
   "@changelogTitle": {"placeholders": {"version": {"type": "String"}}},
   "changelogSubtitle": "wijzigingen uit updates die je nog niet hebt gezien",
   "changelogDone": "begrepen",
+  "photoAppPromptTitle": "ook foto's comprimeren?",
   "photoAppDescription": "maak foto's kleiner, rechtstreeks op je telefoon",
   "projectWebsite": "projectwebsite",
   "githubRepository": "github-repository",

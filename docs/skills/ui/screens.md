@@ -11,6 +11,14 @@ Routes use `auto_route` with fade transitions.
 | `SettingsRoute` | Filename prefix, thermal warning, save/delete defaults, album, cache, language |
 | `InfoRoute` | App/version information, rating, sharing, and external links |
 
+After two successful video conversions, the result screen requests a rating.
+After three successful conversions, it can show a modal for the photo-compression
+app already linked in Settings and About. Each prompt has its own conversion
+counter and three-month cooldown. Only one prompt can appear per compression
+run. The photo suggestion slides in at the top with the same app card as Settings
+and About, without a border or shadow. It auto-dismisses, has a close button,
+and disappears when the compression screen closes.
+
 The start-screen bottom menu also opens a local statistics sheet showing the
 number of successfully compressed videos and total space saved. Its counters
 roll from zero on open and stay static when reduced motion is enabled.

@@ -246,6 +246,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoAppDescription": MessageLookupByLibrary.simpleMessage(
       "सीधे अपने फ़ोन पर फ़ोटो का आकार कम करें",
     ),
+    "photoAppPromptTitle": MessageLookupByLibrary.simpleMessage(
+      "फ़ोटो भी संपीड़ित करें?",
+    ),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("फ़ाइलों से"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("गैलरी से"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage(

@@ -253,6 +253,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoAppDescription": MessageLookupByLibrary.simpleMessage(
       "fotoğrafları doğrudan telefonunuzda küçültün",
     ),
+    "photoAppPromptTitle": MessageLookupByLibrary.simpleMessage(
+      "fotoğrafları da sıkıştırın mı?",
+    ),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("dosyalardan"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("galeriden"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage(

@@ -265,5 +265,6 @@
     }
   },
   "failedToSave": "couldn't save the videos. try again",
+  "photoAppPromptTitle": "compress photos too?",
   "photoAppDescription": "make photos smaller, right on your phone"
 }
