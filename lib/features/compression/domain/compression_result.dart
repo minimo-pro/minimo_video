@@ -7,6 +7,7 @@ class CompressionResult {
   final String? outputPath;
   final int? durationMs;
   final CompressionCodec? usedCodec;
+  final bool sourceIsHdr;
 
   const CompressionResult({
     required this.success,
@@ -15,5 +16,6 @@ class CompressionResult {
     this.outputPath,
     this.durationMs,
     this.usedCodec,
+    this.sourceIsHdr = false,
   });
 }

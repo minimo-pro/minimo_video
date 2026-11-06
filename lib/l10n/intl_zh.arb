@@ -164,6 +164,8 @@
   "pickFromFiles": "从文件选择",
   "loadingVideos": "正在导入视频...",
   "loadingManyVideosHint": "从云存储下载或复制大文件可能需要更长时间",
+  "hdrToSdrHint": "HDR 视频将转换为 SDR — 颜色可能会略有变化",
+  "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "请选择视频文件",
   "compressionComplete": "压缩完成",
   "compressionCompleted": "压缩已完成",

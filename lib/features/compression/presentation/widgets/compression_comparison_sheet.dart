@@ -227,8 +227,11 @@ class _ComparisonPlayerState extends State<_ComparisonPlayer> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 8,
+          runSpacing: 4,
           children: [
             Text(
               Utils.formatSize(originalSize),
@@ -237,7 +240,6 @@ class _ComparisonPlayerState extends State<_ComparisonPlayer> {
                 fontSize: 14,
               ),
             ),
-            const SizedBox(width: 8),
             SvgPicture.asset(
               AppIcons.arrowForward,
               width: 16,
@@ -247,7 +249,6 @@ class _ComparisonPlayerState extends State<_ComparisonPlayer> {
                 BlendMode.srcIn,
               ),
             ),
-            const SizedBox(width: 8),
             Text(
               Utils.formatSize(compressedSize),
               style: const TextStyle(
@@ -255,6 +256,16 @@ class _ComparisonPlayerState extends State<_ComparisonPlayer> {
                 fontSize: 14,
               ),
             ),
+            if (widget.result.result.sourceIsHdr) ...[
+              Text(
+                '· ${strings.hdrToSdrLabel}',
+                key: const ValueKey('comparison-hdr-to-sdr'),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 14,
+                ),
+              ),
+            ],
           ],
         ),
         const SizedBox(height: 12),

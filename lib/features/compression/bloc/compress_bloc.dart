@@ -115,7 +115,8 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     if (_closing || runId != _estimateRunId) return;
     emit(
       state.copyWith(
-        estimatedSize: estimate,
+        estimatedSize: estimate.bytes,
+        hdrVideoPaths: {...state.hdrVideoPaths, ...estimate.hdrPaths},
         clearEstimatedSize: true,
         isEstimating: false,
       ),
@@ -384,6 +385,9 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
 
         emit(
           state.copyWith(
+            hdrVideoPaths: result.sourceIsHdr
+                ? {...state.hdrVideoPaths, video.path}
+                : null,
             results: [
               ...state.results,
               CompressedVideo(source: video, result: result),

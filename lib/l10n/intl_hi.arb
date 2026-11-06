@@ -164,6 +164,8 @@
     "pickFromFiles": "फ़ाइलों से",
     "loadingVideos": "वीडियो इंपोर्ट हो रहे हैं...",
     "loadingManyVideosHint": "क्लाउड से डाउनलोड या बड़ी फ़ाइल कॉपी होने में समय लग सकता है",
+    "hdrToSdrHint": "HDR वीडियो SDR में बदला जाएगा — रंग थोड़े बदल सकते हैं",
+    "hdrToSdrLabel": "HDR → SDR",
     "failedToPickVideos": "वीडियो फ़ाइल चुनें",
     "compressionComplete": "कंप्रेशन पूरा",
     "compressionCompleted": "कंप्रेशन पूरा हुआ",

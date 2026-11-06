@@ -48,6 +48,7 @@ class CompressionResultView extends StatelessWidget {
                   SelectedVideosPreview(
                     selectedCount: state.videos.length,
                     thumbnailPaths: state.thumbnailPaths,
+                    hdrFlags: state.hdrFlags,
                     scale: compact ? 1.32 : 1.72,
                   ),
                   SizedBox(height: compact ? 7 : 10),

@@ -42,6 +42,7 @@ void main() {
                 'width': 1920,
                 'height': 1080,
                 'frameRate': 30.0,
+                'isHdr': true,
               },
               'getCompressionEstimate' => {'estimatedSizeBytes': 500},
               'startCompression' => jsonEncode({'onSuccess': output.path}),
@@ -50,9 +51,14 @@ void main() {
           });
       final adapter = VideoCompressorAdapter();
       final settings = CompressionSettings(videoBitrateMbps: bitrate);
-      expect(await adapter.estimateCompressedSize([input.path], settings), 500);
+      final estimate = await adapter.estimateCompressedSize([
+        input.path,
+      ], settings);
+      expect(estimate.bytes, 500);
+      expect(estimate.hdrPaths, {input.path});
       final result = await adapter.compress(input.path, 'input.mp4', settings);
       expect(result.success, isTrue);
+      expect(result.sourceIsHdr, isTrue);
       final expected = bitrate ?? 1.93536;
       for (final method in ['getCompressionEstimate', 'startCompression']) {
         final args =
@@ -61,4 +67,31 @@ void main() {
       }
     });
   }
+
+  test('detects later HDR videos when an earlier estimate fails', () async {
+    final first = await File('${root.path}/first.mp4').writeAsBytes([1]);
+    final hdr = await File('${root.path}/hdr.mp4').writeAsBytes([2]);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(compressorChannel, (call) async {
+          final input = (call.arguments as Map)['path'];
+          return switch (call.method) {
+            'getMediaInfo' => {
+              'width': 1920,
+              'height': 1080,
+              'isHdr': input == hdr.path,
+            },
+            'getCompressionEstimate' => throw PlatformException(
+              code: 'ESTIMATE_FAILED',
+            ),
+            _ => null,
+          };
+        });
+
+    final estimate = await VideoCompressorAdapter().estimateCompressedSize([
+      first.path,
+      hdr.path,
+    ], const CompressionSettings());
+    expect(estimate.bytes, isNull);
+    expect(estimate.hdrPaths, {hdr.path});
+  });
 }

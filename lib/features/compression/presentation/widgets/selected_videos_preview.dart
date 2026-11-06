@@ -11,6 +11,7 @@ import '../../../../widgets/minimo_loader.dart';
 class SelectedVideosPreview extends StatelessWidget {
   final int selectedCount;
   final List<String?> thumbnailPaths;
+  final List<bool> hdrFlags;
   final double scale;
   final bool loadingThumbnails;
 
@@ -18,6 +19,7 @@ class SelectedVideosPreview extends StatelessWidget {
     super.key,
     required this.selectedCount,
     required this.thumbnailPaths,
+    this.hdrFlags = const [],
     this.scale = 1,
     this.loadingThumbnails = false,
   });
@@ -38,6 +40,7 @@ class SelectedVideosPreview extends StatelessWidget {
               top: positions[i].dy * scale,
               child: _VideoThumb(
                 path: _thumbnailAt(i),
+                hdr: i < hdrFlags.length && hdrFlags[i],
                 loading: loadingThumbnails,
                 width: 58 * scale,
                 height: 46 * scale,
@@ -74,6 +77,7 @@ class SelectedVideosPreview extends StatelessWidget {
 
 class _VideoThumb extends StatelessWidget {
   final String? path;
+  final bool hdr;
   final bool loading;
   final double width;
   final double height;
@@ -81,6 +85,7 @@ class _VideoThumb extends StatelessWidget {
 
   const _VideoThumb({
     required this.path,
+    required this.hdr,
     required this.loading,
     required this.width,
     required this.height,
@@ -89,6 +94,43 @@ class _VideoThumb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final thumb = _buildThumb(context);
+    if (!hdr) return thumb;
+    final unit = width / 58;
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        thumb,
+        Positioned(
+          left: 5 * unit,
+          bottom: 5 * unit,
+          child: DecoratedBox(
+            key: const ValueKey('video-preview-hdr-badge'),
+            decoration: BoxDecoration(
+              color: CompressionUiColors.red,
+              borderRadius: BorderRadius.circular(7 * unit),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 5 * unit,
+                vertical: 3 * unit,
+              ),
+              child: Text(
+                'HDR',
+                style: TextStyle(
+                  color: CompressionUiColors.white,
+                  fontSize: 11,
+                  height: 1,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildThumb(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),

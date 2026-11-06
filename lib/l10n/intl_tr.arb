@@ -164,6 +164,8 @@
   "pickFromFiles": "dosyalardan",
   "loadingVideos": "videolar içe aktarılıyor...",
   "loadingManyVideosHint": "bulut depolamadan indirme veya büyük dosyaları kopyalama daha uzun sürebilir",
+  "hdrToSdrHint": "HDR video SDR'ye dönüştürülecek — renkler biraz değişebilir",
+  "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "bir video dosyası seç",
   "compressionComplete": "sıkıştırma tamamlandı",
   "compressionCompleted": "sıkıştırma tamamlandı",

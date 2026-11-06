@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/features/compression/presentation/widgets/selected_videos_preview.dart';
+import 'package:minimo_video/theme/app_colors.dart';
 import 'package:minimo_video/theme/app_theme.dart';
 import 'package:minimo_video/widgets/minimo_loader.dart';
 
@@ -74,5 +75,28 @@ void main() {
       tester.getRect(badge).contains(tester.getRect(count).center),
       isTrue,
     );
+  });
+
+  testWidgets('shows an HDR badge on HDR thumbnails', (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: SelectedVideosPreview(
+          selectedCount: 2,
+          thumbnailPaths: [null, null],
+          hdrFlags: [true, false],
+        ),
+      ),
+    );
+
+    expect(
+      find.byKey(const ValueKey('video-preview-hdr-badge')),
+      findsOneWidget,
+    );
+    expect(find.text('HDR'), findsOneWidget);
+    final badge = tester.widget<DecoratedBox>(
+      find.byKey(const ValueKey('video-preview-hdr-badge')),
+    );
+    expect((badge.decoration as BoxDecoration).color, CompressionUiColors.red);
+    expect(tester.widget<Text>(find.text('HDR')).style!.fontSize, 11);
   });
 }

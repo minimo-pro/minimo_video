@@ -125,6 +125,8 @@
   "pickFromFiles": "desde archivos",
   "loadingVideos": "importando videos...",
   "loadingManyVideosHint": "descargar desde la nube o copiar archivos grandes puede tardar más",
+  "hdrToSdrHint": "el video HDR se convertirá a SDR — los colores pueden cambiar un poco",
+  "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "elige un archivo de video",
   "compressionComplete": "compresión completa",
   "compressionCompleted": "compresión completada",

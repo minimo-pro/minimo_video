@@ -34,11 +34,39 @@ class _EstimatingCompressor extends VideoCompressorAdapter {
   Future<String?> createThumbnail(String inputPath) async => null;
 
   @override
-  Future<int?> estimateCompressedSize(
+  Future<({int? bytes, Set<String> hdrPaths})> estimateCompressedSize(
     Iterable<String> inputPaths,
     CompressionSettings settings, {
     bool Function()? isCancelled,
-  }) async => 15;
+  }) async => (
+    bytes: 15,
+    hdrPaths: {
+      for (final path in inputPaths)
+        if (path.contains('hdr')) path,
+    },
+  );
+}
+
+class _ResultHdrCompressor extends VideoCompressorAdapter {
+  @override
+  Future<String?> createThumbnail(String inputPath) async => null;
+
+  @override
+  Future<({int? bytes, Set<String> hdrPaths})> estimateCompressedSize(
+    Iterable<String> inputPaths,
+    CompressionSettings settings, {
+    bool Function()? isCancelled,
+  }) async => (bytes: null, hdrPaths: const <String>{});
+
+  @override
+  Future<CompressionResult> compress(
+    String inputPath,
+    String originalName,
+    CompressionSettings settings, {
+    bool addKompressoPrefix = true,
+    void Function(double progress)? onProgress,
+  }) async =>
+      CompressionResult(success: false, sourceIsHdr: inputPath.contains('hdr'));
 }
 
 class _QueuedEstimatingCompressor extends VideoCompressorAdapter {
@@ -49,7 +77,7 @@ class _QueuedEstimatingCompressor extends VideoCompressorAdapter {
   var calls = 0;
 
   @override
-  Future<int?> estimateCompressedSize(
+  Future<({int? bytes, Set<String> hdrPaths})> estimateCompressedSize(
     Iterable<String> inputPaths,
     CompressionSettings settings, {
     bool Function()? isCancelled,
@@ -65,7 +93,7 @@ class _QueuedEstimatingCompressor extends VideoCompressorAdapter {
         await releaseFirst.future;
         if (isCancelled?.call() != true) await releaseUncancelled.future;
       }
-      return settings.crf.round();
+      return (bytes: settings.crf.round(), hdrPaths: const <String>{});
     } finally {
       done.complete();
     }
@@ -768,6 +796,45 @@ void main() {
     ]);
     await bloc.close();
   });
+
+  test('marks HDR videos from the size estimate', () async {
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/clip.mp4', name: 'clip.mp4', size: 17),
+        PickedVideo(path: '/hdr.mp4', name: 'hdr.mp4', size: 17),
+      ],
+      videoCompressorAdapter: _EstimatingCompressor(),
+    );
+
+    await bloc.stream.firstWhere((state) => state.hasHdrVideos);
+    expect(bloc.state.hdrFlags, [false, true]);
+    await bloc.close();
+  });
+
+  test(
+    'keeps HDR flags found during compression without an estimate',
+    () async {
+      final bloc = CompressBloc(
+        initialVideos: const [
+          PickedVideo(path: '/hdr.mp4', name: 'hdr.mp4', size: 17),
+          PickedVideo(path: '/plain.mp4', name: 'plain.mp4', size: 17),
+        ],
+        videoCompressorAdapter: _ResultHdrCompressor(),
+      );
+
+      bloc.add(const CompressStarted());
+      await bloc.stream.firstWhere(
+        (state) => state.status == CompressStatus.done,
+      );
+      expect(bloc.state.hdrFlags, [true, false]);
+      expect(bloc.state.results, hasLength(2));
+      expect(bloc.state.videoStatuses, [
+        VideoCompressionStatus.skipped,
+        VideoCompressionStatus.skipped,
+      ]);
+      await bloc.close();
+    },
+  );
 
   test('uses platform compression estimate', () async {
     final bloc = CompressBloc(

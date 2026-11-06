@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -1017,6 +1016,21 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `HDR video will be converted to SDR — colours may change slightly`
+  String get hdrToSdrHint {
+    return Intl.message(
+      'HDR video will be converted to SDR — colours may change slightly',
+      name: 'hdrToSdrHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `HDR → SDR`
+  String get hdrToSdrLabel {
+    return Intl.message('HDR → SDR', name: 'hdrToSdrLabel', desc: '', args: []);
   }
 
   /// `choose a video file`

@@ -22,11 +22,11 @@ class _Compressor extends VideoCompressorAdapter {
   _Compressor(this.root);
 
   @override
-  Future<int?> estimateCompressedSize(
+  Future<({int? bytes, Set<String> hdrPaths})> estimateCompressedSize(
     Iterable<String> inputPaths,
     CompressionSettings settings, {
     bool Function()? isCancelled,
-  }) async => 10;
+  }) async => (bytes: 10, hdrPaths: const <String>{});
 
   @override
   Future<String?> createThumbnail(String inputPath) async {

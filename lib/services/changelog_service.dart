@@ -43,10 +43,75 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
-  '1.0.14': {
+  '1.0.15': {
     Language.en: [
-      'Added a link to minimo (photo) in Settings and About.',
+      'HDR videos are now saved as SDR for wider playback compatibility; colors may change.',
+      'HDR videos now show a badge and a conversion note before compression.',
+      'Video counts now stay on one line in the selection badge.',
     ],
+    Language.ru: [
+      'HDR-видео теперь сохраняются в SDR для совместимости с большим числом плееров; цвета могут измениться.',
+      'Перед сжатием HDR-видео показываются метка и предупреждение о преобразовании.',
+      'Количество выбранных видео теперь помещается в метке в одну строку.',
+    ],
+    Language.es: [
+      'Los videos HDR ahora se guardan en SDR para mejorar la compatibilidad de reproducción; los colores pueden cambiar.',
+      'Antes de comprimir videos HDR, se muestran una etiqueta y un aviso de conversión.',
+      'La cantidad de videos seleccionados ahora cabe en una línea en la etiqueta.',
+    ],
+    Language.pt: [
+      'Os vídeos HDR agora são salvos em SDR para maior compatibilidade de reprodução; as cores podem mudar.',
+      'Antes da compressão, os vídeos HDR mostram um selo e um aviso de conversão.',
+      'A quantidade de vídeos selecionados agora cabe em uma linha no selo.',
+    ],
+    Language.de: [
+      'HDR-Videos werden jetzt als SDR gespeichert und sind mit mehr Playern kompatibel; Farben können sich ändern.',
+      'Vor dem Komprimieren zeigen HDR-Videos eine Markierung und einen Hinweis zur Umwandlung.',
+      'Die Anzahl ausgewählter Videos bleibt in der Markierung jetzt einzeilig.',
+    ],
+    Language.fr: [
+      'Les vidéos HDR sont désormais enregistrées en SDR pour une meilleure compatibilité de lecture ; les couleurs peuvent changer.',
+      'Avant la compression, les vidéos HDR affichent un badge et un avis de conversion.',
+      'Le nombre de vidéos sélectionnées tient désormais sur une seule ligne dans le badge.',
+    ],
+    Language.zh: [
+      'HDR 视频现在保存为 SDR，以兼容更多播放器；颜色可能会发生变化。',
+      '压缩前，HDR 视频会显示标记和转换提示。',
+      '已选视频数量现在会在标记中保持单行显示。',
+    ],
+    Language.hi: [
+      'HDR वीडियो अब SDR में सेव होते हैं ताकि ज़्यादा प्लेयर में चल सकें; रंग बदल सकते हैं।',
+      'कंप्रेस करने से पहले HDR वीडियो पर बैज और बदलाव की सूचना दिखाई देती है।',
+      'चुने गए वीडियो की संख्या अब बैज में एक ही पंक्ति में रहती है।',
+    ],
+    Language.nl: [
+      'HDR-video’s worden nu als SDR opgeslagen voor betere afspeelcompatibiliteit; kleuren kunnen veranderen.',
+      'Vóór het comprimeren tonen HDR-video’s een badge en een melding over de omzetting.',
+      'Het aantal geselecteerde video’s blijft nu op één regel in de badge.',
+    ],
+    Language.ko: [
+      'HDR 동영상은 이제 더 많은 플레이어에서 재생할 수 있도록 SDR로 저장됩니다. 색상이 달라질 수 있습니다.',
+      '압축 전에 HDR 동영상에 배지와 변환 안내가 표시됩니다.',
+      '선택한 동영상 수가 이제 배지 안에서 한 줄로 표시됩니다.',
+    ],
+    Language.ja: [
+      'HDR 動画をより多くのプレーヤーで再生できるよう、SDR で保存します。色が変わる場合があります。',
+      '圧縮前に HDR 動画のバッジと変換に関する案内を表示します。',
+      '選択した動画の数がバッジ内で一行に収まるようになりました。',
+    ],
+    Language.it: [
+      'I video HDR ora vengono salvati in SDR per una maggiore compatibilità di riproduzione; i colori possono cambiare.',
+      'Prima della compressione, i video HDR mostrano un badge e un avviso sulla conversione.',
+      'Il numero di video selezionati ora resta su una sola riga nel badge.',
+    ],
+    Language.tr: [
+      'HDR videolar, daha fazla oynatıcıyla uyum için artık SDR olarak kaydediliyor; renkler değişebilir.',
+      'Sıkıştırmadan önce HDR videolarda bir rozet ve dönüştürme uyarısı gösterilir.',
+      'Seçilen video sayısı artık rozette tek satırda kalır.',
+    ],
+  },
+  '1.0.14': {
+    Language.en: ['Added a link to minimo (photo) in Settings and About.'],
     Language.ru: [
       'Добавлена ссылка на minimo (photo) в разделе «О приложении».',
       'Добавлена ссылка на minimo (photo) в настройки.',
