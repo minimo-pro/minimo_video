@@ -15,8 +15,9 @@ After two successful video conversions, the result screen requests a rating.
 After three successful conversions, it can show a modal for the photo-compression
 app already linked in Settings and About. Each prompt has its own conversion
 counter and three-month cooldown. Only one prompt can appear per compression
-run. The photo suggestion appears in a floating bottom snackbar with the same
-app card as Settings and About; it auto-dismisses and can be closed early.
+run. The photo suggestion slides in at the top with the same app card as Settings
+and About, without a border or shadow. It auto-dismisses, has a close button,
+and disappears when the compression screen closes.
 
 The start-screen bottom menu also opens a local statistics sheet showing the
 number of successfully compressed videos and total space saved. Its counters

@@ -12,6 +12,7 @@ import '../../../services/app_settings_service.dart';
 import '../../../services/app_cache_service.dart';
 import '../../../services/review_service.dart';
 import '../../../services/screen_awake_service.dart';
+import '../../../theme/app_theme.dart';
 import '../../../widgets/app_action_button.dart';
 import '../../../widgets/app_snack_bar.dart';
 import '../../../widgets/minimo_loader.dart';
@@ -98,7 +99,8 @@ class _CompressViewState extends State<_CompressView>
   final _videoFileAdapter = VideoFileAdapter();
   var _backgroundedWhileProcessing = false;
   int? _promptRequestedForRunId;
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _photoPrompt;
+  final _photoPrompt = OverlayPortalController();
+  Timer? _photoPromptTimer;
   bool _loadingVideos = false;
   bool _screenAwakeEnabled = false;
   (int, int)? _loadingProgress;
@@ -121,7 +123,7 @@ class _CompressViewState extends State<_CompressView>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _photoPrompt?.close();
+    _photoPromptTimer?.cancel();
     if (_loadingVideos) {
       unawaited(_videoFileAdapter.cancelVideoPick());
     }
@@ -149,6 +151,14 @@ class _CompressViewState extends State<_CompressView>
 
   @override
   Widget build(BuildContext context) {
+    return OverlayPortal(
+      controller: _photoPrompt,
+      overlayChildBuilder: _buildPhotoPrompt,
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     return BlocConsumer<CompressBloc, CompressState>(
       listener: (context, state) {
         _showSaveMessage(context, state);
@@ -241,6 +251,75 @@ class _CompressViewState extends State<_CompressView>
     );
   }
 
+  Widget _buildPhotoPrompt(BuildContext context) {
+    return Positioned(
+      left: 18,
+      right: 18,
+      top: MediaQuery.paddingOf(context).top + 14,
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0, end: 1),
+        duration: MediaQuery.disableAnimationsOf(context)
+            ? Duration.zero
+            : const Duration(milliseconds: 280),
+        curve: Curves.easeOutCubic,
+        builder: (context, value, child) => Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, -24 * (1 - value)),
+            child: child,
+          ),
+        ),
+        child: Semantics(
+          container: true,
+          liveRegion: true,
+          child: Material(
+            color: AppTheme.of(context).frameBackgroundColor,
+            borderRadius: BorderRadius.circular(15),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            S.of(context).photoAppPromptTitle,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
+                        Tooltip(
+                          message: MaterialLocalizations.of(
+                            context,
+                          ).closeButtonTooltip,
+                          child: AppActionButton(
+                            width: 40,
+                            height: 40,
+                            icon: AppIcons.close,
+                            variant: AppActionButtonVariant.text,
+                            onPressed: _dismissPhotoPrompt,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const PhotoAppCard(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _dismissPhotoPrompt() {
+    _photoPromptTimer?.cancel();
+    _photoPrompt.hide();
+  }
+
   Future<void> _pickMoreVideos() async {
     final source = await showVideoPickSourceSheet(context);
     if (source == null || !mounted) return;
@@ -325,42 +404,9 @@ class _CompressViewState extends State<_CompressView>
             state.compressionRunId) {
       return;
     }
-    final messenger = ScaffoldMessenger.of(context);
-    _photoPrompt = messenger.showSnackBar(
-      SnackBar(
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 10),
-        margin: const EdgeInsets.fromLTRB(18, 0, 18, 12),
-        padding: const EdgeInsets.fromLTRB(10, 4, 10, 10),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-          side: BorderSide(color: Theme.of(context).colorScheme.outline),
-        ),
-        elevation: 8,
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    S.of(context).photoAppPromptTitle,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                IconButton(
-                  tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
-                  onPressed: messenger.hideCurrentSnackBar,
-                  icon: const Icon(Icons.close),
-                ),
-              ],
-            ),
-            const PhotoAppCard(),
-          ],
-        ),
-      ),
-    );
+    _photoPrompt.show();
+    _photoPromptTimer?.cancel();
+    _photoPromptTimer = Timer(const Duration(seconds: 10), _dismissPhotoPrompt);
   }
 
   void _showSaveMessage(BuildContext context, CompressState state) {
