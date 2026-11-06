@@ -1312,6 +1312,16 @@ class S {
     );
   }
 
+  /// `compress photos too?`
+  String get photoAppPromptTitle {
+    return Intl.message(
+      'compress photos too?',
+      name: 'photoAppPromptTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `make photos smaller, right on your phone`
   String get photoAppDescription {
     return Intl.message(

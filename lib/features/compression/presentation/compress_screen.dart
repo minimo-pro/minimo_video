@@ -15,6 +15,7 @@ import '../../../services/screen_awake_service.dart';
 import '../../../widgets/app_action_button.dart';
 import '../../../widgets/app_snack_bar.dart';
 import '../../../widgets/minimo_loader.dart';
+import '../../../widgets/photo_app_card.dart';
 import '../bloc/compress_bloc.dart';
 import '../bloc/compress_event.dart';
 import '../bloc/compress_state.dart';
@@ -96,7 +97,7 @@ class _CompressViewState extends State<_CompressView>
     with WidgetsBindingObserver {
   final _videoFileAdapter = VideoFileAdapter();
   var _backgroundedWhileProcessing = false;
-  int? _reviewRequestedForRunId;
+  int? _promptRequestedForRunId;
   bool _loadingVideos = false;
   bool _screenAwakeEnabled = false;
   (int, int)? _loadingProgress;
@@ -149,7 +150,7 @@ class _CompressViewState extends State<_CompressView>
     return BlocConsumer<CompressBloc, CompressState>(
       listener: (context, state) {
         _showSaveMessage(context, state);
-        _requestReviewAfterSuccessfulCompression(state);
+        unawaited(_promptAfterSuccessfulCompression(state));
       },
       builder: (context, state) {
         final waitingForInitialSelection =
@@ -306,16 +307,70 @@ class _CompressViewState extends State<_CompressView>
     }
   }
 
-  void _requestReviewAfterSuccessfulCompression(CompressState state) {
+  Future<void> _promptAfterSuccessfulCompression(CompressState state) async {
     if (state.status != CompressStatus.done ||
-        _reviewRequestedForRunId == state.compressionRunId) {
+        _promptRequestedForRunId == state.compressionRunId) {
       return;
     }
 
-    _reviewRequestedForRunId = state.compressionRunId;
-    unawaited(
-      ReviewService.instance.onSuccessfulConversions(
-        state.successfulOutputPaths.length,
+    _promptRequestedForRunId = state.compressionRunId;
+    final prompt = await ReviewService.instance.onSuccessfulConversions(
+      state.successfulOutputPaths.length,
+    );
+    if (prompt != CompressionPrompt.photoApp ||
+        !mounted ||
+        context.read<CompressBloc>().state.compressionRunId !=
+            state.compressionRunId) {
+      return;
+    }
+    await showDialog<void>(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 26),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 390),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(26),
+              border: Border.all(color: Theme.of(context).colorScheme.outline),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.18),
+                  blurRadius: 32,
+                  offset: const Offset(0, 14),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(22),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      tooltip: MaterialLocalizations.of(
+                        context,
+                      ).closeButtonTooltip,
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const Icon(Icons.close),
+                    ),
+                  ),
+                  Text(
+                    S.of(context).photoAppPromptTitle,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: 18),
+                  const PhotoAppCard(),
+                  const SizedBox(height: 6),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -224,6 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoAppDescription": MessageLookupByLibrary.simpleMessage(
       "휴대폰에서 바로 사진 용량을 줄이세요",
     ),
+    "photoAppPromptTitle": MessageLookupByLibrary.simpleMessage("사진도 압축하시나요?"),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("파일에서"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("갤러리에서"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage("화면 켜기"),

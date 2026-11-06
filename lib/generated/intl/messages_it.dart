@@ -251,6 +251,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoAppDescription": MessageLookupByLibrary.simpleMessage(
       "riduci le foto direttamente sul telefono",
     ),
+    "photoAppPromptTitle": MessageLookupByLibrary.simpleMessage(
+      "comprimere anche le foto?",
+    ),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("dai file"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("dalla galleria"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage(

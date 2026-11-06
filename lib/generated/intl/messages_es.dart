@@ -252,6 +252,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoAppDescription": MessageLookupByLibrary.simpleMessage(
       "reduce el tamaño de tus fotos desde el móvil",
     ),
+    "photoAppPromptTitle": MessageLookupByLibrary.simpleMessage(
+      "¿también comprimes fotos?",
+    ),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("desde archivos"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("desde la galería"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage(

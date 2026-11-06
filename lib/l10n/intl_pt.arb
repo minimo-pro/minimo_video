@@ -25,6 +25,7 @@
   "@changelogTitle": {"placeholders": {"version": {"type": "String"}}},
   "changelogSubtitle": "mudanças de atualizações que você ainda não viu",
   "changelogDone": "entendi",
+  "photoAppPromptTitle": "também comprime fotos?",
   "photoAppDescription": "reduza o tamanho das fotos direto no celular",
   "projectWebsite": "site do projeto",
   "githubRepository": "repositório no github",

@@ -254,6 +254,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "photoAppDescription": MessageLookupByLibrary.simpleMessage(
       "fotos direkt auf dem smartphone verkleinern",
     ),
+    "photoAppPromptTitle": MessageLookupByLibrary.simpleMessage(
+      "auch fotos komprimieren?",
+    ),
     "pickFromFiles": MessageLookupByLibrary.simpleMessage("aus dateien"),
     "pickFromGallery": MessageLookupByLibrary.simpleMessage("aus galerie"),
     "preventScreenSleep": MessageLookupByLibrary.simpleMessage(
