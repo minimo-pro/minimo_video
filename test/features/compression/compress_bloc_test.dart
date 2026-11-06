@@ -47,6 +47,28 @@ class _EstimatingCompressor extends VideoCompressorAdapter {
   );
 }
 
+class _ResultHdrCompressor extends VideoCompressorAdapter {
+  @override
+  Future<String?> createThumbnail(String inputPath) async => null;
+
+  @override
+  Future<({int? bytes, Set<String> hdrPaths})> estimateCompressedSize(
+    Iterable<String> inputPaths,
+    CompressionSettings settings, {
+    bool Function()? isCancelled,
+  }) async => (bytes: null, hdrPaths: const <String>{});
+
+  @override
+  Future<CompressionResult> compress(
+    String inputPath,
+    String originalName,
+    CompressionSettings settings, {
+    bool addKompressoPrefix = true,
+    void Function(double progress)? onProgress,
+  }) async =>
+      CompressionResult(success: false, sourceIsHdr: inputPath.contains('hdr'));
+}
+
 class _QueuedEstimatingCompressor extends VideoCompressorAdapter {
   final firstStarted = Completer<void>();
   final releaseFirst = Completer<void>();
@@ -788,6 +810,31 @@ void main() {
     expect(bloc.state.hdrFlags, [false, true]);
     await bloc.close();
   });
+
+  test(
+    'keeps HDR flags found during compression without an estimate',
+    () async {
+      final bloc = CompressBloc(
+        initialVideos: const [
+          PickedVideo(path: '/hdr.mp4', name: 'hdr.mp4', size: 17),
+          PickedVideo(path: '/plain.mp4', name: 'plain.mp4', size: 17),
+        ],
+        videoCompressorAdapter: _ResultHdrCompressor(),
+      );
+
+      bloc.add(const CompressStarted());
+      await bloc.stream.firstWhere(
+        (state) => state.status == CompressStatus.done,
+      );
+      expect(bloc.state.hdrFlags, [true, false]);
+      expect(bloc.state.results, hasLength(2));
+      expect(bloc.state.videoStatuses, [
+        VideoCompressionStatus.skipped,
+        VideoCompressionStatus.skipped,
+      ]);
+      await bloc.close();
+    },
+  );
 
   test('uses platform compression estimate', () async {
     final bloc = CompressBloc(

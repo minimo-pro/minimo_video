@@ -385,6 +385,9 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
 
         emit(
           state.copyWith(
+            hdrVideoPaths: result.sourceIsHdr
+                ? {...state.hdrVideoPaths, video.path}
+                : null,
             results: [
               ...state.results,
               CompressedVideo(source: video, result: result),
