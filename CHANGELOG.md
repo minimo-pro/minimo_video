@@ -3,7 +3,7 @@
 ### Added
 
 * Show an HDR badge on selected videos, a note that HDR will be converted to SDR, and an HDR → SDR label on the comparison sheet.
-* Suggest minimo (photo) in a dismissible popup after successful video compressions, with separate counters and three-month cooldowns for the photo and rating prompts.
+* Suggest minimo (photo) in a dismissible bottom snackbar after successful video compressions, with separate counters and three-month cooldowns for the photo and rating prompts.
 
 ### Changed
 

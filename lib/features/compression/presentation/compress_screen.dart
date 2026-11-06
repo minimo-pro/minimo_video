@@ -98,6 +98,7 @@ class _CompressViewState extends State<_CompressView>
   final _videoFileAdapter = VideoFileAdapter();
   var _backgroundedWhileProcessing = false;
   int? _promptRequestedForRunId;
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _photoPrompt;
   bool _loadingVideos = false;
   bool _screenAwakeEnabled = false;
   (int, int)? _loadingProgress;
@@ -120,6 +121,7 @@ class _CompressViewState extends State<_CompressView>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _photoPrompt?.close();
     if (_loadingVideos) {
       unawaited(_videoFileAdapter.cancelVideoPick());
     }
@@ -323,53 +325,39 @@ class _CompressViewState extends State<_CompressView>
             state.compressionRunId) {
       return;
     }
-    await showDialog<void>(
-      context: context,
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 26),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 390),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(26),
-              border: Border.all(color: Theme.of(context).colorScheme.outline),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.18),
-                  blurRadius: 32,
-                  offset: const Offset(0, 14),
+    final messenger = ScaffoldMessenger.of(context);
+    _photoPrompt = messenger.showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 10),
+        margin: const EdgeInsets.fromLTRB(18, 0, 18, 12),
+        padding: const EdgeInsets.fromLTRB(10, 4, 10, 10),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+          side: BorderSide(color: Theme.of(context).colorScheme.outline),
+        ),
+        elevation: 8,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    S.of(context).photoAppPromptTitle,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                IconButton(
+                  tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+                  onPressed: messenger.hideCurrentSnackBar,
+                  icon: const Icon(Icons.close),
                 ),
               ],
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(22),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      tooltip: MaterialLocalizations.of(
-                        context,
-                      ).closeButtonTooltip,
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(Icons.close),
-                    ),
-                  ),
-                  Text(
-                    S.of(context).photoAppPromptTitle,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 18),
-                  const PhotoAppCard(),
-                  const SizedBox(height: 6),
-                ],
-              ),
-            ),
-          ),
+            const PhotoAppCard(),
+          ],
         ),
       ),
     );
