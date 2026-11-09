@@ -43,6 +43,60 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.0.16': {
+    Language.en: [
+      'Secondary text is easier to read in the light theme.',
+      'The save button shows a loading indicator while videos are being saved.',
+    ],
+    Language.ru: [
+      'Второстепенный текст в светлой теме стал контрастнее и легче читается.',
+      'Пока видео сохраняются, на кнопке сохранения показывается индикатор загрузки.',
+    ],
+    Language.es: [
+      'El texto secundario es más fácil de leer en el tema claro.',
+      'El botón de guardar muestra un indicador de carga mientras se guardan los videos.',
+    ],
+    Language.pt: [
+      'O texto secundário ficou mais fácil de ler no tema claro.',
+      'O botão de salvar mostra um indicador de carregamento enquanto os vídeos são salvos.',
+    ],
+    Language.de: [
+      'Sekundärer Text ist im hellen Design besser lesbar.',
+      'Die Sichern-Schaltfläche zeigt einen Ladehinweis, während Videos gespeichert werden.',
+    ],
+    Language.fr: [
+      'Le texte secondaire est plus lisible dans le thème clair.',
+      'Le bouton d’enregistrement affiche un indicateur de chargement pendant l’enregistrement des vidéos.',
+    ],
+    Language.zh: [
+      '浅色主题中的次要文字更容易阅读。',
+      '保存视频时，保存按钮会显示加载指示。',
+    ],
+    Language.hi: [
+      'हल्की थीम में सहायक टेक्स्ट अब पढ़ने में आसान है।',
+      'वीडियो सेव होते समय सेव बटन पर लोडिंग संकेत दिखता है।',
+    ],
+    Language.nl: [
+      'Secundaire tekst is beter leesbaar in het lichte thema.',
+      'De opslaan-knop toont een laadindicator terwijl video’s worden opgeslagen.',
+    ],
+    Language.ko: [
+      '라이트 테마의 보조 텍스트가 더 읽기 쉬워졌습니다.',
+      '동영상을 저장하는 동안 저장 버튼에 로딩 표시가 나타납니다.',
+    ],
+    Language.ja: [
+      'ライトテーマの補助テキストが読みやすくなりました。',
+      '動画の保存中は、保存ボタンに読み込み表示が出ます。',
+    ],
+    Language.it: [
+      'Il testo secondario è più leggibile nel tema chiaro.',
+      'Il pulsante di salvataggio mostra un indicatore di caricamento mentre i video vengono salvati.',
+    ],
+    Language.tr: [
+      'Açık temadaki ikincil metin artık daha kolay okunuyor.',
+      'Videolar kaydedilirken kaydet düğmesinde bir yükleme göstergesi görünür.',
+    ],
+  },
   '1.0.15': {
     Language.en: [
       'HDR videos are now saved as SDR for wider playback compatibility; colors may change.',

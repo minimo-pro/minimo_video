@@ -11,6 +11,22 @@ PackageInfo _packageInfo(String version) => PackageInfo(
 );
 
 void main() {
+  test('bundled 1.0.16 notes are platform-neutral in every language', () {
+    for (final language in Language.values) {
+      final changes = unseenChanges(
+        lastSeen: '1.0.15',
+        current: '1.0.16',
+        language: language,
+      );
+      expect(changes, hasLength(2));
+      expect(changes.every((change) => change.isNotEmpty), isTrue);
+      expect(
+        changes.join(' '),
+        isNot(matches(RegExp(r'Android|iOS|iPhone', caseSensitive: false))),
+      );
+    }
+  });
+
   test('bundled 1.0.15 notes are platform-neutral in every language', () {
     for (final language in Language.values) {
       final changes = unseenChanges(

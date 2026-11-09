@@ -13,6 +13,7 @@ import 'package:minimo_video/features/compression/presentation/widgets/compressi
 import 'package:minimo_video/generated/l10n.dart';
 import 'package:minimo_video/widgets/animated_asset_checkbox.dart';
 import 'package:minimo_video/widgets/app_action_button.dart';
+import 'package:minimo_video/widgets/minimo_loader.dart';
 
 void main() {
   testWidgets('result actions are compare, save, then share', (tester) async {
@@ -317,6 +318,63 @@ void main() {
     );
     expect(action.icon, AppIcons.check);
     expect(action.onPressed, isNotNull);
+  });
+
+  testWidgets('save button shows a loader while saving', (tester) async {
+    const source = PickedVideo(
+      path: '/video.mp4',
+      name: 'video.mp4',
+      size: 100,
+    );
+    const state = CompressState(
+      status: CompressStatus.done,
+      videos: [source],
+      thumbnailPaths: [null],
+      videoStatuses: [VideoCompressionStatus.compressed],
+      results: [
+        CompressedVideo(
+          source: source,
+          result: CompressionResult(
+            success: true,
+            originalSize: 100,
+            outputSize: 40,
+            outputPath: '/small.mp4',
+          ),
+        ),
+      ],
+      compressionRunId: 1,
+      processingIndex: 0,
+      progress: 1,
+      elapsed: Duration.zero,
+      settings: CompressionSettings(),
+      isSaving: true,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        home: const Scaffold(
+          body: CompressionResultView(state: state, onTryAgain: _noop),
+        ),
+      ),
+    );
+
+    final action = tester.widget<AppActionButton>(
+      find.byWidgetPredicate(
+        (widget) => widget is AppActionButton && widget.label == 'save',
+      ),
+    );
+    expect(action.loading, isTrue);
+    expect(action.onPressed, isNull);
+    expect(
+      tester.widget<MinimoLoader>(find.byType(MinimoLoader)).semanticsLabel,
+      'save',
+    );
   });
 }
 
