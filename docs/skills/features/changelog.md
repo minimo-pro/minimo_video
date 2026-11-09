@@ -5,7 +5,7 @@
 `ChangelogService` stores a local versioned changelog map in Dart. Keys are semantic versions, language keys use the `Language` enum, and version comparisons use `pub_semver`.
 The app never fetches changelog content remotely.
 
-Current release: `1.0.15+34`. In-app notes cover HDR-to-SDR output, HDR badges and conversion hints, and the selection count badge in all 13 supported languages. Platform-specific fixes remain in the root `CHANGELOG.md` rather than the shared in-app notes.
+Current release: `1.0.16+35`. In-app notes cover easier secondary text in the light theme and a loading indicator on the save button, in all 13 supported languages. Platform-specific fixes remain in the root `CHANGELOG.md` rather than the shared in-app notes.
 
 ## Seen Version
 

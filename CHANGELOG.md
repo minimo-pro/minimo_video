@@ -2,7 +2,8 @@
 
 ### Improved
 
-Increase the contrast of secondary text in the light theme
+* Increase the contrast of secondary text in the light theme.
+* Show a loading indicator on the save button while videos are being saved.
 
 ## [1.0.15]
 

@@ -158,6 +158,7 @@ class CompressionResultView extends StatelessWidget {
                               ? strings.saved
                               : strings.save,
                           icon: state.isSaved ? AppIcons.check : null,
+                          loading: state.isSaving,
                           fontSize: 20,
                           variant: AppActionButtonVariant.filled,
                           onPressed: state.isSaving
