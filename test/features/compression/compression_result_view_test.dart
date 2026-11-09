@@ -371,7 +371,10 @@ void main() {
     );
     expect(action.loading, isTrue);
     expect(action.onPressed, isNull);
-    expect(find.byType(MinimoLoader), findsOneWidget);
+    expect(
+      tester.widget<MinimoLoader>(find.byType(MinimoLoader)).semanticsLabel,
+      'save',
+    );
   });
 }
 
