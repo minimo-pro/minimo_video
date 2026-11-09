@@ -8,6 +8,7 @@
 |---|---|---|
 | Background | `#F1F2F6` | `#121212` |
 | Text | `#272727` | `#E0E0E0` |
+| Secondary text | `#5B5B5B` | `#A8A8A8` |
 | Accent | `#FC3636` | `#FC3636` |
 | Success | `#059A25` | `#059A25` |
 | Frame | `#D9D9D9` | `#3A3A3A` |

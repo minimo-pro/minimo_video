@@ -1,3 +1,9 @@
+## [1.0.16]
+
+### Improved
+
+Increase the contrast of secondary text in the light theme
+
 ## [1.0.15]
 
 ### Added
