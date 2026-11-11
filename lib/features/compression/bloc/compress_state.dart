@@ -15,6 +15,7 @@ class CompressedVideo {
 
 class CompressState {
   final CompressStatus status;
+  final bool canCompressInBackground;
   final List<PickedVideo> videos;
   final List<String?> thumbnailPaths;
   final List<VideoCompressionStatus> videoStatuses;
@@ -39,6 +40,7 @@ class CompressState {
 
   const CompressState({
     required this.status,
+    this.canCompressInBackground = false,
     required this.videos,
     required this.thumbnailPaths,
     required this.videoStatuses,
@@ -153,6 +155,7 @@ class CompressState {
 
   CompressState copyWith({
     CompressStatus? status,
+    bool? canCompressInBackground,
     List<PickedVideo>? videos,
     List<String?>? thumbnailPaths,
     List<VideoCompressionStatus>? videoStatuses,
@@ -180,6 +183,8 @@ class CompressState {
   }) {
     return CompressState(
       status: status ?? this.status,
+      canCompressInBackground:
+          canCompressInBackground ?? this.canCompressInBackground,
       videos: videos == null ? this.videos : List.unmodifiable(videos),
       thumbnailPaths: thumbnailPaths == null
           ? this.thumbnailPaths

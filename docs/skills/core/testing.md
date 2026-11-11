@@ -24,6 +24,7 @@ Current tests cover:
 - HEVC-to-H.264 fallback notice on the result screen
 - Minimum 10% output-savings policy
 - Batch status transitions and mixed success/skipped results
+- Granted iOS background runtime survives lifecycle changes, waits for admission, forwards batch progress, and releases on system cancellation
 - Cancellation state reset and compressor cancellation call
 - Weighted overall progress, current-file progress, and stale-event rejection
 - Saving and original deletion through source identifiers
@@ -55,6 +56,7 @@ Do not mock private helpers or test generated code. Prefer behavior through `Com
 
 Native behavior needs focused manual checks when compression or platform code changes:
 
+- iOS 26+: a multi-video batch continues after Home/lock with system progress; cancellation stops the encoder; verify SDR/HDR and H.264/HEVC outputs. Verify foreground fallback on older iOS or denied runtime; devices without background GPU support must still submit a task with default resources.
 - Portrait and landscape-recorded MOV/MP4 inputs produce visible video and synchronized audio
 - Comparison divider reveals aligned native frames during playback and seeking for portrait and landscape inputs
 - High, medium, and low outputs play on the source device

@@ -18,7 +18,7 @@ void main() {
         current: '1.0.16',
         language: language,
       );
-      expect(changes, hasLength(2));
+      expect(changes, hasLength(3));
       expect(changes.every((change) => change.isNotEmpty), isTrue);
       expect(
         changes.join(' '),

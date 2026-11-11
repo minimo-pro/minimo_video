@@ -1,9 +1,28 @@
 import Flutter
 import UIKit
 import XCTest
+import BackgroundTasks
 @testable import Runner
 
 class RunnerTests: XCTestCase {
+
+  func testBackgroundRequestUsesConcreteIDsAndOptionalGPU() throws {
+    guard #available(iOS 26.0, *) else { throw XCTSkip("Requires iOS 26") }
+    let background = BackgroundCompression.shared
+    let cpuRequest = background.makeRequest(token: "first", gpuSupported: false)
+    let gpuRequest = background.makeRequest(token: "second", gpuSupported: true)
+    let prefix = try XCTUnwrap(Bundle.main.bundleIdentifier) + ".compression."
+
+    XCTAssertEqual(cpuRequest.identifier, prefix + "first")
+    XCTAssertEqual(gpuRequest.identifier, prefix + "second")
+    XCTAssertFalse(cpuRequest.identifier.contains("*"))
+    XCTAssertFalse(cpuRequest.requiredResources.contains(.gpu))
+    XCTAssertTrue(gpuRequest.requiredResources.contains(.gpu))
+    XCTAssertEqual(cpuRequest.strategy, .fail)
+    let permitted = try XCTUnwrap(Bundle.main.object(
+      forInfoDictionaryKey: "BGTaskSchedulerPermittedIdentifiers") as? [String])
+    XCTAssertTrue(permitted.contains(prefix + "*"))
+  }
 
   func testInboxPublishesManifestAfterFiles() throws {
     let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
