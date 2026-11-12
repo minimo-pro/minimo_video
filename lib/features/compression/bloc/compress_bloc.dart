@@ -28,6 +28,8 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
   final _sessionFiles = <String>{};
   bool _cancelRequested = false;
   bool _resumeAfterBackground = false;
+  bool _isBackgrounded = false;
+  Future<void>? _backgroundCancellation;
   bool _screenAwakeEnabled = false;
   int _compressionRunId = 0;
   int _estimateRunId = 0;
@@ -466,19 +468,26 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     CompressForegroundResumed event,
     Emitter<CompressState> emit,
   ) async {
+    _isBackgrounded = false;
     if (state.status != CompressStatus.processing) return;
     await _backgroundStart;
-    if (_backgroundActive ||
+    if (_isBackgrounded ||
+        _backgroundActive ||
         !_resumeAfterBackground ||
         _closing ||
         state.status != CompressStatus.processing) {
       return;
     }
+    final runId = _compressionRunId;
     final startIndex = state.processingIndex;
-    _cancelRequested = false;
-    _resumeAfterBackground = false;
+    await _backgroundCancellation;
     await Future<void>.delayed(const Duration(milliseconds: 700));
-    if (_closing || isClosed || state.status != CompressStatus.processing) {
+    if (_closing ||
+        isClosed ||
+        _isBackgrounded ||
+        !_resumeAfterBackground ||
+        runId != _compressionRunId ||
+        state.status != CompressStatus.processing) {
       return;
     }
     await _runCompression(emit, startIndex: startIndex);
@@ -488,6 +497,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     CompressBackgrounded event,
     Emitter<CompressState> emit,
   ) async {
+    _isBackgrounded = true;
     await _backgroundStart;
     if (_backgroundActive ||
         _closing ||
@@ -498,6 +508,11 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     _resumeAfterBackground = true;
     _cancelRequested = true;
     _compressionRunId++;
+    _backgroundCancellation = _cancelForBackground();
+    await _backgroundCancellation;
+  }
+
+  Future<void> _cancelForBackground() async {
     await _videoCompressorAdapter.cancelCompression();
     await _finishBackground(success: false);
     await _setScreenAwake(false);

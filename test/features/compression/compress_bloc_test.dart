@@ -155,7 +155,56 @@ class _ControlledCompressor extends VideoCompressorAdapter {
   Future<void> cancelCompression() async => cancelCalls++;
 }
 
+class _DelayedBackgroundCancelCompressor extends VideoCompressorAdapter {
+  final runs = <Completer<CompressionResult>>[];
+  final firstStarted = Completer<void>();
+  final secondStarted = Completer<void>();
+  final cancellationStarted = Completer<void>();
+  final releaseCancellation = Completer<void>();
+  final cancellationFinished = Completer<void>();
+
+  @override
+  Future<String?> createThumbnail(String inputPath) async => null;
+
+  @override
+  Future<CompressionResult> compress(
+    String inputPath,
+    String originalName,
+    CompressionSettings settings, {
+    bool addKompressoPrefix = true,
+    void Function(double progress)? onProgress,
+  }) {
+    final result = Completer<CompressionResult>();
+    runs.add(result);
+    if (runs.length == 1) firstStarted.complete();
+    if (runs.length == 2) secondStarted.complete();
+    return result.future;
+  }
+
+  @override
+  Future<void> cancelCompression() async {
+    if (runs.isEmpty || runs.last.isCompleted) return;
+    final active = runs.last;
+    if (!cancellationStarted.isCompleted) cancellationStarted.complete();
+    await releaseCancellation.future;
+    if (!active.isCompleted) {
+      active.complete(const CompressionResult(success: false));
+    }
+    if (!cancellationFinished.isCompleted) cancellationFinished.complete();
+  }
+
+  void release() {
+    if (!releaseCancellation.isCompleted) releaseCancellation.complete();
+    for (final run in runs) {
+      if (!run.isCompleted) {
+        run.complete(const CompressionResult(success: false));
+      }
+    }
+  }
+}
+
 class _WeightedProgressCompressor extends VideoCompressorAdapter {
+  final firstStarted = Completer<void>();
   final firstResult = Completer<CompressionResult>();
   void Function(double progress)? firstProgress;
   var calls = 0;
@@ -174,6 +223,7 @@ class _WeightedProgressCompressor extends VideoCompressorAdapter {
     calls++;
     if (calls == 1) {
       firstProgress = onProgress;
+      firstStarted.complete();
       return firstResult.future;
     }
     return Future.value(const CompressionResult(success: false));
@@ -606,6 +656,104 @@ void main() {
 
       compressor.completer.complete(const CompressionResult(success: false));
       await bloc.close();
+    },
+  );
+
+  test('foreground recovery waits for native cancellation', () async {
+    final compressor = _DelayedBackgroundCancelCompressor();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/one.mp4', name: 'one.mp4', size: 100),
+      ],
+      videoCompressorAdapter: compressor,
+    );
+    addTearDown(() async {
+      compressor.release();
+      await bloc.close();
+    });
+    bloc.add(const CompressStarted());
+    await compressor.firstStarted.future;
+    bloc.add(const CompressBackgrounded());
+    await compressor.cancellationStarted.future;
+
+    bloc.add(const CompressForegroundResumed());
+    await Future<void>.delayed(const Duration(milliseconds: 800));
+    expect(compressor.runs, hasLength(1));
+    compressor.releaseCancellation.complete();
+    await compressor.secondStarted.future;
+    compressor.runs.last.complete(const CompressionResult(success: false));
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+  });
+
+  test('foreground recovery does not restart after rebackgrounding', () async {
+    final compressor = _DelayedBackgroundCancelCompressor();
+    final bloc = CompressBloc(
+      initialVideos: const [
+        PickedVideo(path: '/one.mp4', name: 'one.mp4', size: 100),
+      ],
+      videoCompressorAdapter: compressor,
+    );
+    addTearDown(() async {
+      compressor.release();
+      await bloc.close();
+    });
+    bloc.add(const CompressStarted());
+    await compressor.firstStarted.future;
+    bloc.add(const CompressBackgrounded());
+    await compressor.cancellationStarted.future;
+
+    compressor.releaseCancellation.complete();
+    await compressor.cancellationFinished.future;
+    bloc.add(const CompressForegroundResumed());
+    await Future<void>.delayed(Duration.zero);
+    bloc.add(const CompressBackgrounded());
+    await Future<void>.delayed(const Duration(milliseconds: 800));
+    expect(compressor.runs, hasLength(1));
+    bloc.add(const CompressForegroundResumed());
+    await compressor.secondStarted.future;
+    compressor.runs.last.complete(const CompressionResult(success: false));
+    await bloc.stream.firstWhere(
+      (state) => state.status == CompressStatus.done,
+    );
+  });
+
+  test(
+    'stale foreground recovery cannot restart a newer compression run',
+    () async {
+      final compressor = _DelayedBackgroundCancelCompressor();
+      final bloc = CompressBloc(
+        initialVideos: const [
+          PickedVideo(path: '/one.mp4', name: 'one.mp4', size: 100),
+        ],
+        videoCompressorAdapter: compressor,
+      );
+      addTearDown(() async {
+        compressor.release();
+        await bloc.close();
+      });
+      bloc.add(const CompressStarted());
+      await compressor.firstStarted.future;
+      bloc.add(const CompressBackgrounded());
+      await compressor.cancellationStarted.future;
+
+      compressor.releaseCancellation.complete();
+      await compressor.cancellationFinished.future;
+      bloc.add(const CompressForegroundResumed());
+      await Future<void>.delayed(Duration.zero);
+      bloc.add(const CompressCancelled());
+      await bloc.stream.firstWhere(
+        (state) => state.status == CompressStatus.ready,
+      );
+      bloc.add(const CompressStarted());
+      await compressor.secondStarted.future;
+      await Future<void>.delayed(const Duration(milliseconds: 800));
+      expect(compressor.runs, hasLength(2));
+      compressor.runs.last.complete(const CompressionResult(success: false));
+      await bloc.stream.firstWhere(
+        (state) => state.status == CompressStatus.done,
+      );
     },
   );
 
@@ -1263,15 +1411,13 @@ void main() {
     );
 
     bloc.add(const CompressStarted());
-    await bloc.stream.firstWhere(
-      (state) => state.status == CompressStatus.processing,
-    );
-    compressor.firstProgress?.call(0.5);
+    await compressor.firstStarted.future;
+    compressor.firstProgress!(0.5);
     await Future<void>.delayed(Duration.zero);
 
     expect(bloc.state.progress, 0.125);
     expect(bloc.state.currentVideoProgress, 0.5);
-    compressor.firstProgress?.call(0.25);
+    compressor.firstProgress!(0.25);
     await Future<void>.delayed(Duration.zero);
     expect(bloc.state.progress, 0.125);
     expect(bloc.state.currentVideoProgress, 0.5);
