@@ -43,6 +43,43 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.1.0': {
+    Language.en: [
+      'On supported devices, video compression can continue in the background with system progress and cancellation.',
+    ],
+    Language.ru: [
+      'На поддерживаемых устройствах сжатие видео может продолжаться в фоне с системным индикатором прогресса и возможностью отмены.',
+    ],
+    Language.es: [
+      'En dispositivos compatibles, la compresión de videos puede continuar en segundo plano con progreso del sistema y opción de cancelar.',
+    ],
+    Language.pt: [
+      'Em dispositivos compatíveis, a compressão de vídeos pode continuar em segundo plano com progresso do sistema e opção de cancelar.',
+    ],
+    Language.de: [
+      'Auf unterstützten Geräten kann die Videokomprimierung im Hintergrund fortgesetzt werden, mit systemweiter Fortschrittsanzeige und Abbruchmöglichkeit.',
+    ],
+    Language.fr: [
+      'Sur les appareils compatibles, la compression vidéo peut continuer en arrière-plan avec un indicateur de progression système et une option d’annulation.',
+    ],
+    Language.zh: ['在支持的设备上，视频压缩可在后台继续，并提供系统进度显示和取消选项。'],
+    Language.hi: [
+      'समर्थित डिवाइस पर वीडियो कंप्रेशन बैकग्राउंड में जारी रह सकता है। सिस्टम में प्रगति दिखाई देती है और इसे रद्द किया जा सकता है।',
+    ],
+    Language.nl: [
+      'Op ondersteunde apparaten kan videocompressie op de achtergrond doorgaan, met systeemvoortgang en een optie om te annuleren.',
+    ],
+    Language.ko: [
+      '지원되는 기기에서는 시스템 진행 표시와 취소 기능을 통해 백그라운드에서도 동영상 압축을 계속할 수 있습니다.',
+    ],
+    Language.ja: ['対応するデバイスでは、システムの進捗表示とキャンセル機能を使い、バックグラウンドでも動画の圧縮を続けられます。'],
+    Language.it: [
+      'Sui dispositivi compatibili, la compressione video può continuare in background con avanzamento di sistema e possibilità di annullamento.',
+    ],
+    Language.tr: [
+      'Desteklenen cihazlarda video sıkıştırma, sistem ilerleme göstergesi ve iptal seçeneğiyle arka planda devam edebilir.',
+    ],
+  },
   '1.0.16': {
     Language.en: [
       'Secondary text is easier to read in the light theme.',

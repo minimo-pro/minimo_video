@@ -11,6 +11,21 @@ PackageInfo _packageInfo(String version) => PackageInfo(
 );
 
 void main() {
+  test('bundled 1.1.0 background compression notes cover every language', () {
+    final translations = <String>{};
+    for (final language in Language.values) {
+      final changes = unseenChanges(
+        lastSeen: '1.0.16',
+        current: '1.1.0',
+        language: language,
+      );
+      expect(changes, hasLength(1));
+      expect(changes.single, isNotEmpty);
+      translations.add(changes.single);
+    }
+    expect(translations, hasLength(Language.values.length));
+  });
+
   test('bundled 1.0.16 notes are platform-neutral in every language', () {
     for (final language in Language.values) {
       final changes = unseenChanges(
