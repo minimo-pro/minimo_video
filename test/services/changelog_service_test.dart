@@ -11,6 +11,43 @@ PackageInfo _packageInfo(String version) => PackageInfo(
 );
 
 void main() {
+  test('bundled 1.1.0 background compression notes cover every language', () {
+    final translations = <String>{};
+    for (final language in Language.values) {
+      final changes = unseenChanges(
+        lastSeen: '1.0.16',
+        current: '1.1.0',
+        language: language,
+      );
+      expect(changes, hasLength(1));
+      expect(changes.single, isNotEmpty);
+      translations.add(changes.single);
+    }
+    expect(translations, hasLength(Language.values.length));
+  });
+
+  test('upgrade from 1.0.15 to 1.1.0 shows three unique notes', () async {
+    for (final language in Language.values) {
+      SharedPreferences.setMockInitialValues({
+        'onboarding_completed': true,
+        'last_seen_version': '1.0.15',
+      });
+      final service = ChangelogService(
+        packageInfo: () async => _packageInfo('1.1.0'),
+      );
+      final update = await service.initialize(language: language);
+      final expected = unseenChanges(
+        lastSeen: '1.0.15',
+        current: '1.1.0',
+        language: language,
+      );
+      expect(update, isNotNull);
+      expect(update!.changes, expected);
+      expect(update.changes, hasLength(3));
+      expect(update.changes.toSet(), hasLength(3));
+    }
+  });
+
   test('bundled 1.0.16 notes are platform-neutral in every language', () {
     for (final language in Language.values) {
       final changes = unseenChanges(

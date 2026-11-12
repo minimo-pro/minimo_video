@@ -11,6 +11,7 @@ import '../../../services/app_settings_service.dart';
 import '../../../services/app_cache_service.dart';
 import '../../../services/app_stats_service.dart';
 import '../../../services/screen_awake_service.dart';
+import '../../../services/background_compression_service.dart';
 import 'compress_event.dart';
 import 'compress_state.dart';
 
@@ -19,11 +20,16 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
   final VideoCompressorAdapter _videoCompressorAdapter;
   final AppSettingsService _appSettings;
   final ScreenAwakeService _screenAwakeService;
+  final BackgroundCompressionService _backgroundCompression;
+  Future<bool>? _backgroundStart;
+  bool _backgroundActive = false;
   bool _closing = false;
   final _fileOperations = <Future<void>>{};
   final _sessionFiles = <String>{};
   bool _cancelRequested = false;
   bool _resumeAfterBackground = false;
+  bool _isBackgrounded = false;
+  Future<void>? _backgroundCancellation;
   bool _screenAwakeEnabled = false;
   int _compressionRunId = 0;
   int _estimateRunId = 0;
@@ -39,11 +45,14 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     VideoCompressorAdapter? videoCompressorAdapter,
     AppSettingsService? appSettings,
     ScreenAwakeService? screenAwakeService,
+    BackgroundCompressionService? backgroundCompressionService,
   }) : _videoFileAdapter = videoFileAdapter ?? VideoFileAdapter(),
        _videoCompressorAdapter =
            videoCompressorAdapter ?? VideoCompressorAdapter(),
        _appSettings = appSettings ?? AppSettingsService.instance,
        _screenAwakeService = screenAwakeService ?? ScreenAwakeService.instance,
+       _backgroundCompression =
+           backgroundCompressionService ?? BackgroundCompressionService(),
        super(CompressState.initial(initialVideos, settings: initialSettings)) {
     on<CompressThumbnailsRequested>(_handle(_onThumbnailsRequested));
     on<CompressEstimateRequested>(_handle(_onEstimateRequested));
@@ -255,6 +264,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     if (state.status == CompressStatus.processing) {
       await _videoCompressorAdapter.cancelCompression();
     }
+    await _finishBackground(success: false);
     await Future.wait(_fileOperations.toList());
     await _setScreenAwake(false);
     await super.close();
@@ -262,6 +272,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
   }
 
   Future<void> _onStarted(CompressStarted event, Emitter<CompressState> emit) {
+    if (state.status == CompressStatus.processing) return Future.value();
     _savedOutputPaths.clear();
     _replacementSourceIdentifiers.clear();
     _deletedSourceIdentifiers.clear();
@@ -272,12 +283,13 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     Emitter<CompressState> emit, {
     int startIndex = 0,
   }) async {
-    if (state.videos.isEmpty) return;
+    if (state.videos.isEmpty || _closing) return;
 
     _estimateDebounce?.cancel();
     _estimateRunId++;
     _cancelRequested = false;
     _resumeAfterBackground = false;
+    _backgroundActive = false;
     final runId = ++_compressionRunId;
     final previousElapsed = startIndex == 0 ? Duration.zero : state.elapsed;
     final stopwatch = Stopwatch()..start();
@@ -304,6 +316,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     emit(
       state.copyWith(
         status: CompressStatus.processing,
+        canCompressInBackground: false,
         results: previousResults,
         videoStatuses: videoStatuses,
         compressionRunId: runId,
@@ -318,8 +331,19 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
       ),
     );
 
+    _backgroundStart = _backgroundCompression.start(
+      onCancel: () {
+        if (!_closing && !isClosed && runId == _compressionRunId) {
+          add(const CompressCancelled());
+        }
+      },
+    );
     await _setScreenAwake(_appSettings.preventScreenSleep);
     try {
+      final backgroundActive = await _backgroundStart!;
+      if (_cancelRequested || runId != _compressionRunId) return;
+      _backgroundActive = backgroundActive;
+      emit(state.copyWith(canCompressInBackground: backgroundActive));
       for (var i = startIndex; i < videos.length; i++) {
         if (_cancelRequested || runId != _compressionRunId) return;
         emit(
@@ -336,6 +360,9 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
           ),
         );
 
+        unawaited(
+          _backgroundCompression.update(state.progress, i + 1, videos.length),
+        );
         final video = videos[i];
         final weightBeforeVideo = completedWeight;
         late final CompressionResult result;
@@ -409,6 +436,11 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
           savedBytes: state.resultsOriginalSize - state.compressedSize,
         ).onError((_, _) {});
       }
+      await _setScreenAwake(false);
+      await _finishBackground(
+        success: !videoStatuses.contains(VideoCompressionStatus.failed),
+      );
+      if (_cancelRequested || runId != _compressionRunId) return;
       emit(
         state.copyWith(
           status: CompressStatus.done,
@@ -417,26 +449,45 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
         ),
       );
     } finally {
+      if (runId == _compressionRunId && state.status != CompressStatus.done) {
+        await _setScreenAwake(false);
+        await _finishBackground(success: false);
+      }
       stopwatch.stop();
-      await _setScreenAwake(false);
     }
+  }
+
+  Future<void> _finishBackground({required bool success}) async {
+    final start = _backgroundStart;
+    if (start == null) return;
+    await start;
+    await _backgroundCompression.finish(success: success);
   }
 
   Future<void> _onForegroundResumed(
     CompressForegroundResumed event,
     Emitter<CompressState> emit,
   ) async {
+    _isBackgrounded = false;
     if (state.status != CompressStatus.processing) return;
-    final startIndex = state.processingIndex;
-    if (!_resumeAfterBackground) {
-      _cancelRequested = true;
-      _compressionRunId++;
-      await _videoCompressorAdapter.cancelCompression();
+    await _backgroundStart;
+    if (_isBackgrounded ||
+        _backgroundActive ||
+        !_resumeAfterBackground ||
+        _closing ||
+        state.status != CompressStatus.processing) {
+      return;
     }
-    _cancelRequested = false;
-    _resumeAfterBackground = false;
+    final runId = _compressionRunId;
+    final startIndex = state.processingIndex;
+    await _backgroundCancellation;
     await Future<void>.delayed(const Duration(milliseconds: 700));
-    if (_closing || isClosed || state.status != CompressStatus.processing) {
+    if (_closing ||
+        isClosed ||
+        _isBackgrounded ||
+        !_resumeAfterBackground ||
+        runId != _compressionRunId ||
+        state.status != CompressStatus.processing) {
       return;
     }
     await _runCompression(emit, startIndex: startIndex);
@@ -446,13 +497,24 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     CompressBackgrounded event,
     Emitter<CompressState> emit,
   ) async {
-    if (state.status != CompressStatus.processing || _resumeAfterBackground) {
+    _isBackgrounded = true;
+    await _backgroundStart;
+    if (_backgroundActive ||
+        _closing ||
+        state.status != CompressStatus.processing ||
+        _resumeAfterBackground) {
       return;
     }
     _resumeAfterBackground = true;
     _cancelRequested = true;
     _compressionRunId++;
+    _backgroundCancellation = _cancelForBackground();
+    await _backgroundCancellation;
+  }
+
+  Future<void> _cancelForBackground() async {
     await _videoCompressorAdapter.cancelCompression();
+    await _finishBackground(success: false);
     await _setScreenAwake(false);
   }
 
@@ -463,6 +525,15 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     if (event.runId != _compressionRunId) return;
     if (state.status != CompressStatus.processing || _cancelRequested) return;
     if (event.progress < state.progress) return;
+    if (_backgroundActive) {
+      unawaited(
+        _backgroundCompression.update(
+          event.progress,
+          state.processingIndex + 1,
+          state.videos.length,
+        ),
+      );
+    }
     emit(
       state.copyWith(
         progress: event.progress,
@@ -480,6 +551,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     _cancelRequested = true;
     _compressionRunId++;
     await _videoCompressorAdapter.cancelCompression();
+    await _finishBackground(success: false);
     final outputs = state.successfulOutputPaths;
     await AppCacheService.removeFiles(outputs);
     _sessionFiles.removeAll(outputs);
@@ -487,6 +559,7 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
     emit(
       state.copyWith(
         status: CompressStatus.ready,
+        canCompressInBackground: false,
         results: const [],
         videoStatuses: List<VideoCompressionStatus>.filled(
           state.videos.length,

@@ -123,7 +123,8 @@ class _CompressionProgressViewState extends State<CompressionProgressView> {
                     fit: FlexFit.loose,
                     child: VideoStatusList(state: state),
                   ),
-                  if (defaultTargetPlatform == TargetPlatform.iOS) ...[
+                  if (defaultTargetPlatform == TargetPlatform.iOS &&
+                      !state.canCompressInBackground) ...[
                     SizedBox(height: warningGap),
                     const _IosBackgroundWarning(),
                   ],

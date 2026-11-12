@@ -56,9 +56,11 @@ The plugin-reported `usedFormat` is stored with each successful result. If
 HEVC was requested but hardware fallback produced H.264, the result screen
 shows a localized notice.
 
-`BackgroundConfig` keeps compression running through an Android foreground service when the app is minimized or the screen is off. iOS does not support continuous background transcoding; the native job can remain stuck after the OS suspends the app.
+`BackgroundConfig` keeps compression running through an Android foreground service when the app is minimized or the screen is off.
 
-On iOS the compression screen warns the user to keep the app open. If the app is backgrounded during compression, the active native job is cancelled immediately; returning restarts only the current video and keeps completed batch items.
+On iOS 26+, `BackgroundCompressionService` requests a native `BGContinuedProcessingTask` for the entire sequential batch before encoding starts. Runner registers each concrete task identifier before submission (the wildcard is only in `Info.plist`), requests background GPU access only when the device supports it, reports weighted progress and file count through the system Live Activity, and completes the task after output files are finalized. System cancellation/expiration uses the normal cancellation flow. The task only starts if immediate admission succeeds; otherwise compression retains the foreground-only fallback. Devices without background GPU support submit a request with default CPU resources for the normal AVAssetReader/Writer pipeline; HDR conversion still requires physical-device validation. Native task tokens reject stale callbacks and progress. No compressor package changes are required.
+
+On older iOS versions, unsupported devices, or denied task admission, the compression screen warns the user to keep the app open. Backgrounding cancels the active native job; returning restarts only the current video and keeps completed batch items. The warning is hidden only after a background runtime grant is received. Force-quitting does not resume work: cold-start cache cleanup remains unchanged. Physical-device validation is required for AVFoundation encoding, HDR conversion, locking, and system cancellation.
 
 ## Importing and Adding Videos During Configuration
 

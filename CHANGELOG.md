@@ -1,3 +1,10 @@
+## [1.1.0]
+
+### Added
+
+* iOS 26+: continue video compression in the background on supported devices, with system progress, file count, and cancellation for the whole batch.
+* Keep foreground-only compression with current-video restart on older iOS versions or when background processing is unavailable.
+
 ## [1.0.16]
 
 ### Improved

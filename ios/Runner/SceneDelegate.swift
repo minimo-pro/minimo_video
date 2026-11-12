@@ -26,6 +26,25 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
 
     guard let controller = window?.rootViewController as? FlutterViewController else { return }
 
+    let backgroundChannel = FlutterMethodChannel(
+      name: "minimo_video/background_compression",
+      binaryMessenger: controller.binaryMessenger
+    )
+    backgroundChannel.setMethodCallHandler { call, result in
+      if #available(iOS 26.0, *) {
+        BackgroundCompression.shared.handle(call, result: result)
+      } else {
+        if call.method == "start" {
+          result(FlutterError(code: "background_os_unsupported",
+            message: "Background compression requires iOS 26 or newer",
+            details: ["iosVersion": UIDevice.current.systemVersion]))
+        } else {
+          result(nil)
+        }
+      }
+    }
+    if #available(iOS 26.0, *) { BackgroundCompression.shared.channel = backgroundChannel }
+
     let channel = FlutterMethodChannel(
       name: "minimo_video/thermal",
       binaryMessenger: controller.binaryMessenger
