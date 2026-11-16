@@ -5,7 +5,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -51,8 +50,13 @@ class InfoScreen extends StatelessWidget {
   );
 
   Future<void> _rateApp() async {
-    await InAppReview.instance.openStoreListing(
-      appStoreId: Platform.isIOS ? _appStoreAppId : null,
+    await launchUrl(
+      Uri.parse(
+        Platform.isIOS
+            ? 'https://apps.apple.com/app/id$_appStoreAppId?action=write-review'
+            : _googlePlayAppUrl,
+      ),
+      mode: LaunchMode.externalApplication,
     );
   }
 

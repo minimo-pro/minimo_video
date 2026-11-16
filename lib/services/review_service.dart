@@ -1,4 +1,4 @@
-import 'package:in_app_review/in_app_review.dart';
+import 'package:rate_my_app/rate_my_app.dart' show RateMyApp;
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum CompressionPrompt { none, review, photoApp }
@@ -13,6 +13,11 @@ class ReviewService {
   static const _monthsBetweenReviews = 3;
 
   static final instance = ReviewService();
+  static const _rateMyApp = RateMyApp.customConditions(
+    appStoreIdentifier: '6787456951',
+    googlePlayIdentifier: 'com.khlebobul.minimo_video',
+    conditions: [],
+  );
 
   final Future<bool> Function() _isAvailable;
   final Future<void> Function() _requestReview;
@@ -22,8 +27,11 @@ class ReviewService {
     Future<bool> Function()? isAvailable,
     Future<void> Function()? requestReview,
     DateTime Function()? now,
-  }) : _isAvailable = isAvailable ?? InAppReview.instance.isAvailable,
-       _requestReview = requestReview ?? InAppReview.instance.requestReview,
+  }) : _isAvailable =
+           isAvailable ??
+           (() async =>
+               await _rateMyApp.isNativeReviewDialogSupported ?? false),
+       _requestReview = requestReview ?? _rateMyApp.launchNativeReviewDialog,
        _now = now ?? DateTime.now;
 
   Future<CompressionPrompt> onSuccessfulConversions(int count) async {
