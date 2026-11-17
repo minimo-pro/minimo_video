@@ -37,6 +37,21 @@
   "statistics": "estatísticas",
   "videosCompressedStat": "vídeos comprimidos",
   "spaceSavedStat": "espaço economizado",
+  "shareStatisticsText": "Meus resultados com minimo (video) 🎬\nVídeos comprimidos: {count}\nEspaço economizado: {size}\n\nExperimente minimo e libere espaço no celular: {url}",
+  "@shareStatisticsText": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToShareStatistics": "não foi possível compartilhar as estatísticas. tente novamente",
   "statisticsSinceVersion": "as estatísticas podem estar incompletas: são armazenadas localmente e coletadas apenas desde a versão 1.0.8.",
   "addPrefix": "adicionar o prefixo \"{prefix}\"",
   "@addPrefix": {"placeholders": {"prefix": {"type": "String"}}},

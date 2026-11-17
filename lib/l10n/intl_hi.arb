@@ -49,6 +49,21 @@
     "statistics": "आँकड़े",
     "videosCompressedStat": "कंप्रेस किए गए वीडियो",
     "spaceSavedStat": "बचाया गया स्थान",
+    "shareStatisticsText": "minimo (video) के साथ मेरे नतीजे 🎬\nकंप्रेस किए गए वीडियो: {count}\nबचाई गई जगह: {size}\n\nminimo आज़माएँ और अपने फ़ोन में जगह खाली करें: {url}",
+    "@shareStatisticsText": {
+      "placeholders": {
+        "count": {
+          "type": "int"
+        },
+        "size": {
+          "type": "String"
+        },
+        "url": {
+          "type": "String"
+        }
+      }
+    },
+    "failedToShareStatistics": "आँकड़े शेयर नहीं हो सके। फिर से कोशिश करें",
     "statisticsSinceVersion": "आँकड़े अधूरे हो सकते हैं: वे लोकल रूप से संग्रहीत हैं और केवल संस्करण 1.0.8 से एकत्र किए जा रहे हैं।",
     "addPrefix": "\"{prefix}\" प्रीफ़िक्स जोड़ें",
     "@addPrefix": {

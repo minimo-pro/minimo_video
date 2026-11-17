@@ -53,12 +53,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m11(url) =>
       "попробуй minimo (video) — простое приложение, чтобы сжимать видео прямо на телефоне: ${url}";
 
-  static String m12(current, total) => "видео ${current} из ${total}";
+  static String m12(count, size, url) =>
+      "Мой результат с minimo (video) 🎬\nВидео сжато: ${count}\nОсвобождено места: ${size}\n\nПопробуй minimo и освободи место на телефоне: ${url}";
 
-  static String m13(completed, total) =>
+  static String m13(current, total) => "видео ${current} из ${total}";
+
+  static String m14(completed, total) =>
       "сжато видео: ${completed} из ${total}";
 
-  static String m14(size) => "экономия ${size}";
+  static String m15(size) => "экономия ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -145,6 +148,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "failedToShare": MessageLookupByLibrary.simpleMessage(
       "не удалось поделиться видео. попробуйте ещё раз",
+    ),
+    "failedToShareStatistics": MessageLookupByLibrary.simpleMessage(
+      "не удалось поделиться статистикой. попробуй ещё раз",
     ),
     "frameRate": MessageLookupByLibrary.simpleMessage("частота кадров"),
     "frameRateDescription": MessageLookupByLibrary.simpleMessage(
@@ -316,6 +322,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "shareOrSave": MessageLookupByLibrary.simpleMessage(
       "поделиться или сохранить в…",
     ),
+    "shareStatisticsText": m12,
     "shareWithFriends": MessageLookupByLibrary.simpleMessage(
       "поделиться с друзьями",
     ),
@@ -355,11 +362,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "предпросмотр недоступен",
     ),
-    "videoProgress": m12,
-    "videosCompressed": m13,
+    "videoProgress": m13,
+    "videosCompressed": m14,
     "videosCompressedStat": MessageLookupByLibrary.simpleMessage("видео сжато"),
     "waiting": MessageLookupByLibrary.simpleMessage("ожидает"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m14,
+    "youSavedSize": m15,
   };
 }

@@ -45,9 +45,8 @@ class BottomFrame extends StatelessWidget {
               ),
               _FrameButton(
                 icon: AppIcons.stats,
-                onTap: () => showAppSheet(
+                onTap: () => showAppContentSheet(
                   context: context,
-                  heightFraction: 0.34,
                   child: const StatsScreen(),
                 ),
               ),

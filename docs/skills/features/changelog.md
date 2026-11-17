@@ -5,7 +5,7 @@
 `ChangelogService` stores a local versioned changelog map in Dart. Keys are semantic versions, language keys use the `Language` enum, and version comparisons use `pub_semver`.
 The app never fetches changelog content remotely.
 
-Current release: `1.1.0+36`. In-app notes cover background compression with system progress and cancellation on supported devices, in all 13 supported languages. The root `CHANGELOG.md` specifies the iOS 26+ requirement and foreground-only fallback; shared in-app notes remain platform-neutral.
+Current release: `1.1.1+37`. In-app notes cover sharing the compressed video count and saved space from the statistics screen, in all 13 supported languages. Historical `1.1.0` notes cover background compression; the root `CHANGELOG.md` specifies its iOS 26+ requirement and foreground-only fallback.
 
 ## Seen Version
 

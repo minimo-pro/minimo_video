@@ -43,6 +43,41 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.1.1': {
+    Language.en: [
+      'share your compressed video count and saved space from the statistics screen.',
+    ],
+    Language.ru: [
+      'делитесь количеством сжатых видео и освобождённым местом с экрана статистики.',
+    ],
+    Language.es: [
+      'comparta la cantidad de videos comprimidos y el espacio ahorrado desde la pantalla de estadísticas.',
+    ],
+    Language.pt: [
+      'compartilhe a quantidade de vídeos comprimidos e o espaço economizado pela tela de estatísticas.',
+    ],
+    Language.de: [
+      'teilen sie die anzahl komprimierter videos und den gesparten speicherplatz über die statistikansicht.',
+    ],
+    Language.fr: [
+      'partagez le nombre de vidéos compressées et l’espace économisé depuis l’écran des statistiques.',
+    ],
+    Language.zh: ['在统计页面分享已压缩的视频数量和节省的空间。'],
+    Language.hi: [
+      'आँकड़ों की स्क्रीन से कंप्रेस किए गए वीडियो की संख्या और बचाई गई जगह शेयर करें।',
+    ],
+    Language.nl: [
+      'deel het aantal gecomprimeerde video’s en de bespaarde ruimte vanuit het statistiekenscherm.',
+    ],
+    Language.ko: ['통계 화면에서 압축한 동영상 수와 절약한 공간을 공유하세요.'],
+    Language.ja: ['統計画面から、圧縮した動画の本数と節約した容量を共有できます。'],
+    Language.it: [
+      'condivida il numero di video compressi e lo spazio risparmiato dalla schermata delle statistiche.',
+    ],
+    Language.tr: [
+      'istatistik ekranından sıkıştırılan video sayısını ve kazanılan alanı paylaşın.',
+    ],
+  },
   '1.1.0': {
     Language.en: [
       'on supported devices, video compression can continue in the background with system progress and cancellation.',

@@ -47,6 +47,21 @@
   "statistics": "statistics",
   "videosCompressedStat": "videos compressed",
   "spaceSavedStat": "space saved",
+  "shareStatisticsText": "My results with minimo (video) 🎬\nVideos compressed: {count}\nSpace saved: {size}\n\nTry minimo and free up space on your phone: {url}",
+  "@shareStatisticsText": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToShareStatistics": "couldn't share the statistics. try again",
   "statisticsSinceVersion": "statistics may be incomplete: stored locally and collected only since version 1.0.8.",
   "addPrefix": "add \"{prefix}\" prefix",
   "@addPrefix": {

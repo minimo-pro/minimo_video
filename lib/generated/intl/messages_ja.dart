@@ -48,11 +48,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(url) => "スマホの動画を簡単に小さくできるminimo (video)を試してみてください: ${url}";
 
-  static String m12(current, total) => "${total}本中${current}本目";
+  static String m12(count, size, url) =>
+      "minimo (video) での成果 🎬\n圧縮した動画：${count}\n節約した容量：${size}\n\nminimo を試して、スマホの空き容量を増やそう：${url}";
 
-  static String m13(completed, total) => "${total}本中${completed}本を圧縮";
+  static String m13(current, total) => "${total}本中${current}本目";
 
-  static String m14(size) => "${size}節約しました";
+  static String m14(completed, total) => "${total}本中${completed}本を圧縮";
+
+  static String m15(size) => "${size}節約しました";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -125,6 +128,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "failedToShare": MessageLookupByLibrary.simpleMessage(
       "動画を共有できません。再試行してください",
+    ),
+    "failedToShareStatistics": MessageLookupByLibrary.simpleMessage(
+      "統計を共有できませんでした。もう一度お試しください",
     ),
     "frameRate": MessageLookupByLibrary.simpleMessage("フレームレート"),
     "frameRateDescription": MessageLookupByLibrary.simpleMessage(
@@ -266,6 +272,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "share": MessageLookupByLibrary.simpleMessage("共有"),
     "shareAppText": m11,
     "shareOrSave": MessageLookupByLibrary.simpleMessage("共有または保存先…"),
+    "shareStatisticsText": m12,
     "shareWithFriends": MessageLookupByLibrary.simpleMessage("友達と共有"),
     "showOverheatWarning": MessageLookupByLibrary.simpleMessage("過熱警告を表示"),
     "showOverheatWarningDescription": MessageLookupByLibrary.simpleMessage(
@@ -299,11 +306,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "プレビューできません",
     ),
-    "videoProgress": m12,
-    "videosCompressed": m13,
+    "videoProgress": m13,
+    "videosCompressed": m14,
     "videosCompressedStat": MessageLookupByLibrary.simpleMessage("圧縮した動画"),
     "waiting": MessageLookupByLibrary.simpleMessage("待機中"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m14,
+    "youSavedSize": m15,
   };
 }

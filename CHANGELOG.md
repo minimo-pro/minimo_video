@@ -1,3 +1,15 @@
+## [1.1.1]
+
+### Added
+
+* Share your compressed video count and saved space from the statistics screen, with ready-to-post text and a link to minimo in all 13 supported languages.
+
+### Changed
+
+* Replace `in_app_review` with `rate_my_app` for in-app rating requests.
+* Enable Android built-in Kotlin and update Android Gradle Plugin to 9.1.0, Kotlin Gradle Plugin to 2.4.0, and Gradle to 9.3.1.
+* Update the CI Flutter version to 3.47.9 for the built-in Kotlin migration.
+
 ## [1.1.0]
 
 ### Added
