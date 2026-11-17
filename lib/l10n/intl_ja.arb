@@ -49,6 +49,21 @@
     "statistics": "統計",
     "videosCompressedStat": "圧縮した動画",
     "spaceSavedStat": "節約した容量",
+    "shareStatisticsText": "minimo (video) での成果 🎬\n圧縮した動画：{count}\n節約した容量：{size}\n\nminimo を試して、スマホの空き容量を増やそう：{url}",
+    "@shareStatisticsText": {
+      "placeholders": {
+        "count": {
+          "type": "int"
+        },
+        "size": {
+          "type": "String"
+        },
+        "url": {
+          "type": "String"
+        }
+      }
+    },
+    "failedToShareStatistics": "統計を共有できませんでした。もう一度お試しください",
     "statisticsSinceVersion": "統計は完全でない場合があります。端末内にのみ保存され、バージョン1.0.8以降に収集されたものです。",
     "addPrefix": "\"{prefix}\"接頭辞を追加",
     "@addPrefix": {

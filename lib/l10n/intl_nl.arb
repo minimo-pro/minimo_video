@@ -37,6 +37,21 @@
   "statistics": "statistieken",
   "videosCompressedStat": "video's gecomprimeerd",
   "spaceSavedStat": "ruimte bespaard",
+  "shareStatisticsText": "Mijn resultaten met minimo (video) 🎬\nGecomprimeerde video’s: {count}\nBespaarde ruimte: {size}\n\nProbeer minimo en maak ruimte vrij op je telefoon: {url}",
+  "@shareStatisticsText": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToShareStatistics": "statistieken delen is mislukt. probeer het opnieuw",
   "statisticsSinceVersion": "de statistieken kunnen onvolledig zijn: ze worden lokaal opgeslagen en pas sinds versie 1.0.8 verzameld.",
   "addPrefix": "voorvoegsel \"{prefix}\" toevoegen",
   "@addPrefix": {"placeholders": {"prefix": {"type": "String"}}},

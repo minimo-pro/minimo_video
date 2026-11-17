@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -320,6 +319,26 @@ class S {
     return Intl.message(
       'space saved',
       name: 'spaceSavedStat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My results with minimo (video) 🎬\nVideos compressed: {count}\nSpace saved: {size}\n\nTry minimo and free up space on your phone: {url}`
+  String shareStatisticsText(int count, String size, String url) {
+    return Intl.message(
+      'My results with minimo (video) 🎬\nVideos compressed: $count\nSpace saved: $size\n\nTry minimo and free up space on your phone: $url',
+      name: 'shareStatisticsText',
+      desc: '',
+      args: [count, size, url],
+    );
+  }
+
+  /// `couldn't share the statistics. try again`
+  String get failedToShareStatistics {
+    return Intl.message(
+      'couldn\'t share the statistics. try again',
+      name: 'failedToShareStatistics',
       desc: '',
       args: [],
     );

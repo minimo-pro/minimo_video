@@ -47,6 +47,21 @@
   "statistics": "статистика",
   "videosCompressedStat": "видео сжато",
   "spaceSavedStat": "места сэкономлено",
+  "shareStatisticsText": "Мой результат с minimo (video) 🎬\nВидео сжато: {count}\nОсвобождено места: {size}\n\nПопробуй minimo и освободи место на телефоне: {url}",
+  "@shareStatisticsText": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToShareStatistics": "не удалось поделиться статистикой. попробуй ещё раз",
   "statisticsSinceVersion": "статистика может быть неполной: она хранится локально и собирается только с версии 1.0.8.",
   "addPrefix": "добавлять префикс \"{prefix}\"",
   "@addPrefix": {

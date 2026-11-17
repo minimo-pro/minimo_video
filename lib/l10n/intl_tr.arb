@@ -49,6 +49,21 @@
   "statistics": "istatistikler",
   "videosCompressedStat": "sıkıştırılan videolar",
   "spaceSavedStat": "kazanılan alan",
+  "shareStatisticsText": "minimo (video) ile sonuçlarım 🎬\nSıkıştırılan video: {count}\nKazanılan alan: {size}\n\nminimo’yu dene ve telefonunda yer aç: {url}",
+  "@shareStatisticsText": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      },
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToShareStatistics": "istatistikler paylaşılamadı. tekrar dene",
   "statisticsSinceVersion": "istatistikler eksik olabilir: yalnızca cihazda saklanır ve 1.0.8 sürümünden beri toplanır.",
   "addPrefix": "\"{prefix}\" önekini ekle",
   "@addPrefix": {

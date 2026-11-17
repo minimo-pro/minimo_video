@@ -48,11 +48,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(url) => "试试 minimo (video)，轻松缩小手机视频：${url}";
 
-  static String m12(current, total) => "第 ${current} 个，共 ${total} 个视频";
+  static String m12(count, size, url) =>
+      "我使用 minimo (video) 的成果 🎬\n已压缩视频：${count}\n已节省空间：${size}\n\n试试 minimo，为手机腾出空间：${url}";
 
-  static String m13(completed, total) => "已压缩 ${completed}/${total} 个视频";
+  static String m13(current, total) => "第 ${current} 个，共 ${total} 个视频";
 
-  static String m14(size) => "已节省 ${size}";
+  static String m14(completed, total) => "已压缩 ${completed}/${total} 个视频";
+
+  static String m15(size) => "已节省 ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -118,6 +121,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToPickVideos": MessageLookupByLibrary.simpleMessage("请选择视频文件"),
     "failedToSave": MessageLookupByLibrary.simpleMessage("无法保存视频。请重试"),
     "failedToShare": MessageLookupByLibrary.simpleMessage("无法分享视频。请重试"),
+    "failedToShareStatistics": MessageLookupByLibrary.simpleMessage(
+      "无法分享统计数据，请重试",
+    ),
     "frameRate": MessageLookupByLibrary.simpleMessage("帧率"),
     "frameRateDescription": MessageLookupByLibrary.simpleMessage(
       "限制输出帧率；较低的源帧率保持不变",
@@ -242,6 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "share": MessageLookupByLibrary.simpleMessage("分享"),
     "shareAppText": m11,
     "shareOrSave": MessageLookupByLibrary.simpleMessage("分享或保存到…"),
+    "shareStatisticsText": m12,
     "shareWithFriends": MessageLookupByLibrary.simpleMessage("分享给朋友"),
     "showOverheatWarning": MessageLookupByLibrary.simpleMessage("显示过热警告"),
     "showOverheatWarningDescription": MessageLookupByLibrary.simpleMessage(
@@ -271,11 +278,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "设置目标码率，或由质量预设选择",
     ),
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage("预览不可用"),
-    "videoProgress": m12,
-    "videosCompressed": m13,
+    "videoProgress": m13,
+    "videosCompressed": m14,
     "videosCompressedStat": MessageLookupByLibrary.simpleMessage("已压缩视频"),
     "waiting": MessageLookupByLibrary.simpleMessage("等待中"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m14,
+    "youSavedSize": m15,
   };
 }

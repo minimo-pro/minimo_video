@@ -51,11 +51,14 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m11(url) =>
       "휴대폰에서 동영상을 간단히 줄여주는 minimo (video)를 사용해 보세요: ${url}";
 
-  static String m12(current, total) => "동영상 ${current}/${total}";
+  static String m12(count, size, url) =>
+      "minimo (video)로 얻은 성과 🎬\n압축한 동영상: ${count}\n절약한 공간: ${size}\n\nminimo로 휴대폰의 여유 공간을 확보해 보세요: ${url}";
 
-  static String m13(completed, total) => "동영상 ${completed}/${total}개 압축됨";
+  static String m13(current, total) => "동영상 ${current}/${total}";
 
-  static String m14(size) => "${size} 절약";
+  static String m14(completed, total) => "동영상 ${completed}/${total}개 압축됨";
+
+  static String m15(size) => "${size} 절약";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -128,6 +131,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "failedToShare": MessageLookupByLibrary.simpleMessage(
       "동영상을 공유할 수 없습니다. 다시 시도하세요",
+    ),
+    "failedToShareStatistics": MessageLookupByLibrary.simpleMessage(
+      "통계를 공유하지 못했어요. 다시 시도해 주세요",
     ),
     "frameRate": MessageLookupByLibrary.simpleMessage("프레임 속도"),
     "frameRateDescription": MessageLookupByLibrary.simpleMessage(
@@ -275,6 +281,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "share": MessageLookupByLibrary.simpleMessage("공유"),
     "shareAppText": m11,
     "shareOrSave": MessageLookupByLibrary.simpleMessage("공유 또는 저장…"),
+    "shareStatisticsText": m12,
     "shareWithFriends": MessageLookupByLibrary.simpleMessage("친구와 공유"),
     "showOverheatWarning": MessageLookupByLibrary.simpleMessage("과열 경고 표시"),
     "showOverheatWarningDescription": MessageLookupByLibrary.simpleMessage(
@@ -308,11 +315,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "미리보기 사용 불가",
     ),
-    "videoProgress": m12,
-    "videosCompressed": m13,
+    "videoProgress": m13,
+    "videosCompressed": m14,
     "videosCompressedStat": MessageLookupByLibrary.simpleMessage("압축한 동영상"),
     "waiting": MessageLookupByLibrary.simpleMessage("대기 중"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m14,
+    "youSavedSize": m15,
   };
 }

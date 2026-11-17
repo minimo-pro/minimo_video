@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../constants/app_icons.dart';
 import '../generated/l10n.dart';
 import '../services/app_stats_service.dart';
 import '../services/utils.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_action_button.dart';
+import '../widgets/app_snack_bar.dart';
 import '../widgets/minimo_loader.dart';
 import '../widgets/pressable.dart';
 import '../widgets/rolling_counter_text.dart';
@@ -15,27 +18,23 @@ class StatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        child: Column(
-          children: [
-            const _Header(),
-            Expanded(
-              child: FutureBuilder<AppStats>(
-                future: AppStatsService.load(),
-                builder: (context, snapshot) => snapshot.hasData
-                    ? _StatsContent(stats: snapshot.requireData)
-                    : snapshot.hasError
-                    ? const _StatsContent(
-                        stats: AppStats(compressedVideos: 0, savedBytes: 0),
-                      )
-                    : const Center(child: MinimoLoader()),
-              ),
-            ),
-          ],
-        ),
+    return SafeArea(
+      top: false,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const _Header(),
+          FutureBuilder<AppStats>(
+            future: AppStatsService.load(),
+            builder: (context, snapshot) => snapshot.hasData
+                ? _StatsContent(stats: snapshot.requireData)
+                : snapshot.hasError
+                ? const _StatsContent(
+                    stats: AppStats(compressedVideos: 0, savedBytes: 0),
+                  )
+                : const Center(child: MinimoLoader()),
+          ),
+        ],
       ),
     );
   }
@@ -82,47 +81,79 @@ class _StatsContent extends StatelessWidget {
 
   const _StatsContent({required this.stats});
 
+  Future<void> _share(BuildContext context) async {
+    final strings = S.of(context);
+    final box = context.findRenderObject() as RenderBox;
+    try {
+      await SharePlus.instance.share(
+        ShareParams(
+          text: strings.shareStatisticsText(
+            stats.compressedVideos,
+            Utils.formatSize(stats.savedBytes),
+            'https://minimo-video.vercel.app',
+          ),
+          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
+        ),
+      );
+    } catch (_) {
+      if (!context.mounted) return;
+      AppSnackBar.show(
+        context,
+        message: strings.failedToShareStatistics,
+        type: AppSnackBarType.error,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final strings = S.of(context);
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: _StatCard(
-                    value: stats.compressedVideos,
-                    formatter: (value) => value.toInt().toString(),
-                    label: strings.videosCompressedStat,
-                  ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: _StatCard(
+                  value: stats.compressedVideos,
+                  formatter: (value) => value.toInt().toString(),
+                  label: strings.videosCompressedStat,
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _StatCard(
-                    value: stats.savedBytes,
-                    formatter: (value) =>
-                        Utils.formatSize(value.toInt()).toLowerCase(),
-                    label: strings.spaceSavedStat,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(
-              strings.statisticsSinceVersion,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                fontSize: 12,
-                height: 1.1,
               ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _StatCard(
+                  value: stats.savedBytes,
+                  formatter: (value) =>
+                      Utils.formatSize(value.toInt()).toLowerCase(),
+                  label: strings.spaceSavedStat,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            strings.statisticsSinceVersion,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 12,
+              height: 1.1,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 24),
+          Builder(
+            builder: (context) => AppActionButton(
+              label: strings.share,
+              icon: AppIcons.share,
+              variant: AppActionButtonVariant.filled,
+              width: double.infinity,
+              onPressed: () => _share(context),
+            ),
+          ),
+        ],
       ),
     );
   }

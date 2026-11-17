@@ -54,12 +54,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m11(url) =>
       "essayez minimo (video), une app simple pour réduire les vidéos sur votre téléphone : ${url}";
 
-  static String m12(current, total) => "vidéo ${current} sur ${total}";
+  static String m12(count, size, url) =>
+      "Mes résultats avec minimo (video) 🎬\nVidéos compressées : ${count}\nEspace économisé : ${size}\n\nEssaie minimo et libère de l’espace sur ton téléphone : ${url}";
 
-  static String m13(completed, total) =>
+  static String m13(current, total) => "vidéo ${current} sur ${total}";
+
+  static String m14(completed, total) =>
       "${completed} vidéos sur ${total} compressées";
 
-  static String m14(size) => "vous avez économisé ${size}";
+  static String m15(size) => "vous avez économisé ${size}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -144,6 +147,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "failedToShare": MessageLookupByLibrary.simpleMessage(
       "impossible de partager les vidéos. réessayez",
+    ),
+    "failedToShareStatistics": MessageLookupByLibrary.simpleMessage(
+      "impossible de partager les statistiques. réessaie",
     ),
     "frameRate": MessageLookupByLibrary.simpleMessage("fréquence d\'images"),
     "frameRateDescription": MessageLookupByLibrary.simpleMessage(
@@ -321,6 +327,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "shareOrSave": MessageLookupByLibrary.simpleMessage(
       "partager ou enregistrer dans…",
     ),
+    "shareStatisticsText": m12,
     "shareWithFriends": MessageLookupByLibrary.simpleMessage(
       "partager avec des amis",
     ),
@@ -360,13 +367,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "aperçu indisponible",
     ),
-    "videoProgress": m12,
-    "videosCompressed": m13,
+    "videoProgress": m13,
+    "videosCompressed": m14,
     "videosCompressedStat": MessageLookupByLibrary.simpleMessage(
       "vidéos compressées",
     ),
     "waiting": MessageLookupByLibrary.simpleMessage("en attente"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m14,
+    "youSavedSize": m15,
   };
 }

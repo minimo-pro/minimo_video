@@ -53,12 +53,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m11(url) =>
       "telefonundaki videoları küçülten basit uygulama minimo (video)\'yu dene: ${url}";
 
-  static String m12(current, total) => "video ${current}/${total}";
+  static String m12(count, size, url) =>
+      "minimo (video) ile sonuçlarım 🎬\nSıkıştırılan video: ${count}\nKazanılan alan: ${size}\n\nminimo’yu dene ve telefonunda yer aç: ${url}";
 
-  static String m13(completed, total) =>
+  static String m13(current, total) => "video ${current}/${total}";
+
+  static String m14(completed, total) =>
       "${total} videodan ${completed} tanesi sıkıştırıldı";
 
-  static String m14(size) => "${size} tasarruf ettin";
+  static String m15(size) => "${size} tasarruf ettin";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -145,6 +148,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "failedToShare": MessageLookupByLibrary.simpleMessage(
       "videolar paylaşılamadı. tekrar dene",
+    ),
+    "failedToShareStatistics": MessageLookupByLibrary.simpleMessage(
+      "istatistikler paylaşılamadı. tekrar dene",
     ),
     "frameRate": MessageLookupByLibrary.simpleMessage("kare hızı"),
     "frameRateDescription": MessageLookupByLibrary.simpleMessage(
@@ -320,6 +326,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "shareOrSave": MessageLookupByLibrary.simpleMessage(
       "paylaş veya şuraya kaydet…",
     ),
+    "shareStatisticsText": m12,
     "shareWithFriends": MessageLookupByLibrary.simpleMessage(
       "arkadaşlarla paylaş",
     ),
@@ -359,13 +366,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "videoPreviewUnavailable": MessageLookupByLibrary.simpleMessage(
       "önizleme kullanılamıyor",
     ),
-    "videoProgress": m12,
-    "videosCompressed": m13,
+    "videoProgress": m13,
+    "videosCompressed": m14,
     "videosCompressedStat": MessageLookupByLibrary.simpleMessage(
       "sıkıştırılan videolar",
     ),
     "waiting": MessageLookupByLibrary.simpleMessage("bekliyor"),
     "xTwitter": MessageLookupByLibrary.simpleMessage("x (twitter)"),
-    "youSavedSize": m14,
+    "youSavedSize": m15,
   };
 }

@@ -49,6 +49,21 @@
     "statistics": "통계",
     "videosCompressedStat": "압축한 동영상",
     "spaceSavedStat": "절약한 공간",
+    "shareStatisticsText": "minimo (video)로 얻은 성과 🎬\n압축한 동영상: {count}\n절약한 공간: {size}\n\nminimo로 휴대폰의 여유 공간을 확보해 보세요: {url}",
+    "@shareStatisticsText": {
+      "placeholders": {
+        "count": {
+          "type": "int"
+        },
+        "size": {
+          "type": "String"
+        },
+        "url": {
+          "type": "String"
+        }
+      }
+    },
+    "failedToShareStatistics": "통계를 공유하지 못했어요. 다시 시도해 주세요",
     "statisticsSinceVersion": "통계는 불완전할 수 있습니다. 기기에만 저장되며 버전 1.0.8부터 수집됩니다.",
     "addPrefix": "\"{prefix}\" 접두사 추가",
     "@addPrefix": {
