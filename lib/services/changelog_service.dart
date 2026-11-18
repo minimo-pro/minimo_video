@@ -43,6 +43,45 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.2.0': {
+    Language.en: [
+      'on supported devices, videos selected from the gallery or files can continue importing in the background with system progress and cancellation.',
+    ],
+    Language.ru: [
+      'на поддерживаемых устройствах импорт видео из галереи и файлов может продолжаться в фоне с системным индикатором прогресса и возможностью отмены.',
+    ],
+    Language.es: [
+      'en dispositivos compatibles, la importación de videos seleccionados de la galería o archivos puede continuar en segundo plano con progreso del sistema y opción de cancelar.',
+    ],
+    Language.pt: [
+      'em dispositivos compatíveis, a importação de vídeos selecionados da galeria ou de arquivos pode continuar em segundo plano com progresso do sistema e opção de cancelar.',
+    ],
+    Language.de: [
+      'auf unterstützten geräten kann der import von videos aus der galerie oder aus dateien im hintergrund fortgesetzt werden, mit systemweiter fortschrittsanzeige und abbruchmöglichkeit.',
+    ],
+    Language.fr: [
+      'sur les appareils compatibles, l’importation des vidéos sélectionnées dans la galerie ou les fichiers peut continuer en arrière-plan avec un indicateur de progression système et une option d’annulation.',
+    ],
+    Language.zh: ['在支持的设备上，从图库或文件中选择的视频可在后台继续导入，并提供系统进度显示和取消选项。'],
+    Language.hi: [
+      'समर्थित डिवाइस पर गैलरी या फ़ाइलों से चुने गए वीडियो का इंपोर्ट बैकग्राउंड में जारी रह सकता है। सिस्टम में प्रगति दिखाई देती है और इसे रद्द किया जा सकता है।',
+    ],
+    Language.nl: [
+      'op ondersteunde apparaten kan het importeren van video’s uit de galerij of bestanden op de achtergrond doorgaan, met systeemvoortgang en een optie om te annuleren.',
+    ],
+    Language.ko: [
+      '지원되는 기기에서는 갤러리나 파일에서 선택한 동영상을 백그라운드에서도 계속 가져올 수 있으며 시스템 진행 표시와 취소 기능을 제공합니다.',
+    ],
+    Language.ja: [
+      '対応するデバイスでは、ギャラリーやファイルから選んだ動画の読み込みをバックグラウンドでも続けられます。システムの進捗表示とキャンセル機能も利用できます。',
+    ],
+    Language.it: [
+      'sui dispositivi compatibili, l’importazione dei video selezionati dalla galleria o dai file può continuare in background con avanzamento di sistema e possibilità di annullamento.',
+    ],
+    Language.tr: [
+      'desteklenen cihazlarda galeriden veya dosyalardan seçilen videoları içe aktarma işlemi, sistem ilerleme göstergesi ve iptal seçeneğiyle arka planda devam edebilir.',
+    ],
+  },
   '1.1.1': {
     Language.en: [
       'share your compressed video count and saved space from the statistics screen.',

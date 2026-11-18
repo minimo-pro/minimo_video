@@ -138,6 +138,16 @@ class MainActivity : FlutterActivity() {
             return
         }
 
+        try {
+            val service = Intent(this, VideoImportService::class.java).setAction("start")
+                .putExtra("token", pickId)
+            if (Build.VERSION.SDK_INT >= 26) startForegroundService(service) else startService(service)
+        } catch (error: Exception) {
+            pendingPickResult = null
+            activePickId = null
+            result.error("pick_failed", error.message, null)
+            return
+        }
         Thread {
             runCatching { readPickedVideos(data, pickId) }
                 .onSuccess { videos ->
@@ -146,6 +156,7 @@ class MainActivity : FlutterActivity() {
                             videos.forEach { File(it["path"] as String).delete() }
                             return@runOnUiThread
                         }
+                        finishImportService(pickId)
                         pendingPickResult = null
                         activePickId = null
                         result.success(videos)
@@ -154,6 +165,7 @@ class MainActivity : FlutterActivity() {
                 .onFailure { error ->
                     runOnUiThread {
                         if (activePickId != pickId) return@runOnUiThread
+                        finishImportService(pickId)
                         pendingPickResult = null
                         activePickId = null
                         result.error("pick_failed", error.message, null)
@@ -238,6 +250,7 @@ class MainActivity : FlutterActivity() {
 
     private fun cancelVideoPick(result: MethodChannel.Result) {
         val cancelledResult = pendingPickResult
+        activePickId?.let(::finishImportService)
         val wasPicking = activePickId != null
         pendingPickResult = null
         activePickId = null
@@ -280,15 +293,15 @@ class MainActivity : FlutterActivity() {
         }
         data.data?.let { uris.add(it) }
         Log.i(TAG, "Importing ${uris.size} videos sequentially")
-        sendPickProgress(0, uris.size)
+        sendPickProgress(0, uris.size, pickId)
         val imported = mutableListOf<Map<String, Any>>()
         try {
             uris.forEachIndexed { index, uri ->
                 check(activePickId == pickId) { "video import was cancelled" }
-                imported += copyPickedVideo(uri)
+                imported += copyPickedVideo(uri) { activePickId == pickId && VideoImportService.expiredToken != pickId }
                 check(activePickId == pickId) { "video import was cancelled" }
                 Log.i(TAG, "Imported ${index + 1}/${uris.size} videos")
-                sendPickProgress(index + 1, uris.size)
+                sendPickProgress(index + 1, uris.size, pickId)
             }
             return imported
         } catch (error: Exception) {
@@ -297,14 +310,22 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    private fun sendPickProgress(processed: Int, total: Int) = runOnUiThread {
+    private fun finishImportService(pickId: Long) {
+        if (VideoImportService.expiredToken == pickId) return
+        startService(Intent(this, VideoImportService::class.java).setAction("finish").putExtra("token", pickId))
+    }
+
+    private fun sendPickProgress(processed: Int, total: Int, pickId: Long) = runOnUiThread {
+        if (activePickId != pickId) return@runOnUiThread
+        startService(Intent(this, VideoImportService::class.java).setAction("update")
+            .putExtra("token", pickId).putExtra("processed", processed).putExtra("total", total))
         videosChannel.invokeMethod(
             "pickProgress",
             mapOf("processed" to processed, "total" to total)
         )
     }
 
-    private fun copyPickedVideo(uri: Uri): Map<String, Any> {
+    private fun copyPickedVideo(uri: Uri, isActive: () -> Boolean = { true }): Map<String, Any> {
         val metadata = queryMetadata(uri)
         val name = sanitizeFileName(metadata.first)
         val outputFile = uniqueCacheFile(name)
@@ -313,7 +334,13 @@ class MainActivity : FlutterActivity() {
             contentResolver.openInputStream(uri).use { input ->
                 requireNotNull(input) { "unable to open selected video" }
                 outputFile.outputStream().use { output ->
-                    input.copyTo(output, 1024 * 1024)
+                    val buffer = ByteArray(1024 * 1024)
+                    while (true) {
+                        check(isActive()) { "video import was cancelled" }
+                        val count = input.read(buffer)
+                        if (count < 0) break
+                        output.write(buffer, 0, count)
+                    }
                 }
             }
             check(isVideoFile(outputFile)) { "selected file is not a video" }

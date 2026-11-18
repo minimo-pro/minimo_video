@@ -17,11 +17,16 @@ Also available: [minimo (photo)](https://github.com/minimo-pro/minimo_photo), fo
 
 ## Features
 
-- **Estimate before encoding.** See the expected output size and space saved as you adjust compression settings.
-- **Inspect the difference.** Overlay the original and compressed video, then drag the divider to compare the same part of the frame.
-- **Fine-tune size and quality.** Choose H.264 or HEVC, adjust resolution and frame rate, and set a target bitrate from 1–20 Mbps in 0.5 Mbps steps.
-- **Preserve gallery context on iOS.** Keep capture date, location, albums, and favorites where available. Replacement creates and verifies a compressed copy before requesting deletion of the original.
-- **Start from iOS Shortcuts.** Send videos to minimo with a quality preset already selected.
+- **Batch compression.** Import videos from the gallery, Files, or other apps.
+- **Background processing.** Import and compress in the background on Android and supported iOS 26+ devices, with progress and cancellation.
+- **Simple or advanced controls.** Choose a preset or adjust codec, resolution, frame rate, bitrate, and audio.
+- **Size estimates and comparison.** Preview expected savings, then compare original and compressed videos with a draggable overlay.
+- **Metadata preservation on iOS.** Keep capture date, location, albums, and favorites where available, with safe original replacement.
+- **Shortcuts and statistics.** Automate with iOS Shortcuts; track and share your saved space.
+
+Background imports cover gallery and Files selections. Runtime depends on the OS; force-quitting does not resume work.
+
+See the [changelog](CHANGELOG.md) for details and related issues.
 
 ## Native compression pipeline
 
@@ -46,7 +51,7 @@ flowchart TD
     C -.->|progress stream| A
     F --> I[Native result]
     H --> I
-    I --> J{Output is smaller?}
+    I --> J{Saves at least 10%?}
     J -->|Yes| K[Move MP4 to app output]
     J -->|No| L[Discard result and keep original]
 ```

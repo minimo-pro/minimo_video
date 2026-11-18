@@ -24,6 +24,18 @@ class RunnerTests: XCTestCase {
     XCTAssertTrue(permitted.contains(prefix + "*"))
   }
 
+  func testImportRequestDoesNotRequireGPU() throws {
+    guard #available(iOS 26.0, *) else { throw XCTSkip("Requires iOS 26") }
+    let background = BackgroundCompression(operation: "import", requiresGPU: false)
+    let request = background.makeRequest(token: "import-test", gpuSupported: false)
+    let prefix = try XCTUnwrap(Bundle.main.bundleIdentifier) + ".import."
+    XCTAssertEqual(request.identifier, prefix + "import-test")
+    XCTAssertTrue(request.requiredResources.isEmpty)
+    let permitted = try XCTUnwrap(Bundle.main.object(
+      forInfoDictionaryKey: "BGTaskSchedulerPermittedIdentifiers") as? [String])
+    XCTAssertTrue(permitted.contains(prefix + "*"))
+  }
+
   func testInboxPublishesManifestAfterFiles() throws {
     let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     let source = root.appendingPathComponent("source.mov")

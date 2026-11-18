@@ -112,3 +112,17 @@ retry.
 ---
 
 [Back to SKILLS.md](../../SKILLS.md)
+
+## Background picker imports
+
+Gallery and Files imports acquire runtime after selection. iOS 26+ reuses the
+continued-processing runtime with a separate `.import.*` identifier and CPU-only
+resources, system progress, and cancellation. Earlier iOS or denied admission
+uses a finite UIKit background task; expiration cancels the import. A granted
+continued-processing task releases the finite fallback lease. Android starts a
+`dataSync` foreground service with progress, cancellation, and a partial wakelock;
+the service ends on completion, failure, cancellation, or system timeout. Copy
+loops check cancellation between 1 MB chunks. Existing session IDs protect retries.
+Force quit does not resume imports. External Share/Shortcut inbox consumption
+retains its existing behavior. Device checks: select large/cloud videos from both
+sources, Home/lock, resume, cancel, retry, and inspect cache cleanup on each OS.
