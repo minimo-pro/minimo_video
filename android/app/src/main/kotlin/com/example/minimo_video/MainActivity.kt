@@ -1,6 +1,8 @@
 package com.khlebobul.minimo_video
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
@@ -11,6 +13,7 @@ import android.provider.MediaStore
 import android.media.MediaMetadataRetriever
 import android.util.Log
 import java.io.File
+import java.util.concurrent.atomic.AtomicLong
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -20,7 +23,7 @@ class MainActivity : FlutterActivity() {
     private lateinit var externalVideosChannel: MethodChannel
     private var pendingPickResult: MethodChannel.Result? = null
     @Volatile private var activePickId: Long? = null
-    private var nextPickId = 0L
+    private var pickerIntentAfterPermission: Intent? = null
     private val pendingExternalUris = mutableListOf<Uri>()
     private val importedExternalVideos = linkedMapOf<Uri, Map<String, Any>>()
 
@@ -138,25 +141,42 @@ class MainActivity : FlutterActivity() {
             return
         }
 
+        VideoImportService.register(pickId)
+        try {
+            val service = Intent(this, VideoImportService::class.java).setAction("start")
+                .putExtra("token", pickId)
+            if (Build.VERSION.SDK_INT >= 26) startForegroundService(service) else startService(service)
+        } catch (error: Exception) {
+            VideoImportService.unregister(pickId)
+            pendingPickResult = null
+            activePickId = null
+            result.error("pick_failed", error.message, null)
+            return
+        }
         Thread {
             runCatching { readPickedVideos(data, pickId) }
                 .onSuccess { videos ->
                     runOnUiThread {
-                        if (activePickId != pickId) {
-                            videos.forEach { File(it["path"] as String).delete() }
-                            return@runOnUiThread
-                        }
+                        val deliver = isImportActive(pickId)
+                        finishImportService(pickId)
+                        VideoImportService.unregister(pickId)
+                        if (!deliver) videos.forEach { File(it["path"] as String).delete() }
+                        if (activePickId != pickId) return@runOnUiThread
                         pendingPickResult = null
                         activePickId = null
-                        result.success(videos)
+                        result.success(if (deliver) videos else emptyList<Map<String, Any>>())
                     }
                 }
                 .onFailure { error ->
                     runOnUiThread {
+                        val cancelled = !isImportActive(pickId)
+                        finishImportService(pickId)
+                        VideoImportService.unregister(pickId)
                         if (activePickId != pickId) return@runOnUiThread
                         pendingPickResult = null
                         activePickId = null
-                        result.error("pick_failed", error.message, null)
+                        if (cancelled) result.success(emptyList<Map<String, Any>>())
+                        else result.error("pick_failed", error.message, null)
                     }
                 }
         }.start()
@@ -226,18 +246,44 @@ class MainActivity : FlutterActivity() {
         }
 
         pendingPickResult = result
-        activePickId = ++nextPickId
+        activePickId = nextPickId.incrementAndGet()
         val source = (arguments as? Map<*, *>)?.get("source") as? String ?: "gallery"
         val intent = if (source == "files") {
             openDocumentIntent()
         } else {
             galleryIntent()
         }
+        val preferences = getPreferences(MODE_PRIVATE)
+        if (Build.VERSION.SDK_INT >= 33 &&
+            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED &&
+            !preferences.getBoolean("import_notification_permission_requested", false)
+        ) {
+            preferences.edit().putBoolean("import_notification_permission_requested", true).apply()
+            pickerIntentAfterPermission = intent
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), IMPORT_NOTIFICATION_REQUEST)
+        } else {
+            startActivityForResult(intent, PICK_VIDEOS_REQUEST)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode != IMPORT_NOTIFICATION_REQUEST) return
+        val intent = pickerIntentAfterPermission ?: return
+        pickerIntentAfterPermission = null
         startActivityForResult(intent, PICK_VIDEOS_REQUEST)
     }
 
+    override fun onDestroy() {
+        activePickId?.let(::finishImportService)
+        activePickId = null
+        super.onDestroy()
+    }
+
     private fun cancelVideoPick(result: MethodChannel.Result) {
+        pickerIntentAfterPermission = null
         val cancelledResult = pendingPickResult
+        activePickId?.let(::finishImportService)
         val wasPicking = activePickId != null
         pendingPickResult = null
         activePickId = null
@@ -280,15 +326,15 @@ class MainActivity : FlutterActivity() {
         }
         data.data?.let { uris.add(it) }
         Log.i(TAG, "Importing ${uris.size} videos sequentially")
-        sendPickProgress(0, uris.size)
+        sendPickProgress(0, uris.size, pickId)
         val imported = mutableListOf<Map<String, Any>>()
         try {
             uris.forEachIndexed { index, uri ->
-                check(activePickId == pickId) { "video import was cancelled" }
-                imported += copyPickedVideo(uri)
-                check(activePickId == pickId) { "video import was cancelled" }
+                check(isImportActive(pickId)) { "video import was cancelled" }
+                imported += copyPickedVideo(uri) { isImportActive(pickId) }
+                check(isImportActive(pickId)) { "video import was cancelled" }
                 Log.i(TAG, "Imported ${index + 1}/${uris.size} videos")
-                sendPickProgress(index + 1, uris.size)
+                sendPickProgress(index + 1, uris.size, pickId)
             }
             return imported
         } catch (error: Exception) {
@@ -297,14 +343,24 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    private fun sendPickProgress(processed: Int, total: Int) = runOnUiThread {
+    private fun isImportActive(pickId: Long) = activePickId == pickId && VideoImportService.isRunning(pickId)
+
+    private fun finishImportService(pickId: Long) {
+        if (!VideoImportService.isRunning(pickId)) return
+        startService(Intent(this, VideoImportService::class.java).setAction("finish").putExtra("token", pickId))
+    }
+
+    private fun sendPickProgress(processed: Int, total: Int, pickId: Long) = runOnUiThread {
+        if (!isImportActive(pickId)) return@runOnUiThread
+        startService(Intent(this, VideoImportService::class.java).setAction("update")
+            .putExtra("token", pickId).putExtra("processed", processed).putExtra("total", total))
         videosChannel.invokeMethod(
             "pickProgress",
             mapOf("processed" to processed, "total" to total)
         )
     }
 
-    private fun copyPickedVideo(uri: Uri): Map<String, Any> {
+    private fun copyPickedVideo(uri: Uri, isActive: () -> Boolean = { true }): Map<String, Any> {
         val metadata = queryMetadata(uri)
         val name = sanitizeFileName(metadata.first)
         val outputFile = uniqueCacheFile(name)
@@ -313,7 +369,13 @@ class MainActivity : FlutterActivity() {
             contentResolver.openInputStream(uri).use { input ->
                 requireNotNull(input) { "unable to open selected video" }
                 outputFile.outputStream().use { output ->
-                    input.copyTo(output, 1024 * 1024)
+                    val buffer = ByteArray(1024 * 1024)
+                    while (true) {
+                        check(isActive()) { "video import was cancelled" }
+                        val count = input.read(buffer)
+                        if (count < 0) break
+                        output.write(buffer, 0, count)
+                    }
                 }
             }
             check(isVideoFile(outputFile)) { "selected file is not a video" }
@@ -378,6 +440,8 @@ class MainActivity : FlutterActivity() {
     companion object {
         private const val TAG = "VideoPicker"
         private const val PICK_VIDEOS_REQUEST = 4207
+        private const val IMPORT_NOTIFICATION_REQUEST = 4209
+        private val nextPickId = AtomicLong()
         private const val MAX_EXTERNAL_VIDEOS = 20
     }
 }

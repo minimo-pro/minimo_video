@@ -32,7 +32,15 @@ import BackgroundTasks
 @available(iOS 26.0, *)
 final class BackgroundCompression {
   static let shared = BackgroundCompression()
-  private let identifier = Bundle.main.bundleIdentifier! + ".compression"
+  static let importRuntime = BackgroundCompression(operation: "import", requiresGPU: false)
+  private let identifier: String
+  private let requiresGPU: Bool
+  var onCancel: (() -> Void)?
+
+  init(operation: String = "compression", requiresGPU: Bool = true) {
+    identifier = Bundle.main.bundleIdentifier! + "." + operation
+    self.requiresGPU = requiresGPU
+  }
   private var task: BGContinuedProcessingTask?
   private var token: String?
   private var pendingResult: FlutterResult?
@@ -58,6 +66,7 @@ final class BackgroundCompression {
           guard let self, self.task === task, let token = self.token else { return }
           NSLog("[DEBUG-bg27] Task expired or cancelled by system UI")
           self.channel?.invokeMethod("cancel", arguments: token)
+          self.onCancel?()
           self.finish(success: false)
         }
       }
@@ -67,7 +76,7 @@ final class BackgroundCompression {
   }
 
   func start(token: String, result: @escaping FlutterResult) {
-    let gpuSupported = BGTaskScheduler.supportedResources.contains(.gpu)
+    let gpuSupported = requiresGPU && BGTaskScheduler.supportedResources.contains(.gpu)
     let appState = UIApplication.shared.applicationState
     NSLog("[DEBUG-bg27] Start: OS=%@ gpu=%@ state=%ld",
           UIDevice.current.systemVersion, String(gpuSupported), appState.rawValue)

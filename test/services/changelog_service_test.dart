@@ -11,6 +11,27 @@ PackageInfo _packageInfo(String version) => PackageInfo(
 );
 
 void main() {
+  test(
+    'bundled 1.2.0 import, onboarding and Threads notes cover every language',
+    () {
+      final translations = <String>{};
+      for (final language in Language.values) {
+        final changes = unseenChanges(
+          lastSeen: '1.1.1',
+          current: '1.2.0',
+          language: language,
+        );
+        expect(changes, hasLength(3));
+        expect(changes.every((change) => change.isNotEmpty), isTrue);
+        expect(changes.last, contains('Threads'));
+        expect(changes.last, contains('khlebobul'));
+
+        translations.add(changes.join('\n'));
+      }
+      expect(translations, hasLength(Language.values.length));
+    },
+  );
+
   test('bundled 1.1.1 statistics sharing notes cover every language', () {
     final translations = <String>{};
     for (final language in Language.values) {

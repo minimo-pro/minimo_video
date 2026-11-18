@@ -25,7 +25,7 @@
 	<key>UIBackgroundModes</key>
 	<array><string>processing</string></array>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array><string>$(PRODUCT_BUNDLE_IDENTIFIER).compression.*</string></array>
+	<array><string>$(PRODUCT_BUNDLE_IDENTIFIER).compression.*</string><string>$(PRODUCT_BUNDLE_IDENTIFIER).import.*</string></array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>CFBundleURLTypes</key>

@@ -327,10 +327,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_svg
-      sha256: "100c19dcc4ff60083e95a44a6f44f3a1bb887d353c5d86f6a9b688aa3cb46236"
+      sha256: "455a22036f8d1b7c74f53283c8644d6af2f6f7c9ec72c7b06a2ff70fb3954a54"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.4.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -353,10 +353,10 @@ packages:
     dependency: "direct main"
     description:
       name: gal
-      sha256: f71e79840fe023a21f2f949771375444b6efcd34b9e625d5f4f5504971380a77
+      sha256: "5bd6542d6a387b76b50a803ad87573f3f505baea7c7153054f6d8fac7fc46d98"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.3"
+    version: "3.0.1"
   glob:
     dependency: transitive
     description:
@@ -581,14 +581,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  os_detect:
-    dependency: transitive
-    description:
-      name: os_detect
-      sha256: "7d87c0dd98c6faf110d5aa498e9a6df02ffce4bb78cc9cfc8ad02929be9bb71f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.3"
   package_config:
     dependency: transitive
     description:
@@ -942,10 +934,10 @@ packages:
     dependency: "direct main"
     description:
       name: upgrader
-      sha256: "5a117075c5d22844136a89a60cc0272602cb8a5d0ce371b15379ddf68a415588"
+      sha256: "5e87c86daf6543c4165c20df53b44ef68c4cf35ab05af459a9601c83f07a7f24"
       url: "https://pub.dev"
     source: hosted
-    version: "13.7.0"
+    version: "13.8.0"
   url_launcher:
     dependency: "direct main"
     description:

@@ -39,6 +39,7 @@ class InfoScreen extends StatelessWidget {
     'project': Uri.parse('https://minimo-video.vercel.app'),
     'github': Uri.parse('https://github.com/minimo-pro/minimo_video'),
     'x': Uri.parse('https://x.com/khlebobul'),
+    'threads': Uri.parse('https://www.threads.com/@khlebobul'),
   };
 
   Future<void> _open(String link) =>
@@ -182,6 +183,11 @@ class InfoScreen extends StatelessWidget {
                           onTap: () => _open('github'),
                         ),
                         _SocialLink(icon: AppIcons.x, onTap: () => _open('x')),
+                        _SocialLink(
+                          icon: AppIcons.threads,
+                          tooltip: 'Threads · @khlebobul',
+                          onTap: () => _open('threads'),
+                        ),
                         _SocialLink(
                           icon: AppIcons.mail,
                           onTap: () => _sendEmail(context),
@@ -356,8 +362,9 @@ class _InfoLink extends StatelessWidget {
 class _SocialLink extends StatelessWidget {
   final String icon;
   final VoidCallback? onTap;
+  final String? tooltip;
 
-  const _SocialLink({required this.icon, this.onTap});
+  const _SocialLink({required this.icon, this.onTap, this.tooltip});
 
   @override
   Widget build(BuildContext context) {
@@ -371,7 +378,8 @@ class _SocialLink extends StatelessWidget {
         splashColor: Colors.transparent,
         onPressed: onTap,
         iconSize: 22,
-        padding: const EdgeInsets.symmetric(horizontal: 14),
+        tooltip: tooltip,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         color: theme.iconColor,
         icon: SvgPicture.asset(
           icon,

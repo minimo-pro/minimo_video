@@ -16,6 +16,12 @@ private struct PickedVideoMetadata {
 }
 
 class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDocumentPickerDelegate {
+  private var importProgress = 0.0
+  private var photoLoadObservation: NSKeyValueObservation?
+  private var importBackgroundTask: UIBackgroundTaskIdentifier = .invalid
+  @available(iOS 26.0, *)
+  private var backgroundImport: BackgroundCompression { BackgroundCompression.importRuntime }
+
   private var pendingPickResult: FlutterResult?
   private var activePickID: UUID?
   private var videosChannel: FlutterMethodChannel?
@@ -158,16 +164,19 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       "pickProgress",
       arguments: ["processed": 0, "total": results.count]
     )
-    importPhotosVideos(results, pickID: pickID) { [weak self] videos in
-      DispatchQueue.main.async {
-        guard self?.activePickID == pickID else {
-          self?.removeImportedVideos(videos)
-          return
+    startImportRuntime(pickID: pickID) {
+      self.importPhotosVideos(results, pickID: pickID) { [weak self] videos in
+        DispatchQueue.main.async {
+          guard self?.activePickID == pickID else {
+            self?.removeImportedVideos(videos)
+            return
+          }
+          self?.finishImportRuntime(success: videos.count == results.count)
+          self?.pendingPickResult = nil
+          self?.activePickID = nil
+          print("[VideoPicker] Imported \(videos.count)/\(results.count) videos")
+          pendingPickResult(videos)
         }
-        self?.pendingPickResult = nil
-        self?.activePickID = nil
-        print("[VideoPicker] Imported \(videos.count)/\(results.count) videos")
-        pendingPickResult(videos)
       }
     }
   }
@@ -187,24 +196,28 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       "pickProgress",
       arguments: ["processed": 0, "total": urls.count]
     )
-    importDocumentVideos(urls, pickID: pickID) { [weak self] result in
-      DispatchQueue.main.async {
-        guard self?.activePickID == pickID else {
-          if case .success(let videos) = result { self?.removeImportedVideos(videos) }
-          return
-        }
-        self?.pendingPickResult = nil
-        self?.activePickID = nil
-        switch result {
-        case .success(let videos):
-          print("[VideoPicker] Imported \(videos.count)/\(urls.count) videos")
-          pendingPickResult(videos)
-        case .failure(let error):
-          pendingPickResult(FlutterError(
-            code: "pick_failed",
-            message: error.localizedDescription,
-            details: nil
-          ))
+    startImportRuntime(pickID: pickID) {
+      self.importDocumentVideos(urls, pickID: pickID) { [weak self] result in
+        DispatchQueue.main.async {
+          guard self?.activePickID == pickID else {
+            if case .success(let videos) = result { self?.removeImportedVideos(videos) }
+            return
+          }
+          if case .success = result { self?.finishImportRuntime(success: true) }
+          else { self?.finishImportRuntime() }
+          self?.pendingPickResult = nil
+          self?.activePickID = nil
+          switch result {
+          case .success(let videos):
+            print("[VideoPicker] Imported \(videos.count)/\(urls.count) videos")
+            pendingPickResult(videos)
+          case .failure(let error):
+            pendingPickResult(FlutterError(
+              code: "pick_failed",
+              message: error.localizedDescription,
+              details: nil
+            ))
+          }
         }
       }
     }
@@ -231,7 +244,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
 
     let item = results[index]
     let filename = originalFilename(for: item) ?? suggestedFilename(for: item)
-    item.itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) {
+    let progress = item.itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) {
       [weak self] url, error in
       guard let self else {
         completion(videos)
@@ -250,7 +263,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
               location: $0.location
             )
           } ?? self.videoMetadata(at: url)
-          let outputURL = try self.copyPickedVideo(from: url, filename: filename)
+          let outputURL = try self.copyPickedVideo(from: url, filename: filename) { fraction in
+            self.reportImportProgress(pickID: pickID, processed: index, total: results.count,
+                                      fraction: 0.5 + fraction * 0.5)
+          }
           let size = (try? FileManager.default.attributesOfItem(
             atPath: outputURL.path
           )[.size] as? NSNumber)?.intValue ?? 0
@@ -282,22 +298,31 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       print("[VideoPicker] Processed \(index + 1)/\(results.count) videos")
       DispatchQueue.main.async {
         guard self.activePickID == pickID else { return }
+        self.updateImportRuntime(processed: index + 1, total: results.count)
         self.videosChannel?.invokeMethod(
           "pickProgress",
           arguments: ["processed": index + 1, "total": results.count]
         )
       }
-      guard self.activePickID == pickID else {
-        self.removeImportedVideos(imported)
-        return
+      let completedVideos = imported
+      DispatchQueue.main.async {
+        guard self.activePickID == pickID else {
+          self.removeImportedVideos(completedVideos)
+          return
+        }
+        self.importPhotosVideos(
+          results,
+          pickID: pickID,
+          index: index + 1,
+          videos: completedVideos,
+          completion: completion
+        )
       }
-      self.importPhotosVideos(
-        results,
-        pickID: pickID,
-        index: index + 1,
-        videos: imported,
-        completion: completion
-      )
+    }
+    photoLoadObservation = progress.observe(\.fractionCompleted, options: [.initial, .new]) {
+      [weak self] progress, _ in
+      self?.reportImportProgress(pickID: pickID, processed: index, total: results.count,
+                                 fraction: progress.fractionCompleted * 0.5)
     }
   }
 
@@ -327,7 +352,10 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       var imported = videos
       do {
         let filename = url.lastPathComponent.isEmpty ? "video.mov" : url.lastPathComponent
-        let outputURL = try self.copyPickedVideo(from: url, filename: filename)
+        let outputURL = try self.copyPickedVideo(from: url, filename: filename) { fraction in
+          self.reportImportProgress(pickID: pickID, processed: index, total: urls.count,
+                                    fraction: fraction)
+        }
         let size = (try? FileManager.default.attributesOfItem(
           atPath: outputURL.path
         )[.size] as? NSNumber)?.intValue ?? 0
@@ -346,6 +374,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       print("[VideoPicker] Processed \(index + 1)/\(urls.count) videos")
       DispatchQueue.main.async {
         guard self.activePickID == pickID else { return }
+        self.updateImportRuntime(processed: index + 1, total: urls.count)
         self.videosChannel?.invokeMethod(
           "pickProgress",
           arguments: ["processed": index + 1, "total": urls.count]
@@ -421,6 +450,50 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     }
   }
 
+  private func startImportRuntime(pickID: UUID, completion: @escaping () -> Void) {
+    importProgress = 0
+    // shortcut: older iOS gets limited runtime; long imports require iOS 26 admission.
+    importBackgroundTask = UIApplication.shared.beginBackgroundTask(withName: "Video import") { [weak self] in
+      self?.cancelVideoPick(result: { _ in })
+    }
+    guard #available(iOS 26.0, *) else { completion(); return }
+    backgroundImport.onCancel = { [weak self] in
+      self?.cancelVideoPick(result: { _ in })
+    }
+    backgroundImport.start(token: pickID.uuidString) { [weak self] granted in
+      guard let self, self.activePickID == pickID else { return }
+      if granted as? Bool == true, self.importBackgroundTask != .invalid {
+        UIApplication.shared.endBackgroundTask(self.importBackgroundTask)
+        self.importBackgroundTask = .invalid
+      }
+      completion()
+    }
+  }
+
+  private func reportImportProgress(pickID: UUID, processed: Int, total: Int, fraction: Double) {
+    DispatchQueue.main.async {
+      guard self.activePickID == pickID else { return }
+      self.updateImportRuntime(processed: processed, total: total, fraction: fraction)
+    }
+  }
+
+  private func updateImportRuntime(processed: Int, total: Int, fraction: Double = 0) {
+    guard #available(iOS 26.0, *), let pickID = activePickID, total > 0 else { return }
+    let progress = (Double(processed) + min(0.999, max(0, fraction))) / Double(total)
+    guard progress >= importProgress else { return }
+    importProgress = progress
+    backgroundImport.update(token: pickID.uuidString, progress: progress, index: processed, count: total)
+  }
+
+  private func finishImportRuntime(success: Bool = false) {
+    photoLoadObservation = nil
+    if #available(iOS 26.0, *) { backgroundImport.finish(success: success) }
+    if importBackgroundTask != .invalid {
+      UIApplication.shared.endBackgroundTask(importBackgroundTask)
+      importBackgroundTask = .invalid
+    }
+  }
+
   private func pickVideos(source: String, result: @escaping FlutterResult) {
     if pendingPickResult != nil {
       result(FlutterError(
@@ -444,6 +517,7 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     let cancelledResult = pendingPickResult
     pendingPickResult = nil
     activePickID = nil
+    finishImportRuntime()
     window?.rootViewController?.presentedViewController?.dismiss(animated: true)
     cancelledResult?([])
     result(nil)
@@ -752,7 +826,9 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     return name.contains(".") ? name : "\(name).mov"
   }
 
-  private func copyPickedVideo(from sourceURL: URL, filename: String) throws -> URL {
+  private func copyPickedVideo(
+    from sourceURL: URL, filename: String, onProgress: ((Double) -> Void)? = nil
+  ) throws -> URL {
     let directory = try cacheDirectory(named: "picked_videos")
 
     let safeFilename = sanitizeFilename(filename)
@@ -760,7 +836,28 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
     let outputURL = directory.appendingPathComponent("\(UUID().uuidString)_\(safeFilename)")
 
     do {
-      try FileManager.default.copyItem(at: sourceURL, to: outputURL)
+      if let onProgress, let size = try? sourceURL.resourceValues(forKeys: [.fileSizeKey]).fileSize,
+         size > 0 {
+        let input = try FileHandle(forReadingFrom: sourceURL)
+        defer { try? input.close() }
+        try Data().write(to: outputURL)
+        let output = try FileHandle(forWritingTo: outputURL)
+        defer { try? output.close() }
+        var copied = 0
+        var lastPercent = 0
+        while let data = try input.read(upToCount: 1024 * 1024), !data.isEmpty {
+          try output.write(contentsOf: data)
+          copied += data.count
+          let fraction = min(1, Double(copied) / Double(size))
+          let percent = Int(fraction * 100)
+          if percent > lastPercent {
+            lastPercent = percent
+            onProgress(fraction)
+          }
+        }
+      } else {
+        try FileManager.default.copyItem(at: sourceURL, to: outputURL)
+      }
     } catch {
       try? FileManager.default.removeItem(at: outputURL)
       throw error
