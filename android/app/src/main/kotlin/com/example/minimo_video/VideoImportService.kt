@@ -9,10 +9,23 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicBoolean
 
 /** Keeps the existing sequential cache copy alive while the activity is hidden. */
 class VideoImportService : Service() {
-    companion object { @Volatile var expiredToken: Long? = null }
+    companion object {
+        private val imports = ConcurrentHashMap<Long, AtomicBoolean>()
+
+        fun register(id: Long) { imports[id] = AtomicBoolean() }
+        fun isRunning(id: Long) = imports[id]?.get() == false
+        fun unregister(id: Long) { imports.remove(id) }
+    }
+
+    private fun cancelImport() {
+        imports[token]?.set(true)
+        stopSelf()
+    }
     private var token = -1L
     private var wakeLock: PowerManager.WakeLock? = null
 
@@ -35,12 +48,14 @@ class VideoImportService : Service() {
                 }
         } else if (id == token) {
             when (intent?.action) {
-                "update" -> getSystemService(NotificationManager::class.java).notify(
+                "update" -> if (isRunning(id)) getSystemService(NotificationManager::class.java).notify(
                     4208, notification(intent.getIntExtra("processed", 0), intent.getIntExtra("total", 0))
                 )
                 "finish" -> stopSelf()
-                "cancel" -> { expiredToken = token; stopSelf() }
+                "cancel" -> cancelImport()
             }
+        } else if (token == -1L) {
+            stopSelf()
         }
         return START_NOT_STICKY
     }
@@ -50,7 +65,7 @@ class VideoImportService : Service() {
             else @Suppress("DEPRECATION") Notification.Builder(this)
         val open = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val cancel = PendingIntent.getService(this, 0,
+        val cancel = PendingIntent.getService(this, token.toInt(),
             Intent(this, VideoImportService::class.java).setAction("cancel").putExtra("token", token),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         return builder.addAction(Notification.Action.Builder(null,
@@ -62,8 +77,7 @@ class VideoImportService : Service() {
     }
 
     override fun onTimeout(startId: Int, fgsType: Int) {
-        expiredToken = token
-        stopSelf()
+        cancelImport()
     }
 
     override fun onDestroy() {
