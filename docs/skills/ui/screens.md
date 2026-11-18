@@ -11,6 +11,22 @@ Routes use `auto_route` with fade transitions.
 | `SettingsRoute` | Filename prefix, thermal warning, save/delete defaults, album, cache, language |
 | `InfoRoute` | App/version information, rating, sharing, and external links |
 
+Onboarding uses three illustrated steps: selecting a batch, choosing quality, and
+saving a private local copy. Video cards fan out, shrink, and gain a save badge.
+Cards, badges, step numbers, headings, and descriptions fade and rise in sequence,
+following swipe progress; there is no decorative halo, radial marks, or lock badge.
+Three thin progress segments fill with swipe position and retain completed steps;
+they replace the expanding dots. Next and Get started place their icons after the label. Entry animations have no
+continuous loop. Reduced motion keeps illustrations static
+and makes Next switch pages immediately. The primary action stays below the
+scrollable content, including on small screens with enlarged text. Skip and the
+last action both save onboarding completion and the current changelog version
+before replacing the route with `StartRoute`.
+
+The About screen’s social row links to GitHub, X, Threads, email, and the project
+website. Threads uses `AppIcons.threads`, announces `Threads · @khlebobul`, and
+opens `https://www.threads.com/@khlebobul` with the external URL launcher.
+
 After two successful video conversions, the result screen requests a rating.
 After three successful conversions, it can show a modal for the photo-compression
 app already linked in Settings and About. Each prompt has its own conversion

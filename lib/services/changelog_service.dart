@@ -46,40 +46,68 @@ const Changelog _changelog = {
   '1.2.0': {
     Language.en: [
       'on supported devices, videos selected from the gallery or files can continue importing in the background with system progress and cancellation.',
+      'refreshed onboarding with animated video cards and clearer step progress.',
+      'find khlebobul on Threads from the about screen.',
     ],
     Language.ru: [
       'на поддерживаемых устройствах импорт видео из галереи и файлов может продолжаться в фоне с системным индикатором прогресса и возможностью отмены.',
+      'обновлённый онбординг с анимированными карточками видео и наглядным прогрессом шагов.',
+      'ссылка на Threads khlebobul на экране «о приложении».',
     ],
     Language.es: [
       'en dispositivos compatibles, la importación de videos seleccionados de la galería o archivos puede continuar en segundo plano con progreso del sistema y opción de cancelar.',
+      'bienvenida renovada con tarjetas de video animadas y un progreso de pasos más claro.',
+      'encuentra a khlebobul en Threads desde la pantalla de información.',
     ],
     Language.pt: [
       'em dispositivos compatíveis, a importação de vídeos selecionados da galeria ou de arquivos pode continuar em segundo plano com progresso do sistema e opção de cancelar.',
+      'introdução renovada com cartões de vídeo animados e progresso das etapas mais claro.',
+      'encontre khlebobul no Threads pela tela sobre o app.',
     ],
     Language.de: [
       'auf unterstützten geräten kann der import von videos aus der galerie oder aus dateien im hintergrund fortgesetzt werden, mit systemweiter fortschrittsanzeige und abbruchmöglichkeit.',
+      'überarbeitete einführung mit animierten videokarten und klarer fortschrittsanzeige.',
+      'khlebobul auf Threads über die infoseite finden.',
     ],
     Language.fr: [
       'sur les appareils compatibles, l’importation des vidéos sélectionnées dans la galerie ou les fichiers peut continuer en arrière-plan avec un indicateur de progression système et une option d’annulation.',
+      'présentation repensée avec des cartes vidéo animées et une progression plus claire.',
+      'retrouvez khlebobul sur Threads depuis la page à propos.',
     ],
-    Language.zh: ['在支持的设备上，从图库或文件中选择的视频可在后台继续导入，并提供系统进度显示和取消选项。'],
+    Language.zh: [
+      '在支持的设备上，从图库或文件中选择的视频可在后台继续导入，并提供系统进度显示和取消选项。',
+      '全新引导流程，配有动态视频卡片和更清晰的步骤进度。',
+      '可从关于页面访问 khlebobul 的 Threads 主页。',
+    ],
     Language.hi: [
       'समर्थित डिवाइस पर गैलरी या फ़ाइलों से चुने गए वीडियो का इंपोर्ट बैकग्राउंड में जारी रह सकता है। सिस्टम में प्रगति दिखाई देती है और इसे रद्द किया जा सकता है।',
+      'एनिमेटेड वीडियो कार्ड और स्पष्ट चरण प्रगति के साथ नया परिचय।',
+      'ऐप के बारे में स्क्रीन से Threads पर khlebobul से जुड़ें।',
     ],
     Language.nl: [
       'op ondersteunde apparaten kan het importeren van video’s uit de galerij of bestanden op de achtergrond doorgaan, met systeemvoortgang en een optie om te annuleren.',
+      'vernieuwde introductie met geanimeerde videokaarten en duidelijkere voortgang per stap.',
+      'vind khlebobul op Threads via het informatiescherm.',
     ],
     Language.ko: [
       '지원되는 기기에서는 갤러리나 파일에서 선택한 동영상을 백그라운드에서도 계속 가져올 수 있으며 시스템 진행 표시와 취소 기능을 제공합니다.',
+      '애니메이션 동영상 카드와 더 명확한 단계 표시로 시작 안내를 새롭게 꾸몄습니다.',
+      '앱 정보 화면에서 khlebobul의 Threads로 이동할 수 있습니다.',
     ],
     Language.ja: [
       '対応するデバイスでは、ギャラリーやファイルから選んだ動画の読み込みをバックグラウンドでも続けられます。システムの進捗表示とキャンセル機能も利用できます。',
+      '動画カードのアニメーションと分かりやすい進行表示で、初回ガイドを刷新しました。',
+      'アプリ情報画面から khlebobul の Threads にアクセスできます。',
     ],
     Language.it: [
       'sui dispositivi compatibili, l’importazione dei video selezionati dalla galleria o dai file può continuare in background con avanzamento di sistema e possibilità di annullamento.',
+      'introduzione rinnovata con schede video animate e avanzamento dei passaggi più chiaro.',
+      'trova khlebobul su Threads dalla schermata informazioni.',
     ],
     Language.tr: [
       'desteklenen cihazlarda galeriden veya dosyalardan seçilen videoları içe aktarma işlemi, sistem ilerleme göstergesi ve iptal seçeneğiyle arka planda devam edebilir.',
+      'animasyonlu video kartları ve daha net adım ilerlemesiyle yenilenen başlangıç rehberi.',
+      'hakkında ekranından Threads üzerinde khlebobul hesabına ulaşın.',
     ],
   },
   '1.1.1': {

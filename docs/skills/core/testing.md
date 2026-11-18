@@ -12,6 +12,10 @@ git diff --check
 
 Current tests cover:
 
+- About-screen Threads profile launch through the external URL launcher and social-row layout at 320×568
+
+- Onboarding next/back swipes, skip and completion persistence, reduced-motion page changes, and all 13 locales in both themes at 320×568 with enlarged text
+
 - Quality preset mapping to internal tier and resolution
 - Appending only new picked videos while preserving settings and aligned batch state
 - Bitrate slider gestures, 0.5 Mbps selection haptics and accessibility announcements, reset to automatic, and external settings synchronization

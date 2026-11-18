@@ -27,6 +27,7 @@ Notable action icons:
 | `share` | `share.svg` | Done-screen share |
 | `more` | `more.svg` | Done-screen overflow menu |
 | `close` | `close.svg` | Settings/info sheet dismiss |
+| `threads` | `threads.svg` | About-screen Threads profile |
 
 When rendering icons inside `AppActionButton`, the SVG is wrapped in a fixed `SizedBox(iconWidth × iconHeight)` with `BoxFit.contain`. Wide assets such as `more.svg` must not expand past the button.
 

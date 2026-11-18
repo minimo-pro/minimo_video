@@ -2,9 +2,14 @@
 
 ### Added
 
+* Add a hand-drawn Threads icon linking to [@khlebobul](https://www.threads.com/@khlebobul) from About.
 * Continue importing videos selected from the gallery or Files in the background on Android and supported iOS devices, with system progress and cancellation ([#67](https://github.com/minimo-pro/minimo_video/issues/67)).
 * iOS 26+: request a CPU-only continued-processing task for each picker import. Older iOS versions or denied admission use limited background time; expiration cancels the import.
 * Android: keep imports running through a dataSync foreground service with a progress notification, cancellation, and a CPU wakelock.
+
+### Changed
+
+* Refresh onboarding with animated video cards, staggered fade-and-rise transitions, swipe-linked progress segments, and trailing icons on Next and Get started. Reduced motion keeps components static.
 
 ### Notes
 
