@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/features/compression/data/video_compressor_adapter.dart';
@@ -25,47 +26,77 @@ void main() {
     await root.delete(recursive: true);
   });
 
-  for (final bitrate in [1.5, null]) {
-    test('native estimate and compression preserve bitrate $bitrate', () async {
-      final input = await File(
-        '${root.path}/input.mp4',
-      ).writeAsBytes(List.filled(1000, 0));
-      final output = await File(
-        '${root.path}/encoded.mp4',
-      ).writeAsBytes(List.filled(500, 0));
-      final calls = <MethodCall>[];
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(compressorChannel, (call) async {
-            calls.add(call);
-            return switch (call.method) {
-              'getMediaInfo' => {
-                'width': 1920,
-                'height': 1080,
-                'frameRate': 30.0,
-                'isHdr': true,
-              },
-              'getCompressionEstimate' => {'estimatedSizeBytes': 500},
-              'startCompression' => jsonEncode({'onSuccess': output.path}),
-              _ => null,
-            };
-          });
-      final adapter = VideoCompressorAdapter();
-      final settings = CompressionSettings(videoBitrateMbps: bitrate);
-      final estimate = await adapter.estimateCompressedSize([
-        input.path,
-      ], settings);
-      expect(estimate.bytes, 500);
-      expect(estimate.hdrPaths, {input.path});
-      final result = await adapter.compress(input.path, 'input.mp4', settings);
-      expect(result.success, isTrue);
-      expect(result.sourceIsHdr, isTrue);
-      final expected = bitrate ?? 1.93536;
-      for (final method in ['getCompressionEstimate', 'startCompression']) {
-        final args =
-            calls.singleWhere((call) => call.method == method).arguments as Map;
-        expect(args['videoBitrateInMbps'], closeTo(expected, 1e-9));
-      }
-    });
+  for (final (platform, bitrate, outputIsHdr) in [
+    (TargetPlatform.iOS, 1.5, true),
+    (TargetPlatform.iOS, null, false),
+    (TargetPlatform.android, 1.5, false),
+  ]) {
+    test(
+      'compresses on $platform with bitrate $bitrate and HDR $outputIsHdr',
+      () async {
+        debugDefaultTargetPlatformOverride = platform;
+        addTearDown(() => debugDefaultTargetPlatformOverride = null);
+        final input = await File(
+          '${root.path}/input.mp4',
+        ).writeAsBytes(List.filled(1000, 0));
+        final output = await File(
+          '${root.path}/encoded.mp4',
+        ).writeAsBytes(List.filled(500, 0));
+        final calls = <MethodCall>[];
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(compressorChannel, (call) async {
+              calls.add(call);
+              return switch (call.method) {
+                'getMediaInfo' => {
+                  'width': 1920,
+                  'height': 1080,
+                  'frameRate': 30.0,
+                  'isHdr': true,
+                },
+                'getCompressionEstimate' => {'estimatedSizeBytes': 500},
+                'startCompression' => jsonEncode({
+                  'onSuccess': output.path,
+                  'isHdr': outputIsHdr,
+                  'usedFormat': outputIsHdr ? 'h265' : 'h264',
+                }),
+                _ => null,
+              };
+            });
+        final adapter = VideoCompressorAdapter();
+        final settings = CompressionSettings(videoBitrateMbps: bitrate);
+        final estimate = await adapter.estimateCompressedSize([
+          input.path,
+        ], settings);
+        expect(estimate.bytes, 500);
+        expect(estimate.hdrPaths, {input.path});
+        final result = await adapter.compress(
+          input.path,
+          'input.mp4',
+          settings,
+        );
+        expect(result.success, isTrue);
+        expect(result.sourceIsHdr, isTrue);
+        expect(result.outputIsHdr, outputIsHdr);
+        expect(
+          result.usedCodec,
+          outputIsHdr ? CompressionCodec.hevc : CompressionCodec.h264,
+        );
+        final compression = calls.singleWhere(
+          (call) => call.method == 'startCompression',
+        );
+        expect(
+          compression.arguments['hdrMode'],
+          platform == TargetPlatform.iOS ? 'keep' : 'toSdr',
+        );
+        final expected = bitrate ?? 1.93536;
+        for (final method in ['getCompressionEstimate', 'startCompression']) {
+          final args =
+              calls.singleWhere((call) => call.method == method).arguments
+                  as Map;
+          expect(args['videoBitrateInMbps'], closeTo(expected, 1e-9));
+        }
+      },
+    );
   }
 
   test('detects later HDR videos when an earlier estimate fails', () async {

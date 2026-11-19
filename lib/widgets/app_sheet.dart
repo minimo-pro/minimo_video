@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:stupid_simple_sheet/stupid_simple_sheet.dart';
 
 /// Presents [child] in a [StupidSimpleSheetRoute] so a downward swipe at the

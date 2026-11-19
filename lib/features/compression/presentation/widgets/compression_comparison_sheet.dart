@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:video_player/video_player.dart';
 
@@ -256,10 +256,13 @@ class _ComparisonPlayerState extends State<_ComparisonPlayer> {
                 fontSize: 14,
               ),
             ),
-            if (widget.result.result.sourceIsHdr) ...[
+            if (widget.result.result.outputIsHdr ||
+                widget.result.result.sourceIsHdr) ...[
               Text(
-                '· ${strings.hdrToSdrLabel}',
-                key: const ValueKey('comparison-hdr-to-sdr'),
+                widget.result.result.outputIsHdr
+                    ? '· HDR'
+                    : '· ${strings.hdrToSdrLabel}',
+                key: const ValueKey('comparison-hdr'),
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 14,

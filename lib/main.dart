@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'generated/l10n.dart';
 import 'router/app_router.dart';
@@ -32,11 +31,14 @@ class MainApp extends StatelessWidget {
         themeMode: AppSettingsService.instance.themeMode,
         localizationsDelegates: const [
           S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
+          ...GlobalMaterialLocalizations.delegates,
         ],
         supportedLocales: S.delegate.supportedLocales,
+        builder: (context, child) {
+          // rate_my_app and stupid_simple_sheet still read the legacy Material theme.
+          // ignore: deprecated_member_use
+          return MaterialUiCompatibilityBridge(child: child!);
+        },
         routerConfig: _appRouter.config(),
       ),
     );

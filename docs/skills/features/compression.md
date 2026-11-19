@@ -25,7 +25,7 @@ Advanced mode allows:
 
 With automatic bitrate, `CompressionSettings.effectiveBitrateMbps()` derives the encoder target from the fitted output pixel count, effective output FPS, quality tier, and codec efficiency. Original resolution uses source dimensions for bitrate calculation without passing them as resize dimensions. Requested FPS is capped at the source FPS because the package only downsamples. HEVC targets fewer bits than H.264 for comparable quality. `light_compressor_v2` accepts fractional Mbps. Automatic targets retain their fractional precision and are clamped to `1–8 Mbps`. Manually selected values use `0.5 Mbps` steps up to `20 Mbps` and are absolute, not modified by resolution, FPS, or codec. `CompressionSettings.videoBitrateMbps` and the shared encode plan use `double`; `null` means automatic. Both native compression and native size estimates receive the same unrounded value. Manual bitrate must be finite and greater than zero.
 
-`light_compressor_v2 1.11.0` does not expose encoder speed presets or video
+`light_compressor_v2 1.12.0` does not expose encoder speed presets or video
 container metadata copying. Do not add UI switches for either until the native
 pipeline can honor them on both Android and iOS.
 
@@ -39,9 +39,9 @@ custom dimensions and relies on the package's `keepOriginalResolution` path.
 
 Retained audio is encoded as AAC at 128 kbps. Do not switch back to passthrough: `light_compressor_v2 1.8.1` can crash inside `AVAssetWriter.addInput` when the source audio format is incompatible with MP4. Since 1.11.0 the package also re-encodes non-AAC audio (for example camera PCM in `.mov`) on iOS; Android cannot read QuickTime PCM and drops that track.
 
-HDR sources (HLG or PQ, including iPhone Dolby Vision 8.4) are written as SDR BT.709. iOS tone-maps them; Android tone-maps on Android 13+ when the decoder supports it, otherwise colours may look flatter.
+On iOS, compression requests `HdrMode.keep` for [#58](https://github.com/minimo-pro/minimo_video/issues/58). The package writes HDR as HEVC Main10 even if H.264 was selected. It preserves HLG or PQ, carries over HDR10 metadata when available, and can regenerate Dolby Vision 8.4 metadata for iPhone recordings. Without support for Main10 encoding, iOS tone-maps to BT.709 SDR. Android writes SDR and tone-maps on Android 13+ when the decoder supports it.
 
-`MediaInfo.isHdr` comes from the same `getMediaInfo()` call that sizes the output. The estimate returns those HDR paths with the size; compression stores `sourceIsHdr` on each result. HDR clips show a badge on the first three selected-video thumbnails, a conversion hint on the settings summary, and `HDR → SDR` on the comparison sheet.
+`MediaInfo.isHdr` identifies HDR sources for the selection badge and the platform-specific settings hint. The comparison uses the native result's `isHdr` to show `HDR` when the output retained it, or `HDR → SDR` for a converted HDR source.
 
 ## Pipeline
 

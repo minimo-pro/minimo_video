@@ -38,12 +38,12 @@ flowchart TD
 
     subgraph Android
         E[MediaCodec and MediaMuxer]
-        E --> F[MP4 output]
+        E --> F["MP4 output<br/>HDR sources convert to SDR"]
     end
 
     subgraph iOS
         G[AVFoundation]
-        G --> H[MP4 output]
+        G --> H["MP4 output<br/>HDR sources keep HDR with HEVC Main10 when supported,<br/>otherwise convert to SDR"]
     end
 
     D -->|Android| E

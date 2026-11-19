@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/generated/l10n.dart';
 import 'package:minimo_video/screens/stats_screen.dart';
@@ -121,9 +120,7 @@ Widget _app(String locale, {Widget home = const StatsScreen()}) => MaterialApp(
   locale: Locale(locale),
   localizationsDelegates: const [
     S.delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
+    ...GlobalMaterialLocalizations.delegates,
   ],
   supportedLocales: S.delegate.supportedLocales,
   home: home,

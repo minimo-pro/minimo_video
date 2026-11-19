@@ -5,7 +5,7 @@
 `ChangelogService` stores a local versioned changelog map in Dart. Keys are semantic versions, language keys use the `Language` enum, and version comparisons use `pub_semver`.
 The app never fetches changelog content remotely.
 
-Current release: `1.2.0+38`. In-app notes cover background imports from the gallery and files on supported devices, the animated onboarding refresh, and the About screen’s Threads link in all 13 supported languages. The root `CHANGELOG.md` documents iOS 26+ continued processing, limited runtime on older iOS or denied admission, Android foreground service behavior, and the unchanged Share/Shortcuts inbox path.
+Current release: `1.3.0+39`. In-app notes cover HDR preservation on supported iPhones and iPads in all 13 languages. The root `CHANGELOG.md` links [#58](https://github.com/minimo-pro/minimo_video/issues/58) and documents the SDR fallback.
 
 ## Seen Version
 
@@ -23,6 +23,8 @@ so users jumping multiple releases see all unseen changes.
 
 `StartPage` waits for the upgrader check to finish (and for any
 `UpgradeAlert` prompt to be dismissed) before showing the changelog sheet.
+`UpgradeAlert` is built with `material_ui`, so `MainApp` uses `MaterialApp`
+and `GlobalMaterialLocalizations.delegates` from that package.
 If unseen changes exist, `showChangelogDialog()` presents a content-sized
 `stupid_simple_sheet` (scroll-to-drag dismiss). Long change lists use the
 shared `FadedScrollView` to show scroll-edge fading. Dismissing the sheet

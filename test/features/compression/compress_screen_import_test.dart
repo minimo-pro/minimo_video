@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/constants/app_icons.dart';
 import 'package:minimo_video/features/compression/bloc/compress_bloc.dart';
@@ -330,8 +329,7 @@ Future<void> _pumpScreen(WidgetTester tester) {
       theme: AppTheme.light,
       localizationsDelegates: const [
         S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
+        ...GlobalMaterialLocalizations.delegates,
       ],
       supportedLocales: S.delegate.supportedLocales,
       initialRoute: '/compress',

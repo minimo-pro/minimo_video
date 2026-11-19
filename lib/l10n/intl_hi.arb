@@ -180,6 +180,7 @@
     "pickFromFiles": "फ़ाइलों से",
     "loadingVideos": "वीडियो इंपोर्ट हो रहे हैं...",
     "loadingManyVideosHint": "क्लाउड से डाउनलोड या बड़ी फ़ाइल कॉपी होने में समय लग सकता है",
+    "keepHdrHint": "जहाँ संभव है, HDR वीडियो में HDR बनाए रखने के लिए HEVC का इस्तेमाल होता है। अन्यथा वीडियो SDR में बदले जाते हैं।",
     "hdrToSdrHint": "HDR वीडियो SDR में बदला जाएगा — रंग थोड़े बदल सकते हैं",
     "hdrToSdrLabel": "HDR → SDR",
     "failedToPickVideos": "वीडियो फ़ाइल चुनें",

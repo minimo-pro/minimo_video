@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../constants/app_icons.dart';
@@ -159,8 +159,10 @@ class SelectedVideosSummary extends StatelessWidget {
           Padding(
             padding: EdgeInsets.fromLTRB(24, compact ? 8 : 12, 24, 0),
             child: Text(
-              strings.hdrToSdrHint,
-              key: const ValueKey('hdr-to-sdr-hint'),
+              Theme.of(context).platform == TargetPlatform.iOS
+                  ? strings.keepHdrHint
+                  : strings.hdrToSdrHint,
+              key: const ValueKey('hdr-conversion-hint'),
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,

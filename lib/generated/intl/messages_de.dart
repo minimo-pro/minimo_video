@@ -188,6 +188,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "iosBackgroundCompressionWarning": MessageLookupByLibrary.simpleMessage(
       "minimo während der komprimierung geöffnet lassen. beim verlassen startet das aktuelle video nach der rückkehr neu",
     ),
+    "keepHdrHint": MessageLookupByLibrary.simpleMessage(
+      "HDR-Videos nutzen HEVC, um HDR nach Möglichkeit zu erhalten. Andernfalls werden sie in SDR umgewandelt.",
+    ),
     "keepsOriginalWhenSavingsLow": MessageLookupByLibrary.simpleMessage(
       "behält das Original bei weniger als 10 % Ersparnis",
     ),

@@ -7,11 +7,10 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/constants/app_icons.dart';
@@ -428,9 +427,7 @@ Future<void> _shoot(
           themeMode: dark ? ThemeMode.dark : ThemeMode.light,
           localizationsDelegates: const [
             S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
+            ...GlobalMaterialLocalizations.delegates,
           ],
           supportedLocales: S.delegate.supportedLocales,
           locale: _locale,

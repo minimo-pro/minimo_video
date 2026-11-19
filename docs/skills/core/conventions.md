@@ -42,6 +42,7 @@ Commit generated output together with its source change.
 
 ## UI Changes
 
+- Import Material widgets from `package:material_ui/material_ui.dart`.
 - Reuse `AppTheme`, `CompressionUiColors`, and shared controls.
 - Support both system themes.
 - Respect reduced-motion settings for nonessential animation.

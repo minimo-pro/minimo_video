@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/generated/l10n.dart';
 import 'package:minimo_video/screens/info_screen.dart';
@@ -44,15 +43,14 @@ void main() {
         supportedLocales: S.delegate.supportedLocales,
         localizationsDelegates: const [
           S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
+          ...GlobalMaterialLocalizations.delegates,
         ],
         home: const InfoScreen(),
       ),
     );
     await tester.pumpAndSettle();
-    final threads = find.byTooltip('Threads · @khlebobul');
+    final threads = find.text('threads');
+    expect(threads, findsOneWidget);
     await tester.ensureVisible(threads);
     await tester.pumpAndSettle();
     await tester.tap(threads);

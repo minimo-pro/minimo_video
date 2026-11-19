@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -1033,6 +1034,16 @@ class S {
     return Intl.message(
       'downloading from cloud storage or copying large files may take longer',
       name: 'loadingManyVideosHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `HDR videos use HEVC to keep HDR when supported. Otherwise, they convert to SDR.`
+  String get keepHdrHint {
+    return Intl.message(
+      'HDR videos use HEVC to keep HDR when supported. Otherwise, they convert to SDR.',
+      name: 'keepHdrHint',
       desc: '',
       args: [],
     );

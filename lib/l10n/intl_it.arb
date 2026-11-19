@@ -180,6 +180,7 @@
   "pickFromFiles": "dai file",
   "loadingVideos": "importazione video...",
   "loadingManyVideosHint": "il download dal cloud o la copia di file grandi può richiedere più tempo",
+  "keepHdrHint": "I video HDR usano HEVC per mantenere l’HDR quando possibile. Altrimenti vengono convertiti in SDR.",
   "hdrToSdrHint": "il video HDR verrà convertito in SDR — i colori potrebbero cambiare leggermente",
   "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "scegli un file video",
