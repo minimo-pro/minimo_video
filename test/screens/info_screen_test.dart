@@ -49,7 +49,8 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    final threads = find.byTooltip('Threads · @khlebobul');
+    final threads = find.text('threads');
+    expect(threads, findsOneWidget);
     await tester.ensureVisible(threads);
     await tester.pumpAndSettle();
     await tester.tap(threads);
