@@ -8,6 +8,7 @@ class CompressionResult {
   final int? durationMs;
   final CompressionCodec? usedCodec;
   final bool sourceIsHdr;
+  final bool outputIsHdr;
 
   const CompressionResult({
     required this.success,
@@ -17,5 +18,6 @@ class CompressionResult {
     this.durationMs,
     this.usedCodec,
     this.sourceIsHdr = false,
+    this.outputIsHdr = false,
   });
 }

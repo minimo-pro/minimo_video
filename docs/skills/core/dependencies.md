@@ -21,7 +21,7 @@
 | `stupid_simple_sheet` | Modal sheets with scroll-to-drag dismissal |
 | `flutter_svg` | SVG icons |
 
-`light_compressor_v2 1.11.0` supports fractional Mbps for compression and estimates, decodes Dolby Vision through its HEVC base layer on Android, outputs HDR sources as SDR (BT.709), and stays pinned in `pubspec.yaml`; verify its example app before changing compression options.
+`light_compressor_v2 1.12.0` supports fractional Mbps, optional 10-bit HDR export on iOS, and decoding Dolby Vision through its HEVC base layer on Android. The version is pinned in `pubspec.yaml`. Verify codec changes on physical devices.
 
 Keep `shared_preferences_android` at 2.4.24 or newer so Android does not apply the Kotlin Gradle Plugin. `in_app_review` 2.0.12 still applies KGP; the Built-in Kotlin fix is only in unpublished PR https://github.com/britannio/in_app_review/pull/180. Do not switch that plugin to a git dependency. Re-check pub.dev for 2.0.13 before enabling `android.builtInKotlin=true`.
 

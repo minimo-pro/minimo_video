@@ -180,6 +180,7 @@
   "pickFromFiles": "dosyalardan",
   "loadingVideos": "videolar içe aktarılıyor...",
   "loadingManyVideosHint": "bulut depolamadan indirme veya büyük dosyaları kopyalama daha uzun sürebilir",
+  "keepHdrHint": "HDR videolar, desteklendiğinde HDR’yi korumak için HEVC kullanır. Aksi halde SDR’ye dönüştürülür.",
   "hdrToSdrHint": "HDR video SDR'ye dönüştürülecek — renkler biraz değişebilir",
   "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "bir video dosyası seç",

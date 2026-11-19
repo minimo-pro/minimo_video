@@ -43,6 +43,41 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.3.0': {
+    Language.en: [
+      'compression now preserves HDR where supported.',
+    ],
+    Language.ru: [
+      'при сжатии теперь сохраняется HDR, если это поддерживается.',
+    ],
+    Language.es: [
+      'la compresión ahora conserva el HDR cuando es compatible.',
+    ],
+    Language.pt: [
+      'a compressão agora preserva o HDR quando há suporte.',
+    ],
+    Language.de: [
+      'bei der komprimierung bleibt HDR jetzt erhalten, sofern unterstützt.',
+    ],
+    Language.fr: [
+      'la compression préserve désormais le HDR lorsque celui-ci est pris en charge.',
+    ],
+    Language.zh: ['在支持的情况下，压缩视频时可保留 HDR。'],
+    Language.hi: [
+      'जहाँ सुविधा उपलब्ध है, वीडियो कंप्रेस करते समय HDR अब बरकरार रहता है।',
+    ],
+    Language.nl: [
+      'bij het comprimeren blijft HDR nu behouden waar dit wordt ondersteund.',
+    ],
+    Language.ko: ['지원되는 경우 동영상 압축 시 HDR이 유지됩니다.'],
+    Language.ja: ['対応している場合は、動画の圧縮時に HDR を保持できます。'],
+    Language.it: [
+      'la compressione ora mantiene l’HDR dove supportato.',
+    ],
+    Language.tr: [
+      'desteklendiğinde video sıkıştırma sırasında HDR artık korunuyor.',
+    ],
+  },
   '1.2.0': {
     Language.en: [
       'on supported devices, videos selected from the gallery or files can continue importing in the background with system progress and cancellation.',

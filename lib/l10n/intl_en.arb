@@ -181,6 +181,7 @@
   "pickFromFiles": "from files",
   "loadingVideos": "importing videos...",
   "loadingManyVideosHint": "downloading from cloud storage or copying large files may take longer",
+  "keepHdrHint": "HDR videos use HEVC to keep HDR when supported. Otherwise, they convert to SDR.",
   "hdrToSdrHint": "HDR video will be converted to SDR — colours may change slightly",
   "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "choose a video file",

@@ -141,6 +141,7 @@
   "pickFromFiles": "desde archivos",
   "loadingVideos": "importando videos...",
   "loadingManyVideosHint": "descargar desde la nube o copiar archivos grandes puede tardar más",
+  "keepHdrHint": "Los videos HDR se comprimen en HEVC para conservar el HDR cuando es posible. De lo contrario, se convierten a SDR.",
   "hdrToSdrHint": "el video HDR se convertirá a SDR — los colores pueden cambiar un poco",
   "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "elige un archivo de video",

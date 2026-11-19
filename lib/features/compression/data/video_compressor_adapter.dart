@@ -111,6 +111,9 @@ class VideoCompressorAdapter {
         path: inputPath,
         videoQuality: plan.quality,
         videoFormat: plan.format,
+        hdrMode: defaultTargetPlatform == TargetPlatform.iOS
+            ? light.HdrMode.keep
+            : light.HdrMode.toSdr,
         isMinBitrateCheckEnabled: false,
         disableAudio: settings.audioMode == CompressionAudioMode.remove,
         audio: settings.audioMode == CompressionAudioMode.stereo
@@ -156,6 +159,7 @@ class VideoCompressorAdapter {
             ? CompressionCodec.hevc
             : CompressionCodec.h264,
         sourceIsHdr: media.isHdr,
+        outputIsHdr: result.isHdr,
       );
     } finally {
       await progress?.cancel();

@@ -180,6 +180,7 @@
   "pickFromFiles": "aus dateien",
   "loadingVideos": "videos werden importiert...",
   "loadingManyVideosHint": "downloads aus cloudspeichern oder das kopieren großer dateien können länger dauern",
+  "keepHdrHint": "HDR-Videos nutzen HEVC, um HDR nach Möglichkeit zu erhalten. Andernfalls werden sie in SDR umgewandelt.",
   "hdrToSdrHint": "HDR-videos werden in SDR umgewandelt – farben können leicht abweichen",
   "hdrToSdrLabel": "HDR → SDR",
   "failedToPickVideos": "videodatei auswählen",

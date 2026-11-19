@@ -256,10 +256,13 @@ class _ComparisonPlayerState extends State<_ComparisonPlayer> {
                 fontSize: 14,
               ),
             ),
-            if (widget.result.result.sourceIsHdr) ...[
+            if (widget.result.result.outputIsHdr ||
+                widget.result.result.sourceIsHdr) ...[
               Text(
-                '· ${strings.hdrToSdrLabel}',
-                key: const ValueKey('comparison-hdr-to-sdr'),
+                widget.result.result.outputIsHdr
+                    ? '· HDR'
+                    : '· ${strings.hdrToSdrLabel}',
+                key: const ValueKey('comparison-hdr'),
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 14,

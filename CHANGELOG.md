@@ -1,3 +1,13 @@
+## [1.3.0]
+
+### Added
+
+* Preserve HDR when compressing on supported iPhones and iPads. The comparison shows HDR or HDR → SDR based on the actual output ([#58](https://github.com/minimo-pro/minimo_video/issues/58)).
+
+### Changed
+
+* Update `light_compressor_v2` to 1.12.0 for HEVC Main10 HDR export ([upstream #29](https://github.com/Farid023/light_compressor_v2/issues/29)). Android and unsupported iOS devices convert HDR to SDR.
+
 ## [1.2.0]
 
 ### Added
