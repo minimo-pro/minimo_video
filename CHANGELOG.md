@@ -6,6 +6,7 @@
 
 ### Changed
 
+* Show social, email, and website links on the About screen as full-width buttons with lowercase labels and arrows.
 * Update `light_compressor_v2` to 1.12.0 for HEVC Main10 HDR export ([upstream #29](https://github.com/Farid023/light_compressor_v2/issues/29)). Android and unsupported iOS devices convert HDR to SDR.
 * Update `upgrader` to 14.0.0. UI code imports Material from `material_ui`, and `MaterialUiCompatibilityBridge` keeps `stupid_simple_sheet` and `rate_my_app` on the legacy Material theme.
 

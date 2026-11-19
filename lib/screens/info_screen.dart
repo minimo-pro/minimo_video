@@ -175,28 +175,16 @@ class InfoScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _SocialLink(
-                          icon: AppIcons.code,
-                          onTap: () => _open('github'),
-                        ),
-                        _SocialLink(icon: AppIcons.x, onTap: () => _open('x')),
-                        _SocialLink(
-                          icon: AppIcons.threads,
-                          tooltip: 'Threads · @khlebobul',
-                          onTap: () => _open('threads'),
-                        ),
-                        _SocialLink(
-                          icon: AppIcons.mail,
-                          onTap: () => _sendEmail(context),
-                        ),
-                        _SocialLink(
-                          icon: AppIcons.website,
-                          onTap: () => _open('project'),
-                        ),
-                      ],
+                    _InfoLink(title: 'website', onTap: () => _open('project')),
+                    _InfoLink(title: 'email', onTap: () => _sendEmail(context)),
+                    _InfoLink(title: 'github', onTap: () => _open('github')),
+                    _InfoLink(title: 'x', onTap: () => _open('x')),
+                    Tooltip(
+                      message: 'threads · @khlebobul',
+                      child: _InfoLink(
+                        title: 'threads',
+                        onTap: () => _open('threads'),
+                      ),
                     ),
                   ],
                 ),
@@ -353,39 +341,6 @@ class _InfoLink extends StatelessWidget {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _SocialLink extends StatelessWidget {
-  final String icon;
-  final VoidCallback? onTap;
-  final String? tooltip;
-
-  const _SocialLink({required this.icon, this.onTap, this.tooltip});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
-
-    return Pressable(
-      enabled: onTap != null,
-      child: IconButton(
-        hoverColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        onPressed: onTap,
-        iconSize: 22,
-        tooltip: tooltip,
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        color: theme.iconColor,
-        icon: SvgPicture.asset(
-          icon,
-          width: 22,
-          height: 22,
-          colorFilter: ColorFilter.mode(theme.iconColor, BlendMode.srcIn),
         ),
       ),
     );
