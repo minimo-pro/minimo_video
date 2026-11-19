@@ -12,7 +12,9 @@
 | `share_plus` | Share output files |
 | `video_player` | Local before/after playback on the result screen |
 | `in_app_review` | Request or open app review |
-| `upgrader` | Prompt when a store update is available |
+| `upgrader` | Prompt when a store update is available. 14.x widgets require `material_ui` |
+| `material_ui` | Material widgets, theme, and localizations |
+| `cupertino_ui` | Cupertino widgets used by the store-update dialog |
 | `pub_semver` | Compare changelog versions |
 | `path_provider`, `path` | Temporary file management |
 | `intl`, `intl_utils` | Localization |
@@ -22,6 +24,8 @@
 | `flutter_svg` | SVG icons |
 
 `light_compressor_v2 1.12.0` supports fractional Mbps, optional 10-bit HDR export on iOS, and decoding Dolby Vision through its HEVC base layer on Android. The version is pinned in `pubspec.yaml`. Verify codec changes on physical devices.
+
+UI code imports Material from `package:material_ui/material_ui.dart`. `MainApp` passes `GlobalMaterialLocalizations.delegates` and wraps the navigator in `MaterialUiCompatibilityBridge`, so packages that still import `package:flutter/material.dart` can read the theme. Leave the generated `flutter/material.dart` import in `lib/generated/l10n.dart` alone: `intl_utils` emits it, and that file only uses shared `Locale` and `LocalizationsDelegate` types.
 
 Keep `shared_preferences_android` at 2.4.24 or newer so Android does not apply the Kotlin Gradle Plugin. `in_app_review` 2.0.12 still applies KGP; the Built-in Kotlin fix is only in unpublished PR https://github.com/britannio/in_app_review/pull/180. Do not switch that plugin to a git dependency. Re-check pub.dev for 2.0.13 before enabling `android.builtInKotlin=true`.
 

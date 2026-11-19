@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/features/compression/bloc/compress_bloc.dart';
 import 'package:minimo_video/features/compression/bloc/compress_state.dart';
@@ -106,8 +105,7 @@ Widget _app(
     theme: ThemeData(platform: platform),
     localizationsDelegates: const [
       S.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
+      ...GlobalMaterialLocalizations.delegates,
     ],
     supportedLocales: S.delegate.supportedLocales,
     home: BlocProvider.value(

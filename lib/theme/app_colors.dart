@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 abstract final class LightModeColors {
   static const background = Color(0xFFF1F2F6);

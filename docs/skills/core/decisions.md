@@ -42,6 +42,10 @@ Users choose gallery or files before a native picker opens. Gallery uses privacy
 
 Picked and compressed files live in app cache until saved/shared. Originals are never modified in place. Temporary files are cleared on every cold start.
 
+## Material widgets from `material_ui`
+
+`upgrader` 14 builds its alert with the standalone `material_ui` and `cupertino_ui` packages. App UI imports those packages instead of `package:flutter/material.dart`. `MaterialUiCompatibilityBridge` stays in `MainApp` while `stupid_simple_sheet` and `rate_my_app` still look up the legacy Material theme.
+
 ## Sheets via `stupid_simple_sheet`
 
 Settings, info, changelog, and comparison use `StupidSimpleSheetRoute` (through `showAppSheet` / `showAppContentSheet`) instead of `showModalBottomSheet`. Material's modal sheet does not hand a downward swipe from a list at its top edge over to sheet dismissal; users expect that native behavior. Small pickers without nested scrolling (e.g. language) may still use `showModalBottomSheet`.

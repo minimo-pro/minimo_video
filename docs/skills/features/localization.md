@@ -38,6 +38,8 @@ Generated files under `lib/generated/` must not be edited manually.
 
 UI code reads strings through `S.of(context)`. Avoid hardcoded user-visible text in Dart and native platform code where Flutter can own the message.
 
+`MainApp` adds `S.delegate` in front of `GlobalMaterialLocalizations.delegates` from `package:material_ui`. That list also supplies Cupertino and widget-library strings.
+
 ---
 
 [Back to SKILLS.md](../../SKILLS.md)

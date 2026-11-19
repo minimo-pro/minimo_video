@@ -2,7 +2,7 @@
 
 ## Theme
 
-`AppTheme` follows system light/dark mode until the user selects and saves a theme in settings. Color definitions live in `lib/theme/app_colors.dart`.
+`AppTheme` builds `ThemeData` from `material_ui` and follows system light/dark mode until the user selects and saves a theme in settings. Color definitions live in `lib/theme/app_colors.dart`.
 
 | Token | Light | Dark |
 |---|---|---|

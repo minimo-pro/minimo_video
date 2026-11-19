@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/features/compression/domain/video_pick_source.dart';
 import 'package:minimo_video/features/compression/presentation/widgets/video_pick_source_sheet.dart';
 import 'package:minimo_video/generated/l10n.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   testWidgets('pick source sheet returns gallery', (tester) async {
@@ -13,8 +12,7 @@ void main() {
       MaterialApp(
         localizationsDelegates: const [
           S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
+          ...GlobalMaterialLocalizations.delegates,
         ],
         supportedLocales: S.delegate.supportedLocales,
         home: Builder(
@@ -45,8 +43,7 @@ void main() {
       MaterialApp(
         localizationsDelegates: const [
           S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
+          ...GlobalMaterialLocalizations.delegates,
         ],
         supportedLocales: S.delegate.supportedLocales,
         home: Builder(
@@ -79,8 +76,7 @@ void main() {
       MaterialApp(
         localizationsDelegates: const [
           S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
+          ...GlobalMaterialLocalizations.delegates,
         ],
         supportedLocales: S.delegate.supportedLocales,
         home: Builder(
@@ -115,8 +111,7 @@ void main() {
       MaterialApp(
         localizationsDelegates: const [
           S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
+          ...GlobalMaterialLocalizations.delegates,
         ],
         supportedLocales: S.delegate.supportedLocales,
         home: Builder(

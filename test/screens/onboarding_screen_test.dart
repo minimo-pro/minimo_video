@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/generated/l10n.dart';
 import 'package:minimo_video/router/app_router.gr.dart';
@@ -41,9 +40,7 @@ Widget _app({
   );
   const delegates = <LocalizationsDelegate<dynamic>>[
     S.delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
+    ...GlobalMaterialLocalizations.delegates,
   ];
   if (router != null) {
     return MaterialApp.router(

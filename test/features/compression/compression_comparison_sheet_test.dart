@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minimo_video/features/compression/bloc/compress_state.dart';
 import 'package:minimo_video/features/compression/domain/compression_result.dart';
@@ -36,8 +35,7 @@ void main() {
         MaterialApp(
           localizationsDelegates: const [
             S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
+            ...GlobalMaterialLocalizations.delegates,
           ],
           supportedLocales: S.delegate.supportedLocales,
           home: const Scaffold(
@@ -125,8 +123,7 @@ void main() {
           ),
           localizationsDelegates: const [
             S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
+            ...GlobalMaterialLocalizations.delegates,
           ],
           supportedLocales: S.delegate.supportedLocales,
           home: Scaffold(

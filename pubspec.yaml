@@ -31,10 +31,12 @@ dependencies:
   package_info_plus: ^10.2.2
   wakelock_plus: ^1.8.2
   rate_my_app: ^2.4.2
-  upgrader: ^13.8.0
+  upgrader: ^14.0.0
   pub_semver: ^2.2.1
   video_player: 2.14.1
   stupid_simple_sheet: ^0.9.1+1
+  material_ui: ^1.11.1
+  cupertino_ui: ^1.1.7
 
 dev_dependencies:
   flutter_test:
