@@ -30,8 +30,9 @@ keep native writes aligned with Flutter cache accounting. Generated previews
 use `Library/Caches/minimo_thumbnails`. Cold-start and manual cleanup also scan
 the native `tmp` directory for files left by older app versions or an
 interrupted compressor run. Neither picker path requests broad library
-permission. Cache copies use unique names so an abandoned import cannot collide
-with a new picker; the original display/output filename stays unchanged.
+permission. Cache copies use a UUID and a short file extension. This prevents
+collisions between imports and keeps long source names out of cache paths.
+The original filename remains available for display and output naming.
 
 For private-picker videos outside the app's Limited Photos selection, iOS reads
 the embedded QuickTime creation date and ISO 6709 location from the temporary

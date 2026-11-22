@@ -43,6 +43,37 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.3.1': {
+    Language.en: ['fixed importing videos with long filenames.'],
+    Language.ru: ['исправлен импорт видео с длинными именами файлов.'],
+    Language.es: [
+      'se corrigió la importación de videos con nombres de archivo largos.',
+    ],
+    Language.pt: [
+      'corrigimos a importação de vídeos com nomes de arquivo longos.',
+    ],
+    Language.de: [
+      'der import von videos mit langen dateinamen wurde korrigiert.',
+    ],
+    Language.fr: [
+      'correction de l’importation des vidéos dont le nom de fichier est long.',
+    ],
+    Language.zh: ['修复了无法导入文件名过长的视频的问题。'],
+    Language.hi: [
+      'लंबे फ़ाइल नाम वाले वीडियो इंपोर्ट करने की समस्या ठीक की गई।',
+    ],
+    Language.nl: [
+      'een probleem met het importeren van video’s met lange bestandsnamen is opgelost.',
+    ],
+    Language.ko: ['파일 이름이 긴 동영상을 가져오지 못하던 문제를 해결했습니다.'],
+    Language.ja: ['ファイル名が長い動画を読み込めない問題を修正しました。'],
+    Language.it: [
+      'risolto un problema con l’importazione di video con nomi di file lunghi.',
+    ],
+    Language.tr: [
+      'uzun dosya adlarına sahip videoları içe aktarma sorunu giderildi.',
+    ],
+  },
   '1.3.0': {
     Language.en: [
       'compression now preserves HDR where supported.',

@@ -831,9 +831,13 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
   ) throws -> URL {
     let directory = try cacheDirectory(named: "picked_videos")
 
-    let safeFilename = sanitizeFilename(filename)
     // Abandoned imports may still be copying when a new picker starts.
-    let outputURL = directory.appendingPathComponent("\(UUID().uuidString)_\(safeFilename)")
+    let fileExtension = (filename as NSString).pathExtension
+    let safeExtension = fileExtension.range(of: "^[A-Za-z0-9]{1,16}$", options: .regularExpression) != nil
+      ? fileExtension
+      : "mov"
+    let outputURL = directory.appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension(safeExtension)
 
     do {
       if let onProgress, let size = try? sourceURL.resourceValues(forKeys: [.fileSizeKey]).fileSize,
@@ -943,15 +947,5 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
 
   private func isVideoFile(_ url: URL) -> Bool {
     !AVURLAsset(url: url).tracks(withMediaType: .video).isEmpty
-  }
-
-  private func sanitizeFilename(_ filename: String) -> String {
-    let invalid = CharacterSet(charactersIn: #"<>:"/\|?*"#)
-      .union(.controlCharacters)
-    let clean = filename
-      .components(separatedBy: invalid)
-      .joined(separator: "_")
-      .trimmingCharacters(in: .whitespacesAndNewlines)
-    return clean.isEmpty ? "video.mov" : clean
   }
 }
