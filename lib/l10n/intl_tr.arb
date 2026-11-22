@@ -19,6 +19,8 @@
   "openSourceNote": "minimo (video) açık kaynaklıdır. kodu incele, projeyi takip et veya iletişime geç",
   "rateTheApp": "uygulamayı değerlendir",
   "shareWithFriends": "arkadaşlarla paylaş",
+  "reportBug": "hata bildir",
+  "bugReportBody": "Ne olduğunu ve hatanın nasıl yeniden oluşturulabileceğini açıklayın.",
   "shareAppText": "telefonundaki videoları küçülten basit uygulama minimo (video)'yu dene: {url}",
   "@shareAppText": {
     "placeholders": {

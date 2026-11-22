@@ -93,6 +93,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "die bitrate wird reduziert, um platz zu sparen",
     ),
+    "bugReportBody": MessageLookupByLibrary.simpleMessage(
+      "Beschreibe, was passiert ist und wie sich der Fehler reproduzieren lässt.",
+    ),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage(
       "cache konnte nicht geleert werden",
     ),
@@ -286,6 +289,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
       "das komprimierte video wird gespeichert; danach bittet Fotos um bestätigung zum löschen des originals",
     ),
+    "reportBug": MessageLookupByLibrary.simpleMessage("fehler melden"),
     "resolution": MessageLookupByLibrary.simpleMessage("auflösung"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "abmessungen für die größte platzersparnis reduzieren",

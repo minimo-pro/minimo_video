@@ -84,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "将降低码率以节省空间",
     ),
+    "bugReportBody": MessageLookupByLibrary.simpleMessage("请描述发生了什么，以及如何重现问题。"),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage("无法清除缓存"),
     "cacheCleared": MessageLookupByLibrary.simpleMessage("缓存已清除"),
     "cancel": MessageLookupByLibrary.simpleMessage("取消"),
@@ -217,6 +218,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
       "压缩后的视频将先保存，然后图库会要求确认删除原视频",
     ),
+    "reportBug": MessageLookupByLibrary.simpleMessage("报告问题"),
     "resolution": MessageLookupByLibrary.simpleMessage("分辨率"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "降低尺寸可最大幅度节省空间",

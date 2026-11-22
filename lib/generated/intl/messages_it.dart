@@ -90,6 +90,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "il bitrate verrà ridotto per risparmiare spazio",
     ),
+    "bugReportBody": MessageLookupByLibrary.simpleMessage(
+      "Descrivi cosa è successo e come riprodurre il problema.",
+    ),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage(
       "impossibile svuotare la cache",
     ),
@@ -283,6 +286,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
       "il video compresso verrà salvato, poi Foto chiederà di confermare l\'eliminazione dell\'originale",
     ),
+    "reportBug": MessageLookupByLibrary.simpleMessage("segnala un problema"),
     "resolution": MessageLookupByLibrary.simpleMessage("risoluzione"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "riduci le dimensioni per risparmiare più spazio",

@@ -93,6 +93,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "de bitrate wordt verlaagd om ruimte te besparen",
     ),
+    "bugReportBody": MessageLookupByLibrary.simpleMessage(
+      "Beschrijf wat er is gebeurd en hoe de fout kan worden gereproduceerd.",
+    ),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage(
       "cache kon niet worden gewist",
     ),
@@ -288,6 +291,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
       "de gecomprimeerde video wordt opgeslagen; daarna vraagt Foto\'s om verwijdering van het origineel te bevestigen",
     ),
+    "reportBug": MessageLookupByLibrary.simpleMessage("een fout melden"),
     "resolution": MessageLookupByLibrary.simpleMessage("resolutie"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "verlaag de afmetingen voor de grootste ruimtebesparing",

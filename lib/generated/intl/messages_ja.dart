@@ -84,6 +84,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "容量節約のためビットレートを下げます",
     ),
+    "bugReportBody": MessageLookupByLibrary.simpleMessage(
+      "発生した内容と再現手順を教えてください。",
+    ),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage("キャッシュを消去できません"),
     "cacheCleared": MessageLookupByLibrary.simpleMessage("キャッシュを消去しました"),
     "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
@@ -241,6 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
       "圧縮済み動画を保存した後、写真アプリが元の動画の削除確認を求めます",
     ),
+    "reportBug": MessageLookupByLibrary.simpleMessage("不具合を報告"),
     "resolution": MessageLookupByLibrary.simpleMessage("解像度"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "寸法を下げると容量を最も節約できます",

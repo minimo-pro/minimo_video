@@ -75,17 +75,25 @@ class InfoScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _sendEmail(BuildContext context) async {
+  Future<void> _sendEmail(
+    BuildContext context, {
+    String? subject,
+    String? body,
+  }) async {
     final strings = S.of(context);
     final uri = Uri(
       scheme: 'mailto',
       path: _email,
-      queryParameters: {'subject': 'feedback ${strings.appName}'},
+      query: [
+        'subject=${Uri.encodeComponent(subject ?? 'feedback ${strings.appName}')}',
+        if (body != null) 'body=${Uri.encodeComponent(body)}',
+      ].join('&'),
     );
 
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-      return;
+    try {
+      if (await launchUrl(uri, mode: LaunchMode.externalApplication)) return;
+    } on Exception {
+      // Copy the address when the platform cannot open a mail app.
     }
 
     await Clipboard.setData(const ClipboardData(text: _email));
@@ -157,6 +165,14 @@ class InfoScreen extends StatelessWidget {
                     _InfoLink(
                       title: strings.shareWithFriends,
                       onTap: () => _shareApp(context),
+                    ),
+                    _InfoLink(
+                      title: strings.reportBug,
+                      onTap: () => _sendEmail(
+                        context,
+                        subject: '${strings.appName} — ${strings.reportBug}',
+                        body: strings.bugReportBody,
+                      ),
                     ),
                     _InfoLink(
                       title: strings.myOtherApps,

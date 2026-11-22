@@ -5,7 +5,7 @@
 `ChangelogService` stores a local versioned changelog map in Dart. Keys are semantic versions, language keys use the `Language` enum, and version comparisons use `pub_semver`.
 The app never fetches changelog content remotely.
 
-Current release: `1.3.0+40`. In-app notes cover HDR preservation on supported iPhones and iPads in all 13 languages. The root `CHANGELOG.md` links [#58](https://github.com/minimo-pro/minimo_video/issues/58) and documents the SDR fallback.
+Current release: `1.3.1+41`. The root and in-app changelogs cover the fix for importing videos with long filenames. In-app notes are available in all 13 languages.
 
 ## Seen Version
 

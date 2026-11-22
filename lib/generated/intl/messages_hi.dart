@@ -91,6 +91,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "स्पेस बचाने के लिए बिटरेट घटेगा",
     ),
+    "bugReportBody": MessageLookupByLibrary.simpleMessage(
+      "बताएँ कि क्या हुआ और समस्या को दोबारा कैसे देखा जा सकता है।",
+    ),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage(
       "कैश साफ़ नहीं हुआ",
     ),
@@ -276,6 +279,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
       "कंप्रेस्ड वीडियो सेव होगा, फिर फ़ोटो मूल वीडियो हटाने की पुष्टि मांगेगा",
     ),
+    "reportBug": MessageLookupByLibrary.simpleMessage("समस्या की रिपोर्ट करें"),
     "resolution": MessageLookupByLibrary.simpleMessage("रिज़ॉल्यूशन"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "सबसे ज़्यादा स्पेस बचाने के लिए आकार घटाएँ",

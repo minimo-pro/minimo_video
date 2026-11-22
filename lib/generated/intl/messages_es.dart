@@ -93,6 +93,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "la tasa de bits se reducirá para ahorrar espacio",
     ),
+    "bugReportBody": MessageLookupByLibrary.simpleMessage(
+      "Describe qué ocurrió y cómo reproducir el error.",
+    ),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage(
       "no se pudo borrar la caché",
     ),
@@ -286,6 +289,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
       "el video comprimido se guardará y luego Fotos pedirá confirmar la eliminación del original",
     ),
+    "reportBug": MessageLookupByLibrary.simpleMessage("informar de un error"),
     "resolution": MessageLookupByLibrary.simpleMessage("resolución"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "reduce las dimensiones para ahorrar el máximo espacio",
