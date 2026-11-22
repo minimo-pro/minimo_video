@@ -92,6 +92,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "битрейт будет уменьшен для экономии места",
     ),
+    "bugReportBody": MessageLookupByLibrary.simpleMessage(
+      "Опишите, что произошло и как повторить ошибку.",
+    ),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage(
       "не удалось очистить кеш",
     ),
@@ -285,6 +288,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
       "сжатое видео сохранится, затем Фото попросит подтвердить удаление оригинала",
     ),
+    "reportBug": MessageLookupByLibrary.simpleMessage("сообщить об ошибке"),
     "resolution": MessageLookupByLibrary.simpleMessage("разрешение"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "уменьшение разрешения сильнее всего сокращает размер",

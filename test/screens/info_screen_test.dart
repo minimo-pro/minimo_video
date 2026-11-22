@@ -8,7 +8,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets('About opens the Threads profile externally on a small screen', (
+  testWidgets('About opens bug reports and Threads on a small screen', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(320, 568);
@@ -49,6 +49,23 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    final share = find.text('поделиться с друзьями');
+    final report = find.text('сообщить об ошибке');
+    await tester.ensureVisible(report);
+    await tester.pumpAndSettle();
+    expect(tester.getTopLeft(report).dy, greaterThan(tester.getTopLeft(share).dy));
+    await tester.tap(report);
+    await tester.pumpAndSettle();
+    expect(launched?.method, 'launch');
+    final mail = Uri.parse((launched!.arguments as Map)['url'] as String);
+    expect(mail.scheme, 'mailto');
+    expect(mail.path, 'khlebobul@gmail.com');
+    expect(mail.queryParameters['subject'], endsWith(' — сообщить об ошибке'));
+    expect(
+      mail.queryParameters['body'],
+      'Опишите, что произошло и как повторить ошибку.',
+    );
+
     final threads = find.text('threads');
     expect(threads, findsOneWidget);
     await tester.ensureVisible(threads);

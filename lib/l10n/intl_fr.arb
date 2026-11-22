@@ -19,6 +19,8 @@
   "openSourceNote": "minimo (video) est open source. explorez le code, suivez le projet ou contactez-moi",
   "rateTheApp": "noter l'app",
   "shareWithFriends": "partager avec des amis",
+  "reportBug": "signaler un bug",
+  "bugReportBody": "Décrivez ce qui s’est passé et comment reproduire le problème.",
   "shareAppText": "essayez minimo (video), une app simple pour réduire les vidéos sur votre téléphone : {url}",
   "@shareAppText": {
     "placeholders": {

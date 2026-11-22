@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -205,6 +204,21 @@ class S {
     return Intl.message(
       'share with friends',
       name: 'shareWithFriends',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `report a bug`
+  String get reportBug {
+    return Intl.message('report a bug', name: 'reportBug', desc: '', args: []);
+  }
+
+  /// `Please describe what happened and how to reproduce it.`
+  String get bugReportBody {
+    return Intl.message(
+      'Please describe what happened and how to reproduce it.',
+      name: 'bugReportBody',
       desc: '',
       args: [],
     );

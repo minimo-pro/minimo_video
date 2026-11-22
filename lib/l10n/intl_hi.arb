@@ -19,6 +19,8 @@
     "openSourceNote": "minimo (video) ओपन सोर्स है। कोड देखें, प्रोजेक्ट फ़ॉलो करें या संपर्क करें",
     "rateTheApp": "ऐप को रेट करें",
     "shareWithFriends": "दोस्तों के साथ शेयर करें",
+    "reportBug": "समस्या की रिपोर्ट करें",
+    "bugReportBody": "बताएँ कि क्या हुआ और समस्या को दोबारा कैसे देखा जा सकता है।",
     "shareAppText": "minimo (video) आज़माएँ — फ़ोन पर वीडियो छोटे करने का आसान ऐप: {url}",
     "@shareAppText": {
         "placeholders": {

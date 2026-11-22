@@ -92,6 +92,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "alan kazanmak için bit hızı azaltılacak",
     ),
+    "bugReportBody": MessageLookupByLibrary.simpleMessage(
+      "Ne olduğunu ve hatanın nasıl yeniden oluşturulabileceğini açıklayın.",
+    ),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage(
       "önbellek temizlenemedi",
     ),
@@ -287,6 +290,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
       "sıkıştırılmış video kaydedilir, ardından Fotoğraflar orijinalin silinmesini onaylamanızı ister",
     ),
+    "reportBug": MessageLookupByLibrary.simpleMessage("hata bildir"),
     "resolution": MessageLookupByLibrary.simpleMessage("çözünürlük"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "en fazla alan tasarrufu için boyutları azalt",

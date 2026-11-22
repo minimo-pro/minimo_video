@@ -19,6 +19,8 @@
   "openSourceNote": "minimo (video) tem código aberto. explore o código, acompanhe o projeto ou entre em contato",
   "rateTheApp": "avaliar o app",
   "shareWithFriends": "compartilhar com amigos",
+  "reportBug": "relatar um erro",
+  "bugReportBody": "Descreva o que aconteceu e como reproduzir o erro.",
   "shareAppText": "experimente minimo (video), um app simples para diminuir vídeos no celular: {url}",
   "@shareAppText": {"placeholders": {"url": {"type": "String"}}},
   "changelogTitle": "novidades da versão {version}",

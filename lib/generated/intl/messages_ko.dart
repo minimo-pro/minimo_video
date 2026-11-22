@@ -87,6 +87,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "bitrateReducedDescription": MessageLookupByLibrary.simpleMessage(
       "공간을 절약하도록 비트레이트를 낮춥니다",
     ),
+    "bugReportBody": MessageLookupByLibrary.simpleMessage(
+      "어떤 문제가 발생했고 어떻게 재현할 수 있는지 알려 주세요.",
+    ),
     "cacheClearFailed": MessageLookupByLibrary.simpleMessage("캐시를 지울 수 없습니다"),
     "cacheCleared": MessageLookupByLibrary.simpleMessage("캐시 지워짐"),
     "cancel": MessageLookupByLibrary.simpleMessage("취소"),
@@ -250,6 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "replaceOriginalDescription": MessageLookupByLibrary.simpleMessage(
       "압축된 동영상을 저장한 다음 사진 앱에서 원본 삭제 확인을 요청합니다",
     ),
+    "reportBug": MessageLookupByLibrary.simpleMessage("버그 신고"),
     "resolution": MessageLookupByLibrary.simpleMessage("해상도"),
     "resolutionDescription": MessageLookupByLibrary.simpleMessage(
       "크기를 줄여 가장 많은 공간을 절약합니다",

@@ -19,6 +19,8 @@
   "openSourceNote": "minimo (video) 是开源项目。查看代码、关注项目或与我联系",
   "rateTheApp": "为应用评分",
   "shareWithFriends": "分享给朋友",
+  "reportBug": "报告问题",
+  "bugReportBody": "请描述发生了什么，以及如何重现问题。",
   "shareAppText": "试试 minimo (video)，轻松缩小手机视频：{url}",
   "@shareAppText": {
     "placeholders": {

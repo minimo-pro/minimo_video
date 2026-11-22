@@ -19,6 +19,8 @@
     "openSourceNote": "minimo (video)はオープンソースです。コードの確認、プロジェクトのフォロー、お問い合わせができます",
     "rateTheApp": "アプリを評価",
     "shareWithFriends": "友達と共有",
+    "reportBug": "不具合を報告",
+    "bugReportBody": "発生した内容と再現手順を教えてください。",
     "shareAppText": "スマホの動画を簡単に小さくできるminimo (video)を試してみてください: {url}",
     "@shareAppText": {
         "placeholders": {
