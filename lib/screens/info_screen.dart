@@ -90,7 +90,11 @@ class InfoScreen extends StatelessWidget {
       ].join('&'),
     );
 
-    if (await launchUrl(uri, mode: LaunchMode.externalApplication)) return;
+    try {
+      if (await launchUrl(uri, mode: LaunchMode.externalApplication)) return;
+    } on Exception {
+      // Copy the address when the platform cannot open a mail app.
+    }
 
     await Clipboard.setData(const ClipboardData(text: _email));
     if (!context.mounted) return;

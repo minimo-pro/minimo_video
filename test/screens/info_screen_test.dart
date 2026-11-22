@@ -24,10 +24,12 @@ void main() {
     );
     const channel = MethodChannel('plugins.flutter.io/url_launcher');
     MethodCall? launched;
+    var failLaunch = false;
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, (
       call,
     ) async {
       launched = call;
+      if (failLaunch) throw PlatformException(code: 'NO_MAIL_APP');
       return true;
     });
     addTearDown(
@@ -53,7 +55,10 @@ void main() {
     final report = find.text('сообщить об ошибке');
     await tester.ensureVisible(report);
     await tester.pumpAndSettle();
-    expect(tester.getTopLeft(report).dy, greaterThan(tester.getTopLeft(share).dy));
+    expect(
+      tester.getTopLeft(report).dy,
+      greaterThan(tester.getTopLeft(share).dy),
+    );
     await tester.tap(report);
     await tester.pumpAndSettle();
     expect(launched?.method, 'launch');
@@ -65,6 +70,26 @@ void main() {
       mail.queryParameters['body'],
       'Опишите, что произошло и как повторить ошибку.',
     );
+
+    MethodCall? clipboard;
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      SystemChannels.platform,
+      (call) async {
+        if (call.method == 'Clipboard.setData') clipboard = call;
+        return null;
+      },
+    );
+    addTearDown(
+      () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        SystemChannels.platform,
+        null,
+      ),
+    );
+    failLaunch = true;
+    await tester.tap(report);
+    await tester.pumpAndSettle();
+    expect(clipboard?.arguments, {'text': 'khlebobul@gmail.com'});
+    failLaunch = false;
 
     final threads = find.text('threads');
     expect(threads, findsOneWidget);

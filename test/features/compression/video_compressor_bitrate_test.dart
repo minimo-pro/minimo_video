@@ -99,6 +99,48 @@ void main() {
     );
   }
 
+  test('writes distinct outputs for duplicate long Unicode names', () async {
+    final input = await File('${root.path}/input.mp4').writeAsBytes([1, 2]);
+    final encoded = File('${root.path}/encoded.mp4');
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(compressorChannel, (call) async {
+          if (call.method == 'getMediaInfo') {
+            return {'width': 1920, 'height': 1080};
+          }
+          if (call.method == 'startCompression') {
+            await encoded.writeAsBytes([1]);
+            return jsonEncode({'onSuccess': encoded.path});
+          }
+          return null;
+        });
+
+    final adapter = VideoCompressorAdapter();
+    final originalName = '${'🎬' * 62}.mp4';
+    final first = await adapter.compress(
+      input.path,
+      originalName,
+      const CompressionSettings(),
+    );
+    final second = await adapter.compress(
+      input.path,
+      originalName,
+      const CompressionSettings(),
+    );
+    final firstFile = File(first.outputPath!);
+    final secondFile = File(second.outputPath!);
+    expect(
+      utf8.encode(firstFile.uri.pathSegments.last).length,
+      lessThanOrEqualTo(255),
+    );
+    expect(
+      utf8.encode(secondFile.uri.pathSegments.last).length,
+      lessThanOrEqualTo(255),
+    );
+    expect(secondFile.path, endsWith('_2.mp4'));
+    expect(await firstFile.exists(), isTrue);
+    expect(await secondFile.exists(), isTrue);
+  });
+
   test('detects later HDR videos when an earlier estimate fails', () async {
     final first = await File('${root.path}/first.mp4').writeAsBytes([1]);
     final hdr = await File('${root.path}/hdr.mp4').writeAsBytes([2]);

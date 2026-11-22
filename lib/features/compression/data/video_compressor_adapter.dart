@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -301,14 +302,27 @@ class VideoCompressorAdapter {
     final baseName = safeBaseName.isEmpty ? 'video' : safeBaseName;
 
     final prefix = addKompressoPrefix ? appPrefix : '';
-    var candidate = path.join(outputDirectory.path, '$prefix$baseName.mp4');
+    final baseBytes = utf8.encode(baseName);
+    final prefixLength = utf8.encode(prefix).length;
+    String candidateFor(String suffix) {
+      final limit = 255 - prefixLength - suffix.length;
+      var end = baseBytes.length;
+      if (end > limit) {
+        end = limit;
+        // Back up to a UTF-8 character boundary.
+        while ((baseBytes[end] & 0xc0) == 0x80) {
+          end--;
+        }
+      }
+      final shortened = utf8.decode(baseBytes.sublist(0, end));
+      return path.join(outputDirectory.path, '$prefix$shortened$suffix');
+    }
+
+    var candidate = candidateFor('.mp4');
     var duplicateIndex = 2;
     while (await FileSystemEntity.type(candidate) !=
         FileSystemEntityType.notFound) {
-      candidate = path.join(
-        outputDirectory.path,
-        '$prefix${baseName}_$duplicateIndex.mp4',
-      );
+      candidate = candidateFor('_$duplicateIndex.mp4');
       duplicateIndex++;
     }
     return candidate;
