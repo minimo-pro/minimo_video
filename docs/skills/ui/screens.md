@@ -23,9 +23,9 @@ scrollable content, including on small screens with enlarged text. Skip and the
 last action both save onboarding completion and the current changelog version
 before replacing the route with `StartRoute`.
 
-The About screen’s social row links to GitHub, X, Threads, email, and the project
-website. Threads uses `AppIcons.threads`, announces `Threads · @khlebobul`, and
-opens `https://www.threads.com/@khlebobul` with the external URL launcher.
+The About screen links to the project website, email, GitHub, X, and Threads as
+full-width text buttons. Threads announces `threads · @khlebobul` and opens
+`https://www.threads.com/@khlebobul` with the external URL launcher.
 
 After two successful video conversions, the result screen requests a rating.
 After three successful conversions, it can show a modal for the photo-compression

@@ -12,7 +12,7 @@ git diff --check
 
 Current tests cover:
 
-- About-screen Threads profile launch through the external URL launcher and social-row layout at 320×568
+- About-screen Threads profile launch through the external URL launcher at 320×568
 
 - Onboarding next/back swipes, skip and completion persistence, reduced-motion page changes, and all 13 locales in both themes at 320×568 with enlarged text
 
