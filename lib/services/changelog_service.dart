@@ -43,6 +43,23 @@ enum Language {
 typedef Changelog = Map<String, Map<Language, List<String>>>;
 
 const Changelog _changelog = {
+  '1.3.2': {
+    Language.en: ['reduced memory usage when importing large videos.'],
+    Language.ru: ['снизили расход памяти при импорте больших видео.'],
+    Language.es: ['se redujo el uso de memoria al importar vídeos grandes.'],
+    Language.pt: ['reduzimos o uso de memória ao importar vídeos grandes.'],
+    Language.de: ['der import großer videos benötigt jetzt weniger speicher.'],
+    Language.fr: ['l’importation de vidéos volumineuses utilise moins de mémoire.'],
+    Language.zh: ['减少了导入大体积视频时的内存占用。'],
+    Language.hi: ['बड़े वीडियो इंपोर्ट करते समय मेमोरी का इस्तेमाल कम किया गया।'],
+    Language.nl: ['het importeren van grote video’s gebruikt minder geheugen.'],
+    Language.ko: ['대용량 동영상을 가져올 때 메모리 사용량을 줄였습니다.'],
+    Language.ja: ['大容量の動画を読み込む際のメモリ使用量を減らしました。'],
+    Language.it: [
+      'ridotto l’uso di memoria durante l’importazione di video di grandi dimensioni.',
+    ],
+    Language.tr: ['büyük videoları içe aktarırken bellek kullanımı azaltıldı.'],
+  },
   '1.3.1': {
     Language.en: ['fixed importing videos with long filenames.'],
     Language.ru: ['исправлен импорт видео с длинными именами файлов.'],

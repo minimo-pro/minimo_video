@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../data/video_compressor_adapter.dart';
@@ -391,6 +392,9 @@ class CompressBloc extends Bloc<CompressEvent, CompressState> {
           );
         } catch (error) {
           if (_cancelRequested || runId != _compressionRunId) return;
+          if (kDebugMode) {
+            debugPrint('Video compression failed (${i + 1}): $error');
+          }
           result = const CompressionResult(success: false);
           videoStatus = VideoCompressionStatus.failed;
           emit(state.copyWith(compressionError: error));

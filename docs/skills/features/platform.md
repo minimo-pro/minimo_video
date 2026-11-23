@@ -34,6 +34,13 @@ permission. Cache copies use a UUID and a short file extension. This prevents
 collisions between imports and keeps long source names out of cache paths.
 The original filename remains available for display and output naming.
 
+When copying with progress, iOS reads 1 MiB at a time and releases Foundation's
+temporary buffers after each chunk. The importer compares the source and cache
+sizes when available, then checks for a video track with AVFoundation. Files
+import logs include the extension and native error code. Flutter debug logs
+also show import and compression errors. The iOS picker requires a container
+AVFoundation can read. MKV is unsupported.
+
 For private-picker videos outside the app's Limited Photos selection, iOS reads
 the embedded QuickTime creation date and ISO 6709 location from the temporary
 file representation. This does not expand Photos access. It allows saving a

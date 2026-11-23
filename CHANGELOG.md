@@ -1,3 +1,10 @@
+## [1.3.2]
+
+### Fixed
+
+* Reduce memory usage when importing large videos.
+* Detect incomplete copies and report more specific import and compression errors in debug logs.
+
 ## [1.3.1]
 
 ### Fixed

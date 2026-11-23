@@ -356,7 +356,10 @@ class _CompressViewState extends State<_CompressView>
       } else if (initial && mounted && !_leavingDuringImport) {
         Navigator.of(context).pop();
       }
-    } catch (_) {
+    } catch (error) {
+      if (kDebugMode) {
+        debugPrint('Video import failed (${source.name}): $error');
+      }
       if (mounted) {
         AppSnackBar.show(
           context,
