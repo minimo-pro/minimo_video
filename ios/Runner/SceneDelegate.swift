@@ -365,7 +365,8 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
           "size": size
         ])
       } catch {
-        print("[VideoPicker] Failed to copy document video \(index + 1): \(error.localizedDescription)")
+        let failure = error as NSError
+        print("[VideoPicker] Document video \(index + 1) failed (extension: \(url.pathExtension), \(failure.domain) \(failure.code)): \(failure.localizedDescription)")
         self.removeImportedVideos(imported)
         completion(.failure(error))
         return
@@ -840,8 +841,8 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       .appendingPathExtension(safeExtension)
 
     do {
-      if let onProgress, let size = try? sourceURL.resourceValues(forKeys: [.fileSizeKey]).fileSize,
-         size > 0 {
+      let sourceSize = try? sourceURL.resourceValues(forKeys: [.fileSizeKey]).fileSize
+      if let onProgress, let size = sourceSize, size > 0 {
         let input = try FileHandle(forReadingFrom: sourceURL)
         defer { try? input.close() }
         try Data().write(to: outputURL)
@@ -849,9 +850,15 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
         defer { try? output.close() }
         var copied = 0
         var lastPercent = 0
-        while let data = try input.read(upToCount: 1024 * 1024), !data.isEmpty {
+        // Drain Foundation's temporary buffers after each chunk.
+        while let bytesWritten = try autoreleasepool(invoking: { () -> Int? in
+          guard let data = try input.read(upToCount: 1024 * 1024), !data.isEmpty else {
+            return nil
+          }
           try output.write(contentsOf: data)
-          copied += data.count
+          return data.count
+        }) {
+          copied += bytesWritten
           let fraction = min(1, Double(copied) / Double(size))
           let percent = Int(fraction * 100)
           if percent > lastPercent {
@@ -862,17 +869,30 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
       } else {
         try FileManager.default.copyItem(at: sourceURL, to: outputURL)
       }
+      let outputSize = try outputURL.resourceValues(forKeys: [.fileSizeKey]).fileSize
+      if let sourceSize, outputSize != sourceSize {
+        throw NSError(
+          domain: "VideoPicker",
+          code: 3,
+          userInfo: [NSLocalizedDescriptionKey:
+            "incomplete video copy: expected \(sourceSize) bytes, copied \(outputSize ?? 0)"]
+        )
+      }
+      let asset = AVURLAsset(url: outputURL)
+      if asset.tracks(withMediaType: .video).isEmpty {
+        var trackError: NSError?
+        _ = asset.statusOfValue(forKey: "tracks", error: &trackError)
+        if let trackError { throw trackError }
+        throw NSError(
+          domain: "VideoPicker",
+          code: 1,
+          userInfo: [NSLocalizedDescriptionKey:
+            "AVFoundation found no readable video track (\(outputSize ?? 0) bytes)"]
+        )
+      }
     } catch {
       try? FileManager.default.removeItem(at: outputURL)
       throw error
-    }
-    guard isVideoFile(outputURL) else {
-      try? FileManager.default.removeItem(at: outputURL)
-      throw NSError(
-        domain: "VideoPicker",
-        code: 1,
-        userInfo: [NSLocalizedDescriptionKey: "selected file is not a video"]
-      )
     }
     return outputURL
   }
@@ -943,9 +963,5 @@ class SceneDelegate: FlutterSceneDelegate, PHPickerViewControllerDelegate, UIDoc
         }
       }
     }
-  }
-
-  private func isVideoFile(_ url: URL) -> Bool {
-    !AVURLAsset(url: url).tracks(withMediaType: .video).isEmpty
   }
 }
